@@ -6,9 +6,9 @@ from src.contexts.social.user.domain.user_repository import UserRepository
 
 
 class UserRegistrar:
-    _repository: UserRepository | None
+    _repository: UserRepository
 
-    def __init__(self, repository: UserRepository | None = None) -> None:
+    def __init__(self, repository: UserRepository) -> None:
         self._repository = repository
 
     def __call__(self, command: RegisterUserCommand) -> None:
@@ -20,4 +20,4 @@ class UserRegistrar:
             profile_picture=command.profile_picture,
         )
 
-        self._repository.save(user)  # type: ignore
+        self._repository.save(user)
