@@ -13,7 +13,6 @@ from src.contexts.social.user.domain.user_repository import UserRepository
 
 @pytest.mark.unit
 class TestUserRegistrar:
-    @pytest.mark.xfail
     def test_should_register_a_valid_user(self) -> None:
         repository = Spy(UserRepository)
         user_registrar = UserRegistrar(repository=repository)
