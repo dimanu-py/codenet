@@ -1,7 +1,7 @@
 import pytest
-from expects import expect
 from doublex import Spy
 from doublex_expects import have_been_called_with
+from expects import expect
 
 from src.contexts.social.user.application.register.register_user_command import (
     RegisterUserCommand,
