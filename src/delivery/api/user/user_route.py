@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
 from src.contexts.social.user.application.register.register_user_command import (
@@ -27,4 +27,4 @@ async def register_user(id_: str, request: RegisterUserRequest) -> JSONResponse:
 
     user_registerer(command)
 
-    raise NotImplementedError
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content={})
