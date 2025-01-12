@@ -1,3 +1,6 @@
+from typing import override
+
+
 class User:
     _id: str
     _name: str
@@ -25,3 +28,11 @@ class User:
             email=email,
             profile_picture=profile_picture,
         )
+
+    @property
+    def id(self) -> str:
+        return self._id
+
+    @override
+    def __eq__(self, other: "User") -> bool:
+        return self._id == other.id
