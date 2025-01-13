@@ -20,4 +20,4 @@ class InMemoryUserRepository(UserRepository):
 
     @override
     async def delete(self, user_id: str) -> None:
-        raise NotImplementedError
+        del self._users[user_id]

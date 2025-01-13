@@ -24,3 +24,20 @@ class TestInMemoryUserRepository:
 
         saved_user = await repository.search(user.id)
         expect(saved_user).to(equal(user))
+
+    @pytest.mark.asyncio
+    async def test_should_delete_valid_user(self) -> None:
+        repository = InMemoryUserRepository()
+        user = User(
+            id_="1f322ec7-a36c-44e2-b339-71b966f95a99",
+            name="John Doe",
+            username="john_doe",
+            email="johndoe@gmail.com",
+            profile_picture="https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
+        )
+        await repository.save(user)
+
+        await repository.delete(user.id)
+
+        saved_user = await repository.search(user.id)
+        expect(saved_user).to(equal(None))
