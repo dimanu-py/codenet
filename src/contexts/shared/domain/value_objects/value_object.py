@@ -1,5 +1,9 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from typing import override
+
+from src.contexts.shared.domain.exceptions.required_value_error import (
+    RequiredValueError,
+)
 
 
 class ValueObject[T](ABC):
@@ -9,8 +13,9 @@ class ValueObject[T](ABC):
         self._validate(value)
         self._value = value
 
-    @abstractmethod
-    def _validate(self, value: T) -> None: ...
+    def _validate(self, value: T) -> None:
+        if value is None:
+            raise RequiredValueError
 
     @property
     def value(self) -> T:
