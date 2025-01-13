@@ -5,9 +5,9 @@ from src.contexts.social.user.domain.user import User
 
 class UserRepository(ABC):
     @abstractmethod
-    def save(self, user: User) -> None:
+    async def save(self, user: User) -> None:
         raise NotImplementedError
 
     @abstractmethod
-    def search(self, user_id: str) -> User:
+    async def search(self, user_id: str) -> User | None:
         raise NotImplementedError

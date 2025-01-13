@@ -1,6 +1,8 @@
+from asyncio import Future
+
 import pytest
-from doublex import Spy
-from doublex_expects import have_been_called_with
+from doublex import Mock, expect_call
+from doublex_expects import have_been_satisfied
 from expects import expect
 
 from src.contexts.social.user.application.register.register_user_command import (
@@ -13,8 +15,15 @@ from src.contexts.social.user.domain.user_repository import UserRepository
 
 @pytest.mark.unit
 class TestUserRegistrar:
-    def test_should_register_a_valid_user(self) -> None:
-        repository = Spy(UserRepository)
+    @staticmethod
+    def _immediate_future(result=None) -> Future:
+        future: Future = Future()
+        future.set_result(result)
+        return future
+
+    @pytest.mark.asyncio
+    async def test_should_register_a_valid_user(self) -> None:
+        repository = Mock(UserRepository)
         user_registrar = UserRegistrar(repository=repository)
         user = User(
             id_="897585f-4d7a-42ba-8d82-ab8da94d2c4a",
@@ -23,6 +32,7 @@ class TestUserRegistrar:
             email="johndoe@gmail.com",
             profile_picture="https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
         )
+        expect_call(repository).save(user).returns(self._immediate_future())
         command = RegisterUserCommand(
             id=user._id,
             name=user._name,
@@ -31,6 +41,6 @@ class TestUserRegistrar:
             profile_picture=user._profile_picture,
         )
 
-        user_registrar(command)
+        await user_registrar(command)
 
-        expect(repository.save).to(have_been_called_with(user))
+        expect(repository).to(have_been_satisfied)

@@ -11,9 +11,9 @@ class InMemoryUserRepository(UserRepository):
         self._users = {}
 
     @override
-    def save(self, user: User) -> None:
+    async def save(self, user: User) -> None:
         self._users[user.id] = user
 
     @override
-    def search(self, user_id: str) -> User | None:
+    async def search(self, user_id: str) -> User | None:
         return self._users.get(user_id)

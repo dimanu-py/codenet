@@ -11,7 +11,7 @@ class UserRegistrar:
     def __init__(self, repository: UserRepository) -> None:
         self._repository = repository
 
-    def __call__(self, command: RegisterUserCommand) -> None:
+    async def __call__(self, command: RegisterUserCommand) -> None:
         user = User.create(
             id_=command.id,
             name=command.name,
@@ -20,4 +20,4 @@ class UserRegistrar:
             profile_picture=command.profile_picture,
         )
 
-        self._repository.save(user)
+        await self._repository.save(user)

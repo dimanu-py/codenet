@@ -25,6 +25,6 @@ async def register_user(id_: str, request: RegisterUserRequest) -> JSONResponse:
     repository = InMemoryUserRepository()
     user_registerer = UserRegistrar(repository=repository)
 
-    user_registerer(command)
+    await user_registerer(command)
 
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={})

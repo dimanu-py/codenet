@@ -9,7 +9,8 @@ from src.contexts.social.user.infra.persistence.in_memory_user_repository import
 
 @pytest.mark.integration
 class TestInMemoryUserRepository:
-    def test_should_save_valid_user(self) -> None:
+    @pytest.mark.asyncio
+    async def test_should_save_valid_user(self) -> None:
         repository = InMemoryUserRepository()
         user = User(
             id_="1f322ec7-a36c-44e2-b339-71b966f95a99",
@@ -19,7 +20,7 @@ class TestInMemoryUserRepository:
             profile_picture="https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
         )
 
-        repository.save(user)
+        await repository.save(user)
 
-        saved_user = repository.search(user.id)
+        saved_user = await repository.search(user.id)
         expect(saved_user).to(equal(user))
