@@ -9,7 +9,7 @@ class InMemoryUserRepository(UserRepository):
 
     @override
     async def save(self, user: User) -> None:
-        self._users[user.id] = user
+        self._users[user.id.value] = user
 
     @override
     async def search(self, user_id: str) -> User | None:

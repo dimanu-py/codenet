@@ -35,3 +35,13 @@ class raise_error:
                 False,
                 [f"Expected {self._exception_type.__name__}, but no error was raised"],
             )
+
+    def _failure_message(self, subject, reasons):
+        message = "\nexpected: {subject!r} to {matcher!r}".format(
+            subject=subject, matcher=self
+        )
+
+        if reasons:
+            message += "\n     but: {0}".format("\n          ".join(reasons))
+
+        return message
