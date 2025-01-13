@@ -4,6 +4,9 @@ from src.contexts.shared.domain.exceptions.required_value_error import (
     RequiredValueError,
 )
 from src.contexts.shared.domain.value_objects.value_object import ValueObject
+from src.contexts.shared.domain.exceptions.invalid_id_format_error import (
+    InvalidIdFormatError,
+)
 
 
 class Uuid(ValueObject[str]):
@@ -13,4 +16,7 @@ class Uuid(ValueObject[str]):
     def _validate(self, value: str) -> None:
         if value is None:
             raise RequiredValueError
-        UUID(value)
+        try:
+            UUID(value)
+        except ValueError:
+            raise InvalidIdFormatError
