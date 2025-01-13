@@ -50,17 +50,25 @@ class TestUserRegistrar:
 
         expect(repository).to(have_been_satisfied)
 
+    @pytest.mark.parametrize(
+        "updates, expected_error",
+        [({"id": "12345"}, InvalidIdFormatError)],
+    )
     @pytest.mark.asyncio
-    async def test_should_not_allow_to_store_an_invalid_user(self) -> None:
+    async def test_should_not_allow_to_store_an_invalid_user(
+        self, updates: dict, expected_error: Exception
+    ) -> None:
+        primitives = {
+            "id": "12345",
+            "name": "John Doe",
+            "username": "john_doe",
+            "email": "johndoe@gmail.com",
+            "profile_picture": "https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
+            **updates,
+        }
         repository = Mock(UserRepository)
         user_registrar = UserRegistrar(repository=repository)
-        command = RegisterUserCommand(
-            id="12345",
-            name="John Doe",
-            username="john_doe",
-            email="johndoe@gmail.com",
-            profile_picture="https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
-        )
+        command = RegisterUserCommand(**primitives)
 
         await async_expect(lambda: user_registrar(command)).to(
             raise_error(InvalidIdFormatError)
