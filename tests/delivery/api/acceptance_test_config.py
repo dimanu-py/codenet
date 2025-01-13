@@ -16,6 +16,9 @@ class AcceptanceTestConfig:
     ) -> JSONResponse:
         return await self._client.put(endpoint, json=request_body)  # type: ignore
 
+    async def when_a_delete_request_is_made_to(self, endpoint: str) -> JSONResponse:
+        return await self._client.delete(endpoint)  # type: ignore
+
     def then_response_should_satisfy(
         self, expected_status_code: int, expected_body: dict, response: JSONResponse
     ) -> None:

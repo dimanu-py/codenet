@@ -5,6 +5,9 @@ from src.contexts.social.user.application.register.register_user_command import 
     RegisterUserCommand,
 )
 from src.contexts.social.user.application.register.user_registrar import UserRegistrar
+from src.contexts.social.user.application.unregister.user_unregistrar import (
+    UserUnregistrar,
+)
 from src.contexts.social.user.infra.persistence.in_memory_user_repository import (
     InMemoryUserRepository,
 )
@@ -23,8 +26,18 @@ async def register_user(id_: str, request: RegisterUserRequest) -> JSONResponse:
         profile_picture=request.profile_picture,
     )
     repository = InMemoryUserRepository()
-    user_registerer = UserRegistrar(repository=repository)
+    user_registrar = UserRegistrar(repository=repository)
 
-    await user_registerer(command)
+    await user_registrar(command)
 
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={})
+
+
+@router.delete("/{id_}")
+async def unregister_user(id_: str) -> JSONResponse:
+    repository = InMemoryUserRepository()
+    user_unregistrar = UserUnregistrar(repository=repository)
+
+    await user_unregistrar(id_)
+
+    return JSONResponse(status_code=status.HTTP_204_NO_CONTENT, content={})
