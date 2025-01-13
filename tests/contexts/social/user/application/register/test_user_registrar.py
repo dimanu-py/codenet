@@ -12,7 +12,11 @@ from src.contexts.social.user.application.register.user_registrar import UserReg
 from src.contexts.shared.domain.exceptions.invalid_id_format_error import (
     InvalidIdFormatError,
 )
+from src.contexts.social.user.domain.invalid_name_format_error import (
+    InvalidNameFormatError,
+)
 from src.contexts.social.user.domain.user import User
+from src.contexts.social.user.domain.user_full_name import UserFullName
 from src.contexts.social.user.domain.user_id import UserId
 from src.contexts.social.user.domain.user_repository import UserRepository
 from tests.contexts.shared.expects.matchers import async_expect, raise_error
@@ -32,7 +36,7 @@ class TestUserRegistrar:
         user_registrar = UserRegistrar(repository=repository)
         user = User(
             id_=UserId("8a97585f-4d7a-42ba-8d82-ab8da94d2c4a"),
-            name="John Doe",
+            name=UserFullName("John Doe"),
             username="john_doe",
             email="johndoe@gmail.com",
             profile_picture="https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
@@ -40,7 +44,7 @@ class TestUserRegistrar:
         expect_call(repository).save(user).returns(self._immediate_future())
         command = RegisterUserCommand(
             id=user._id.value,
-            name=user._name,
+            name=user._name.value,
             username=user._username,
             email=user._email,
             profile_picture=user._profile_picture,
@@ -52,14 +56,17 @@ class TestUserRegistrar:
 
     @pytest.mark.parametrize(
         "updates, expected_error",
-        [({"id": "12345"}, InvalidIdFormatError)],
+        [
+            ({"id": "12345"}, InvalidIdFormatError),
+            ({"name": "John!"}, InvalidNameFormatError),
+        ],
     )
     @pytest.mark.asyncio
     async def test_should_not_allow_to_store_an_invalid_user(
         self, updates: dict, expected_error: Exception
     ) -> None:
         primitives = {
-            "id": "12345",
+            "id": "8a97585f-4d7a-42ba-8d82-ab8da94d2c4a",
             "name": "John Doe",
             "username": "john_doe",
             "email": "johndoe@gmail.com",
@@ -71,5 +78,5 @@ class TestUserRegistrar:
         command = RegisterUserCommand(**primitives)
 
         await async_expect(lambda: user_registrar(command)).to(
-            raise_error(InvalidIdFormatError)
+            raise_error(expected_error)
         )

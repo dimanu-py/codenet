@@ -1,17 +1,23 @@
 from typing import override
 
+from src.contexts.social.user.domain.user_full_name import UserFullName
 from src.contexts.social.user.domain.user_id import UserId
 
 
 class User:
     _id: UserId
-    _name: str
+    _name: UserFullName
     _username: str
     _email: str
     _profile_picture: str
 
     def __init__(
-        self, id_: UserId, name: str, username: str, email: str, profile_picture: str
+        self,
+        id_: UserId,
+        name: UserFullName,
+        username: str,
+        email: str,
+        profile_picture: str,
     ) -> None:
         self._id = id_
         self._name = name
@@ -25,7 +31,7 @@ class User:
     ) -> "User":
         return User(
             id_=UserId(id_),
-            name=name,
+            name=UserFullName(name),
             username=username,
             email=email,
             profile_picture=profile_picture,
