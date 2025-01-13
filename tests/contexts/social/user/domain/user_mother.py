@@ -3,9 +3,9 @@ from src.contexts.social.user.application.register.register_user_command import 
 )
 from src.contexts.social.user.domain.user import User
 from tests.contexts.social.user.domain.user_email_mother import UserEmailMother
-from tests.contexts.social.user.domain.user_full_name_mother import UserFullNameMother
-from tests.contexts.social.user.domain.user_id_mother import UserIdMother
 from tests.contexts.social.user.domain.user_name_mother import UserNameMother
+from tests.contexts.social.user.domain.user_id_mother import UserIdMother
+from tests.contexts.social.user.domain.user_username_mother import UserUsernameMother
 from tests.contexts.social.user.domain.user_profile_picture_mother import (
     UserProfilePictureMother,
 )
@@ -26,8 +26,8 @@ class UserMother:
     def create(cls) -> User:
         return User(
             id_=UserIdMother.create(),
-            name=UserFullNameMother.create(),
-            username=UserNameMother.create(),
+            name=UserNameMother.create(),
+            username=UserUsernameMother.create(),
             email=UserEmailMother.create(),
             profile_picture=UserProfilePictureMother.create(),
         )

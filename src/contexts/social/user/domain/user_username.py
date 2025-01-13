@@ -3,13 +3,13 @@ import re
 from src.contexts.shared.domain.value_objects.string_value_object import (
     StringValueObject,
 )
-from src.contexts.social.user.domain.invalid_name_format_error import (
-    InvalidNameFormatError,
+from src.contexts.social.user.domain.invalid_username_format_error import (
+    InvalidUsernameFormatError,
 )
 
 
-class UserFullName(StringValueObject):
-    CORRECT_CHARACTERS = r"^[a-zA-Z áéíóúÁÉÍÓÚñÑüÜ'\s]+$"
+class UserUsername(StringValueObject):
+    CORRECT_CHARACTERS = r"^[a-zA-Z0-9_]+$"
 
     def _validate(self, value: str) -> None:
         super()._validate(value)
@@ -17,4 +17,4 @@ class UserFullName(StringValueObject):
 
     def _ensure_name_has_valid_characters(self, value: str) -> None:
         if re.match(self.CORRECT_CHARACTERS, value) is None:
-            raise InvalidNameFormatError
+            raise InvalidUsernameFormatError
