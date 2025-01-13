@@ -12,6 +12,9 @@ from src.contexts.social.user.application.register.user_registrar import UserReg
 from src.contexts.shared.domain.exceptions.invalid_id_format_error import (
     InvalidIdFormatError,
 )
+from src.contexts.social.user.domain.invalid_email_format_error import (
+    InvalidEmailFormatError,
+)
 from src.contexts.social.user.domain.invalid_name_format_error import (
     InvalidNameFormatError,
 )
@@ -19,6 +22,7 @@ from src.contexts.social.user.domain.invalid_username_format_error import (
     InvalidUsernameFormatError,
 )
 from src.contexts.social.user.domain.user import User
+from src.contexts.social.user.domain.user_email import UserEmail
 from src.contexts.social.user.domain.user_full_name import UserFullName
 from src.contexts.social.user.domain.user_id import UserId
 from src.contexts.social.user.domain.user_name import UserName
@@ -42,7 +46,7 @@ class TestUserRegistrar:
             id_=UserId("8a97585f-4d7a-42ba-8d82-ab8da94d2c4a"),
             name=UserFullName("John Doe"),
             username=UserName("john_doe"),
-            email="johndoe@gmail.com",
+            email=UserEmail("johndoe@gmail.com"),
             profile_picture="https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
         )
         expect_call(repository).save(user).returns(self._immediate_future())
@@ -50,7 +54,7 @@ class TestUserRegistrar:
             id=user._id.value,
             name=user._name.value,
             username=user._username.value,
-            email=user._email,
+            email=user._email.value,
             profile_picture=user._profile_picture,
         )
 
@@ -64,6 +68,7 @@ class TestUserRegistrar:
             ({"id": "12345"}, InvalidIdFormatError),
             ({"name": "John!"}, InvalidNameFormatError),
             ({"username": "@john#doe"}, InvalidUsernameFormatError),
+            ({"email": "johndoe.com"}, InvalidEmailFormatError),
         ],
     )
     @pytest.mark.asyncio

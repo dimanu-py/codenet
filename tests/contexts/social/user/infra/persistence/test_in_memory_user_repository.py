@@ -2,6 +2,7 @@ import pytest
 from expects import expect, equal
 
 from src.contexts.social.user.domain.user import User
+from src.contexts.social.user.domain.user_email import UserEmail
 from src.contexts.social.user.domain.user_full_name import UserFullName
 from src.contexts.social.user.domain.user_id import UserId
 from src.contexts.social.user.domain.user_name import UserName
@@ -19,7 +20,7 @@ class TestInMemoryUserRepository:
             id_=UserId("1f322ec7-a36c-44e2-b339-71b966f95a99"),
             name=UserFullName("John Doe"),
             username=UserName("john_doe"),
-            email="johndoe@gmail.com",
+            email=UserEmail("johndoe@gmail.com"),
             profile_picture="https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
         )
 
@@ -35,7 +36,7 @@ class TestInMemoryUserRepository:
             id_=UserId("1f322ec7-a36c-44e2-b339-71b966f95a99"),
             name=UserFullName("John Doe"),
             username=UserName("john_doe"),
-            email="johndoe@gmail.com",
+            email=UserEmail("johndoe@gmail.com"),
             profile_picture="https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
         )
         await repository.save(user)

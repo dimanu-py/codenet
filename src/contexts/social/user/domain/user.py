@@ -1,5 +1,6 @@
 from typing import override
 
+from src.contexts.social.user.domain.user_email import UserEmail
 from src.contexts.social.user.domain.user_full_name import UserFullName
 from src.contexts.social.user.domain.user_id import UserId
 from src.contexts.social.user.domain.user_name import UserName
@@ -9,7 +10,7 @@ class User:
     _id: UserId
     _name: UserFullName
     _username: UserName
-    _email: str
+    _email: UserEmail
     _profile_picture: str
 
     def __init__(
@@ -17,7 +18,7 @@ class User:
         id_: UserId,
         name: UserFullName,
         username: UserName,
-        email: str,
+        email: UserEmail,
         profile_picture: str,
     ) -> None:
         self._id = id_
@@ -34,7 +35,7 @@ class User:
             id_=UserId(id_),
             name=UserFullName(name),
             username=UserName(username),
-            email=email,
+            email=UserEmail(email),
             profile_picture=profile_picture,
         )
 
