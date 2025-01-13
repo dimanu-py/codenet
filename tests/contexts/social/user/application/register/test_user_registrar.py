@@ -9,8 +9,13 @@ from src.contexts.social.user.application.register.register_user_command import 
     RegisterUserCommand,
 )
 from src.contexts.social.user.application.register.user_registrar import UserRegistrar
+from src.contexts.shared.domain.exceptions.invalid_id_format_error import (
+    InvalidIdFormatError,
+)
 from src.contexts.social.user.domain.user import User
+from src.contexts.social.user.domain.user_id import UserId
 from src.contexts.social.user.domain.user_repository import UserRepository
+from tests.contexts.shared.expects.matchers import async_expect, raise_error
 
 
 @pytest.mark.unit
@@ -26,7 +31,7 @@ class TestUserRegistrar:
         repository = Mock(UserRepository)
         user_registrar = UserRegistrar(repository=repository)
         user = User(
-            id_="897585f-4d7a-42ba-8d82-ab8da94d2c4a",
+            id_=UserId("8a97585f-4d7a-42ba-8d82-ab8da94d2c4a"),
             name="John Doe",
             username="john_doe",
             email="johndoe@gmail.com",
@@ -34,7 +39,7 @@ class TestUserRegistrar:
         )
         expect_call(repository).save(user).returns(self._immediate_future())
         command = RegisterUserCommand(
-            id=user._id,
+            id=user._id.value,
             name=user._name,
             username=user._username,
             email=user._email,
@@ -44,3 +49,19 @@ class TestUserRegistrar:
         await user_registrar(command)
 
         expect(repository).to(have_been_satisfied)
+
+    @pytest.mark.asyncio
+    async def test_should_not_allow_to_store_an_invalid_user(self) -> None:
+        repository = Mock(UserRepository)
+        user_registrar = UserRegistrar(repository=repository)
+        command = RegisterUserCommand(
+            id="12345",
+            name="John Doe",
+            username="john_doe",
+            email="johndoe@gmail.com",
+            profile_picture="https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
+        )
+
+        await async_expect(lambda: user_registrar(command)).to(
+            raise_error(InvalidIdFormatError)
+        )
