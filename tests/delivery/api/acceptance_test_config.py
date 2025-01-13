@@ -1,3 +1,4 @@
+import pytest
 from expects import expect, equal
 from fastapi.responses import JSONResponse
 from httpx import AsyncClient, ASGITransport
@@ -5,6 +6,7 @@ from httpx import AsyncClient, ASGITransport
 from src.delivery.api.main import app
 
 
+@pytest.mark.acceptance
 class AcceptanceTestConfig:
     def setup_method(self) -> None:
         self._client = AsyncClient(
