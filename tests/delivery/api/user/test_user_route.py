@@ -1,19 +1,10 @@
 import pytest
-from expects import expect, equal
-from fastapi.responses import JSONResponse
-from httpx import AsyncClient, ASGITransport
 
-from src.delivery.api.main import app
+from tests.delivery.api.acceptance_test_config import AcceptanceTestConfig
 
 
-@pytest.mark.acceptance
-class TestUserRoute:
+class TestUserRoute(AcceptanceTestConfig):
     NO_BODY: dict = {}
-
-    def setup_method(self) -> None:
-        self._client = AsyncClient(
-            transport=ASGITransport(app), base_url="http://codenet.test"
-        )
 
     @pytest.mark.asyncio
     async def test_should_register_a_valid_user(self) -> None:
@@ -30,14 +21,3 @@ class TestUserRoute:
         )
 
         self.then_response_should_satisfy(201, self.NO_BODY, response)
-
-    async def when_a_put_request_is_made_to(
-        self, endpoint: str, request_body: dict
-    ) -> JSONResponse:
-        return await self._client.put(endpoint, json=request_body)  # type: ignore
-
-    def then_response_should_satisfy(
-        self, expected_status_code: int, expected_body: dict, response: JSONResponse
-    ) -> None:
-        expect(response.status_code).to(equal(expected_status_code))
-        expect(response.json()).to(equal(expected_body))
