@@ -9,7 +9,7 @@ from src.contexts.social.user.domain.invalid_username_format_error import (
 
 
 class UserUsername(StringValueObject):
-    CORRECT_CHARACTERS = r"^[a-zA-Z0-9_]+$"
+    CORRECT_CHARACTERS = r"^[a-zA-Z0-9_.]+$"
 
     def _validate(self, value: str) -> None:
         super()._validate(value)
