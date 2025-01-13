@@ -18,6 +18,9 @@ from src.contexts.social.user.domain.invalid_email_format_error import (
 from src.contexts.social.user.domain.invalid_name_format_error import (
     InvalidNameFormatError,
 )
+from src.contexts.social.user.domain.invalid_url_format_error import (
+    InvalidUrlFormatError,
+)
 from src.contexts.social.user.domain.invalid_username_format_error import (
     InvalidUsernameFormatError,
 )
@@ -26,6 +29,7 @@ from src.contexts.social.user.domain.user_email import UserEmail
 from src.contexts.social.user.domain.user_full_name import UserFullName
 from src.contexts.social.user.domain.user_id import UserId
 from src.contexts.social.user.domain.user_name import UserName
+from src.contexts.social.user.domain.user_profile_picture import UserProfilePicture
 from src.contexts.social.user.domain.user_repository import UserRepository
 from tests.contexts.shared.expects.matchers import async_expect, raise_error
 
@@ -47,7 +51,9 @@ class TestUserRegistrar:
             name=UserFullName("John Doe"),
             username=UserName("john_doe"),
             email=UserEmail("johndoe@gmail.com"),
-            profile_picture="https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
+            profile_picture=UserProfilePicture(
+                "https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg"
+            ),
         )
         expect_call(repository).save(user).returns(self._immediate_future())
         command = RegisterUserCommand(
@@ -55,7 +61,7 @@ class TestUserRegistrar:
             name=user._name.value,
             username=user._username.value,
             email=user._email.value,
-            profile_picture=user._profile_picture,
+            profile_picture=user._profile_picture.value,
         )
 
         await user_registrar(command)
@@ -69,6 +75,7 @@ class TestUserRegistrar:
             ({"name": "John!"}, InvalidNameFormatError),
             ({"username": "@john#doe"}, InvalidUsernameFormatError),
             ({"email": "johndoe.com"}, InvalidEmailFormatError),
+            ({"profile_picture": "picture.jpg"}, InvalidUrlFormatError),
         ],
     )
     @pytest.mark.asyncio

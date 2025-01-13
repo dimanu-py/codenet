@@ -6,6 +6,7 @@ from src.contexts.social.user.domain.user_email import UserEmail
 from src.contexts.social.user.domain.user_full_name import UserFullName
 from src.contexts.social.user.domain.user_id import UserId
 from src.contexts.social.user.domain.user_name import UserName
+from src.contexts.social.user.domain.user_profile_picture import UserProfilePicture
 from src.contexts.social.user.infra.persistence.in_memory_user_repository import (
     InMemoryUserRepository,
 )
@@ -21,7 +22,9 @@ class TestInMemoryUserRepository:
             name=UserFullName("John Doe"),
             username=UserName("john_doe"),
             email=UserEmail("johndoe@gmail.com"),
-            profile_picture="https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
+            profile_picture=UserProfilePicture(
+                "https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg"
+            ),
         )
 
         await repository.save(user)
@@ -37,7 +40,9 @@ class TestInMemoryUserRepository:
             name=UserFullName("John Doe"),
             username=UserName("john_doe"),
             email=UserEmail("johndoe@gmail.com"),
-            profile_picture="https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
+            profile_picture=UserProfilePicture(
+                "https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg"
+            ),
         )
         await repository.save(user)
 

@@ -4,6 +4,7 @@ from src.contexts.social.user.domain.user_email import UserEmail
 from src.contexts.social.user.domain.user_full_name import UserFullName
 from src.contexts.social.user.domain.user_id import UserId
 from src.contexts.social.user.domain.user_name import UserName
+from src.contexts.social.user.domain.user_profile_picture import UserProfilePicture
 
 
 class User:
@@ -11,7 +12,7 @@ class User:
     _name: UserFullName
     _username: UserName
     _email: UserEmail
-    _profile_picture: str
+    _profile_picture: UserProfilePicture
 
     def __init__(
         self,
@@ -19,7 +20,7 @@ class User:
         name: UserFullName,
         username: UserName,
         email: UserEmail,
-        profile_picture: str,
+        profile_picture: UserProfilePicture,
     ) -> None:
         self._id = id_
         self._name = name
@@ -36,7 +37,7 @@ class User:
             name=UserFullName(name),
             username=UserName(username),
             email=UserEmail(email),
-            profile_picture=profile_picture,
+            profile_picture=UserProfilePicture(profile_picture),
         )
 
     @property
