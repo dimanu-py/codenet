@@ -5,10 +5,7 @@ from src.contexts.social.user.domain.user_repository import UserRepository
 
 
 class InMemoryUserRepository(UserRepository):
-    _users: dict[str, User]
-
-    def __init__(self) -> None:
-        self._users = {}
+    _users: dict[str, User] = {}
 
     @override
     async def save(self, user: User) -> None:
