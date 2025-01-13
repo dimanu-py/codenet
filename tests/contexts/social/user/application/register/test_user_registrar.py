@@ -1,9 +1,4 @@
-from asyncio import Future
-
 import pytest
-from doublex import Mock, expect_call
-from doublex_expects import have_been_satisfied
-from expects import expect
 
 from src.contexts.shared.domain.exceptions.invalid_id_format_error import (
     InvalidIdFormatError,
@@ -21,33 +16,29 @@ from src.contexts.social.user.domain.invalid_url_format_error import (
 from src.contexts.social.user.domain.invalid_username_format_error import (
     InvalidUsernameFormatError,
 )
-from src.contexts.social.user.domain.user_repository import UserRepository
 from tests.contexts.shared.expects.matchers import async_expect, raise_error
 from tests.contexts.social.user.application.register.register_user_command_mother import (
     RegisterUserCommandMother,
 )
 from tests.contexts.social.user.domain.user_mother import UserMother
+from tests.contexts.social.user.user_module_unit_test_config import (
+    UserModuleUnitTestConfig,
+)
 
 
-@pytest.mark.unit
-class TestUserRegistrar:
-    @staticmethod
-    def _immediate_future(result=None) -> Future:
-        future: Future = Future()
-        future.set_result(result)
-        return future
+@pytest.mark.asyncio
+class TestUserRegistrar(UserModuleUnitTestConfig):
+    def setup_method(self) -> None:
+        self._user_registrar = UserRegistrar(repository=self._repository)
 
-    @pytest.mark.asyncio
     async def test_should_register_a_valid_user(self) -> None:
         command = RegisterUserCommandMother.create()
         user = UserMother.from_command(command)
-        repository = Mock(UserRepository)
-        user_registrar = UserRegistrar(repository=repository)
-        expect_call(repository).save(user).returns(self._immediate_future())
+        self.should_save_user(user)
 
-        await user_registrar(command)
+        await self._user_registrar(command)
 
-        expect(repository).to(have_been_satisfied)
+        self.assert_has_satisfied_conditions()
 
     @pytest.mark.parametrize(
         "invalid_field, expected_error",
@@ -59,14 +50,11 @@ class TestUserRegistrar:
             ({"profile_picture": "picture.jpg"}, InvalidUrlFormatError),
         ],
     )
-    @pytest.mark.asyncio
     async def test_should_not_allow_to_store_an_invalid_user(
         self, invalid_field: dict, expected_error: Exception
     ) -> None:
-        repository = Mock(UserRepository)
-        user_registrar = UserRegistrar(repository=repository)
         command = RegisterUserCommandMother.create(invalid_field)
 
-        await async_expect(lambda: user_registrar(command)).to(
+        await async_expect(lambda: self._user_registrar(command)).to(
             raise_error(expected_error)
         )
