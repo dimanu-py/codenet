@@ -1,10 +1,10 @@
 import pytest
 from expects import expect, equal
 
-from src.contexts.social.user.domain.user import User
 from src.contexts.social.user.infra.persistence.in_memory_user_repository import (
     InMemoryUserRepository,
 )
+from tests.contexts.social.user.domain.user_mother import UserMother
 
 
 @pytest.mark.integration
@@ -12,13 +12,7 @@ class TestInMemoryUserRepository:
     @pytest.mark.asyncio
     async def test_should_save_valid_user(self) -> None:
         repository = InMemoryUserRepository()
-        user = User(
-            id_="1f322ec7-a36c-44e2-b339-71b966f95a99",
-            name="John Doe",
-            username="john_doe",
-            email="johndoe@gmail.com",
-            profile_picture="https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
-        )
+        user = UserMother.create()
 
         await repository.save(user)
 
@@ -28,13 +22,7 @@ class TestInMemoryUserRepository:
     @pytest.mark.asyncio
     async def test_should_delete_valid_user(self) -> None:
         repository = InMemoryUserRepository()
-        user = User(
-            id_="1f322ec7-a36c-44e2-b339-71b966f95a99",
-            name="John Doe",
-            username="john_doe",
-            email="johndoe@gmail.com",
-            profile_picture="https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
-        )
+        user = UserMother.create()
         await repository.save(user)
 
         await repository.delete(user.id)

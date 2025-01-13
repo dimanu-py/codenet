@@ -1,5 +1,12 @@
 import pytest
 
+from tests.contexts.social.user.domain.user_email_mother import UserEmailMother
+from tests.contexts.social.user.domain.user_id_mother import UserIdMother
+from tests.contexts.social.user.domain.user_name_mother import UserNameMother
+from tests.contexts.social.user.domain.user_profile_picture_mother import (
+    UserProfilePictureMother,
+)
+from tests.contexts.social.user.domain.user_username_mother import UserUsernameMother
 from tests.delivery.api.acceptance_test_config import AcceptanceTestConfig
 
 
@@ -9,12 +16,12 @@ class TestUserRoute(AcceptanceTestConfig):
     @pytest.mark.asyncio
     async def test_should_register_a_valid_user(self) -> None:
         request_body = {
-            "name": "Dimanu",
-            "username": "dimanu",
-            "email": "dimanu@py.com",
-            "profile_picture": "https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
+            "name": UserNameMother.create().value,
+            "username": UserUsernameMother.create().value,
+            "email": UserEmailMother.create().value,
+            "profile_picture": UserProfilePictureMother.create().value,
         }
-        user_id = "2827970-f484-48a2-abd2-aa8f205b295a"
+        user_id = UserIdMother.create().value
 
         response = await self.when_a_put_request_is_made_to(
             f"/users/{user_id}", request_body
@@ -25,12 +32,12 @@ class TestUserRoute(AcceptanceTestConfig):
     @pytest.mark.asyncio
     async def test_should_unregister_an_existing_user(self) -> None:
         user_request = {
-            "name": "Dimanu",
-            "username": "dimanu",
-            "email": "dimanu@py.com",
-            "profile_picture": "https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
+            "name": UserNameMother.create().value,
+            "username": UserUsernameMother.create().value,
+            "email": UserEmailMother.create().value,
+            "profile_picture": UserProfilePictureMother.create().value,
         }
-        user_id = "2827970-f484-48a2-abd2-aa8f205b295a"
+        user_id = UserIdMother.create().value
         await self.given_a_user_is_registered(user_id, user_request)
 
         response = await self.when_a_delete_request_is_made_to(f"/users/{user_id}")
