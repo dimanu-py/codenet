@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 from src.contexts.social.user.domain.user import User
+from src.contexts.social.user.domain.user_id import UserId
 
 
 class UserRepository(ABC):
@@ -9,9 +10,9 @@ class UserRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def search(self, user_id: str) -> User | None:
+    async def search(self, user_id: UserId) -> User | None:
         raise NotImplementedError
 
     @abstractmethod
-    async def delete(self, user_id: str) -> None:
+    async def delete(self, user_id: UserId) -> None:
         raise NotImplementedError

@@ -16,7 +16,7 @@ class TestInMemoryUserRepository:
 
         await repository.save(user)
 
-        saved_user = await repository.search(user.id.value)
+        saved_user = await repository.search(user.id)
         expect(saved_user).to(equal(user))
 
     @pytest.mark.asyncio
@@ -25,7 +25,7 @@ class TestInMemoryUserRepository:
         user = UserMother.create()
         await repository.save(user)
 
-        await repository.delete(user.id.value)
+        await repository.delete(user.id)
 
-        saved_user = await repository.search(user.id.value)
+        saved_user = await repository.search(user.id)
         expect(saved_user).to(equal(None))
