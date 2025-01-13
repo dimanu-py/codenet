@@ -1,19 +1,10 @@
 import pytest
-from expects import expect, equal
-from fastapi.responses import JSONResponse
-from httpx import AsyncClient, ASGITransport
 
-from src.delivery.api.main import app
+from tests.delivery.api.acceptance_test_config import AcceptanceTestConfig
 
 
-@pytest.mark.acceptance
-class TestUserRoute:
+class TestUserRoute(AcceptanceTestConfig):
     NO_BODY: dict = {}
-
-    def setup_method(self) -> None:
-        self._client = AsyncClient(
-            transport=ASGITransport(app), base_url="http://codenet.test"
-        )
 
     @pytest.mark.asyncio
     async def test_should_register_a_valid_user(self) -> None:
@@ -31,13 +22,22 @@ class TestUserRoute:
 
         self.then_response_should_satisfy(201, self.NO_BODY, response)
 
-    async def when_a_put_request_is_made_to(
-        self, endpoint: str, request_body: dict
-    ) -> JSONResponse:
-        return await self._client.put(endpoint, json=request_body)  # type: ignore
+    @pytest.mark.asyncio
+    async def test_should_unregister_an_existing_user(self) -> None:
+        user_request = {
+            "name": "Dimanu",
+            "username": "dimanu",
+            "email": "dimanu@py.com",
+            "profile_picture": "https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
+        }
+        user_id = "2827970-f484-48a2-abd2-aa8f205b295a"
+        await self.given_a_user_is_registered(user_id, user_request)
 
-    def then_response_should_satisfy(
-        self, expected_status_code: int, expected_body: dict, response: JSONResponse
+        response = await self.when_a_delete_request_is_made_to(f"/users/{user_id}")
+
+        self.then_response_should_satisfy(204, self.NO_BODY, response)
+
+    async def given_a_user_is_registered(
+        self, user_id: str, user_request: dict
     ) -> None:
-        expect(response.status_code).to(equal(expected_status_code))
-        expect(response.json()).to(equal(expected_body))
+        await self.when_a_put_request_is_made_to(f"/users/{user_id}", user_request)
