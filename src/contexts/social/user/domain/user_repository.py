@@ -11,3 +11,7 @@ class UserRepository(ABC):
     @abstractmethod
     async def search(self, user_id: str) -> User | None:
         raise NotImplementedError
+
+    @abstractmethod
+    async def delete(self, user_id: str) -> None:
+        raise NotImplementedError

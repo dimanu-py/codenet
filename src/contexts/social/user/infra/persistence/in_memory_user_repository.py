@@ -17,3 +17,7 @@ class InMemoryUserRepository(UserRepository):
     @override
     async def search(self, user_id: str) -> User | None:
         return self._users.get(user_id)
+
+    @override
+    async def delete(self, user_id: str) -> None:
+        raise NotImplementedError
