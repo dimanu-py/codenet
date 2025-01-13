@@ -2,12 +2,13 @@ from typing import override
 
 from src.contexts.social.user.domain.user_full_name import UserFullName
 from src.contexts.social.user.domain.user_id import UserId
+from src.contexts.social.user.domain.user_name import UserName
 
 
 class User:
     _id: UserId
     _name: UserFullName
-    _username: str
+    _username: UserName
     _email: str
     _profile_picture: str
 
@@ -15,7 +16,7 @@ class User:
         self,
         id_: UserId,
         name: UserFullName,
-        username: str,
+        username: UserName,
         email: str,
         profile_picture: str,
     ) -> None:
@@ -32,7 +33,7 @@ class User:
         return User(
             id_=UserId(id_),
             name=UserFullName(name),
-            username=username,
+            username=UserName(username),
             email=email,
             profile_picture=profile_picture,
         )

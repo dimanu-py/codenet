@@ -15,9 +15,13 @@ from src.contexts.shared.domain.exceptions.invalid_id_format_error import (
 from src.contexts.social.user.domain.invalid_name_format_error import (
     InvalidNameFormatError,
 )
+from src.contexts.social.user.domain.invalid_username_format_error import (
+    InvalidUsernameFormatError,
+)
 from src.contexts.social.user.domain.user import User
 from src.contexts.social.user.domain.user_full_name import UserFullName
 from src.contexts.social.user.domain.user_id import UserId
+from src.contexts.social.user.domain.user_name import UserName
 from src.contexts.social.user.domain.user_repository import UserRepository
 from tests.contexts.shared.expects.matchers import async_expect, raise_error
 
@@ -37,7 +41,7 @@ class TestUserRegistrar:
         user = User(
             id_=UserId("8a97585f-4d7a-42ba-8d82-ab8da94d2c4a"),
             name=UserFullName("John Doe"),
-            username="john_doe",
+            username=UserName("john_doe"),
             email="johndoe@gmail.com",
             profile_picture="https://my-bucket.s3.us-east-1.amazonaws.com/images/picture.jpg",
         )
@@ -45,7 +49,7 @@ class TestUserRegistrar:
         command = RegisterUserCommand(
             id=user._id.value,
             name=user._name.value,
-            username=user._username,
+            username=user._username.value,
             email=user._email,
             profile_picture=user._profile_picture,
         )
@@ -59,6 +63,7 @@ class TestUserRegistrar:
         [
             ({"id": "12345"}, InvalidIdFormatError),
             ({"name": "John!"}, InvalidNameFormatError),
+            ({"username": "@john#doe"}, InvalidUsernameFormatError),
         ],
     )
     @pytest.mark.asyncio
