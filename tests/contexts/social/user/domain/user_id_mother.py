@@ -1,7 +1,8 @@
 from src.contexts.social.user.domain.user_id import UserId
+from tests.contexts.shared.domain.random_generator import RandomGenerator
 
 
 class UserIdMother:
     @classmethod
     def create(cls) -> UserId:
-        return UserId("1f322ec7-a36c-44e2-b339-71b966f95a99")
+        return UserId(RandomGenerator.uuid())
