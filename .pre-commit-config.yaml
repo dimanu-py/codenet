@@ -1,0 +1,22 @@
+repos:
+- hooks:
+  - id: check-added-large-files
+  - id: check-ast
+  - id: check-case-conflict
+  - id: check-merge-conflict
+  repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v5.0.0
+- hooks:
+  - entry: make check-typing
+    id: type-check
+    language: system
+    name: check typing
+  - entry: make lint
+    id: lint
+    language: system
+    name: check for lint
+  - entry: make format
+    id: format
+    language: system
+    name: check for code format
+  repo: local
