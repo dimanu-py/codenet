@@ -105,4 +105,4 @@ search:  ## Show package details.
 
 .PHONY: commit
 commit: ## Commit changes with commitizen.
-	@cz --name cz_gitmoji commit
+	@cz commit
