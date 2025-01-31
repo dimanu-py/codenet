@@ -8,7 +8,6 @@ from tests.social.user.infra.persistence.mock_user_repository import MockUserRep
 @pytest.mark.unit
 class TestUserSignup:
     @pytest.mark.asyncio
-    @pytest.mark.xfail
     async def test_should_signup_user(self) -> None:
         user = UserMother.any()
         user_repository = MockUserRepository()
