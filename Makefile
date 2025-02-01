@@ -106,3 +106,11 @@ search:  ## Show package details.
 .PHONY: commit
 commit: ## Commit changes with commitizen.
 	@cz commit
+
+.PHONY: up
+up: ## Create and start containers.
+	@docker-compose up -d
+
+.PHONY: down
+down: ## Stop and remove containers.
+	@docker-compose down -v --remove-orphans
