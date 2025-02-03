@@ -15,3 +15,7 @@ class RandomGenerator:
     @classmethod
     def username(cls) -> str:
         return cls.faker.user_name()
+
+    @classmethod
+    def email(cls) -> str:
+        return cls.faker.email()

@@ -19,5 +19,5 @@ class TestUserSignup:
             id_=user.id_.value,
             name=user.name.value,
             username=user.username.value,
-            email=user.email,
+            email=user.email.value,
         )
