@@ -18,6 +18,6 @@ class TestUserSignup:
         await user_signup(
             id_=user.id_.value,
             name=user.name.value,
-            username=user.username,
+            username=user.username.value,
             email=user.email,
         )
