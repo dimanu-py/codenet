@@ -14,3 +14,14 @@ class UserSignupCommandMother:
             username=UserUsernameMother.any().value,
             email=UserEmailMother.any().value,
         )
+
+    @classmethod
+    def invalid(cls, fixed_values: dict[str, str]) -> UserSignupCommand:
+        primitives = {
+            "id": UserIdMother.any().value,
+            "name": UserNameMother.any().value,
+            "username": UserUsernameMother.any().value,
+            "email": UserEmailMother.any().value,
+        }
+        primitives.update(fixed_values)
+        return UserSignupCommand(**primitives)
