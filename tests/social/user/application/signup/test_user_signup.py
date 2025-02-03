@@ -2,6 +2,7 @@ import pytest
 
 from src.social.user.application.signup.user_signup import UserSignup
 from src.shared.domain.exceptions.invalid_id_format_error import InvalidIdFormatError
+from src.social.user.domain.invalid_name_format_error import InvalidNameFormatError
 from tests.social.shared.expects.matchers import async_expect, raise_error
 from tests.social.user.application.signup.user_signup_command_mother import (
     UserSignupCommandMother,
@@ -26,7 +27,10 @@ class TestUserSignup:
     @pytest.mark.asyncio
     @pytest.mark.parametrize(
         "invalid_field, expected_error",
-        [({"id": "12345"}, InvalidIdFormatError)],
+        [
+            ({"id": "12345"}, InvalidIdFormatError),
+            ({"name": "John!"}, InvalidNameFormatError),
+        ],
     )
     async def test_should_not_allow_to_signup_invalid_user(
         self, invalid_field: dict[str, str], expected_error: Exception
