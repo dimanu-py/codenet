@@ -29,3 +29,11 @@ class User:
             username=UserUsername(username),
             email=UserEmail(email),
         )
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id_.value,
+            "name": self.name.value,
+            "username": self.username.value,
+            "email": self.email.value,
+        }
