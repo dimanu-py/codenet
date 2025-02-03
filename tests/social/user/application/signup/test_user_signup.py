@@ -16,7 +16,7 @@ class TestUserSignup:
         user_repository.should_save(user)
 
         await user_signup(
-            id_=user.id_,
+            id_=user.id_.value,
             name=user.name,
             username=user.username,
             email=user.email,
