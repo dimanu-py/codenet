@@ -2,6 +2,7 @@ import pytest
 
 from src.social.user.application.signup.user_signup import UserSignup
 from src.shared.domain.exceptions.invalid_id_format_error import InvalidIdFormatError
+from src.social.user.domain.invalid_email_format_error import InvalidEmailFormatError
 from src.social.user.domain.invalid_name_format_error import InvalidNameFormatError
 from src.social.user.domain.invalid_username_format_error import (
     InvalidUsernameFormatError,
@@ -34,6 +35,7 @@ class TestUserSignup:
             ({"id": "12345"}, InvalidIdFormatError),
             ({"name": "John!"}, InvalidNameFormatError),
             ({"username": "john#doe"}, InvalidUsernameFormatError),
+            ({"email": "john.doe_hotmail.com"}, InvalidEmailFormatError),
         ],
     )
     async def test_should_not_allow_to_signup_invalid_user(
