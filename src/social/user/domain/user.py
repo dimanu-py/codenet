@@ -12,3 +12,7 @@ class User:
 
     def __eq__(self, other_user: "User") -> bool:
         return self.id_ == other_user.id_
+
+    @classmethod
+    def signup(cls, id_: str, name: str, username: str, email: str) -> "User":
+        return User(id_=id_, name=name, username=username, email=email)

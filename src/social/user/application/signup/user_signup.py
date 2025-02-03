@@ -9,7 +9,7 @@ class UserSignup:
         self._repository = repository
 
     async def __call__(self, id_: str, name: str, username: str, email: str) -> None:
-        user = User(
+        user = User.signup(
             id_=id_,
             name=name,
             username=username,
