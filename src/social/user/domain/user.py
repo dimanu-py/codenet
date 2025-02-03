@@ -1,13 +1,14 @@
 from src.social.user.domain.user_id import UserId
+from src.social.user.domain.user_name import UserName
 
 
 class User:
     email: str
     username: str
-    name: str
+    name: UserName
     id_: UserId
 
-    def __init__(self, id_: UserId, name: str, username: str, email: str) -> None:
+    def __init__(self, id_: UserId, name: UserName, username: str, email: str) -> None:
         self.id_ = id_
         self.name = name
         self.username = username
@@ -18,4 +19,6 @@ class User:
 
     @classmethod
     def signup(cls, id_: str, name: str, username: str, email: str) -> "User":
-        return User(id_=UserId(id_), name=name, username=username, email=email)
+        return User(
+            id_=UserId(id_), name=UserName(name), username=username, email=email
+        )

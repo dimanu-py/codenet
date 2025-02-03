@@ -7,3 +7,7 @@ class RandomGenerator:
     @classmethod
     def uuid(cls) -> str:
         return str(cls.faker.uuid4())
+
+    @classmethod
+    def name(cls) -> str:
+        return cls.faker.name()
