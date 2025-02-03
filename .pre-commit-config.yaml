@@ -13,18 +13,26 @@ repos:
         name: check typing
         entry: make check-typing
         language: system
+        stages:
+          - pre-commit
       - id: lint
         name: check for lint
         entry: make lint
         language: system
+        stages:
+          - pre-commit
       - id: format
         name: check for code format
         entry: make format
         language: system
+        stages:
+          - pre-commit
       - id: unit-test
         name: run all unit test
         entry: make all-unit
         language: system
+        stages:
+          - pre-commit
       - id: pre-push
         name: run integration and acceptance test
         entry: make pre-push
