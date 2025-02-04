@@ -1,10 +1,12 @@
 from src.shared.domain.exceptions.domain_error import DomainError
 
 
-class RequiredValueError(DomainError):
+class InvalidEmailFormatError(DomainError):
     def __init__(self) -> None:
-        self._message = "Value is required, can't be None"
-        self._type = "required_value"
+        self._message = (
+            "Email cannot contain special characters and must contain '@' and '.'"
+        )
+        self._type = "invalid_email_format"
         super().__init__(self._message)
 
     @property

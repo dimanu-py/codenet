@@ -1,10 +1,10 @@
 from src.shared.domain.exceptions.domain_error import DomainError
 
 
-class RequiredValueError(DomainError):
+class InvalidIdFormatError(DomainError):
     def __init__(self) -> None:
-        self._message = "Value is required, can't be None"
-        self._type = "required_value"
+        self._message = "User id must be a valid UUID"
+        self._type = "invalid_id_format"
         super().__init__(self._message)
 
     @property

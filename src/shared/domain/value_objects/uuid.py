@@ -1,9 +1,10 @@
 from uuid import UUID
 
-from src.shared.domain.exceptions.required_value_error import (
-    RequiredValueError,
+from src.shared.domain.exceptions.incorrect_value_type_error import (
+    IncorrectValueTypeError,
 )
 from src.shared.domain.value_objects.value_object import ValueObject
+from src.shared.domain.exceptions.invalid_id_format_error import InvalidIdFormatError
 
 
 class Uuid(ValueObject[str]):
@@ -11,6 +12,9 @@ class Uuid(ValueObject[str]):
         super().__init__(value)
 
     def _validate(self, value: str) -> None:
-        if value is None:
-            raise RequiredValueError
-        UUID(value)
+        if not isinstance(value, str):
+            raise IncorrectValueTypeError
+        try:
+            UUID(value)
+        except ValueError:
+            raise InvalidIdFormatError

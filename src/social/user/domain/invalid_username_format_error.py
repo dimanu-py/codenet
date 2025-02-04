@@ -1,10 +1,10 @@
 from src.shared.domain.exceptions.domain_error import DomainError
 
 
-class RequiredValueError(DomainError):
+class InvalidUsernameFormatError(DomainError):
     def __init__(self) -> None:
-        self._message = "Value is required, can't be None"
-        self._type = "required_value"
+        self._message = "Username cannot contain special characters"
+        self._type = "invalid_username_format"
         super().__init__(self._message)
 
     @property

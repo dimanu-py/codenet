@@ -1,5 +1,6 @@
 from src.social.user.domain.user import User
 from src.social.user.domain.user_repository import UserRepository
+from src.social.user.application.signup.user_signup_command import UserSignupCommand
 
 
 class UserSignup:
@@ -8,12 +9,12 @@ class UserSignup:
     def __init__(self, repository: UserRepository) -> None:
         self._repository = repository
 
-    async def __call__(self, id_: str, name: str, username: str, email: str) -> None:
-        user = User(
-            id_=id_,
-            name=name,
-            username=username,
-            email=email,
+    async def __call__(self, command: UserSignupCommand) -> None:
+        user = User.signup(
+            id_=command.id,
+            name=command.name,
+            username=command.username,
+            email=command.email,
         )
 
         await self._repository.save(user)
