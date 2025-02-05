@@ -1,4 +1,5 @@
 import pytest
+from expects import expect, equal
 
 from src.shared.infra.persistence.sqlalchemy.session_maker import SessionMaker
 from src.shared.infra.settings import Settings
@@ -28,3 +29,6 @@ class TestPostgresUserRepository:
         user = UserMother.any()
 
         await repository.save(user)
+
+        saved_user = await repository.search(user.id)
+        expect(user).to(equal(saved_user))
