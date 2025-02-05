@@ -23,7 +23,7 @@ async def signup_user(user_id: str, request: UserSignupRequest) -> JSONResponse:
         username=request.username,
         email=request.email,
     )
-    session_maker = SessionMaker(Settings())
+    session_maker = SessionMaker(Settings())  # type: ignore
     repository = PostgresUserRepository(session_maker=session_maker)
     user_signup = UserSignup(repository)
 

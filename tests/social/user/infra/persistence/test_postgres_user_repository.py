@@ -13,7 +13,7 @@ from tests.social.user.domain.user_mother import UserMother
 class TestPostgresUserRepository:
     @classmethod
     def setup_class(cls) -> None:
-        cls.session_maker = SessionMaker(settings=Settings())
+        cls.session_maker = SessionMaker(settings=Settings())  # type: ignore
         cls.session_maker.create_tables()
 
     @classmethod
