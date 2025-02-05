@@ -30,4 +30,6 @@ jobs:
           make check-lint
       - name: Tests
         run: |
+          make up
           make test
+          make down
