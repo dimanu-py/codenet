@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  lint-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -31,17 +31,3 @@ jobs:
       - name: Tests
         run: |
           make test
-
-  version-changelog:
-    if: "!startsWith(github.event.head_commit.message, 'bump:')"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.CODENET_TOKEN }}
-          fetch-depth: 0
-      - name: Bump version and update changelog
-        uses: commitizen-tools/commitizen-action@master
-        with:
-          github_token: ${{ secrets.CODENET_TOKEN }}
