@@ -20,3 +20,8 @@ class PostgresUserRepository(UserRepository):
             session.add(user_to_save)
             await session.commit()
 
+    @override
+    async def search(self, user_id: UserId) -> User:
+        async with self._session_maker.get_session() as session:
+            user = await session.get(UserModel, user_id.value)
+            return user.to_aggregate() if user else None
