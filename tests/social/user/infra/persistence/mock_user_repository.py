@@ -3,6 +3,7 @@ from unittest.mock import AsyncMock
 from expects import expect, equal
 
 from src.social.user.domain.user import User
+from src.social.user.domain.user_id import UserId
 from src.social.user.domain.user_repository import UserRepository
 
 
@@ -12,6 +13,9 @@ class MockUserRepository(UserRepository):
 
     async def save(self, user: User) -> None:
         self._mock_save(user)
+
+    async def search(self, user_id: UserId) -> User | None:
+        raise NotImplementedError
 
     def should_save(self, user: User) -> None:
         def verify(expected_user: User) -> None:
