@@ -21,6 +21,10 @@ class User:
     def __eq__(self, other_user: "User") -> bool:
         return self.id_ == other_user.id_
 
+    @property
+    def id(self) -> UserId:
+        return self.id_
+
     @classmethod
     def signup(cls, id_: str, name: str, username: str, email: str) -> "User":
         return User(
@@ -29,3 +33,11 @@ class User:
             username=UserUsername(username),
             email=UserEmail(email),
         )
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id_.value,
+            "name": self.name.value,
+            "username": self.username.value,
+            "email": self.email.value,
+        }

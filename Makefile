@@ -7,7 +7,7 @@ help:  ## Show this help.
 
 .PHONY: test
 test:  ## Run all test.
-	@uv run pytest -n auto tests -ra
+	@uv run pytest -n 0 tests -ra
 
 .PHONY: unit
 unit:  ## Run unit test in changed files.
@@ -23,11 +23,11 @@ all-unit:  ## Run all unit test.
 
 .PHONY: all-integration
 all-integration:  ## Run all integration test.
-	@uv run pytest -n auto -m "integration" -ra
+	@uv run pytest -n 0 -m "integration" -ra
 
 .PHONY: all-acceptance
 all-acceptance:  ## Run all acceptance test.
-	@uv run pytest -n auto -m "acceptance" -ra
+	@uv run pytest -n 0 -m "acceptance" -ra
 
 .PHONY: coverage
 coverage:  ## Run all test with coverage.
@@ -106,3 +106,11 @@ search:  ## Show package details.
 .PHONY: commit
 commit: ## Commit changes with commitizen.
 	@cz commit
+
+.PHONY: up
+up: ## Create and start containers.
+	@docker-compose up -d
+
+.PHONY: down
+down: ## Stop and remove containers.
+	@docker-compose down -v --remove-orphans
