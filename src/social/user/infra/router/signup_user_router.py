@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
 
 from src.shared.domain.exceptions.domain_error import DomainError
 from src.shared.infra.http.http_response import HttpResponse
+from src.shared.infra.log.logger import create_logger
 from src.shared.infra.persistence.sqlalchemy.base import Base
 from src.shared.infra.settings import Settings
 from src.shared.infra.http.status_code import StatusCode
@@ -15,6 +16,7 @@ from src.social.user.infra.persistence.postgres_user_repository import (
 from src.social.user.infra.router.user_sign_up_request import UserSignupRequest
 
 router = APIRouter(prefix="/users", tags=["Users"])
+user_logger = create_logger("user")
 
 
 async def engine_generator() -> AsyncEngine:  # type: ignore
@@ -34,6 +36,7 @@ async def signup_user(
     request: UserSignupRequest,
     engine: AsyncEngine = Depends(engine_generator),
 ) -> JSONResponse:
+    user_logger.info("User signup request received", extra={"extra": {"id": user_id}})
     command = UserSignupCommand(
         id=user_id,
         name=request.name,
