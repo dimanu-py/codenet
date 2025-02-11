@@ -1,7 +1,7 @@
 from fastapi.responses import JSONResponse
 
 from src.shared.domain.exceptions.domain_error import DomainError
-from src.shared.infra.status_code import StatusCode
+from src.shared.infra.http.status_code import StatusCode
 
 
 class HttpResponse:

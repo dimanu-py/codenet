@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from fastapi.testclient import TestClient
 
 from src.delivery.api.main import app
-from src.shared.infra.status_code import StatusCode
+from src.shared.infra.http.status_code import StatusCode
 from tests.social.user.domain.user_email_mother import UserEmailMother
 from tests.social.user.domain.user_id_mother import UserIdMother
 from tests.social.user.domain.user_name_mother import UserNameMother

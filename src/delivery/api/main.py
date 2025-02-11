@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
-from src.shared.infra.HttpResponse import HttpResponse
+from src.shared.infra.http.HttpResponse import HttpResponse
 from src.social.user.infra.router import signup_user_router as signup_user
 
 app = FastAPI()
