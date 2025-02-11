@@ -49,6 +49,9 @@ async def signup_user(
     try:
         await user_signup(command)
     except DomainError as error:
+        user_logger.error(
+            "User signup failed", extra={"extra": {"error": error.to_dict()}}
+        )
         return HttpResponse.domain_error(error, status_code=StatusCode.BAD_REQUEST)
 
     return HttpResponse.created()
