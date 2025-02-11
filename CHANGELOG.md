@@ -1,3 +1,22 @@
+## v0.2.0 (2025-02-11)
+
+### Feat
+
+- **user**: log when a request to user signup gets processed correctly
+- **user**: log when a domain error is raised
+- **user**: log requests received to sign up user route
+- **shared**: implement logic to create a logger with two handlers for dev and production
+- **shared**: add custom log formatter
+- **app**: add custom handler to catch unexpected exceptions
+- **user**: wrap use case call within try-except block and handle domain errors
+
+### Refactor
+
+- **shared**: forced log folder to be at the root of the project
+- **shared**: rename http response module file
+- **shared**: move modules related to http to specific package
+- **user**: let test method receive the request in the call
+
 ## v0.1.0 (2025-02-11)
 
 ### Feat
