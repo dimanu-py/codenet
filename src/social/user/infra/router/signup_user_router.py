@@ -15,8 +15,8 @@ from src.social.user.infra.router.user_sign_up_request import UserSignupRequest
 router = APIRouter(prefix="/users", tags=["Users"])
 
 
-async def engine_generator() -> AsyncEngine:
-    engine = create_async_engine(Settings().postgres_url)
+async def engine_generator() -> AsyncEngine:  # type: ignore
+    engine = create_async_engine(Settings().postgres_url)  # type: ignore
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)

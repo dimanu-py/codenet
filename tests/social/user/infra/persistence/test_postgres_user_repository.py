@@ -11,8 +11,8 @@ from tests.social.user.domain.user_mother import UserMother
 
 
 @pytest.fixture
-async def engine() -> AsyncEngine:
-    settings = Settings()
+async def engine() -> AsyncEngine:  # type: ignore
+    settings = Settings()  # type: ignore
     engine = create_async_engine(settings.postgres_url)
 
     async with engine.begin() as conn:
