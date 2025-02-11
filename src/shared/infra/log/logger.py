@@ -1,13 +1,18 @@
 import logging
 from datetime import date
 from logging.handlers import TimedRotatingFileHandler
+from pathlib import Path
 
 from src.shared.infra.log.json_formatter import JSONFormatter
 
 
 def create_file_handler(file_name: str, level: int) -> TimedRotatingFileHandler:
+    root_project_path = Path(__file__).parents[4]
+    log_folder = root_project_path / "logs"
+    log_folder.mkdir(parents=True, exist_ok=True)
+
     file_handler = TimedRotatingFileHandler(
-        filename=f"var/logs/{file_name}_{date.today().isoformat()}.log",
+        filename=f"{log_folder}/{file_name}_{date.today().isoformat()}.log",
         when="midnight",
         interval=1,
         backupCount=7,
