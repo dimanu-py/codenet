@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
 
 from src.shared.domain.exceptions.domain_error import DomainError
-from src.shared.infra.http.HttpResponse import HttpResponse
+from src.shared.infra.http.http_response import HttpResponse
 from src.shared.infra.persistence.sqlalchemy.base import Base
 from src.shared.infra.settings import Settings
 from src.shared.infra.http.status_code import StatusCode
