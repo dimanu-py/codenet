@@ -54,4 +54,5 @@ async def signup_user(
         )
         return HttpResponse.domain_error(error, status_code=StatusCode.BAD_REQUEST)
 
+    user_logger.info("User signup successful", extra={"extra": {"id": user_id}})
     return HttpResponse.created()
