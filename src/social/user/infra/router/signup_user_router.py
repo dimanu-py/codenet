@@ -2,9 +2,11 @@ from fastapi import APIRouter, status, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
 
+from src.shared.domain.exceptions.domain_error import DomainError
 from src.shared.infra.HttpResponse import HttpResponse
 from src.shared.infra.persistence.sqlalchemy.base import Base
 from src.shared.infra.settings import Settings
+from src.shared.infra.status_code import StatusCode
 from src.social.user.application.signup.user_signup import UserSignup
 from src.social.user.application.signup.user_signup_command import UserSignupCommand
 from src.social.user.infra.persistence.postgres_user_repository import (
@@ -41,6 +43,9 @@ async def signup_user(
     repository = PostgresUserRepository(engine=engine)
     user_signup = UserSignup(repository)
 
-    await user_signup(command)
+    try:
+        await user_signup(command)
+    except DomainError as error:
+        return HttpResponse.domain_error(error, status_code=StatusCode.BAD_REQUEST)
 
     return HttpResponse.created()
