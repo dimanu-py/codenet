@@ -19,7 +19,15 @@ class TestSignupUserRouter:
 
     @pytest.mark.asyncio
     async def test_should_register_a_valid_user(self) -> None:
-        response = self.when_a_post_request_is_sent_to("/users/signup")
+        request_body = {
+            "name": UserNameMother.any().value,
+            "username": UserUsernameMother.any().value,
+            "email": UserEmailMother.any().value,
+        }
+        user_id = UserIdMother.any().value
+        response = self.when_a_post_request_is_sent_to(
+            f"/users/signup/{user_id}", request_body
+        )
 
         self.assert_response_satisfies(201, self.EMPTY_RESPONSE, response)
 
@@ -30,12 +38,7 @@ class TestSignupUserRouter:
         expect(response.status_code).to(equal(expected_status_code))
         expect(response.json()).to(equal(expected_response))
 
-    def when_a_post_request_is_sent_to(self, endpoint: str) -> JSONResponse:
-        request_body = {
-            "name": UserNameMother.any().value,
-            "username": UserUsernameMother.any().value,
-            "email": UserEmailMother.any().value,
-        }
-        user_id = UserIdMother.any().value
-
-        return self._client.post(f"{endpoint}/{user_id}", json=request_body)  # type: ignore
+    def when_a_post_request_is_sent_to(
+        self, endpoint: str, request: dict
+    ) -> JSONResponse:
+        return self._client.post(f"{endpoint}", json=request)  # type: ignore
