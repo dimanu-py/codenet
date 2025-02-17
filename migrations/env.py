@@ -8,10 +8,15 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 
 from src.shared.infra.persistence.sqlalchemy.base import Base
+from src.shared.infra.settings import Settings
+
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
+
+settings = Settings()  # type: ignore
+config.set_main_option("sqlalchemy.url", settings.postgres_url)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
