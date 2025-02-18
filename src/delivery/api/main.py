@@ -23,4 +23,4 @@ app.include_router(signup_user.router)
 
 @app.exception_handler(Exception)
 async def unexpected_exception_handler(_: Request, exc: Exception) -> JSONResponse:
-    return HttpResponse.internal_error()
+    return HttpResponse.internal_error(exc)
