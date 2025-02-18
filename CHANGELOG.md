@@ -1,3 +1,30 @@
+## v0.3.0 (2025-02-18)
+
+### Feat
+
+- **http**: create POST request example to try application manually
+- **api**: implement lifespan to manage migration event on startup
+- **api**: create class to be able to perform migrations on startup
+- **migrations**: create first migration that creates user table
+- **migrations**: override sqlalchemy.url variable with custom url using Settings class
+- **migrations**: add project Base metadata in alembic environment
+- **migrations**: enable ruff to format and lint revisions scripts
+- **migrations**: specify a time format for revision files so they appear ordered
+- **migrations**: initialize alembic environment to manage migrations
+
+### Fix
+
+- **migrations**: import all sqlalchemy models so alembic detects correctly changes
+
+### Refactor
+
+- **user**: remove the use of the logger inside endpoint and pass resource to logged when request is successful
+- **api**: pass exception when internal server error is raised so it can be logged
+- **shared**: log error and request information inside HttpResponse class
+- **user**: use context manager to be able to perform startup event on acceptance test
+- **user**: remove table creation from engine_generator and encapsulate it between a try-finally clause
+- **user**: write correct type hint for engine_generator
+
 ## v0.2.0 (2025-02-11)
 
 ### Feat
