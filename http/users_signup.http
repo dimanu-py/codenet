@@ -1,0 +1,8 @@
+POST http://localhost:8000/users/signup/{{$random.uuid}}
+Content-Type: application/json
+
+{
+  "name": "{{$random.name.fullName}}",
+  "username": "{{$random.name.username}}",
+  "email": "{{$random.email}}"
+}

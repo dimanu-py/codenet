@@ -65,4 +65,5 @@ class TestSignupUserRouter:
     def when_a_post_request_is_sent_to(
         self, endpoint: str, request: dict
     ) -> JSONResponse:
-        return self._client.post(f"{endpoint}", json=request)  # type: ignore
+        with self._client as client:
+            return client.post(f"{endpoint}", json=request)  # type: ignore
