@@ -1,3 +1,5 @@
+from collections.abc import AsyncGenerator
+
 import pytest
 from expects import expect, equal
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
@@ -11,7 +13,7 @@ from tests.social.user.domain.user_mother import UserMother
 
 
 @pytest.fixture
-async def engine() -> AsyncEngine:  # type: ignore
+async def engine() -> AsyncGenerator[AsyncEngine]:
     settings = Settings()  # type: ignore
     engine = create_async_engine(settings.postgres_url)
 

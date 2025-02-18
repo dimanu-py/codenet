@@ -1,3 +1,5 @@
+from collections.abc import AsyncGenerator
+
 from fastapi import APIRouter, status, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
@@ -19,7 +21,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
 user_logger = create_logger("user")
 
 
-async def engine_generator() -> AsyncEngine:  # type: ignore
+async def engine_generator() -> AsyncGenerator[AsyncEngine]:
     engine = create_async_engine(Settings().postgres_url)  # type: ignore
 
     async with engine.begin() as conn:
