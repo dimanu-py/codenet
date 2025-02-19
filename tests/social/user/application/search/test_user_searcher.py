@@ -1,0 +1,25 @@
+import pytest
+from expects import expect, equal
+
+from src.social.user.application.search.search_user_query import SearchUserQuery
+from src.social.user.application.search.user_searcher import UserSearcher
+from tests.social.shared.domain.criteria.criteria_mother import CriteriaMother
+from tests.social.user.domain.user_mother import UserMother
+from tests.social.user.infra.persistence.mock_user_repository import MockUserRepository
+
+
+@pytest.mark.unit
+class TestUserSearcher:
+    @pytest.mark.asyncio
+    async def test_should_search_existing_user(self) -> None:
+        criteria = CriteriaMother.any()
+        query = SearchUserQuery(criteria.to_primitives())
+        repository = MockUserRepository()
+        user_searcher = UserSearcher(repository=repository)
+        users = [UserMother.any()]
+
+        repository.should_match(criteria, users)
+
+        searched_user = await user_searcher(query)
+
+        expect(searched_user).to(equal(users))
