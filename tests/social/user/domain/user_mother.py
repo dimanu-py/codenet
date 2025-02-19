@@ -9,7 +9,7 @@ class UserMother:
     @classmethod
     def any(cls) -> User:
         return User(
-            id_=UserIdMother.any(),
+            id=UserIdMother.any(),
             name=UserNameMother.any(),
             username=UserUsernameMother.any(),
             email=UserEmailMother.any(),
@@ -18,7 +18,7 @@ class UserMother:
     @classmethod
     def create(cls, fixed_values: dict) -> User:
         primitives = {
-            "id_": UserIdMother.any().value,
+            "id": UserIdMother.any().value,
             "name": UserNameMother.any().value,
             "username": UserUsernameMother.any().value,
             "email": UserEmailMother.any().value,

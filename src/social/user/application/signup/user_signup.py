@@ -11,7 +11,7 @@ class UserSignup:
 
     async def __call__(self, command: UserSignupCommand) -> None:
         user = User.signup(
-            id_=command.id,
+            id=command.id,
             name=command.name,
             username=command.username,
             email=command.email,

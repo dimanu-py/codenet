@@ -5,30 +5,30 @@ from src.social.user.domain.user_username import UserUsername
 
 
 class User:
-    email: UserEmail
-    username: UserUsername
-    name: UserName
-    id_: UserId
+    _email: UserEmail
+    _username: UserUsername
+    _name: UserName
+    _id: UserId
 
     def __init__(
-        self, id_: UserId, name: UserName, username: UserUsername, email: UserEmail
+        self, id: UserId, name: UserName, username: UserUsername, email: UserEmail
     ) -> None:
-        self.id_ = id_
-        self.name = name
-        self.username = username
-        self.email = email
+        self._id = id
+        self._name = name
+        self._username = username
+        self._email = email
 
     def __eq__(self, other_user: "User") -> bool:
-        return self.id_ == other_user.id_
+        return self.id == other_user.id
 
     @property
     def id(self) -> UserId:
-        return self.id_
+        return self._id
 
     @classmethod
-    def signup(cls, id_: str, name: str, username: str, email: str) -> "User":
+    def signup(cls, id: str, name: str, username: str, email: str) -> "User":
         return User(
-            id_=UserId(id_),
+            id=UserId(id),
             name=UserName(name),
             username=UserUsername(username),
             email=UserEmail(email),
@@ -36,8 +36,8 @@ class User:
 
     def to_dict(self) -> dict:
         return {
-            "id": self.id_.value,
-            "name": self.name.value,
-            "username": self.username.value,
-            "email": self.email.value,
+            "id": self._id.value,
+            "name": self._name.value,
+            "username": self._username.value,
+            "email": self._email.value,
         }
