@@ -20,7 +20,7 @@ class TestUserSignup:
     @pytest.mark.asyncio
     async def test_should_signup_user(self) -> None:
         command = UserSignupCommandMother.any()
-        user = UserMother.from_command(command)
+        user = UserMother.create(command.to_dict())
         user_repository = MockUserRepository()
         user_signup = UserSignup(repository=user_repository)
 
