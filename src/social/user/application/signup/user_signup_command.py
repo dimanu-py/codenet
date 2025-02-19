@@ -7,3 +7,11 @@ class UserSignupCommand:
     name: str
     username: str
     email: str
+
+    def to_dict(self) -> dict[str, str]:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "username": self.username,
+            "email": self.email,
+        }
