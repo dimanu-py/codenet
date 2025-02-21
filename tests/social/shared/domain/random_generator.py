@@ -19,3 +19,7 @@ class RandomGenerator:
     @classmethod
     def email(cls) -> str:
         return cls.faker.email()
+
+    @classmethod
+    def word(cls) -> str:
+        return cls.faker.word()
