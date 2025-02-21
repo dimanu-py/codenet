@@ -1,3 +1,4 @@
+from src.shared.domain.criteria.criteria import Criteria
 from src.social.user.application.search.search_user_query import SearchUserQuery
 from src.social.user.domain.user import User
 from src.social.user.domain.user_repository import UserRepository
@@ -10,4 +11,6 @@ class UserSearcher:
         self._repository = repository
 
     async def __call__(self, query: SearchUserQuery) -> list[User] | None:
-        raise NotImplementedError
+        criteria = Criteria.from_primitives(query.filters)
+        searched_users = await self._repository.matching(criteria)
+        return searched_users if searched_users else None
