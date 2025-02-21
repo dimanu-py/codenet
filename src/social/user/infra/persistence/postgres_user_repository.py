@@ -30,5 +30,5 @@ class PostgresUserRepository(UserRepository):
             return user.to_aggregate() if user else None
 
     @override
-    async def matching(self, criteria: Criteria) -> list[User] | None:
+    async def matching(self, criteria: Criteria) -> list[User]:
         raise NotImplementedError

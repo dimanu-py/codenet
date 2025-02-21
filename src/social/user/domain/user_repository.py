@@ -15,5 +15,5 @@ class UserRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def matching(self, criteria: Criteria) -> list[User] | None:
+    async def matching(self, criteria: Criteria) -> list[User]:
         raise NotImplementedError
