@@ -1,5 +1,5 @@
 import pytest
-from expects import expect, equal
+from expects import expect, equal, be_empty
 
 from src.social.user.application.search.search_user_query import SearchUserQuery
 from src.social.user.application.search.user_searcher import UserSearcher
@@ -23,3 +23,16 @@ class TestUserSearcher:
         searched_user = await user_searcher(query)
 
         expect(searched_user).to(equal(users))
+
+    @pytest.mark.asyncio
+    async def test_should_return_empty_list_when_no_user_matches_criteria(self) -> None:
+        criteria = CriteriaMother.any()
+        query = SearchUserQuery(criteria.to_primitives())
+        repository = MockUserRepository()
+        user_searcher = UserSearcher(repository=repository)
+
+        repository.should_not_match(criteria)
+
+        searched_users = await user_searcher(query)
+
+        expect(searched_users).to(be_empty)
