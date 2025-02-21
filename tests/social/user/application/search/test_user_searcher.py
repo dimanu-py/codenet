@@ -20,9 +20,9 @@ class TestUserSearcher:
 
         repository.should_match(criteria, users)
 
-        searched_user = await user_searcher(query)
+        searched_users = await user_searcher(query)
 
-        expect(searched_user).to(equal(users))
+        expect(searched_users).to(equal(users))
 
     @pytest.mark.asyncio
     async def test_should_return_empty_list_when_no_user_matches_criteria(self) -> None:
