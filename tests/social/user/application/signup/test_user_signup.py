@@ -1,7 +1,7 @@
 import pytest
 
-from src.social.user.application.signup.user_signup import UserSignup
 from src.shared.domain.exceptions.invalid_id_format_error import InvalidIdFormatError
+from src.social.user.application.signup.user_signup import UserSignup
 from src.social.user.domain.invalid_email_format_error import InvalidEmailFormatError
 from src.social.user.domain.invalid_name_format_error import InvalidNameFormatError
 from src.social.user.domain.invalid_username_format_error import (
@@ -11,24 +11,24 @@ from tests.social.shared.expects.matchers import async_expect, raise_error
 from tests.social.user.application.signup.user_signup_command_mother import (
     UserSignupCommandMother,
 )
+from tests.social.user.application.user_module_unit_test_config import (
+    UserModuleUnitTestConfig,
+)
 from tests.social.user.domain.user_mother import UserMother
-from tests.social.user.infra.persistence.mock_user_repository import MockUserRepository
 
 
-@pytest.mark.unit
-class TestUserSignup:
-    @pytest.mark.asyncio
+class TestUserSignup(UserModuleUnitTestConfig):
+    def setup_method(self) -> None:
+        self._user_signup = UserSignup(repository=self._repository)
+
     async def test_should_signup_user(self) -> None:
         command = UserSignupCommandMother.any()
         user = UserMother.create(command.to_dict())
-        user_repository = MockUserRepository()
-        user_signup = UserSignup(repository=user_repository)
 
-        user_repository.should_save(user)
+        self._should_save(user)
 
-        await user_signup(command)
+        await self._user_signup(command)
 
-    @pytest.mark.asyncio
     @pytest.mark.parametrize(
         "invalid_field, expected_error",
         [
@@ -42,7 +42,7 @@ class TestUserSignup:
         self, invalid_field: dict[str, str], expected_error: Exception
     ) -> None:
         command = UserSignupCommandMother.invalid(invalid_field)
-        user_repository = MockUserRepository()
-        user_signup = UserSignup(repository=user_repository)
 
-        await async_expect(lambda: user_signup(command)).to(raise_error(expected_error))
+        await async_expect(lambda: self._user_signup(command)).to(
+            raise_error(expected_error)
+        )
