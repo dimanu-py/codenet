@@ -1,24 +1,16 @@
-import pytest
-from expects import expect, equal
-from fastapi.responses import JSONResponse
-from fastapi.testclient import TestClient
-
-from src.delivery.api.main import app
 from src.shared.infra.http.status_code import StatusCode
 from tests.social.user.domain.user_email_mother import UserEmailMother
 from tests.social.user.domain.user_id_mother import UserIdMother
 from tests.social.user.domain.user_name_mother import UserNameMother
 from tests.social.user.domain.user_username_mother import UserUsernameMother
+from tests.social.user.infra.router.user_module_acceptance_test_config import (
+    UserModuleAcceptanceTestConfig,
+)
 
 
-@pytest.mark.acceptance
-class TestSignupUserRouter:
+class TestSignupUserRouter(UserModuleAcceptanceTestConfig):
     EMPTY_RESPONSE: dict = {}
 
-    def setup_method(self) -> None:
-        self._client = TestClient(app)
-
-    @pytest.mark.asyncio
     async def test_should_register_a_valid_user(self) -> None:
         request_body = {
             "name": UserNameMother.any().value,
@@ -32,7 +24,6 @@ class TestSignupUserRouter:
 
         self.assert_response_satisfies(201, self.EMPTY_RESPONSE, response)
 
-    @pytest.mark.asyncio
     async def test_should_raise_bad_request_when_name_is_not_valid(self) -> None:
         request_body = {
             "name": "John!",
@@ -54,16 +45,3 @@ class TestSignupUserRouter:
             },
             response,
         )
-
-    @staticmethod
-    def assert_response_satisfies(
-        expected_status_code: int, expected_response: dict, response: JSONResponse
-    ):
-        expect(response.status_code).to(equal(expected_status_code))
-        expect(response.json()).to(equal(expected_response))
-
-    def when_a_post_request_is_sent_to(
-        self, endpoint: str, request: dict
-    ) -> JSONResponse:
-        with self._client as client:
-            return client.post(f"{endpoint}", json=request)  # type: ignore
