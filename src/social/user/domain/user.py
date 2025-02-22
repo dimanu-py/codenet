@@ -25,6 +25,10 @@ class User:
     def id(self) -> UserId:
         return self._id
 
+    @property
+    def username(self) -> UserUsername:
+        return self._username
+
     @classmethod
     def signup(cls, id: str, name: str, username: str, email: str) -> "User":
         return User(
