@@ -1,7 +1,7 @@
 from collections.abc import AsyncGenerator
 
 import pytest
-from expects import expect, equal
+from expects import expect, equal, be_empty
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
 from src.shared.infra.settings import Settings
@@ -61,3 +61,12 @@ class TestPostgresUserRepository:
         searched_users = await repository.matching(criteria)
 
         expect(searched_users).to(equal([user]))
+
+    @pytest.mark.asyncio
+    async def test_should_return_empty_list_if_no_users_are_found(self, engine: AsyncEngine) -> None:
+        repository = PostgresUserRepository(engine)
+        criteria = CriteriaMother.any()
+
+        searched_users = await repository.matching(criteria)
+
+        expect(searched_users).to(be_empty)
