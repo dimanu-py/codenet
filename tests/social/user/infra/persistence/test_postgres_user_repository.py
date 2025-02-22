@@ -38,12 +38,12 @@ class TestPostgresUserRepository:
         await repository.save(user)
 
     @pytest.mark.asyncio
-    async def test_should_search_a_user(self, engine: AsyncEngine) -> None:
+    async def test_should_find_existing_user(self, engine: AsyncEngine) -> None:
         repository = PostgresUserRepository(engine)
         user = UserMother.any()
         await repository.save(user)
 
-        saved_user = await repository.search(user.id)
+        saved_user = await repository.find(user.id)
 
         expect(user).to(equal(saved_user))
 
