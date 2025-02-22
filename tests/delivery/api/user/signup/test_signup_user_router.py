@@ -1,5 +1,5 @@
 from src.shared.infra.http.status_code import StatusCode
-from tests.social.user.infra.router.user_module_acceptance_test_config import (
+from tests.delivery.api.user.user_module_acceptance_test_config import (
     UserModuleAcceptanceTestConfig,
 )
 
