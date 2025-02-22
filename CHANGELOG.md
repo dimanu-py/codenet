@@ -1,3 +1,38 @@
+## v0.4.0 (2025-02-22)
+
+### Feat
+
+- **user**: create user search response object
+- **shared**: implement logic to generate a where equality clause in converter
+- **shared**: add is_empty method to criteria to know if it has filters or not
+- **shared**: implement basic select query with no filters
+- **user**: design how I want matching method to work in SQL
+- **user**: add username property to User
+- **user**: define matching method in UserRepository
+- **user**: design interaction with repository and criteria inside the use case
+- **user**: create Criteria object
+- **user**: wrap Filter collection inside Filters object
+- **user**: create Filter object to group the combination of field, value and operator
+- **user**: create FilterOperator enum to store all possible operations
+- **user**: create FilterValue object to store the value the client will search
+- **user**: create FilterField to store the field the user will be searched by
+- **user**: create SearchUserQuery to store query parameters
+- **user**: create UserSearcher use case
+- **user**: design interaction between router and use case
+
+### Refactor
+
+- **user**: work with UserSearchResponse in HttpResponse
+- **user**: avoid iterating again over searched_users list as UserRepository already returns them as a list of aggregates
+- **shared**: move stringify method to test class as it's only needed to be able to compare string queries and sqlalchemy does not process raw strings
+- **shared**: extract common method to compile query into string for criteria converter
+- **shared**: early return when criteria is empty
+- **user**: rename test variable to express that what is returned is a collection of users
+- **user**: return empty list when no user is found instead of None
+- **user**: rename User field attributes to make them protected
+- **user**: allow UserMother to be created with fixed values passing a dictionary instead of coupling it to a command
+- **user**: add to_dict method to UserSignupCommand
+
 ## v0.3.0 (2025-02-18)
 
 ### Feat
