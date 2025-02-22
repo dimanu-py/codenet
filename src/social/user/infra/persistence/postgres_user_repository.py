@@ -3,6 +3,9 @@ from typing import override
 from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker
 
 from src.shared.domain.criteria.criteria import Criteria
+from src.shared.infra.criteria.criteria_to_sql_alchemy_converter import (
+    CriteriaToSqlAlchemyConverter,
+)
 from src.social.user.domain.user import User
 from src.social.user.domain.user_id import UserId
 from src.social.user.domain.user_repository import UserRepository
@@ -31,4 +34,8 @@ class PostgresUserRepository(UserRepository):
 
     @override
     async def matching(self, criteria: Criteria) -> list[User]:
-        raise NotImplementedError
+        converter = CriteriaToSqlAlchemyConverter()
+        query = converter.convert(UserModel, criteria)
+        async with self._session_maker() as session:
+            users = await session.scalars(query)
+        return [user.to_aggregate() for user in users]
