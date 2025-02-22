@@ -35,7 +35,7 @@ class MockUserRepository(UserRepository):
 
         self._mock_match = verify  # type: ignore
 
-    def should_not_match(self, criteria):
+    def should_not_match(self, criteria: Criteria) -> None:
         def verify(expected_criteria: Criteria) -> list:
             expect(criteria).to(equal(expected_criteria))
             return []
