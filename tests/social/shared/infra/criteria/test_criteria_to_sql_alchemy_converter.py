@@ -1,5 +1,6 @@
 import pytest
 from expects import expect, equal
+from sqlalchemy.sql import Select
 
 from src.shared.domain.criteria.filter_operator import FilterOperator
 from src.shared.infra.criteria.criteria_to_sql_alchemy_converter import (
@@ -16,7 +17,7 @@ class TestCriteriaToSqlAlchemyConverter:
         criteria = CriteriaMother.empty()
         converter = CriteriaToSqlAlchemyConverter()
 
-        query = converter.convert(model=UserModel, criteria=criteria)
+        query = self.stringify(converter.convert(model=UserModel, criteria=criteria))
 
         expect(query).to(
             equal(
@@ -31,7 +32,7 @@ class TestCriteriaToSqlAlchemyConverter:
         )
         converter = CriteriaToSqlAlchemyConverter()
 
-        query = converter.convert(model=UserModel, criteria=criteria)
+        query = self.stringify(converter.convert(model=UserModel, criteria=criteria))
 
         expect(query).to(
             equal(
@@ -40,3 +41,7 @@ class TestCriteriaToSqlAlchemyConverter:
                 f"WHERE users.name = '{user_name.value}'"
             )
         )
+
+    @staticmethod
+    def stringify(query: Select) -> str:
+        return query.compile(compile_kwargs={"literal_binds": True}).string
