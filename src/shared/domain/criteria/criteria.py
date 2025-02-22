@@ -22,3 +22,7 @@ class Criteria:
 
     def is_empty(self) -> bool:
         return self._filters.is_empty()
+
+    @property
+    def filters(self) -> Filters:
+        return self._filters

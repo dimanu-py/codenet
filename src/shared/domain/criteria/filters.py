@@ -1,3 +1,4 @@
+from collections.abc import Iterator
 from dataclasses import dataclass
 
 from src.shared.domain.criteria.filter import Filter
@@ -24,3 +25,6 @@ class Filters:
 
     def is_empty(self) -> bool:
         return len(self._value) == 0
+
+    def __iter__(self) -> Iterator[Filter]:
+        return iter(self._value)

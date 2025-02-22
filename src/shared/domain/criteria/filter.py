@@ -29,3 +29,6 @@ class Filter:
             "operator": self._operator.value,
             "value": self._value.value,
         }
+
+    def operator_is(self, operator: FilterOperator) -> bool:
+        return self._operator == operator
