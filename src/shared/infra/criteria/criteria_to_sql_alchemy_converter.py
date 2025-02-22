@@ -8,4 +8,6 @@ class CriteriaToSqlAlchemyConverter:
     @staticmethod
     def convert(model: type[Base], criteria: Criteria) -> str:
         query = select(model)
-        return query.compile(compile_kwargs={"literal_binds": True}).string
+
+        if criteria.is_empty():
+            return query.compile(compile_kwargs={"literal_binds": True}).string
