@@ -19,3 +19,6 @@ class Criteria:
     @override
     def __eq__(self, other: "Criteria") -> bool:
         return self.to_primitives() == other.to_primitives()
+
+    def is_empty(self) -> bool:
+        return self._filters.is_empty()

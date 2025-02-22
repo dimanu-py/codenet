@@ -21,3 +21,6 @@ class Filters:
 
     def to_primitives(self) -> list[dict[str, str]]:
         return [filter_.to_primitives() for filter_ in self._value]
+
+    def is_empty(self) -> bool:
+        return len(self._value) == 0
