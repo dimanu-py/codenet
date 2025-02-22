@@ -6,3 +6,7 @@ class FiltersMother:
     @classmethod
     def any(cls) -> Filters:
         return Filters([FilterMother.any()])
+
+    @classmethod
+    def empty(cls) -> Filters:
+        return Filters([])

@@ -12,3 +12,7 @@ class CriteriaMother:
         return Criteria.from_primitives(
             [{"field": field, "operator": operator, "value": value}]
         )
+
+    @classmethod
+    def empty(cls) -> Criteria:
+        return Criteria(filters=FiltersMother.empty())
