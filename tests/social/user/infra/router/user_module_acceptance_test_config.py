@@ -4,6 +4,10 @@ from fastapi.testclient import TestClient
 from starlette.responses import JSONResponse
 
 from src.delivery.api.main import app
+from tests.social.user.domain.user_email_mother import UserEmailMother
+from tests.social.user.domain.user_id_mother import UserIdMother
+from tests.social.user.domain.user_name_mother import UserNameMother
+from tests.social.user.domain.user_username_mother import UserUsernameMother
 
 
 @pytest.mark.acceptance
@@ -19,11 +23,19 @@ class UserModuleAcceptanceTestConfig:
         expect(response.status_code).to(equal(expected_status_code))
         expect(response.json()).to(equal(expected_response))
 
-    def when_a_post_request_is_sent_to(
-        self, endpoint: str, request: dict
+    async def when_a_post_request_is_sent_to(
+        self, endpoint: str, request: dict | None = None
     ) -> JSONResponse:
+        request_body = {
+            "name": UserNameMother.any().value,
+            "username": UserUsernameMother.any().value,
+            "email": UserEmailMother.any().value,
+        }
+        request_body.update(request if request else {})
+        user_id = UserIdMother.any().value
+
         with self._client as client:
-            return client.post(f"{endpoint}", json=request)  # type: ignore
+            return client.post(f"{endpoint}{user_id}", json=request_body)  # type: ignore
 
     async def given_a_user_is_signed_up(self, user_id: str, request_body: dict) -> None:
         with self._client as client:
