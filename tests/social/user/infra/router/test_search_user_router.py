@@ -34,7 +34,8 @@ class TestSearchUserRouter:
             "/users/search/", query_params={"filters": json.dumps(filters)}
         )
 
-        self.assert_response_satisfies(200, request_body, response)
+        expected_response = {"users": [{"id": user_id, **request_body}]}
+        self.assert_response_satisfies(200, expected_response, response)
 
     async def given_a_user_is_signed_up(self, user_id: str, request_body: dict) -> None:
         with self._client as client:

@@ -10,6 +10,7 @@ from src.shared.infra.http.http_response import HttpResponse
 from src.shared.infra.http.status_code import StatusCode
 from src.shared.infra.settings import Settings
 from src.social.user.application.search.search_user_query import SearchUserQuery
+from src.social.user.application.search.user_search_response import UserSearchResponse
 from src.social.user.application.search.user_searcher import UserSearcher
 from src.social.user.infra.persistence.postgres_user_repository import (
     PostgresUserRepository,
@@ -37,8 +38,9 @@ async def get_user_by_criteria(
     user_searcher = UserSearcher(repository=repository)
 
     try:
-        user = await user_searcher(query)
+        users = await user_searcher(query)
+        response = UserSearchResponse([user.to_dict() for user in users])
     except DomainError as error:
         return HttpResponse.domain_error(error, status_code=StatusCode.BAD_REQUEST)
 
-    return HttpResponse.ok(user.to_dict() if user else {})
+    return HttpResponse.ok(response.dump())
