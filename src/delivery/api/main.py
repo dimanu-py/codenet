@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 from src.delivery.api.alembic_migrator import AlembicMigrator
 from src.shared.infra.http.http_response import HttpResponse
 from src.social.user.infra.router import signup_user_router as signup_user
+from src.social.user.infra.router import search_user_router as search_user
 
 
 @asynccontextmanager
@@ -19,6 +20,7 @@ async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
 app = FastAPI(lifespan=lifespan)
 
 app.include_router(signup_user.router)
+app.include_router(search_user.router)
 
 
 @app.exception_handler(Exception)

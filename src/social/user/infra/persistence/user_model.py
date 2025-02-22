@@ -1,7 +1,7 @@
-from src.shared.infra.persistence.sqlalchemy.base import Base
 from sqlalchemy import UUID, String
 from sqlalchemy.orm import mapped_column, Mapped
 
+from src.shared.infra.persistence.sqlalchemy.base import Base
 from src.social.user.domain.user import User
 
 
@@ -15,7 +15,7 @@ class UserModel(Base):
 
     def to_aggregate(self) -> User:
         return User.signup(
-            id_=str(self.id),
+            id=str(self.id),
             name=self.name,
             username=self.username,
             email=self.email,
