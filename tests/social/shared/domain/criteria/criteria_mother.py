@@ -16,3 +16,7 @@ class CriteriaMother:
     @classmethod
     def empty(cls) -> Criteria:
         return Criteria(filters=FiltersMother.empty())
+
+    @classmethod
+    def create(cls, fixed_filters: list[dict]) -> Criteria:
+        return Criteria.from_primitives(fixed_filters)

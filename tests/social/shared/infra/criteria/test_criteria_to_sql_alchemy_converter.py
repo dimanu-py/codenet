@@ -9,6 +9,7 @@ from src.shared.infra.criteria.criteria_to_sql_alchemy_converter import (
 from src.social.user.infra.persistence.user_model import UserModel
 from tests.social.shared.domain.criteria.criteria_mother import CriteriaMother
 from tests.social.user.domain.user_name_mother import UserNameMother
+from tests.social.user.domain.user_username_mother import UserUsernameMother
 
 
 @pytest.mark.integration
@@ -40,6 +41,33 @@ class TestCriteriaToSqlAlchemyConverter:
                 f"SELECT users.id, users.name, users.username, users.email \n"
                 f"FROM users \n"
                 f"WHERE users.name = '{user_name.value}'"
+            )
+        )
+
+    def test_should_generate_select_query_with_multiple_filters(self) -> None:
+        user_name = UserNameMother.any()
+        user_username = UserUsernameMother.any()
+        criteria = CriteriaMother.create(
+            [
+                {
+                    "field": "name",
+                    "operator": FilterOperator.EQUAL,
+                    "value": user_name.value,
+                },
+                {
+                    "field": "username",
+                    "operator": FilterOperator.EQUAL,
+                    "value": user_username.value,
+                }
+            ]
+        )
+        query = self.stringify(self._converter.convert(model=UserModel, criteria=criteria))
+
+        expect(query).to(
+            equal(
+                f"SELECT users.id, users.name, users.username, users.email \n"
+                f"FROM users \n"
+                f"WHERE users.name = '{user_name.value}' AND users.username = '{user_username.value}'"
             )
         )
 
