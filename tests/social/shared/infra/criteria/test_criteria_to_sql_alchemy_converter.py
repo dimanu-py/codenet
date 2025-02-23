@@ -13,15 +13,18 @@ from tests.social.user.domain.user_name_mother import UserNameMother
 
 @pytest.mark.integration
 class TestCriteriaToSqlAlchemyConverter:
+    def setup_method(self) -> None:
+        self._converter = CriteriaToSqlAlchemyConverter()
+
     def test_should_generate_select_query_from_empty_criteria(self) -> None:
         criteria = CriteriaMother.empty()
-        converter = CriteriaToSqlAlchemyConverter()
 
-        query = self.stringify(converter.convert(model=UserModel, criteria=criteria))
+        query = self.stringify(self._converter.convert(model=UserModel, criteria=criteria))
 
         expect(query).to(
             equal(
-                "SELECT users.id, users.name, users.username, users.email \nFROM users"
+                "SELECT users.id, users.name, users.username, users.email \n"
+                "FROM users"
             )
         )
 
@@ -30,9 +33,7 @@ class TestCriteriaToSqlAlchemyConverter:
         criteria = CriteriaMother.with_one_filter(
             "name", FilterOperator.EQUAL, user_name.value
         )
-        converter = CriteriaToSqlAlchemyConverter()
-
-        query = self.stringify(converter.convert(model=UserModel, criteria=criteria))
+        query = self.stringify(self._converter.convert(model=UserModel, criteria=criteria))
 
         expect(query).to(
             equal(
