@@ -16,9 +16,7 @@ class CriteriaToSqlAlchemyConverter:
         for filter_ in criteria.filters:
             if filter_.operator_is(FilterOperator.EQUAL):
                 primitives_filter = filter_.to_primitives()
-                query = query.where(
-                    getattr(model, primitives_filter["field"])
-                    == primitives_filter["value"]
-                )
+                column = getattr(model, primitives_filter["field"])
+                query = query.where(column == primitives_filter["value"])
 
         return query
