@@ -1,3 +1,27 @@
+## v0.5.0 (2025-02-24)
+
+### Feat
+
+- **shared**: add logic to allow building queries with contains
+- **shared**: add logic to allow building queries with not equal
+
+### Fix
+
+- **user**: correct criteria object for integration test
+
+### Refactor
+
+- **shared**: clean up convert method extracting common variables outside conditionals and encapsulating condition generation in a helper method
+- **shared**: extract variable to understand better where query
+- **user**: extract setup_method to reuse converter object
+- **user**: extract setup_method to reuse repository instance
+- **user**: move routers to delivery context
+- **user**: generate acceptance test data inside helper method when_a_post_request_is_sent_to
+- **user**: clean up acceptance test using UserModuleAcceptanceTestConfig
+- **user**: clean up unit test using UserModuleUnitTestConfig
+- **user**: add type hint to should_not_match mock repository
+- **user**: rename search method to find
+
 ## v0.4.0 (2025-02-22)
 
 ### Feat
