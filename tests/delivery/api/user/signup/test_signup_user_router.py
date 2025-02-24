@@ -16,7 +16,9 @@ class TestSignupUserRouter(UserModuleAcceptanceTestConfig):
         invalid_name = {
             "name": "John!",
         }
-        response = await self.when_a_post_request_is_sent_to("/users/signup/", invalid_name)
+        response = await self.when_a_post_request_is_sent_to(
+            "/users/signup/", invalid_name
+        )
 
         self.assert_response_satisfies(
             StatusCode.BAD_REQUEST,

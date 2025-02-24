@@ -1,6 +1,8 @@
 import json
 
-from tests.delivery.api.user.user_module_acceptance_test_config import UserModuleAcceptanceTestConfig
+from tests.delivery.api.user.user_module_acceptance_test_config import (
+    UserModuleAcceptanceTestConfig,
+)
 from tests.social.user.domain.user_email_mother import UserEmailMother
 from tests.social.user.domain.user_id_mother import UserIdMother
 from tests.social.user.domain.user_name_mother import UserNameMother
@@ -8,7 +10,6 @@ from tests.social.user.domain.user_username_mother import UserUsernameMother
 
 
 class TestSearchUserRouter(UserModuleAcceptanceTestConfig):
-
     async def test_should_search_user_based_on_filters(self) -> None:
         request_body = {
             "name": UserNameMother.any().value,

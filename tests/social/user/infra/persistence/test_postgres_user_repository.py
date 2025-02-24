@@ -48,9 +48,7 @@ class TestPostgresUserRepository:
 
         expect(user).to(equal(saved_user))
 
-    async def test_should_match_a_user_based_on_criteria(
-        self
-    ) -> None:
+    async def test_should_match_a_user_based_on_criteria(self) -> None:
         user = UserMother.any()
         criteria = CriteriaMother.with_one_filter(
             field="username", operator="eq", value=user.username.value
