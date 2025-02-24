@@ -20,12 +20,13 @@ class TestCriteriaToSqlAlchemyConverter:
     def test_should_generate_select_query_from_empty_criteria(self) -> None:
         criteria = CriteriaMother.empty()
 
-        query = self.stringify(self._converter.convert(model=UserModel, criteria=criteria))
+        query = self.stringify(
+            self._converter.convert(model=UserModel, criteria=criteria)
+        )
 
         expect(query).to(
             equal(
-                "SELECT users.id, users.name, users.username, users.email \n"
-                "FROM users"
+                "SELECT users.id, users.name, users.username, users.email \nFROM users"
             )
         )
 
@@ -34,7 +35,9 @@ class TestCriteriaToSqlAlchemyConverter:
         criteria = CriteriaMother.with_one_filter(
             "name", FilterOperator.EQUAL, user_name.value
         )
-        query = self.stringify(self._converter.convert(model=UserModel, criteria=criteria))
+        query = self.stringify(
+            self._converter.convert(model=UserModel, criteria=criteria)
+        )
 
         expect(query).to(
             equal(
@@ -58,10 +61,12 @@ class TestCriteriaToSqlAlchemyConverter:
                     "field": "username",
                     "operator": FilterOperator.EQUAL,
                     "value": user_username.value,
-                }
+                },
             ]
         )
-        query = self.stringify(self._converter.convert(model=UserModel, criteria=criteria))
+        query = self.stringify(
+            self._converter.convert(model=UserModel, criteria=criteria)
+        )
 
         expect(query).to(
             equal(
@@ -77,13 +82,33 @@ class TestCriteriaToSqlAlchemyConverter:
             "name", FilterOperator.NOT_EQUAL, user_name.value
         )
 
-        query = self.stringify(self._converter.convert(model=UserModel, criteria=criteria))
+        query = self.stringify(
+            self._converter.convert(model=UserModel, criteria=criteria)
+        )
 
         expect(query).to(
             equal(
                 f"SELECT users.id, users.name, users.username, users.email \n"
                 f"FROM users \n"
                 f"WHERE users.name != '{user_name.value}'"
+            )
+        )
+
+    def test_should_generate_query_with_contains(self) -> None:
+        user_name = UserNameMother.any()
+        criteria = CriteriaMother.with_one_filter(
+            "name", FilterOperator.CONTAINS, user_name.value
+        )
+
+        query = self.stringify(
+            self._converter.convert(model=UserModel, criteria=criteria)
+        )
+
+        expect(query).to(
+            equal(
+                f"SELECT users.id, users.name, users.username, users.email \n"
+                f"FROM users \n"
+                f"WHERE lower(users.name) LIKE lower('%{user_name.value}%')"
             )
         )
 
