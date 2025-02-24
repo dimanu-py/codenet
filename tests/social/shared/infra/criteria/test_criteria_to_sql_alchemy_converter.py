@@ -71,6 +71,22 @@ class TestCriteriaToSqlAlchemyConverter:
             )
         )
 
+    def test_should_generate_negated_query(self) -> None:
+        user_name = UserNameMother.any()
+        criteria = CriteriaMother.with_one_filter(
+            "name", FilterOperator.NOT_EQUAL, user_name.value
+        )
+
+        query = self.stringify(self._converter.convert(model=UserModel, criteria=criteria))
+
+        expect(query).to(
+            equal(
+                f"SELECT users.id, users.name, users.username, users.email \n"
+                f"FROM users \n"
+                f"WHERE users.name != '{user_name.value}'"
+            )
+        )
+
     @staticmethod
     def stringify(query: Select) -> str:
         return query.compile(compile_kwargs={"literal_binds": True}).string
