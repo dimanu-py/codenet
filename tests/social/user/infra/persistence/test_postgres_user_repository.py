@@ -60,7 +60,7 @@ class TestPostgresUserRepository:
         expect(searched_users).to(equal([user]))
 
     async def test_should_return_empty_list_if_no_users_are_found(self) -> None:
-        criteria = CriteriaMother.any()
+        criteria = CriteriaMother.empty()
 
         searched_users = await self._repository.matching(criteria)
 
