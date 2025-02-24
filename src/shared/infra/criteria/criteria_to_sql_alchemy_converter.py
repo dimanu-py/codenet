@@ -22,5 +22,9 @@ class CriteriaToSqlAlchemyConverter:
                 primitives_filter = filter_.to_primitives()
                 column = getattr(model, primitives_filter["field"])
                 query = query.where(column != primitives_filter["value"])
+            elif filter_.operator_is(FilterOperator.CONTAINS):
+                primitives_filter = filter_.to_primitives()
+                column = getattr(model, primitives_filter["field"])
+                query = query.where(column.ilike(f"%{primitives_filter["value"]}%"))
 
         return query
