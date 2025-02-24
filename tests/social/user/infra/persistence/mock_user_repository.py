@@ -16,7 +16,7 @@ class MockUserRepository(UserRepository):
     async def save(self, user: User) -> None:
         self._mock_save(user)
 
-    async def search(self, user_id: UserId) -> User | None:
+    async def find(self, user_id: UserId) -> User | None:
         raise NotImplementedError
 
     async def matching(self, criteria: Criteria) -> list[User]:
@@ -35,7 +35,7 @@ class MockUserRepository(UserRepository):
 
         self._mock_match = verify  # type: ignore
 
-    def should_not_match(self, criteria):
+    def should_not_match(self, criteria: Criteria) -> None:
         def verify(expected_criteria: Criteria) -> list:
             expect(criteria).to(equal(expected_criteria))
             return []

@@ -7,7 +7,9 @@ help:  ## Show this help.
 
 .PHONY: test
 test:  ## Run all test.
+	@make up
 	@uv run pytest -n 0 tests -ra
+	@make down
 
 .PHONY: unit
 unit:  ## Run unit test in changed files.
@@ -15,7 +17,9 @@ unit:  ## Run unit test in changed files.
 
 .PHONY: integration
 integration:  ## Run integration test in changed files.
+	@make up
 	@scripts/tests/integration.sh
+	@make down
 
 .PHONY: all-unit
 all-unit:  ## Run all unit test.
@@ -23,16 +27,22 @@ all-unit:  ## Run all unit test.
 
 .PHONY: all-integration
 all-integration:  ## Run all integration test.
+	@make up
 	@uv run pytest -n 0 -m "integration" -ra
+	@make down
 
 .PHONY: all-acceptance
 all-acceptance:  ## Run all acceptance test.
+	@make up
 	@uv run pytest -n 0 -m "acceptance" -ra
+	@make down
 
 .PHONY: coverage
 coverage:  ## Run all test with coverage.
+	@make up
 	@uv run coverage run --branch -m pytest tests
 	@uv run coverage html
+	@make down
 	@$(BROWSER) htmlcov/index.html
 
 .PHONY: local-setup

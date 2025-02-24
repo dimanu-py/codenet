@@ -1,7 +1,7 @@
 from collections.abc import AsyncGenerator
 
 import pytest
-from expects import expect, equal
+from expects import expect, equal, be_empty
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
 from src.shared.infra.settings import Settings
@@ -29,35 +29,39 @@ async def engine() -> AsyncGenerator[AsyncEngine]:
 
 
 @pytest.mark.integration
+@pytest.mark.asyncio
 class TestPostgresUserRepository:
-    @pytest.mark.asyncio
-    async def test_should_save_user(self, engine: AsyncEngine) -> None:
-        repository = PostgresUserRepository(engine)
+    @pytest.fixture(autouse=True)
+    def setup_method(self, engine: AsyncEngine) -> None:
+        self._repository = PostgresUserRepository(engine)
+
+    async def test_should_save_user(self) -> None:
         user = UserMother.any()
 
-        await repository.save(user)
+        await self._repository.save(user)
 
-    @pytest.mark.asyncio
-    async def test_should_search_a_user(self, engine: AsyncEngine) -> None:
-        repository = PostgresUserRepository(engine)
+    async def test_should_find_existing_user(self) -> None:
         user = UserMother.any()
-        await repository.save(user)
+        await self._repository.save(user)
 
-        saved_user = await repository.search(user.id)
+        saved_user = await self._repository.find(user.id)
 
         expect(user).to(equal(saved_user))
 
-    @pytest.mark.asyncio
-    async def test_should_match_a_user_based_on_criteria(
-        self, engine: AsyncEngine
-    ) -> None:
-        repository = PostgresUserRepository(engine)
+    async def test_should_match_a_user_based_on_criteria(self) -> None:
         user = UserMother.any()
         criteria = CriteriaMother.with_one_filter(
             field="username", operator="eq", value=user.username.value
         )
-        await repository.save(user)
+        await self._repository.save(user)
 
-        searched_users = await repository.matching(criteria)
+        searched_users = await self._repository.matching(criteria)
 
         expect(searched_users).to(equal([user]))
+
+    async def test_should_return_empty_list_if_no_users_are_found(self) -> None:
+        criteria = CriteriaMother.empty()
+
+        searched_users = await self._repository.matching(criteria)
+
+        expect(searched_users).to(be_empty)
