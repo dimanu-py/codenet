@@ -1,5 +1,6 @@
 from collections.abc import Iterator
 from dataclasses import dataclass
+from typing import Self
 
 from src.shared.domain.criteria.filter import Filter
 
@@ -9,7 +10,7 @@ class Filters:
     _value: list[Filter]
 
     @classmethod
-    def from_primitives(cls, filters: list[dict[str, str]]) -> "Filters":
+    def from_primitives(cls, filters: list[dict[str, str]]) -> Self:
         value = [
             Filter.from_primitives(
                 field=filter["field"],

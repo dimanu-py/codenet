@@ -1,4 +1,4 @@
-from typing import override
+from typing import override, Self
 
 from src.shared.domain.criteria.filters import Filters
 
@@ -10,14 +10,14 @@ class Criteria:
         self._filters = filters
 
     @classmethod
-    def from_primitives(cls, filters: list[dict]) -> "Criteria":
+    def from_primitives(cls, filters: list[dict]) -> Self:
         return Criteria(filters=Filters.from_primitives(filters))
 
     def to_primitives(self) -> list[dict]:
         return self._filters.to_primitives()
 
     @override
-    def __eq__(self, other: "Criteria") -> bool:
+    def __eq__(self, other: Self) -> bool:
         return self.to_primitives() == other.to_primitives()
 
     def is_empty(self) -> bool:

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import override
+from typing import override, Self
 
 
 class ValueObject[T](ABC):
@@ -17,5 +17,5 @@ class ValueObject[T](ABC):
         return self._value
 
     @override
-    def __eq__(self, other: "ValueObject[T]") -> bool:
+    def __eq__(self, other: Self) -> bool:
         return self.value == other.value
