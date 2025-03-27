@@ -23,7 +23,7 @@ class TestUserSignup(UserModuleUnitTestConfig):
 
     async def test_should_signup_user(self) -> None:
         command = UserSignupCommandMother.any()
-        user = UserMother.create(command.to_dict())
+        user = UserMother.from_signup_command(command)
 
         self._should_save(user)
 

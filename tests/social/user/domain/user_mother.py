@@ -1,3 +1,4 @@
+from src.social.user.application.signup.user_signup_command import UserSignupCommand
 from src.social.user.domain.user import User
 from tests.social.user.domain.user_email_mother import UserEmailMother
 from tests.social.user.domain.user_id_mother import UserIdMother
@@ -16,13 +17,5 @@ class UserMother:
         )
 
     @staticmethod
-    def create(fixed_values: dict) -> User:
-        primitives = {
-            "id": UserIdMother.any().value,
-            "name": UserNameMother.any().value,
-            "username": UserUsernameMother.any().value,
-            "email": UserEmailMother.any().value,
-        }
-        primitives.update(fixed_values)
-
-        return User.signup(**primitives)
+    def from_signup_command(command: UserSignupCommand) -> User:
+        return User.signup(**command.to_dict())
