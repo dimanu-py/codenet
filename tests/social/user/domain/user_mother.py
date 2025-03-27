@@ -6,8 +6,8 @@ from tests.social.user.domain.user_username_mother import UserUsernameMother
 
 
 class UserMother:
-    @classmethod
-    def any(cls) -> User:
+    @staticmethod
+    def any() -> User:
         return User(
             id=UserIdMother.any(),
             name=UserNameMother.any(),
@@ -15,8 +15,8 @@ class UserMother:
             email=UserEmailMother.any(),
         )
 
-    @classmethod
-    def create(cls, fixed_values: dict) -> User:
+    @staticmethod
+    def create(fixed_values: dict) -> User:
         primitives = {
             "id": UserIdMother.any().value,
             "name": UserNameMother.any().value,

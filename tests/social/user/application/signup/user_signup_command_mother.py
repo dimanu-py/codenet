@@ -6,8 +6,8 @@ from tests.social.user.domain.user_username_mother import UserUsernameMother
 
 
 class UserSignupCommandMother:
-    @classmethod
-    def any(cls) -> UserSignupCommand:
+    @staticmethod
+    def any() -> UserSignupCommand:
         return UserSignupCommand(
             id=UserIdMother.any().value,
             name=UserNameMother.any().value,
@@ -15,8 +15,8 @@ class UserSignupCommandMother:
             email=UserEmailMother.any().value,
         )
 
-    @classmethod
-    def invalid(cls, fixed_values: dict[str, str]) -> UserSignupCommand:
+    @staticmethod
+    def invalid(fixed_values: dict[str, str]) -> UserSignupCommand:
         primitives = {
             "id": UserIdMother.any().value,
             "name": UserNameMother.any().value,

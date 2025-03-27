@@ -3,6 +3,6 @@ from tests.social.shared.domain.random_generator import RandomGenerator
 
 
 class UserUsernameMother:
-    @classmethod
-    def any(cls) -> UserUsername:
+    @staticmethod
+    def any() -> UserUsername:
         return UserUsername(RandomGenerator.username())
