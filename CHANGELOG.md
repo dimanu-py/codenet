@@ -1,3 +1,11 @@
+## v0.5.1 (2025-03-27)
+
+### Refactor
+
+- **user**: rename UserMother create factory method to from_signup_command and pass the command instead of a dict
+- **user**: modify how create method in RegisterUserCommandMother is used passing a kwargs instead of a dict
+- **user**: convert all object mothers classmethods into staticmethods
+
 ## v0.5.0 (2025-02-24)
 
 ### Feat
