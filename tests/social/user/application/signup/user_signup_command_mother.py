@@ -16,12 +16,12 @@ class UserSignupCommandMother:
         )
 
     @staticmethod
-    def invalid(fixed_values: dict[str, str]) -> UserSignupCommand:
-        primitives = {
+    def invalid(**overrides) -> UserSignupCommand:
+        defaults = {
             "id": UserIdMother.any().value,
             "name": UserNameMother.any().value,
             "username": UserUsernameMother.any().value,
             "email": UserEmailMother.any().value,
         }
-        primitives.update(fixed_values)
-        return UserSignupCommand(**primitives)
+        defaults.update(overrides)
+        return UserSignupCommand(**defaults)

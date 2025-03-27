@@ -30,18 +30,18 @@ class TestUserSignup(UserModuleUnitTestConfig):
         await self._user_signup(command)
 
     @pytest.mark.parametrize(
-        "invalid_field, expected_error",
+        "field_name, value, expected_error",
         [
-            ({"id": "12345"}, InvalidIdFormatError),
-            ({"name": "John!"}, InvalidNameFormatError),
-            ({"username": "john#doe"}, InvalidUsernameFormatError),
-            ({"email": "john.doe_hotmail.com"}, InvalidEmailFormatError),
+            ("id", "12345", InvalidIdFormatError),
+            ("name", "John!", InvalidNameFormatError),
+            ("username", "john#doe", InvalidUsernameFormatError),
+            ("email", "john.doe_hotmail.com", InvalidEmailFormatError),
         ],
     )
     async def test_should_not_allow_to_signup_invalid_user(
-        self, invalid_field: dict[str, str], expected_error: Exception
+        self, field_name: str, value: str, expected_error: Exception
     ) -> None:
-        command = UserSignupCommandMother.invalid(invalid_field)
+        command = UserSignupCommandMother.invalid(**{field_name: value})
 
         await async_expect(lambda: self._user_signup(command)).to(
             raise_error(expected_error)
