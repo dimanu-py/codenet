@@ -10,7 +10,7 @@ class DomainError(Exception, ABC):
     @abstractmethod
     def message(self) -> str: ...
 
-    def to_dict(self) -> dict:
+    def to_primitives(self) -> dict:
         return {
             "type": self.type,
             "message": self.message,
