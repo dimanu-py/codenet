@@ -18,4 +18,4 @@ class UserMother:
 
     @staticmethod
     def from_signup_command(command: UserSignupCommand) -> User:
-        return User.signup(**command.to_dict())
+        return User.signup(**command.to_primitives())

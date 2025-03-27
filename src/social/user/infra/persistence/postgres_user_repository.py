@@ -1,7 +1,6 @@
 from typing import override
 
 from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker
-
 from src.shared.domain.criteria.criteria import Criteria
 from src.shared.infra.criteria.criteria_to_sql_alchemy_converter import (
     CriteriaToSqlAlchemyConverter,

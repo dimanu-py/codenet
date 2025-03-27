@@ -4,7 +4,6 @@ from collections.abc import AsyncGenerator
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
-
 from src.shared.domain.exceptions.domain_error import DomainError
 from src.shared.infra.http.http_response import HttpResponse
 from src.shared.infra.http.status_code import StatusCode
