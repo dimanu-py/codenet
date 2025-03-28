@@ -1,0 +1,23 @@
+from collections.abc import AsyncGenerator
+
+from fastapi import APIRouter, Depends
+from fastapi.responses import JSONResponse
+from sqlalchemy.ext.asyncio import AsyncEngine
+
+router = APIRouter(prefix="/users", tags=["Users"])
+
+
+async def engine_generator() -> AsyncGenerator[AsyncEngine]:
+	engine = create_async_engine(Settings().postgres_url)  # type: ignore
+
+	try:
+		yield engine
+	finally:
+		await engine.dispose()
+
+
+@router.delete("/removal/{user_id}")
+async def get_user_by_criteria(
+		engine: AsyncEngine = Depends(engine_generator),
+) -> JSONResponse:
+	raise NotImplementedError
