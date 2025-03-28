@@ -13,6 +13,8 @@ from tests.social.user.domain.user_username_mother import UserUsernameMother
 @pytest.mark.acceptance
 @pytest.mark.asyncio
 class UserModuleAcceptanceTestConfig:
+    EMPTY_RESPONSE: dict = {}
+
     def setup_method(self) -> None:
         self._client = TestClient(app)
 
