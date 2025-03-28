@@ -3,7 +3,7 @@ from expects import expect, equal
 from fastapi.testclient import TestClient
 from starlette.responses import JSONResponse
 
-from src.delivery.api.main import app
+from src.delivery.main import app
 from tests.social.user.domain.user_email_mother import UserEmailMother
 from tests.social.user.domain.user_id_mother import UserIdMother
 from tests.social.user.domain.user_name_mother import UserNameMother

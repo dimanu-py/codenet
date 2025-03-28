@@ -4,9 +4,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
-from src.delivery.api.alembic_migrator import AlembicMigrator
-from src.delivery.api.user.search import search_user_router as search_user
-from src.delivery.api.user.signup import signup_user_router as signup_user
+from src.delivery.alembic_migrator import AlembicMigrator
+from src.social.user.infra.api.search import search_user_router as search_user
+from src.social.user.infra.api.signup import signup_user_router as signup_user
 from src.shared.infra.http.http_response import HttpResponse
 
 

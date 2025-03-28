@@ -1,6 +1,6 @@
 import json
 
-from tests.delivery.api.user.user_module_acceptance_test_config import (
+from tests.social.user.infra.api.user_module_acceptance_test_config import (
     UserModuleAcceptanceTestConfig,
 )
 from tests.social.user.domain.user_email_mother import UserEmailMother
