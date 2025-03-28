@@ -38,7 +38,7 @@ class User:
             email=UserEmail(email),
         )
 
-    def to_dict(self) -> dict:
+    def to_primitives(self) -> dict:
         return {
             "id": self._id.value,
             "name": self._name.value,

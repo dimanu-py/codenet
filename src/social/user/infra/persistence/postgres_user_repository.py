@@ -22,7 +22,7 @@ class PostgresUserRepository(UserRepository):
     @override
     async def save(self, user: User) -> None:
         async with self._session_maker() as session:
-            user_to_save = UserModel(**user.to_dict())
+            user_to_save = UserModel(**user.to_primitives())
             session.add(user_to_save)
             await session.commit()
 
