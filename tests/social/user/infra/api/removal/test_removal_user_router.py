@@ -19,7 +19,7 @@ class TestRemovalUserRouter(UserModuleAcceptanceTestConfig):
         user_id = UserIdMother.any().value
         await self.given_a_user_is_signed_up(user_id, request_body)
 
-        response = await self.when_a_delete_request_is_sent_to("/users/removal/")
+        response = await self.when_a_delete_request_is_sent_to("/users/removal/", request_body["username"])
 
         self.assert_response_satisfies(202, self.EMPTY_RESPONSE, response)
 

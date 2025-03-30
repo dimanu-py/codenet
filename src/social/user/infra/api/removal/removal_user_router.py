@@ -16,8 +16,9 @@ async def engine_generator() -> AsyncGenerator[AsyncEngine]:
 		await engine.dispose()
 
 
-@router.delete("/removal/{user_id}")
+@router.delete("/removal/{username}")
 async def get_user_by_criteria(
+		username: str,
 		engine: AsyncEngine = Depends(engine_generator),
 ) -> JSONResponse:
 	raise NotImplementedError
