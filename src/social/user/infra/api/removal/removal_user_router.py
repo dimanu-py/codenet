@@ -2,7 +2,9 @@ from collections.abc import AsyncGenerator
 
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
-from sqlalchemy.ext.asyncio import AsyncEngine
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
+
+from src.shared.infra.settings import Settings
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
