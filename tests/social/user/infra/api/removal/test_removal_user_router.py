@@ -23,5 +23,6 @@ class TestRemovalUserRouter(UserModuleAcceptanceTestConfig):
 
         self.assert_response_satisfies(202, self.EMPTY_RESPONSE, response)
 
-    async def when_a_delete_request_is_sent_to(self, endpoint: str) -> JSONResponse:
-        raise NotImplementedError
+    async def when_a_delete_request_is_sent_to(self, endpoint: str, username) -> JSONResponse:
+        with self._client as client:
+            return client.delete(f"{endpoint}{username}")  # type: ignore
