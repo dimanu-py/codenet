@@ -10,17 +10,17 @@ router = APIRouter(prefix="/users", tags=["Users"])
 
 
 async def engine_generator() -> AsyncGenerator[AsyncEngine]:
-	engine = create_async_engine(Settings().postgres_url)  # type: ignore
+    engine = create_async_engine(Settings().postgres_url)  # type: ignore
 
-	try:
-		yield engine
-	finally:
-		await engine.dispose()
+    try:
+        yield engine
+    finally:
+        await engine.dispose()
 
 
 @router.delete("/removal/{username}")
-async def get_user_by_criteria(
-		username: str,
-		engine: AsyncEngine = Depends(engine_generator),
+async def remove_user(
+    username: str,
+    engine: AsyncEngine = Depends(engine_generator),
 ) -> JSONResponse:
-	raise NotImplementedError
+    raise NotImplementedError
