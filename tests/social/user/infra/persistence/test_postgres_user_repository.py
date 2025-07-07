@@ -35,15 +35,10 @@ class TestPostgresUserRepository:
     def setup_method(self, engine: AsyncEngine) -> None:
         self._repository = PostgresUserRepository(engine)
 
-    async def test_should_save_user(self) -> None:
+    async def test_should_save_and_find_existing_user(self) -> None:
         user = UserMother.any()
 
         await self._repository.save(user)
-
-    async def test_should_find_existing_user(self) -> None:
-        user = UserMother.any()
-        await self._repository.save(user)
-
         saved_user = await self._repository.find(user.id)
 
         expect(user).to(equal(saved_user))
