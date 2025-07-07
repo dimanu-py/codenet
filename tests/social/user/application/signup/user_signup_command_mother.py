@@ -15,13 +15,8 @@ class UserSignupCommandMother:
             email=UserEmailMother.any().value,
         )
 
-    @staticmethod
-    def invalid(**overrides) -> UserSignupCommand:
-        defaults = {
-            "id": UserIdMother.any().value,
-            "name": UserNameMother.any().value,
-            "username": UserUsernameMother.any().value,
-            "email": UserEmailMother.any().value,
-        }
+    @classmethod
+    def invalid(cls, **overrides) -> UserSignupCommand:
+        defaults = cls.any().to_primitives()
         defaults.update(overrides)
         return UserSignupCommand(**defaults)
