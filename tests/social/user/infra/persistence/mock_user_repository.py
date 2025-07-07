@@ -55,7 +55,7 @@ class MockUserRepository(UserRepository):
         self._mock_find = verify  # type: ignore
 
     def should_remove(self, user: User) -> None:
-        def verify(expected_user: User) -> None:
-            expect(user).to(equal(expected_user))
+        def verify(expected_user_id: User) -> None:
+            expect(user.id).to(equal(expected_user_id))
 
         self._mock_remove = verify  # type: ignore
