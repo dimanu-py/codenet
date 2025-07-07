@@ -1,3 +1,4 @@
+from src.social.user.application.removal.user_removal_command import UserRemovalCommand
 from tests.social.user.domain.user_id_mother import UserIdMother
 
 
