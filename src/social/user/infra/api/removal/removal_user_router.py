@@ -14,7 +14,7 @@ from src.social.user.infra.persistence.postgres_user_repository import (
     PostgresUserRepository,
 )
 
-router = APIRouter(prefix="/users", tags=["Users"])
+router = APIRouter()
 
 
 async def engine_generator() -> AsyncGenerator[AsyncEngine]:

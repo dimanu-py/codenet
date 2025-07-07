@@ -4,18 +4,18 @@ from fastapi import APIRouter, status, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
 
-from src.social.user.infra.api.signup.user_sign_up_request import UserSignupRequest
 from src.shared.domain.exceptions.domain_error import DomainError
 from src.shared.infra.http.http_response import HttpResponse
 from src.shared.infra.http.status_code import StatusCode
 from src.shared.infra.settings import Settings
 from src.social.user.application.signup.user_signup import UserSignup
 from src.social.user.application.signup.user_signup_command import UserSignupCommand
+from src.social.user.infra.api.signup.user_sign_up_request import UserSignupRequest
 from src.social.user.infra.persistence.postgres_user_repository import (
     PostgresUserRepository,
 )
 
-router = APIRouter(prefix="/users", tags=["Users"])
+router = APIRouter()
 
 
 async def engine_generator() -> AsyncGenerator[AsyncEngine]:
