@@ -61,3 +61,12 @@ class TestPostgresUserRepository:
         searched_users = await self._repository.matching(criteria)
 
         expect(searched_users).to(be_empty)
+
+    async def _given_an_user_already_exists(self) -> User:
+        user = UserMother.any()
+        session_maker = async_sessionmaker(bind=self._engine)
+        async with session_maker() as session:
+            existing_user = UserModel(**user.to_primitives())
+            session.add(existing_user)
+            await session.commit()
+        return user
