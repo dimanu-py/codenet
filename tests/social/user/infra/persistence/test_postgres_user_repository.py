@@ -2,9 +2,10 @@ from collections.abc import AsyncGenerator
 
 import pytest
 from expects import expect, equal, be_empty
-from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine, async_sessionmaker
 
 from src.shared.infra.settings import Settings
+from src.social.user.domain.user import User
 from src.social.user.infra.persistence.postgres_user_repository import (
     PostgresUserRepository,
 )
@@ -45,11 +46,10 @@ class TestPostgresUserRepository:
         expect(user).to(equal(saved_user))
 
     async def test_should_match_a_user_based_on_criteria(self) -> None:
-        user = UserMother.any()
+        user = await self._given_an_user_already_exists()
         criteria = CriteriaMother.with_one_filter(
             field="username", operator="eq", value=user.username.value
         )
-        await self._repository.save(user)
 
         searched_users = await self._repository.matching(criteria)
 
