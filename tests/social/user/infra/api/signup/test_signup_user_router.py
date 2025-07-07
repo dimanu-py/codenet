@@ -6,7 +6,7 @@ from tests.social.user.infra.api.user_module_acceptance_test_config import (
 
 class TestSignupUserRouter(UserModuleAcceptanceTestConfig):
     async def test_should_register_a_valid_user(self) -> None:
-        response = await self.when_a_post_request_is_sent_to("/users/signup/")
+        response = await self.when_a_post_request_is_sent_to("/app/users/signup/")
 
         self.assert_response_satisfies(201, self.EMPTY_RESPONSE, response)
 
@@ -15,7 +15,7 @@ class TestSignupUserRouter(UserModuleAcceptanceTestConfig):
             "name": "John!",
         }
         response = await self.when_a_post_request_is_sent_to(
-            "/users/signup/", invalid_name
+            "/app/users/signup/", invalid_name
         )
 
         self.assert_response_satisfies(
