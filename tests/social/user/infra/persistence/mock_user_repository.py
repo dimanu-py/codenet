@@ -19,7 +19,7 @@ class MockUserRepository(UserRepository):
         self._mock_save(user)
 
     async def find(self, user_id: UserId) -> User | None:
-        return self._mock_find(user_id)
+        return self._mock_find(user_id)  # type: ignore
 
     async def matching(self, criteria: Criteria) -> list[User]:
         return self._mock_match(criteria)  # type: ignore

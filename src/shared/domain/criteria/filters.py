@@ -19,7 +19,7 @@ class Filters:
             )
             for filter in filters
         ]
-        return Filters(value)
+        return cls(value)
 
     def to_primitives(self) -> list[dict[str, str]]:
         return [filter_.to_primitives() for filter_ in self._value]

@@ -19,7 +19,7 @@ class Filter:
 
     @classmethod
     def from_primitives(cls, field: str, operator: str, value: str) -> Self:
-        return Filter(
+        return cls(
             field=FilterField(field),
             operator=FilterOperator(operator),
             value=FilterValue(value),

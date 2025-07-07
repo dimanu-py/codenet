@@ -11,7 +11,7 @@ class Criteria:
 
     @classmethod
     def from_primitives(cls, filters: list[dict]) -> Self:
-        return Criteria(filters=Filters.from_primitives(filters))
+        return cls(filters=Filters.from_primitives(filters))
 
     def to_primitives(self) -> list[dict]:
         return self._filters.to_primitives()

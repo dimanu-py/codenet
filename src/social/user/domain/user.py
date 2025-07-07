@@ -33,7 +33,7 @@ class User:
 
     @classmethod
     def signup(cls, id: str, name: str, username: str, email: str) -> Self:
-        return User(
+        return cls(
             id=UserId(id),
             name=UserName(name),
             username=UserUsername(username),
