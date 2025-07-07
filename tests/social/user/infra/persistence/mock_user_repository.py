@@ -24,6 +24,9 @@ class MockUserRepository(UserRepository):
     async def matching(self, criteria: Criteria) -> list[User]:
         return self._mock_match(criteria)  # type: ignore
 
+    async def delete(self, user_id: UserId) -> None:
+        return self._mock_remove(user_id)  # type: ignore
+
     def should_save(self, user: User) -> None:
         def verify(expected_user: User) -> None:
             expect(user).to(equal(expected_user))
