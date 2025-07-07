@@ -17,3 +17,7 @@ class UserRepository(ABC):
     @abstractmethod
     async def matching(self, criteria: Criteria) -> list[User]:
         raise NotImplementedError
+
+    @abstractmethod
+    async def delete(self, user_id: UserId) -> None:
+        raise NotImplementedError
