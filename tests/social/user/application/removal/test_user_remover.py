@@ -1,3 +1,4 @@
+from src.social.user.application.removal.user_not_found_error import UserNotFoundError
 from src.social.user.application.removal.user_remover import UserRemover
 from tests.social.shared.expects.matchers import async_expect, raise_error
 from tests.social.user.application.removal.user_removal_command_mother import (
