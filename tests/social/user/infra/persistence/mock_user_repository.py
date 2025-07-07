@@ -45,8 +45,9 @@ class MockUserRepository(UserRepository):
         self._mock_match = verify  # type: ignore
 
     def should_find(self, user: User) -> None:
-        def verify(expected_user: User) -> None:
-            expect(user).to(equal(expected_user))
+        def verify(expected_user_id: UserId) -> User:
+            expect(user.id).to(equal(expected_user_id))
+            return user
 
         self._mock_find = verify  # type: ignore
 
