@@ -18,3 +18,6 @@ class UserModuleUnitTestConfig:
 
     def _should_not_match(self, criteria: Criteria) -> None:
         self._repository.should_not_match(criteria)
+
+    def _should_find(self, user: User) -> None:
+        self._repository.should_find(user)

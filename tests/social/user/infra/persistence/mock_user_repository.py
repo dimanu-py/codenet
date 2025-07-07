@@ -12,6 +12,7 @@ class MockUserRepository(UserRepository):
     def __init__(self) -> None:
         self._mock_save = AsyncMock()
         self._mock_match = AsyncMock()
+        self._mock_find = AsyncMock()
 
     async def save(self, user: User) -> None:
         self._mock_save(user)
@@ -41,3 +42,9 @@ class MockUserRepository(UserRepository):
             return []
 
         self._mock_match = verify  # type: ignore
+
+    def should_find(self, user: User) -> None:
+        def verify(expected_user: User) -> None:
+            expect(user).to(equal(expected_user))
+
+        self._mock_find = verify
