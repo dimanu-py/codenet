@@ -17,9 +17,7 @@ unit:  ## Run all unit test.
 
 .PHONY: integration
 integration:  ## Run all integration test.
-	@make up
 	@uv run pytest -n 0 -m "integration" -ra
-	@make down
 
 .PHONY: acceptance
 acceptance:  ## Run all acceptance test.
