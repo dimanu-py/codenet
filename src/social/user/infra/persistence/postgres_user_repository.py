@@ -1,6 +1,7 @@
 from typing import override
 
 from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker
+
 from src.shared.domain.criteria.criteria import Criteria
 from src.shared.infra.criteria.criteria_to_sql_alchemy_converter import (
     CriteriaToSqlAlchemyConverter,
@@ -38,3 +39,11 @@ class PostgresUserRepository(UserRepository):
         async with self._session_maker() as session:
             users = await session.scalars(query)
         return [user.to_aggregate() for user in users]
+
+    @override
+    async def delete(self, user_id: UserId) -> None:
+        async with self._session_maker() as session:
+            user = await session.get(UserModel, user_id.value)
+            if user:
+                await session.delete(user)
+                await session.commit()
