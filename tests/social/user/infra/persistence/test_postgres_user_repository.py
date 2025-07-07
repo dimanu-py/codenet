@@ -4,7 +4,6 @@ import pytest
 from expects import expect, equal, be_empty
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine, async_sessionmaker
 
-from src.shared.infra.settings import Settings
 from src.social.user.domain.user import User
 from src.social.user.infra.persistence.postgres_user_repository import (
     PostgresUserRepository,
@@ -12,21 +11,24 @@ from src.social.user.infra.persistence.postgres_user_repository import (
 from src.social.user.infra.persistence.user_model import UserModel
 from tests.social.shared.domain.criteria.criteria_mother import CriteriaMother
 from tests.social.user.domain.user_mother import UserMother
+from tests.social.user.infra.persistence.postgres_test_container import (
+    PostgresTestContainer,
+)
 
 
 @pytest.fixture
 async def engine() -> AsyncGenerator[AsyncEngine]:
-    settings = Settings()  # type: ignore
-    engine = create_async_engine(settings.postgres_url)
+    with PostgresTestContainer() as postgres_container:
+        engine = create_async_engine(postgres_container.get_base_url())
 
-    async with engine.begin() as conn:
-        await conn.run_sync(UserModel.metadata.create_all)
+        async with engine.begin() as conn:
+            await conn.run_sync(UserModel.metadata.create_all)
 
-    yield engine
+        yield engine
 
-    async with engine.begin() as conn:
-        await conn.run_sync(UserModel.metadata.drop_all)
-    await engine.dispose()
+        async with engine.begin() as conn:
+            await conn.run_sync(UserModel.metadata.drop_all)
+        await engine.dispose()
 
 
 @pytest.mark.integration
