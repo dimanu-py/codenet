@@ -1,3 +1,4 @@
+from src.social.user.application.removal.user_remover import UserRemover
 from tests.social.user.application.removal.user_removal_command_mother import (
     UserRemovalCommandMother,
 )
