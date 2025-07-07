@@ -9,7 +9,7 @@ from tests.social.user.domain.user_mother import UserMother
 
 class TestUserRemoval(UserModuleUnitTestConfig):
     def setup_method(self) -> None:
-        self._user_removal = UserRemoval(repository=self._repository)
+        self._user_remover = UserRemover(repository=self._repository)
 
     async def test_should_remove_existing_user(self) -> None:
         user = UserMother.any()
@@ -18,4 +18,4 @@ class TestUserRemoval(UserModuleUnitTestConfig):
 
         self._should_remove(user)
 
-        await self._user_removal(command)
+        await self._user_remover(command)
