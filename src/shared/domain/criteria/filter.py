@@ -1,3 +1,5 @@
+from typing import Self
+
 from src.shared.domain.criteria.filter_field import FilterField
 from src.shared.domain.criteria.filter_operator import FilterOperator
 from src.shared.domain.criteria.filter_value import FilterValue
@@ -16,8 +18,8 @@ class Filter:
         self._value = value
 
     @classmethod
-    def from_primitives(cls, field: str, operator: str, value: str) -> "Filter":
-        return Filter(
+    def from_primitives(cls, field: str, operator: str, value: str) -> Self:
+        return cls(
             field=FilterField(field),
             operator=FilterOperator(operator),
             value=FilterValue(value),

@@ -3,18 +3,18 @@ from uuid import UUID
 from src.shared.domain.exceptions.incorrect_value_type_error import (
     IncorrectValueTypeError,
 )
-from src.shared.domain.value_objects.value_object import ValueObject
 from src.shared.domain.exceptions.invalid_id_format_error import InvalidIdFormatError
+from src.shared.domain.value_objects.value_object import ValueObject
 
 
 class Uuid(ValueObject[str]):
     def __init__(self, value: str) -> None:
         super().__init__(value)
 
-    def _validate(self, value: str) -> None:
-        if not isinstance(value, str):
+    def _validate(self) -> None:
+        if not isinstance(self._value, str):
             raise IncorrectValueTypeError
         try:
-            UUID(value)
+            UUID(self._value)
         except ValueError:
             raise InvalidIdFormatError

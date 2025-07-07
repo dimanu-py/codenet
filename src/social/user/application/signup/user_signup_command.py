@@ -8,7 +8,7 @@ class UserSignupCommand:
     username: str
     email: str
 
-    def to_dict(self) -> dict[str, str]:
+    def to_primitives(self) -> dict[str, str]:
         return {
             "id": self.id,
             "name": self.name,

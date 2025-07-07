@@ -2,6 +2,7 @@ import pytest
 
 from src.shared.domain.criteria.criteria import Criteria
 from src.social.user.domain.user import User
+from src.social.user.domain.user_id import UserId
 from tests.social.user.infra.persistence.mock_user_repository import MockUserRepository
 
 
@@ -18,3 +19,12 @@ class UserModuleUnitTestConfig:
 
     def _should_not_match(self, criteria: Criteria) -> None:
         self._repository.should_not_match(criteria)
+
+    def _should_find(self, user: User) -> None:
+        self._repository.should_find(user)
+
+    def _should_remove(self, user: User) -> None:
+        self._repository.should_remove(user)
+
+    def _should_not_find(self, user_id: UserId) -> None:
+        self._repository.should_not_find(user_id)

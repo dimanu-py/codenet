@@ -22,7 +22,7 @@ class PostgresUserRepository(UserRepository):
     @override
     async def save(self, user: User) -> None:
         async with self._session_maker() as session:
-            user_to_save = UserModel(**user.to_dict())
+            user_to_save = UserModel(**user.to_primitives())
             session.add(user_to_save)
             await session.commit()
 
@@ -39,3 +39,11 @@ class PostgresUserRepository(UserRepository):
         async with self._session_maker() as session:
             users = await session.scalars(query)
         return [user.to_aggregate() for user in users]
+
+    @override
+    async def delete(self, user_id: UserId) -> None:
+        async with self._session_maker() as session:
+            user = await session.get(UserModel, user_id.value)
+            if user:
+                await session.delete(user)
+                await session.commit()

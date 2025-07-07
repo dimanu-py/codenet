@@ -12,27 +12,15 @@ test:  ## Run all test.
 	@make down
 
 .PHONY: unit
-unit:  ## Run unit test in changed files.
-	@scripts/tests/unit.sh
-
-.PHONY: integration
-integration:  ## Run integration test in changed files.
-	@make up
-	@scripts/tests/integration.sh
-	@make down
-
-.PHONY: all-unit
-all-unit:  ## Run all unit test.
+unit:  ## Run all unit test.
 	@uv run pytest -n auto -m "unit" -ra
 
-.PHONY: all-integration
-all-integration:  ## Run all integration test.
-	@make up
+.PHONY: integration
+integration:  ## Run all integration test.
 	@uv run pytest -n 0 -m "integration" -ra
-	@make down
 
-.PHONY: all-acceptance
-all-acceptance:  ## Run all acceptance test.
+.PHONY: acceptance
+acceptance:  ## Run all acceptance test.
 	@make up
 	@uv run pytest -n 0 -m "acceptance" -ra
 	@make down

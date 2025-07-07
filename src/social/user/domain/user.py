@@ -1,3 +1,5 @@
+from typing import Self
+
 from src.social.user.domain.user_email import UserEmail
 from src.social.user.domain.user_id import UserId
 from src.social.user.domain.user_name import UserName
@@ -18,8 +20,8 @@ class User:
         self._username = username
         self._email = email
 
-    def __eq__(self, other_user: "User") -> bool:
-        return self.id == other_user.id
+    def __eq__(self, other_user: Self) -> bool:
+        return self._id == other_user._id
 
     @property
     def id(self) -> UserId:
@@ -30,15 +32,15 @@ class User:
         return self._username
 
     @classmethod
-    def signup(cls, id: str, name: str, username: str, email: str) -> "User":
-        return User(
+    def signup(cls, id: str, name: str, username: str, email: str) -> Self:
+        return cls(
             id=UserId(id),
             name=UserName(name),
             username=UserUsername(username),
             email=UserEmail(email),
         )
 
-    def to_dict(self) -> dict:
+    def to_primitives(self) -> dict:
         return {
             "id": self._id.value,
             "name": self._name.value,

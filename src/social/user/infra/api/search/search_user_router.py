@@ -16,7 +16,7 @@ from src.social.user.infra.persistence.postgres_user_repository import (
     PostgresUserRepository,
 )
 
-router = APIRouter(prefix="/users", tags=["Users"])
+router = APIRouter()
 
 
 async def engine_generator() -> AsyncGenerator[AsyncEngine]:
@@ -39,7 +39,7 @@ async def get_user_by_criteria(
 
     try:
         users = await user_searcher(query)
-        response = UserSearchResponse([user.to_dict() for user in users])
+        response = UserSearchResponse([user.to_primitives() for user in users])
     except DomainError as error:
         return HttpResponse.domain_error(error, status_code=StatusCode.BAD_REQUEST)
 

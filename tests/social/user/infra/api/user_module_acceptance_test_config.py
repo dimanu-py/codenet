@@ -3,7 +3,7 @@ from expects import expect, equal
 from fastapi.testclient import TestClient
 from starlette.responses import JSONResponse
 
-from src.delivery.api.main import app
+from src.delivery.main import app
 from tests.social.user.domain.user_email_mother import UserEmailMother
 from tests.social.user.domain.user_id_mother import UserIdMother
 from tests.social.user.domain.user_name_mother import UserNameMother
@@ -13,6 +13,8 @@ from tests.social.user.domain.user_username_mother import UserUsernameMother
 @pytest.mark.acceptance
 @pytest.mark.asyncio
 class UserModuleAcceptanceTestConfig:
+    EMPTY_RESPONSE: dict = {}
+
     def setup_method(self) -> None:
         self._client = TestClient(app)
 
@@ -39,7 +41,7 @@ class UserModuleAcceptanceTestConfig:
 
     async def given_a_user_is_signed_up(self, user_id: str, request_body: dict) -> None:
         with self._client as client:
-            client.post(f"/users/signup/{user_id}", json=request_body)
+            client.post(f"/app/users/signup/{user_id}", json=request_body)
 
     async def when_a_get_request_is_made_to(
         self, path: str, query_params: dict

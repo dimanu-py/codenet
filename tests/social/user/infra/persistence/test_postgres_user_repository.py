@@ -2,30 +2,33 @@ from collections.abc import AsyncGenerator
 
 import pytest
 from expects import expect, equal, be_empty
-from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine, async_sessionmaker
 
-from src.shared.infra.settings import Settings
+from src.social.user.domain.user import User
 from src.social.user.infra.persistence.postgres_user_repository import (
     PostgresUserRepository,
 )
 from src.social.user.infra.persistence.user_model import UserModel
 from tests.social.shared.domain.criteria.criteria_mother import CriteriaMother
 from tests.social.user.domain.user_mother import UserMother
+from tests.social.user.infra.persistence.postgres_test_container import (
+    PostgresTestContainer,
+)
 
 
 @pytest.fixture
 async def engine() -> AsyncGenerator[AsyncEngine]:
-    settings = Settings()  # type: ignore
-    engine = create_async_engine(settings.postgres_url)
+    with PostgresTestContainer() as postgres_container:
+        engine = create_async_engine(postgres_container.get_base_url())
 
-    async with engine.begin() as conn:
-        await conn.run_sync(UserModel.metadata.create_all)
+        async with engine.begin() as conn:
+            await conn.run_sync(UserModel.metadata.create_all)
 
-    yield engine
+        yield engine
 
-    async with engine.begin() as conn:
-        await conn.run_sync(UserModel.metadata.drop_all)
-    await engine.dispose()
+        async with engine.begin() as conn:
+            await conn.run_sync(UserModel.metadata.drop_all)
+        await engine.dispose()
 
 
 @pytest.mark.integration
@@ -33,27 +36,22 @@ async def engine() -> AsyncGenerator[AsyncEngine]:
 class TestPostgresUserRepository:
     @pytest.fixture(autouse=True)
     def setup_method(self, engine: AsyncEngine) -> None:
-        self._repository = PostgresUserRepository(engine)
+        self._engine = engine
+        self._repository = PostgresUserRepository(self._engine)
 
-    async def test_should_save_user(self) -> None:
+    async def test_should_save_and_find_existing_user(self) -> None:
         user = UserMother.any()
 
         await self._repository.save(user)
-
-    async def test_should_find_existing_user(self) -> None:
-        user = UserMother.any()
-        await self._repository.save(user)
-
         saved_user = await self._repository.find(user.id)
 
         expect(user).to(equal(saved_user))
 
     async def test_should_match_a_user_based_on_criteria(self) -> None:
-        user = UserMother.any()
+        user = await self._given_an_user_already_exists()
         criteria = CriteriaMother.with_one_filter(
             field="username", operator="eq", value=user.username.value
         )
-        await self._repository.save(user)
 
         searched_users = await self._repository.matching(criteria)
 
@@ -65,3 +63,25 @@ class TestPostgresUserRepository:
         searched_users = await self._repository.matching(criteria)
 
         expect(searched_users).to(be_empty)
+
+    async def test_should_delete_existing_user(self) -> None:
+        user = await self._given_an_user_already_exists()
+
+        await self._repository.delete(user.id)
+
+        await self._should_have_deleted(user)
+
+    async def _should_have_deleted(self, user: User) -> None:
+        session_maker = async_sessionmaker(bind=self._engine)
+        async with session_maker() as session:
+            saved_user = await session.get(UserModel, user.id.value)
+        expect(saved_user).to(equal(None))
+
+    async def _given_an_user_already_exists(self) -> User:
+        user = UserMother.any()
+        session_maker = async_sessionmaker(bind=self._engine)
+        async with session_maker() as session:
+            existing_user = UserModel(**user.to_primitives())
+            session.add(existing_user)
+            await session.commit()
+        return user

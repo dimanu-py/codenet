@@ -7,12 +7,4 @@ class InvalidEmailFormatError(DomainError):
             "Email cannot contain special characters and must contain '@' and '.'"
         )
         self._type = "invalid_email_format"
-        super().__init__(self._message)
-
-    @property
-    def type(self) -> str:
-        return self._type
-
-    @property
-    def message(self) -> str:
-        return self._message
+        super().__init__(self._message, self._type)
