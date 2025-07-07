@@ -1,3 +1,4 @@
+from tests.social.user.application.removal.user_removal_command_mother import UserRemovalCommandMother
 from tests.social.user.application.user_module_unit_test_config import (
     UserModuleUnitTestConfig,
 )
