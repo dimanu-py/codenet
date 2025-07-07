@@ -1,8 +1,7 @@
-from dataclasses import dataclass
+from pydantic import BaseModel, Field
 
 
-@dataclass(frozen=True)
-class UserSignupRequest:
-    name: str
-    username: str
-    email: str
+class UserSignupRequest(BaseModel):
+    name: str = Field(examples=["John Doe"])
+    username: str = Field(examples=["johndoe"])
+    email: str = Field(examples=["johndoe@hotmail.com"])
