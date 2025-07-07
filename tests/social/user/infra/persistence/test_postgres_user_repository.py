@@ -62,6 +62,13 @@ class TestPostgresUserRepository:
 
         expect(searched_users).to(be_empty)
 
+    async def test_should_delete_existing_user(self) -> None:
+        user = await self._given_an_user_already_exists()
+
+        await self._repository.delete(user.id)
+
+        self._should_have_deleted(user)
+
     async def _given_an_user_already_exists(self) -> User:
         user = UserMother.any()
         session_maker = async_sessionmaker(bind=self._engine)
