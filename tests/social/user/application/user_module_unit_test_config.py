@@ -21,3 +21,6 @@ class UserModuleUnitTestConfig:
 
     def _should_find(self, user: User) -> None:
         self._repository.should_find(user)
+
+    def _should_remove(self, user: User) -> None:
+        self._repository.should_remove(user)
