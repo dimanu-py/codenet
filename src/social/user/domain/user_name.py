@@ -7,9 +7,9 @@ from src.social.user.domain.invalid_name_format_error import InvalidNameFormatEr
 class UserName(StringValueObject):
     CORRECT_CHARACTERS = r"^[a-zA-Z. áéíóúÁÉÍÓÚñÑüÜ'\s]+$"
 
-    def _validate(self, value: str) -> None:
-        super()._validate(value)
-        self._ensure_name_has_valid_characters(value)
+    def _validate(self) -> None:
+        super()._validate()
+        self._ensure_name_has_valid_characters(self._value)
 
     def _ensure_name_has_valid_characters(self, value: str) -> None:
         if re.match(self.CORRECT_CHARACTERS, value) is None:
