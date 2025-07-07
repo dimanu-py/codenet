@@ -33,7 +33,8 @@ async def engine() -> AsyncGenerator[AsyncEngine]:
 class TestPostgresUserRepository:
     @pytest.fixture(autouse=True)
     def setup_method(self, engine: AsyncEngine) -> None:
-        self._repository = PostgresUserRepository(engine)
+        self._engine = engine
+        self._repository = PostgresUserRepository(self._engine)
 
     async def test_should_save_and_find_existing_user(self) -> None:
         user = UserMother.any()
