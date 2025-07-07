@@ -12,9 +12,13 @@ class HttpResponse:
     def domain_error(error: DomainError, status_code: StatusCode) -> JSONResponse:
         user_logger.error(
             "error - domain error",
-            extra={"extra": {"error": error.to_primitives(), "status_code": status_code}},
+            extra={
+                "extra": {"error": error.to_primitives(), "status_code": status_code}
+            },
         )
-        return JSONResponse(content={"error": error.to_primitives()}, status_code=status_code)
+        return JSONResponse(
+            content={"error": error.to_primitives()}, status_code=status_code
+        )
 
     @staticmethod
     def internal_error(error: Exception) -> JSONResponse:

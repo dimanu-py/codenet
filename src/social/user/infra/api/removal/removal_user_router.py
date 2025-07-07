@@ -8,7 +8,9 @@ from src.shared.domain.exceptions.domain_error import DomainError
 from src.shared.infra.http.http_response import HttpResponse
 from src.shared.infra.http.status_code import StatusCode
 from src.shared.infra.settings import Settings
-from src.social.user.infra.persistence.postgres_user_repository import PostgresUserRepository
+from src.social.user.infra.persistence.postgres_user_repository import (
+    PostgresUserRepository,
+)
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -27,9 +29,7 @@ async def remove_user(
     user_id: str,
     engine: AsyncEngine = Depends(engine_generator),
 ) -> JSONResponse:
-    command = UserRemovalCommand(
-        user_id=user_id
-    )
+    command = UserRemovalCommand(user_id=user_id)
     repository = PostgresUserRepository(engine=engine)
     user_removal = UserRemoval(repository)
 
