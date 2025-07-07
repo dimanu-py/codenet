@@ -1,7 +1,7 @@
 from enum import StrEnum
 
 
-class FilterOperator(StrEnum):
+class Operator(StrEnum):
     ALL = "all"
     EQUAL = "eq"
     NOT_EQUAL = "neq"

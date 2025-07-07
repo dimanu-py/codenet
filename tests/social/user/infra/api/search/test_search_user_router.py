@@ -18,9 +18,11 @@ class TestSearchUserRouter(UserModuleAcceptanceTestConfig):
         }
         user_id = UserIdMother.any().value
         await self.given_a_user_is_signed_up(user_id, request_body)
-        filters = [
-            {"field": "username", "operator": "eq", "value": request_body["username"]}
-        ]
+        filters = {
+            "field": "username",
+            "operator": "eq",
+            "value": request_body["username"],
+        }
 
         response = await self.when_a_get_request_is_made_to(
             "/app/users/search/", query_params={"filters": json.dumps(filters)}
