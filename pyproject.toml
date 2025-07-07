@@ -30,6 +30,7 @@ test = [
     "pytest-sugar>=1.0.0",
     "pytest-watch>=4.2.0",
     "pytest-xdist>=3.6.1",
+    "testcontainers>=4.10.0",
 ]
 lint = [
     "mypy>=1.13.0",
