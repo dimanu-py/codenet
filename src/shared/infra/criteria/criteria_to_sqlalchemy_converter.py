@@ -1,5 +1,6 @@
+from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.sql import select, Select, and_, or_
-from sqlalchemy.sql.elements import BinaryExpression
+from sqlalchemy.sql.elements import ColumnElement
 
 from src.shared.domain.criteria.condition.condition import Condition
 from src.shared.domain.criteria.condition.condition_strategies import (
@@ -24,7 +25,7 @@ class CriteriaToSqlalchemyConverter:
 
     def _construct_where_clause(
         self, model: type[Base], node: FilterExpression | Condition
-    ) -> BinaryExpression | None:
+    ) -> ColumnElement | None:
         if isinstance(node, FilterExpression):
             if node.is_empty():
                 return None
@@ -34,13 +35,15 @@ class CriteriaToSqlalchemyConverter:
                 for filter_ in node._conditions
             ]
             if node.has_and_logical_operator():
-                return and_(*conditions)
-            return or_(*conditions)
+                return and_(*conditions)  # type: ignore
+            return or_(*conditions)  # type: ignore
 
         condition_primitives = node.to_primitives()
         column = getattr(model, condition_primitives["field"])
         return self._build_condition(node, column)
 
-    def _build_condition(self, condition: Condition, column: str) -> BinaryExpression:
+    def _build_condition(
+        self, condition: Condition, column: InstrumentedAttribute
+    ) -> ColumnElement[bool]:
         condition_strategy = ConditionStrategyFactory.get(condition._operator)
         return condition_strategy.build(column, condition._value.value)

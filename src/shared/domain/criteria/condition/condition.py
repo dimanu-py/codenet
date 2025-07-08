@@ -14,7 +14,7 @@ class Condition:
         self._field = Field(field)
         self._operator = Operator(operator)
         self._value = Value(value)
-        
+
     @classmethod
     def from_primitives(cls, condition: dict) -> Self:
         operator = Operator(list(condition.keys())[-1])

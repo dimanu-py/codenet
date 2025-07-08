@@ -3,7 +3,9 @@ from typing import override
 from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker
 
 from src.shared.domain.criteria.criteria import Criteria
-from src.shared.infra.criteria.criteria_to_sqlalchemy_converter import CriteriaToSqlalchemyConverter
+from src.shared.infra.criteria.criteria_to_sqlalchemy_converter import (
+    CriteriaToSqlalchemyConverter,
+)
 from src.social.user.domain.user import User
 from src.social.user.domain.user_id import UserId
 from src.social.user.domain.user_repository import UserRepository

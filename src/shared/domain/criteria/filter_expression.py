@@ -6,16 +6,18 @@ from src.shared.domain.criteria.logical_operator import LogicalOperator
 
 class FilterExpression:
     _logical_operator: LogicalOperator
-    _conditions: list[Condition | Self]
+    _conditions: list["Condition | FilterExpression"]
 
     def __init__(
-        self, operator: LogicalOperator, conditions: list[Condition | Self]
+        self,
+        operator: LogicalOperator,
+        conditions: list["Condition | FilterExpression"],
     ) -> None:
         self._logical_operator = operator
         self._conditions = conditions
 
     @classmethod
-    def from_primitives(cls, data: dict[str, Any]) -> Self | Condition:
+    def from_primitives(cls, data: dict[str, Any]) -> "Condition | FilterExpression":
         if LogicalOperator.AND in data:
             conditions = [
                 cls.from_primitives(item) for item in data[LogicalOperator.AND]

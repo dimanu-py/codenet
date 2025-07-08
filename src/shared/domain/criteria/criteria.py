@@ -9,11 +9,18 @@ class Criteria:
         self._expression = expression
 
     def is_empty(self) -> bool:
-        return isinstance(self._expression, FilterExpression) and self._expression.is_empty()
+        return (
+            isinstance(self._expression, FilterExpression)
+            and self._expression.is_empty()
+        )
 
     @classmethod
     def from_primitives(cls, filter_expression: dict[str, Any]) -> Self:
-        return cls(expression=FilterExpression.from_primitives(filter_expression) if filter_expression else FilterExpression.empty())
+        return cls(
+            expression=FilterExpression.from_primitives(filter_expression)
+            if filter_expression
+            else FilterExpression.empty()
+        )
 
     def to_primitives(self) -> dict[str, Any]:
         return self._expression.to_primitives()
