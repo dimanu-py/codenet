@@ -11,8 +11,8 @@ class StringValueObject(ValueObject[str]):
     def __init__(self, value: str) -> None:
         super().__init__(value)
 
-    def _validate(self) -> None:
-        if self._value is None:
+    def _validate(self, value: str) -> None:
+        if value is None:
             raise RequiredValueError
-        if not isinstance(self._value, str):
+        if not isinstance(value, str):
             raise IncorrectValueTypeError

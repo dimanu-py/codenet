@@ -12,10 +12,10 @@ class IntValueObject(ValueObject[int]):
     def __init__(self, value: int) -> None:
         super().__init__(value)
 
-    def _validate(self) -> None:
-        if self._value is None:
+    def _validate(self, value: int) -> None:
+        if value is None:
             raise RequiredValueError
-        if not isinstance(self._value, int):
+        if not isinstance(value, int):
             raise IncorrectValueTypeError
-        if self._value < 0:
-            raise InvalidNegativeValueError(self._value)
+        if value < 0:
+            raise InvalidNegativeValueError(value)
