@@ -19,4 +19,4 @@ class CriteriaMother:
 
     @staticmethod
     def with_one_filter(field: str, operator: str, value: str) -> Criteria:
-        return Criteria.from_primitives({"field": field, "operator": operator, "value": value})
+        return Criteria.from_primitives({"field": field, f"{operator}": value})

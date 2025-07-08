@@ -20,8 +20,7 @@ class TestSearchUserRouter(UserModuleAcceptanceTestConfig):
         await self.given_a_user_is_signed_up(user_id, request_body)
         filters = {
             "field": "username",
-            "operator": "eq",
-            "value": request_body["username"],
+            "equal": request_body["username"],
         }
 
         response = await self.when_a_get_request_is_made_to(

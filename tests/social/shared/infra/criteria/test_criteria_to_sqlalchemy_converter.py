@@ -56,13 +56,11 @@ class TestCriteriaToSqlalchemyConverter:
                 "and": [
                     {
                         "field": "name",
-                        "operator": Operator.EQUAL,
-                        "value": user_name.value,
+                        Operator.EQUAL: user_name.value,
                     },
                     {
                         "field": "username",
-                        "operator": Operator.EQUAL,
-                        "value": user_username.value,
+                        Operator.EQUAL: user_username.value,
                     },
                 ]
             }
@@ -125,20 +123,17 @@ class TestCriteriaToSqlalchemyConverter:
                 "and": [
                     {
                         "field": "name",
-                        "operator": Operator.EQUAL,
-                        "value": user_name.value,
+                        Operator.EQUAL: user_name.value,
                     },
                     {
                         "or": [
                             {
                                 "field": "username",
-                                "operator": Operator.EQUAL,
-                                "value": first_username.value,
+                                Operator.EQUAL: first_username.value,
                             },
                             {
                                 "field": "username",
-                                "operator": Operator.EQUAL,
-                                "value": second_username.value,
+                                Operator.EQUAL: second_username.value,
                             },
                         ]
                     },

@@ -26,11 +26,7 @@ class FilterExpression:
                 cls.from_primitives(item) for item in data[LogicalOperator.OR]
             ]
             return cls(operator=LogicalOperator.OR, conditions=conditions)
-        return Condition(
-            field=data["field"],
-            operator=data["operator"],
-            value=data["value"],
-        )
+        return Condition.from_primitives(data)
 
     @classmethod
     def empty(cls) -> Self:
