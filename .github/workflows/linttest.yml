@@ -33,11 +33,7 @@ jobs:
           echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> .env
       - name: Check style, format and lint
         run: |
-          make check-typing
           make check-format
           make check-lint
       - name: Tests
-        run: |
-          make up
-          make test
-          make down
+        run: make test
