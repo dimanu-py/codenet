@@ -1,59 +1,60 @@
 from abc import ABC, abstractmethod
 
-from sqlalchemy.sql.elements import BinaryExpression
+from sqlalchemy import ColumnElement
+from sqlalchemy.orm.attributes import InstrumentedAttribute
 
 from src.shared.domain.criteria.condition.operator import Operator
 
 
 class ConditionStrategy(ABC):
     @abstractmethod
-    def build(self, column: str, value: str) -> BinaryExpression:
+    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         raise NotImplementedError
 
 
 class EqualConditionStrategy(ConditionStrategy):
-    def build(self, column: str, value: str) -> BinaryExpression:
-        return column == value  # type: ignore
+    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
+        return column == value
 
 
 class NotEqualConditionStrategy(ConditionStrategy):
-    def build(self, column: str, value: str) -> BinaryExpression:
-        return column != value  # type: ignore
+    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
+        return column != value
 
 
 class ContainsConditionStrategy(ConditionStrategy):
-    def build(self, column: str, value: str) -> BinaryExpression:
-        return column.ilike(f"%{value}%")  # type: ignore
+    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
+        return column.ilike(f"%{value}%")
 
 
 class AllConditionStrategy(ConditionStrategy):
-    def build(self, column: str, value: str) -> BinaryExpression:
-        return column.is_not(None)  # type: ignore
+    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
+        return column.is_not(None)
 
 
 class GreaterThanConditionStrategy(ConditionStrategy):
-    def build(self, column: str, value: str) -> BinaryExpression:
-        return column > value  # type: ignore
+    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
+        return column > value
 
 
 class GreaterThanOrEqualConditionStrategy(ConditionStrategy):
-    def build(self, column: str, value: str) -> BinaryExpression:
-        return column >= value  # type: ignore
+    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
+        return column >= value
 
 
 class LessThanConditionStrategy(ConditionStrategy):
-    def build(self, column: str, value: str) -> BinaryExpression:
-        return column < value  # type: ignore
+    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
+        return column < value
 
 
 class LessThanOrEqualConditionStrategy(ConditionStrategy):
-    def build(self, column: str, value: str) -> BinaryExpression:
-        return column <= value  # type: ignore
+    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
+        return column <= value
 
 
 class NotContainsConditionStrategy(ConditionStrategy):
-    def build(self, column: str, value: str) -> BinaryExpression:
-        return ~column.ilike(f"%{value}%")  # type: ignore
+    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
+        return ~column.ilike(f"%{value}%")
 
 
 class ConditionStrategyFactory:
