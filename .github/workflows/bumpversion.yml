@@ -1,4 +1,4 @@
-name: Bump version
+name: Bump version and generate CHANGELOG
 
 on:
   push:
@@ -6,16 +6,23 @@ on:
       - main
 
 jobs:
-  bump-version:
+  semantic_release:
     if: "!startsWith(github.event.head_commit.message, 'bump:')"
     runs-on: ubuntu-latest
     steps:
       - name: Check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.CODENET_TOKEN }}
           fetch-depth: 0
       - name: Bump version and update changelog
-        uses: commitizen-tools/commitizen-action@master
+        uses: python-semantic-release/python-semantic-release@master
         with:
+          build: false
+          push: true
+          changelog: true
+          commit: true
+          tag: true
+          vcs_release: false
+          config_file: pyproject.toml
           github_token: ${{ secrets.CODENET_TOKEN }}
