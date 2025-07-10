@@ -3,11 +3,11 @@ from sqlalchemy.sql import select, Select, and_, or_
 from sqlalchemy.sql.elements import ColumnElement
 
 from src.shared.domain.criteria.condition.condition import Condition
-from src.shared.domain.criteria.condition.condition_strategies import (
-    ConditionStrategyFactory,
-)
 from src.shared.domain.criteria.criteria import Criteria
 from src.shared.domain.criteria.filter_expression import FilterExpression
+from src.shared.infra.criteria.condition_strategies import (
+    ConditionStrategyFactory,
+)
 from src.shared.infra.persistence.sqlalchemy.base import Base
 
 
