@@ -19,7 +19,9 @@ class ComparatorCondition(Condition):
     @classmethod
     @override
     def from_primitives(cls, condition: dict[str, str | list]) -> Self:
-        operator = Operator(list(condition.keys())[-1])
+        raw_operator = next(key for key in condition.keys() if key in Operator)
+        operator = Operator(raw_operator)
+
         return cls(
             field=condition["field"],
             operator=operator,
