@@ -48,7 +48,9 @@ class TestCriteriaToSqlalchemyConverter:
             )
         )
 
-    def test_should_generate_select_query_with_multiple_filters_with_and_logical_operator(self) -> None:
+    def test_should_generate_select_query_with_multiple_filters_with_and_logical_operator(
+        self,
+    ) -> None:
         user_name = UserNameMother.any()
         user_username = UserUsernameMother.any()
         criteria = CriteriaMother.create(
@@ -74,6 +76,37 @@ class TestCriteriaToSqlalchemyConverter:
                 f"SELECT users.id, users.name, users.username, users.email \n"
                 f"FROM users \n"
                 f"WHERE users.name = '{user_name.value}' AND users.username = '{user_username.value}'"
+            )
+        )
+
+    def test_should_generate_select_query_with_multiple_filters_with_or_logical_operator(
+        self,
+    ) -> None:
+        user_name = UserNameMother.any()
+        user_username = UserUsernameMother.any()
+        criteria = CriteriaMother.create(
+            {
+                "or": [
+                    {
+                        "field": "name",
+                        Operator.EQUAL: user_name.value,
+                    },
+                    {
+                        "field": "username",
+                        Operator.EQUAL: user_username.value,
+                    },
+                ]
+            }
+        )
+        query = self.stringify(
+            self._converter.convert(model=UserModel, criteria=criteria)
+        )
+
+        expect(query).to(
+            equal(
+                f"SELECT users.id, users.name, users.username, users.email \n"
+                f"FROM users \n"
+                f"WHERE users.name = '{user_name.value}' OR users.username = '{user_username.value}'"
             )
         )
 
