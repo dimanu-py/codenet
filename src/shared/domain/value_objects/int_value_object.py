@@ -16,6 +16,6 @@ class IntValueObject(ValueObject[int]):
         if value is None:
             raise RequiredValueError
         if not isinstance(value, int):
-            raise IncorrectValueTypeError
+            raise IncorrectValueTypeError(value)
         if value < 0:
             raise InvalidNegativeValueError(value)
