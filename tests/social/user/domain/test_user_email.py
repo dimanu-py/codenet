@@ -9,11 +9,11 @@ from src.social.user.domain.user_email import UserEmail
 class TestUserEmail:
     def test_should_create_user_email_with_valid_format(self) -> None:
         valid_email = "test.user@example.com"
-        
+
         email = UserEmail(valid_email)
-        
+
         expect(email.value).to(equal(valid_email))
-        
+
     @pytest.mark.parametrize(
         "invalid_email",
         [
@@ -25,5 +25,9 @@ class TestUserEmail:
             pytest.param("special#chars@email.com", id="contains_special_chars"),
         ],
     )
-    def test_should_raise_error_when_email_has_invalid_format(self, invalid_email: str) -> None:
-        expect(lambda: UserEmail(invalid_email)).to(raise_error(InvalidEmailFormatError))
+    def test_should_raise_error_when_email_has_invalid_format(
+        self, invalid_email: str
+    ) -> None:
+        expect(lambda: UserEmail(invalid_email)).to(
+            raise_error(InvalidEmailFormatError)
+        )

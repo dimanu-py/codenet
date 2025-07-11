@@ -23,7 +23,7 @@ class TestUserName:
         name = UserName(valid_name)
 
         expect(name.value).to(equal(valid_name))
-    
+
     @pytest.mark.parametrize(
         "invalid_name",
         [
@@ -34,5 +34,7 @@ class TestUserName:
             pytest.param("User+", id="with_plus_sign"),
         ],
     )
-    def test_should_raise_error_when_name_has_invalid_format(self, invalid_name: str) -> None:
+    def test_should_raise_error_when_name_has_invalid_format(
+        self, invalid_name: str
+    ) -> None:
         expect(lambda: UserName(invalid_name)).to(raise_error(InvalidNameFormatError))
