@@ -5,7 +5,7 @@ from src.shared.domain.criteria.condition.operator import Operator
 from src.shared.domain.criteria.condition.value import Value
 
 
-class Condition:
+class ComparatorCondition:
     _value: Value
     _operator: Operator
     _field: Field

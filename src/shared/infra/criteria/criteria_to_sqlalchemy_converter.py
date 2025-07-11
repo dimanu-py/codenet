@@ -2,7 +2,7 @@ from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.sql import select, Select, and_, or_
 from sqlalchemy.sql.elements import ColumnElement
 
-from src.shared.domain.criteria.condition.condition import Condition
+from src.shared.domain.criteria.condition.comparator_condition import ComparatorCondition
 from src.shared.domain.criteria.criteria import Criteria
 from src.shared.domain.criteria.filter_expression import FilterExpression
 from src.shared.infra.criteria.condition_strategies import (
@@ -24,7 +24,7 @@ class CriteriaToSqlalchemyConverter:
         return query
 
     def _construct_where_clause(
-        self, model: type[Base], node: FilterExpression | Condition
+        self, model: type[Base], node: FilterExpression | ComparatorCondition
     ) -> ColumnElement | None:
         if isinstance(node, FilterExpression):
             if node.is_empty():
@@ -43,7 +43,7 @@ class CriteriaToSqlalchemyConverter:
         return self._build_condition(node, column)
 
     def _build_condition(
-        self, condition: Condition, column: InstrumentedAttribute
+        self, condition: ComparatorCondition, column: InstrumentedAttribute
     ) -> ColumnElement[bool]:
         condition_strategy = ConditionStrategyFactory.get(condition._operator)
         return condition_strategy.build(column, condition._value.value)

@@ -1,11 +1,11 @@
 from typing import Any, override, Self
 
-from src.shared.domain.criteria.condition.condition import Condition
+from src.shared.domain.criteria.condition.comparator_condition import ComparatorCondition
 from src.shared.domain.criteria.filter_expression import FilterExpression
 
 
 class Criteria:
-    def __init__(self, expression: FilterExpression | Condition) -> None:
+    def __init__(self, expression: FilterExpression | ComparatorCondition) -> None:
         self._expression = expression
 
     def is_empty(self) -> bool:

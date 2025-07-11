@@ -1,11 +1,11 @@
 from typing import Any, Self, Union
 
-from src.shared.domain.criteria.condition.condition import Condition
+from src.shared.domain.criteria.condition.comparator_condition import ComparatorCondition
 from src.shared.domain.criteria.filter_expression import FilterExpression
 
 
 class Filters:
-    def __init__(self, expression: Union[FilterExpression, Condition]) -> None:
+    def __init__(self, expression: Union[FilterExpression, ComparatorCondition]) -> None:
         self._expression = expression
 
     def is_empty(self) -> bool:
