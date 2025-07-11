@@ -15,4 +15,4 @@ class StringValueObject(ValueObject[str]):
         if value is None:
             raise RequiredValueError
         if not isinstance(value, str):
-            raise IncorrectValueTypeError
+            raise IncorrectValueTypeError(value)
