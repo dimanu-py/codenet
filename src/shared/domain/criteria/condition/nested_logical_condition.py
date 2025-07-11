@@ -1,7 +1,7 @@
 from typing import Any, Self
 
 from src.shared.domain.criteria.condition.comparator_condition import ComparatorCondition
-from src.shared.domain.criteria.logical_operator import LogicalOperator
+from src.shared.domain.criteria.condition.logical_operator import LogicalOperator
 
 
 class NestedLogicalCondition:

@@ -1,7 +1,7 @@
 from typing import Any
 
 from src.shared.domain.criteria.criteria import Criteria
-from tests.social.shared.domain.criteria.nested_logical_condition_mother import (
+from tests.social.shared.domain.criteria.condition.nested_logical_condition_mother import (
     NestedLogicalConditionMother,
 )
 

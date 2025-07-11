@@ -1,6 +1,6 @@
 import random
 
-from src.shared.domain.criteria.logical_operator import LogicalOperator
+from src.shared.domain.criteria.condition.logical_operator import LogicalOperator
 
 
 class LogicalOperatorMother:

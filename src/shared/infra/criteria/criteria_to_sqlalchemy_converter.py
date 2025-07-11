@@ -3,8 +3,8 @@ from sqlalchemy.sql import select, Select, and_, or_
 from sqlalchemy.sql.elements import ColumnElement
 
 from src.shared.domain.criteria.condition.comparator_condition import ComparatorCondition
+from src.shared.domain.criteria.condition.nested_logical_condition import NestedLogicalCondition
 from src.shared.domain.criteria.criteria import Criteria
-from src.shared.domain.criteria.nested_logical_condition import NestedLogicalCondition
 from src.shared.infra.criteria.condition_strategies import (
     ConditionStrategyFactory,
 )
