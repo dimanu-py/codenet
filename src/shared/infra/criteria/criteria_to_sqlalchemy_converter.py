@@ -4,7 +4,7 @@ from sqlalchemy.sql.elements import ColumnElement
 
 from src.shared.domain.criteria.condition.comparator_condition import ComparatorCondition
 from src.shared.domain.criteria.criteria import Criteria
-from src.shared.domain.criteria.filter_expression import FilterExpression
+from src.shared.domain.criteria.nested_logical_condition import NestedLogicalCondition
 from src.shared.infra.criteria.condition_strategies import (
     ConditionStrategyFactory,
 )
@@ -24,9 +24,9 @@ class CriteriaToSqlalchemyConverter:
         return query
 
     def _construct_where_clause(
-        self, model: type[Base], node: FilterExpression | ComparatorCondition
+        self, model: type[Base], node: NestedLogicalCondition | ComparatorCondition
     ) -> ColumnElement | None:
-        if isinstance(node, FilterExpression):
+        if isinstance(node, NestedLogicalCondition):
             if node.is_empty():
                 return None
 

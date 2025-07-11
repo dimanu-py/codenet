@@ -1,4 +1,4 @@
-from src.shared.domain.criteria.filter_expression import FilterExpression
+from src.shared.domain.criteria.nested_logical_condition import NestedLogicalCondition
 from tests.social.shared.domain.criteria.condition.comparator_condition_mother import (
 	ComparatorConditionMother,
 )
@@ -7,14 +7,14 @@ from tests.social.shared.domain.criteria.logical_operator_mother import (
 )
 
 
-class FilterExpressionMother:
+class NestedLogicalConditionMother:
     @staticmethod
-    def any() -> FilterExpression:
-        return FilterExpression(
+    def any() -> NestedLogicalCondition:
+        return NestedLogicalCondition(
             operator=LogicalOperatorMother.any(),
             conditions=[ComparatorConditionMother.any()],
         )
 
     @staticmethod
-    def empty() -> FilterExpression:
-        return FilterExpression(operator=LogicalOperatorMother.any(), conditions=[])
+    def empty() -> NestedLogicalCondition:
+        return NestedLogicalCondition(operator=LogicalOperatorMother.any(), conditions=[])

@@ -4,20 +4,20 @@ from src.shared.domain.criteria.condition.comparator_condition import Comparator
 from src.shared.domain.criteria.logical_operator import LogicalOperator
 
 
-class FilterExpression:
+class NestedLogicalCondition:
     _logical_operator: LogicalOperator
-    _conditions: list["ComparatorCondition | FilterExpression"]
+    _conditions: list["ComparatorCondition | NestedLogicalCondition"]
 
     def __init__(
         self,
         operator: LogicalOperator,
-        conditions: list["ComparatorCondition | FilterExpression"],
+        conditions: list["ComparatorCondition | NestedLogicalCondition"],
     ) -> None:
         self._logical_operator = operator
         self._conditions = conditions
 
     @classmethod
-    def from_primitives(cls, data: dict[str, Any]) -> "ComparatorCondition | FilterExpression":
+    def from_primitives(cls, data: dict[str, Any]) -> "ComparatorCondition | NestedLogicalCondition":
         if LogicalOperator.AND in data:
             conditions = [
                 cls.from_primitives(item) for item in data[LogicalOperator.AND]

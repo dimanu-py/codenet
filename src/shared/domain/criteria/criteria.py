@@ -1,25 +1,25 @@
 from typing import Any, override, Self
 
 from src.shared.domain.criteria.condition.comparator_condition import ComparatorCondition
-from src.shared.domain.criteria.filter_expression import FilterExpression
+from src.shared.domain.criteria.nested_logical_condition import NestedLogicalCondition
 
 
 class Criteria:
-    def __init__(self, expression: FilterExpression | ComparatorCondition) -> None:
+    def __init__(self, expression: NestedLogicalCondition | ComparatorCondition) -> None:
         self._expression = expression
 
     def is_empty(self) -> bool:
         return (
-            isinstance(self._expression, FilterExpression)
+            isinstance(self._expression, NestedLogicalCondition)
             and self._expression.is_empty()
         )
 
     @classmethod
     def from_primitives(cls, filter_expression: dict[str, Any]) -> Self:
         return cls(
-            expression=FilterExpression.from_primitives(filter_expression)
+            expression=NestedLogicalCondition.from_primitives(filter_expression)
             if filter_expression
-            else FilterExpression.empty()
+            else NestedLogicalCondition.empty()
         )
 
     def to_primitives(self) -> dict[str, Any]:
