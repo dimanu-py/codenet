@@ -33,7 +33,7 @@ class TestCriteriaToSqlalchemyConverter:
     def test_should_generate_select_query_with_one_filter(self) -> None:
         user_name = UserNameMother.any()
 
-        criteria = CriteriaMother.with_one_filter(
+        criteria = CriteriaMother.with_one_condition(
             "name", Operator.EQUAL, user_name.value
         )
         query = self.stringify(
@@ -79,7 +79,7 @@ class TestCriteriaToSqlalchemyConverter:
 
     def test_should_generate_negated_query(self) -> None:
         user_name = UserNameMother.any()
-        criteria = CriteriaMother.with_one_filter(
+        criteria = CriteriaMother.with_one_condition(
             "name", Operator.NOT_EQUAL, user_name.value
         )
 
@@ -97,7 +97,7 @@ class TestCriteriaToSqlalchemyConverter:
 
     def test_should_generate_query_with_contains(self) -> None:
         user_name = UserNameMother.any()
-        criteria = CriteriaMother.with_one_filter(
+        criteria = CriteriaMother.with_one_condition(
             "name", Operator.CONTAINS, user_name.value
         )
 

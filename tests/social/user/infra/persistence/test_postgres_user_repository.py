@@ -50,7 +50,7 @@ class TestPostgresUserRepository:
 
     async def test_should_match_a_user_based_on_criteria(self) -> None:
         user = await self._given_an_user_already_exists()
-        criteria = CriteriaMother.with_one_filter(
+        criteria = CriteriaMother.with_one_condition(
             field="username", operator=Operator.EQUAL, value=user.username.value
         )
 

@@ -16,9 +16,9 @@ class CriteriaMother:
         return Criteria.from_primitives(filter_expression={})
 
     @staticmethod
-    def create(fixed_filters: dict[str, Any]) -> Criteria:
-        return Criteria.from_primitives(fixed_filters)
+    def create(conditions: dict[str, Any]) -> Criteria:
+        return Criteria.from_primitives(conditions)
 
     @staticmethod
-    def with_one_filter(field: str, operator: str, value: str) -> Criteria:
+    def with_one_condition(field: str, operator: str, value: str) -> Criteria:
         return Criteria.from_primitives({"field": field, f"{operator}": value})
