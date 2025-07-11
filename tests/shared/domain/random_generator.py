@@ -23,3 +23,7 @@ class RandomGenerator:
     @classmethod
     def word(cls) -> str:
         return cls.faker.word()
+
+    @classmethod
+    def positive_integer(cls) -> int:
+        return cls.faker.pyint(min_value=0, max_value=100)
