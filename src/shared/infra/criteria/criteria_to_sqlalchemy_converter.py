@@ -5,8 +5,8 @@ from sqlalchemy.sql.elements import ColumnElement
 from src.shared.domain.criteria.condition.comparator_condition import ComparatorCondition
 from src.shared.domain.criteria.condition.nested_logical_condition import NestedLogicalCondition
 from src.shared.domain.criteria.criteria import Criteria
-from src.shared.infra.criteria.condition_strategies import (
-    ConditionStrategyFactory,
+from src.shared.infra.criteria.operator_to_sql_translate_strategy import (
+    OperatorToSqlTranslateStrategyFactory,
 )
 from src.shared.infra.persistence.sqlalchemy.base import Base
 
@@ -45,5 +45,5 @@ class CriteriaToSqlalchemyConverter:
     def _build_condition(
         self, condition: ComparatorCondition, column: InstrumentedAttribute
     ) -> ColumnElement[bool]:
-        condition_strategy = ConditionStrategyFactory.get(condition._operator)
+        condition_strategy = OperatorToSqlTranslateStrategyFactory.get(condition._operator)
         return condition_strategy.build(column, condition._value.value)

@@ -6,70 +6,64 @@ from sqlalchemy.orm.attributes import InstrumentedAttribute
 from src.shared.domain.criteria.condition.operator import Operator
 
 
-class ConditionStrategy(ABC):
+class OperatorToSqlTranslateStrategy(ABC):
     @abstractmethod
     def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         raise NotImplementedError
 
 
-class EqualConditionStrategy(ConditionStrategy):
+class EqualOperatorToSqlTranslateStrategy(OperatorToSqlTranslateStrategy):
     def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         return column == value
 
 
-class NotEqualConditionStrategy(ConditionStrategy):
+class NotEqualOperatorToSqlTranslateStrategy(OperatorToSqlTranslateStrategy):
     def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         return column != value
 
 
-class ContainsConditionStrategy(ConditionStrategy):
+class ContainsOperatorToSqlTranslateStrategy(OperatorToSqlTranslateStrategy):
     def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         return column.ilike(f"%{value}%")
 
 
-class AllConditionStrategy(ConditionStrategy):
-    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
-        return column.is_not(None)
-
-
-class GreaterThanConditionStrategy(ConditionStrategy):
+class GreaterThanOperatorToSqlTranslateStrategy(OperatorToSqlTranslateStrategy):
     def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         return column > value
 
 
-class GreaterThanOrEqualConditionStrategy(ConditionStrategy):
+class GreaterThanOrEqualOperatorToSqlTranslateStrategy(OperatorToSqlTranslateStrategy):
     def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         return column >= value
 
 
-class LessThanConditionStrategy(ConditionStrategy):
+class LessThanOperatorToSqlTranslateStrategy(OperatorToSqlTranslateStrategy):
     def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         return column < value
 
 
-class LessThanOrEqualConditionStrategy(ConditionStrategy):
+class LessThanOrEqualOperatorToSqlTranslateStrategy(OperatorToSqlTranslateStrategy):
     def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         return column <= value
 
 
-class NotContainsConditionStrategy(ConditionStrategy):
+class NotContainsOperatorToSqlTranslateStrategy(OperatorToSqlTranslateStrategy):
     def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         return ~column.ilike(f"%{value}%")
 
 
-class ConditionStrategyFactory:
+class OperatorToSqlTranslateStrategyFactory:
     @staticmethod
-    def get(operator: Operator) -> ConditionStrategy:
+    def get(operator: Operator) -> OperatorToSqlTranslateStrategy:
         strategies = {
-            Operator.EQUAL: EqualConditionStrategy(),
-            Operator.NOT_EQUAL: NotEqualConditionStrategy(),
-            Operator.CONTAINS: ContainsConditionStrategy(),
-            Operator.ALL: AllConditionStrategy(),
-            Operator.GREATER_THAN: GreaterThanConditionStrategy(),
-            Operator.GREATER_THAN_OR_EQUAL: GreaterThanOrEqualConditionStrategy(),
-            Operator.LESS_THAN: LessThanConditionStrategy(),
-            Operator.LESS_THAN_OR_EQUAL: LessThanOrEqualConditionStrategy(),
-            Operator.NOT_CONTAINS: NotContainsConditionStrategy(),
+            Operator.EQUAL: EqualOperatorToSqlTranslateStrategy(),
+            Operator.NOT_EQUAL: NotEqualOperatorToSqlTranslateStrategy(),
+            Operator.GREATER_THAN: GreaterThanOperatorToSqlTranslateStrategy(),
+            Operator.GREATER_THAN_OR_EQUAL: GreaterThanOrEqualOperatorToSqlTranslateStrategy(),
+            Operator.LESS_THAN: LessThanOperatorToSqlTranslateStrategy(),
+            Operator.LESS_THAN_OR_EQUAL: LessThanOrEqualOperatorToSqlTranslateStrategy(),
+            Operator.CONTAINS: ContainsOperatorToSqlTranslateStrategy(),
+            Operator.NOT_CONTAINS: NotContainsOperatorToSqlTranslateStrategy(),
         }
         condition_strategy = strategies.get(operator)
         if not condition_strategy:

@@ -2,7 +2,6 @@ from enum import StrEnum
 
 
 class Operator(StrEnum):
-    ALL = "all"
     EQUAL = "equal"
     NOT_EQUAL = "not_equal"
     GREATER_THAN = "greater_than"
