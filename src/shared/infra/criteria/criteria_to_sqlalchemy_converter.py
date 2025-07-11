@@ -1,12 +1,9 @@
-from sqlalchemy.orm.attributes import InstrumentedAttribute
-from sqlalchemy.sql import select, Select, and_, or_
+from sqlalchemy.sql import select, Select
 from sqlalchemy.sql.elements import ColumnElement
 
-from src.shared.domain.criteria.condition.comparator_condition import ComparatorCondition
-from src.shared.domain.criteria.condition.nested_logical_condition import NestedLogicalCondition
 from src.shared.domain.criteria.criteria import Criteria
-from src.shared.infra.criteria.operator_to_sql_translate_strategy import (
-    OperatorToSqlTranslateStrategyFactory,
+from src.shared.infra.criteria.condition_to_sql_query_strategy import (
+    ConditionToSqlQueryStrategyFactory,
 )
 from src.shared.infra.persistence.sqlalchemy.base import Base
 
@@ -18,32 +15,17 @@ class CriteriaToSqlalchemyConverter:
         if criteria.is_empty():
             return query
 
-        where_clause = self._construct_where_clause(model, criteria._expression)
-        if where_clause is not None:
-            query = query.where(where_clause)
+        where_predicate = self._build_where_predicate(criteria, model)
+        if where_predicate is not None:
+            query = query.where(where_predicate)
         return query
 
-    def _construct_where_clause(
-        self, model: type[Base], node: NestedLogicalCondition | ComparatorCondition
-    ) -> ColumnElement | None:
-        if isinstance(node, NestedLogicalCondition):
-            if node.is_empty():
-                return None
-
-            conditions = [
-                self._construct_where_clause(model, filter_)
-                for filter_ in node._conditions
-            ]
-            if node.has_and_logical_operator():
-                return and_(*conditions)  # type: ignore
-            return or_(*conditions)  # type: ignore
-
-        condition_primitives = node.to_primitives()
-        column = getattr(model, condition_primitives["field"])
-        return self._build_condition(node, column)
-
-    def _build_condition(
-        self, condition: ComparatorCondition, column: InstrumentedAttribute
-    ) -> ColumnElement[bool]:
-        condition_strategy = OperatorToSqlTranslateStrategyFactory.get(condition._operator)
-        return condition_strategy.build(column, condition._value.value)
+    @staticmethod
+    def _build_where_predicate(
+        criteria: Criteria,
+        model: type[Base],
+    ) -> ColumnElement[bool] | None:
+        condition = criteria.to_primitives()
+        condition_to_sql_query_strategy = ConditionToSqlQueryStrategyFactory.get(condition)
+        where_predicate = condition_to_sql_query_strategy.convert(model, condition)
+        return where_predicate
