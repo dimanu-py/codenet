@@ -1,23 +1,27 @@
-from typing import Any, Self
+from typing import Self, override
 
-from src.shared.domain.criteria.condition.comparator_condition import ComparatorCondition
+from src.shared.domain.criteria.condition.comparator_condition import (
+    ComparatorCondition,
+)
+from src.shared.domain.criteria.condition.condition import Condition
 from src.shared.domain.criteria.condition.logical_operator import LogicalOperator
 
 
-class NestedLogicalCondition:
+class NestedLogicalCondition(Condition):
     _logical_operator: LogicalOperator
-    _conditions: list["ComparatorCondition | NestedLogicalCondition"]
+    _conditions: list[Condition]
 
     def __init__(
         self,
         operator: LogicalOperator,
-        conditions: list["ComparatorCondition | NestedLogicalCondition"],
+        conditions: list[Condition],
     ) -> None:
         self._logical_operator = operator
         self._conditions = conditions
 
     @classmethod
-    def from_primitives(cls, data: dict[str, Any]) -> "ComparatorCondition | NestedLogicalCondition":
+    @override
+    def from_primitives(cls, data: dict[str, str | list]) -> Condition:
         if LogicalOperator.AND in data:
             conditions = [
                 cls.from_primitives(item) for item in data[LogicalOperator.AND]
@@ -37,7 +41,8 @@ class NestedLogicalCondition:
     def has_and_logical_operator(self) -> bool:
         return self._logical_operator == LogicalOperator.AND
 
-    def to_primitives(self) -> dict[str, Any]:
+    @override
+    def to_primitives(self) -> dict[str, str | list]:
         key = (
             LogicalOperator.AND
             if self._logical_operator is LogicalOperator.AND

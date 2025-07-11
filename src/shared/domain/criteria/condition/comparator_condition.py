@@ -1,11 +1,12 @@
-from typing import Self
+from typing import Self, override
 
+from src.shared.domain.criteria.condition.condition import Condition
 from src.shared.domain.criteria.condition.field import Field
 from src.shared.domain.criteria.condition.operator import Operator
 from src.shared.domain.criteria.condition.value import Value
 
 
-class ComparatorCondition:
+class ComparatorCondition(Condition):
     _value: Value
     _operator: Operator
     _field: Field
@@ -16,7 +17,8 @@ class ComparatorCondition:
         self._value = Value(value)
 
     @classmethod
-    def from_primitives(cls, condition: dict) -> Self:
+    @override
+    def from_primitives(cls, condition: dict[str, str | list]) -> Self:
         operator = Operator(list(condition.keys())[-1])
         return cls(
             field=condition["field"],
@@ -24,11 +26,9 @@ class ComparatorCondition:
             value=condition[operator],
         )
 
-    def to_primitives(self) -> dict[str, str]:
+    @override
+    def to_primitives(self) -> dict[str, str | list]:
         return {
             "field": self._field.value,
             f"{self._operator.value}": self._value.value,
         }
-
-    def operator_is(self, operator: Operator) -> bool:
-        return self._operator == operator

@@ -1,11 +1,11 @@
 from typing import Any, override, Self
 
-from src.shared.domain.criteria.condition.comparator_condition import ComparatorCondition
+from src.shared.domain.criteria.condition.condition import Condition
 from src.shared.domain.criteria.condition.nested_logical_condition import NestedLogicalCondition
 
 
 class Criteria:
-    def __init__(self, expression: NestedLogicalCondition | ComparatorCondition) -> None:
+    def __init__(self, expression: Condition) -> None:
         self._expression = expression
 
     def is_empty(self) -> bool:
