@@ -4,6 +4,8 @@ from typing import override, Self
 
 class ValueObject[T](ABC):
     __slots__ = ("_value",)
+    __match_args__ = ("_value",)
+
     _value: T
 
     def __init__(self, value: T) -> None:
