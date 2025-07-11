@@ -48,7 +48,7 @@ class TestCriteriaToSqlalchemyConverter:
             )
         )
 
-    def test_should_generate_select_query_with_multiple_and_aggregations(self) -> None:
+    def test_should_generate_select_query_with_multiple_filters_with_and_logical_operator(self) -> None:
         user_name = UserNameMother.any()
         user_username = UserUsernameMother.any()
         criteria = CriteriaMother.create(
