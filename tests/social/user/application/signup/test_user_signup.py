@@ -7,7 +7,7 @@ from src.social.user.domain.invalid_name_format_error import InvalidNameFormatEr
 from src.social.user.domain.invalid_username_format_error import (
     InvalidUsernameFormatError,
 )
-from tests.social.shared.expects.matchers import async_expect, raise_error
+from tests.shared.expects.matchers import async_expect, raise_error
 from tests.social.user.application.signup.user_signup_command_mother import (
     UserSignupCommandMother,
 )

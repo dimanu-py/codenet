@@ -7,7 +7,7 @@ from src.shared.infra.criteria.criteria_to_sqlalchemy_converter import (
     CriteriaToSqlalchemyConverter,
 )
 from src.social.user.infra.persistence.user_model import UserModel
-from tests.social.shared.domain.criteria.criteria_mother import CriteriaMother
+from tests.shared.domain.criteria.criteria_mother import CriteriaMother
 from tests.social.user.domain.user_name_mother import UserNameMother
 from tests.social.user.domain.user_username_mother import UserUsernameMother
 

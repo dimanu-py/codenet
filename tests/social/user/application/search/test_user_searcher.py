@@ -2,7 +2,7 @@ from expects import expect, equal, be_empty
 
 from src.social.user.application.search.search_user_query import SearchUserQuery
 from src.social.user.application.search.user_searcher import UserSearcher
-from tests.social.shared.domain.criteria.criteria_mother import CriteriaMother
+from tests.shared.domain.criteria.criteria_mother import CriteriaMother
 from tests.social.user.application.user_module_unit_test_config import (
     UserModuleUnitTestConfig,
 )

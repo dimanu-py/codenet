@@ -1,6 +1,6 @@
 import inspect
 
-from tests.social.shared.expects.async_expectation import AsyncExpectation
+from tests.shared.expects.async_expectation import AsyncExpectation
 
 
 def async_expect(subject):

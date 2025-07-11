@@ -1,5 +1,5 @@
 from src.social.user.domain.user_username import UserUsername
-from tests.social.shared.domain.random_generator import RandomGenerator
+from tests.shared.domain.random_generator import RandomGenerator
 
 
 class UserUsernameMother:
