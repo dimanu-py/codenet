@@ -56,7 +56,9 @@ class ComparatorConditionToSqlQueryStrategy(ConditionToSqlQueryStrategy):
         operator = next(key for key in condition.keys() if key != "field")
         value = condition[operator]
 
-        operator_to_sql_translator_strategy = OperatorToSqlTranslateStrategyFactory.get(operator)
+        operator_to_sql_translator_strategy = OperatorToSqlTranslateStrategyFactory.get(
+            operator
+        )
         return operator_to_sql_translator_strategy.build(field, value)
 
 

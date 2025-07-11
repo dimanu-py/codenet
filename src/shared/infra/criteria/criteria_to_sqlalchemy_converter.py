@@ -26,6 +26,8 @@ class CriteriaToSqlalchemyConverter:
         model: type[Base],
     ) -> ColumnElement[bool] | None:
         condition = criteria.to_primitives()
-        condition_to_sql_query_strategy = ConditionToSqlQueryStrategyFactory.get(condition)
+        condition_to_sql_query_strategy = ConditionToSqlQueryStrategyFactory.get(
+            condition
+        )
         where_predicate = condition_to_sql_query_strategy.convert(model, condition)
         return where_predicate
