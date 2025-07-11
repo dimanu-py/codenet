@@ -11,10 +11,10 @@ class Uuid(ValueObject[str]):
     def __init__(self, value: str) -> None:
         super().__init__(value)
 
-    def _validate(self) -> None:
-        if not isinstance(self._value, str):
+    def _validate(self, value: str) -> None:
+        if not isinstance(value, str):
             raise IncorrectValueTypeError
         try:
-            UUID(self._value)
+            UUID(value)
         except ValueError:
             raise InvalidIdFormatError

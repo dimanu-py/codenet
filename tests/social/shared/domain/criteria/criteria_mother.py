@@ -1,22 +1,24 @@
+from typing import Any
+
 from src.shared.domain.criteria.criteria import Criteria
-from tests.social.shared.domain.criteria.filters_mother import FiltersMother
+from tests.social.shared.domain.criteria.condition.nested_logical_condition_mother import (
+    NestedLogicalConditionMother,
+)
 
 
 class CriteriaMother:
-    @classmethod
-    def any(cls) -> Criteria:
-        return Criteria(filters=FiltersMother.any())
+    @staticmethod
+    def any() -> Criteria:
+        return Criteria(expression=NestedLogicalConditionMother.any())
 
-    @classmethod
-    def with_one_filter(cls, field: str, operator: str, value: str) -> Criteria:
-        return Criteria.from_primitives(
-            [{"field": field, "operator": operator, "value": value}]
-        )
+    @staticmethod
+    def empty() -> Criteria:
+        return Criteria.from_primitives(filter_expression={})
 
-    @classmethod
-    def empty(cls) -> Criteria:
-        return Criteria(filters=FiltersMother.empty())
+    @staticmethod
+    def create(conditions: dict[str, Any]) -> Criteria:
+        return Criteria.from_primitives(conditions)
 
-    @classmethod
-    def create(cls, fixed_filters: list[dict]) -> Criteria:
-        return Criteria.from_primitives(fixed_filters)
+    @staticmethod
+    def with_one_condition(field: str, operator: str, value: str) -> Criteria:
+        return Criteria.from_primitives({"field": field, f"{operator}": value})

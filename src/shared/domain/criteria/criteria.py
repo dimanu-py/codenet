@@ -1,28 +1,32 @@
-from typing import override, Self
+from typing import Any, override, Self
 
-from src.shared.domain.criteria.filters import Filters
+from src.shared.domain.criteria.condition.condition import Condition
+from src.shared.domain.criteria.condition.nested_logical_condition import (
+    NestedLogicalCondition,
+)
 
 
 class Criteria:
-    _filters: Filters
+    def __init__(self, expression: Condition) -> None:
+        self._expression = expression
 
-    def __init__(self, filters: Filters) -> None:
-        self._filters = filters
+    def is_empty(self) -> bool:
+        return (
+            isinstance(self._expression, NestedLogicalCondition)
+            and self._expression.is_empty()
+        )
 
     @classmethod
-    def from_primitives(cls, filters: list[dict]) -> Self:
-        return cls(filters=Filters.from_primitives(filters))
+    def from_primitives(cls, filter_expression: dict[str, Any]) -> Self:
+        return cls(
+            expression=NestedLogicalCondition.from_primitives(filter_expression)
+            if filter_expression
+            else NestedLogicalCondition.empty()
+        )
 
-    def to_primitives(self) -> list[dict]:
-        return self._filters.to_primitives()
+    def to_primitives(self) -> dict[str, Any]:
+        return self._expression.to_primitives()
 
     @override
     def __eq__(self, other: Self) -> bool:
         return self.to_primitives() == other.to_primitives()
-
-    def is_empty(self) -> bool:
-        return self._filters.is_empty()
-
-    @property
-    def filters(self) -> Filters:
-        return self._filters

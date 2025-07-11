@@ -30,10 +30,10 @@ async def engine_generator() -> AsyncGenerator[AsyncEngine]:
 
 @router.get("/search/")
 async def get_user_by_criteria(
-    filters: str,
+    filter: str,
     engine: AsyncEngine = Depends(engine_generator),
 ) -> JSONResponse:
-    query = SearchUserQuery(filters=json.loads(filters))
+    query = SearchUserQuery(filters=json.loads(filter))
     repository = PostgresUserRepository(engine=engine)
     user_searcher = UserSearcher(repository=repository)
 

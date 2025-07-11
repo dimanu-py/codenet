@@ -17,12 +17,12 @@ unit:  ## Run all unit test.
 
 .PHONY: integration
 integration:  ## Run all integration test.
-	@uv run pytest -n 0 -m "integration" -ra
+	@uv run pytest -m "integration" -ra
 
 .PHONY: acceptance
 acceptance:  ## Run all acceptance test.
 	@make up
-	@uv run pytest -n 0 -m "acceptance" -ra
+	@uv run pytest -m "acceptance" -ra
 	@make down
 
 .PHONY: coverage
