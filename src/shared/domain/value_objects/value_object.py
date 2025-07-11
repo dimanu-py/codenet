@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from collections.abc import Callable
 from typing import override, Self
 
 
@@ -12,8 +13,17 @@ class ValueObject[T](ABC):
         self._validate(value)
         object.__setattr__(self, "_value", value)
 
-    @abstractmethod
-    def _validate(self, value: T) -> None: ...
+    def _validate(self, value: T) -> None:
+        validators: list[Callable[[T], None]] = []
+        for cls in reversed(self.__class__.__mro__):
+            if cls is object:
+                continue
+            for name, member in cls.__dict__.items():
+                if getattr(member, "_is_validator", False):
+                    validators.append(getattr(self, name))
+
+        for validator in validators:
+            validator(value)
 
     @property
     def value(self) -> T:
