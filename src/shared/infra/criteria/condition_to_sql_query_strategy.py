@@ -52,9 +52,11 @@ class ComparatorConditionToSqlQueryStrategy(ConditionToSqlQueryStrategy):
         model: type[Base],
         condition: dict[str, Any],
     ) -> ColumnElement[bool]:
-        operator_to_sql_translator_strategy = OperatorToSqlTranslateStrategyFactory.get(condition["operator"])
         field = getattr(model, condition["field"])
-        value = condition["value"]
+        operator = next(key for key in condition.keys() if key != "field")
+        value = condition[operator]
+
+        operator_to_sql_translator_strategy = OperatorToSqlTranslateStrategyFactory.get(operator)
         return operator_to_sql_translator_strategy.build(field, value)
 
 

@@ -54,7 +54,7 @@ class NotContainsOperatorToSqlTranslateStrategy(OperatorToSqlTranslateStrategy):
 
 class OperatorToSqlTranslateStrategyFactory:
     @staticmethod
-    def get(operator: Operator) -> OperatorToSqlTranslateStrategy:
+    def get(operator: str) -> OperatorToSqlTranslateStrategy:
         strategies = {
             Operator.EQUAL: EqualOperatorToSqlTranslateStrategy(),
             Operator.NOT_EQUAL: NotEqualOperatorToSqlTranslateStrategy(),
