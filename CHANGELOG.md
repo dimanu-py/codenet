@@ -2,6 +2,112 @@
 
 <!-- version list -->
 
+## v1.1.0 (2025-07-12)
+
+### Bug Fixes
+
+- **shared**: Pass value when raising incorrect value type error in int value object validation
+  ([`6758eb0`](https://github.com/dimanu-py/codenet/commit/6758eb0f77f3293f60f7e44af86dfe9a444174e6))
+
+- **shared**: Pass value when raising incorrect value type error in string value object validation
+  ([`3253cb2`](https://github.com/dimanu-py/codenet/commit/3253cb2b90af3dfef3abd956147455b4cc88d76c))
+
+- **shared**: Update condition to retrieve operator dynamically from condition dict in SQL query
+  strategy
+  ([`9999777`](https://github.com/dimanu-py/codenet/commit/99997774ad72f2b9698601e4460076679b0b8c82))
+
+- **user**: Allow some special characters that are common on first names
+  ([`67f8cb2`](https://github.com/dimanu-py/codenet/commit/67f8cb280383e656614b8fe39aa5fb170496710a))
+
+### Features
+
+- **shared**: Add __match_args__ for improved pattern matching
+  ([`f0c44fe`](https://github.com/dimanu-py/codenet/commit/f0c44fe1ed6c7bdf7854fd20e321826ff82be674))
+
+- **shared**: Add decorator to mark all methods of value object that should be considered when
+  validating
+  ([`eccbf20`](https://github.com/dimanu-py/codenet/commit/eccbf20d46646e09cd5304833f959c98a4cb34f3))
+
+- **shared**: Define base abstract class to represent aggregates
+  ([`378737d`](https://github.com/dimanu-py/codenet/commit/378737d28d6c02f14dfc561feef05505866d2dcb))
+
+- **shared**: Implement condition interface
+  ([`4c05c2b`](https://github.com/dimanu-py/codenet/commit/4c05c2b59be85e50b1c33979d9e97a275308cb28))
+
+- **shared**: Implement new version of criteria pattern allowing for a DSL to make nested filters
+  with AND and/or OR logic operations
+  ([`8be92f9`](https://github.com/dimanu-py/codenet/commit/8be92f9493f027b379f550e90b0a68da74a66a32))
+
+- **shared**: Implement strategy pattern to be able to translate and, or and simple conditions to
+  its sql query with sqlalchemy syntax
+  ([`f10dc29`](https://github.com/dimanu-py/codenet/commit/f10dc298c6fe90996479237511b366c029ff89b1))
+
+- **shared**: Raise error when uuid value is none
+  ([`cd9f01c`](https://github.com/dimanu-py/codenet/commit/cd9f01cc35944ccdbc154b8aa9e61e4883a5c4d3))
+
+- **shared**: Remove filters.py
+  ([`e554c8f`](https://github.com/dimanu-py/codenet/commit/e554c8f2d8bf51fa1286a5cdb59bfd73909919ac))
+
+- **shared**: Remove old implementation of criteria pattern
+  ([`653175d`](https://github.com/dimanu-py/codenet/commit/653175d6dd380e8d57fd532b5cb2fb2fb2bf6eb3))
+
+- **user**: Make User inherit from Aggregate base class
+  ([`9223aab`](https://github.com/dimanu-py/codenet/commit/9223aabed65896614973bcba4a9a5b85900075e2))
+
+### Refactoring
+
+- Fix lint errors
+  ([`44bfe5e`](https://github.com/dimanu-py/codenet/commit/44bfe5e260aee186395f65ac0215638e30519cb4))
+
+- Fix mypy errors
+  ([`7943049`](https://github.com/dimanu-py/codenet/commit/7943049dd591d1f87ba6fc526bb5a27f3a02f7d6))
+
+- **shared**: Extract operator of ComparatorCondition getting the value of the keys of the passed
+  dict that matches any of the supported operators instead of expecting the operator value to be
+  always passed as the last element of the dict
+  ([`1825817`](https://github.com/dimanu-py/codenet/commit/182581741f24d535872862209f96b6b25fb0b6ac))
+
+- **shared**: Make subtypes of conditions implement its interface
+  ([`639cded`](https://github.com/dimanu-py/codenet/commit/639cdedd5d2ef57e76fa0394ca55df765c8671fc))
+
+- **shared**: Modify criteria dsl filters to be <operator>:<value> instead of separate fields
+  ([`3c72e93`](https://github.com/dimanu-py/codenet/commit/3c72e9303191cefabb46f7f7be75233e32577662))
+
+- **shared**: Modify CriteriaToSqlalchemyConvert to delegate query translation to strategy pattern
+  ([`6afc81c`](https://github.com/dimanu-py/codenet/commit/6afc81cfbb96f7fb9f879e8a1584dd19597df3e0))
+
+- **shared**: Modify value object implementation to get all methods marked as validate and simplify
+  concrete value objects
+  ([`dfed479`](https://github.com/dimanu-py/codenet/commit/dfed479ef3a48eb4165cd9dd9a4b1c98573f252a))
+
+- **shared**: Modify value object implementation to not allow to modify its value once initialized
+  ([`53cb6ff`](https://github.com/dimanu-py/codenet/commit/53cb6ff466f93974e3d35a3560de7d03053e697a))
+
+- **shared**: Move concrete value objects to usables folder to separate base classes/interfaces from
+  those that will be use
+  ([`92e5d16`](https://github.com/dimanu-py/codenet/commit/92e5d164446eb62bd6628cd5ea3887e2e3b81f9f))
+
+- **shared**: Move condition_strategies.py to infra
+  ([`ffdefc2`](https://github.com/dimanu-py/codenet/commit/ffdefc2516ca053d3fdf3bd7f3ce6e50e8e395b7))
+
+- **shared**: Move NestedLogicalCondition to condition folder as its represent a different type of
+  condition
+  ([`f4ecea5`](https://github.com/dimanu-py/codenet/commit/f4ecea586bc98baa6d0bad99001b0db8afd500ae))
+
+- **shared**: Rename Condition to ComparatorCondition
+  ([`764fea9`](https://github.com/dimanu-py/codenet/commit/764fea9810b48d676a437b265dba736408f9bb18))
+
+- **shared**: Rename condition_strategies.py and its class to operator_to_sql_translate_strategy.py
+  and remove ALL operator
+  ([`9d1b059`](https://github.com/dimanu-py/codenet/commit/9d1b059162ac9e871d071940726bfd072442e7eb))
+
+- **shared**: Rename FilterExpression to NestedLogicalCondition
+  ([`69a3d57`](https://github.com/dimanu-py/codenet/commit/69a3d57de650b0598ef83792a445d36b447964e4))
+
+- **user**: Rename filters query param to filter
+  ([`3d980c4`](https://github.com/dimanu-py/codenet/commit/3d980c4513d04735c3bef2ec543d8b3b5ce40dee))
+
+
 ## v1.0.0 (2025-07-09)
 
 ### Bug Fixes
