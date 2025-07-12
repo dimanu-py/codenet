@@ -6,7 +6,7 @@ from src.shared.domain.exceptions.incorrect_value_type_error import (
 )
 from src.shared.domain.exceptions.invalid_id_format_error import InvalidIdFormatError
 from src.shared.domain.exceptions.required_value_error import RequiredValueError
-from src.shared.domain.value_objects.uuid import Uuid
+from src.shared.domain.value_objects.usables.uuid import Uuid
 from tests.shared.domain.value_objects.uuid_primitives_mother import (
     UuidPrimitivesMother,
 )

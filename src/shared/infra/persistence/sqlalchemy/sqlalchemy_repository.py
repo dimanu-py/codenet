@@ -1,6 +1,6 @@
 from typing import Type, TypeVar
 
-from src.shared.domain.value_objects.uuid import Uuid
+from src.shared.domain.value_objects.usables.uuid import Uuid
 from src.shared.infra.persistence.sqlalchemy.base import Base
 from src.shared.infra.persistence.sqlalchemy.session_maker import (
     SessionMaker,

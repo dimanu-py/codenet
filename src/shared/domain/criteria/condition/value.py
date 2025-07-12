@@ -1,4 +1,4 @@
-from src.shared.domain.value_objects.string_value_object import StringValueObject
+from src.shared.domain.value_objects.usables.string_value_object import StringValueObject
 
 
 class Value(StringValueObject): ...
