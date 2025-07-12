@@ -1,12 +1,13 @@
 from typing import Self
 
+from src.shared.domain.value_objects.aggregate import Aggregate
 from src.social.user.domain.user_email import UserEmail
 from src.social.user.domain.user_id import UserId
 from src.social.user.domain.user_name import UserName
 from src.social.user.domain.user_username import UserUsername
 
 
-class User:
+class User(Aggregate):
     _email: UserEmail
     _username: UserUsername
     _name: UserName
@@ -19,9 +20,6 @@ class User:
         self._name = name
         self._username = username
         self._email = email
-
-    def __eq__(self, other_user: Self) -> bool:
-        return self._id == other_user._id
 
     @property
     def id(self) -> UserId:
@@ -39,11 +37,3 @@ class User:
             username=UserUsername(username),
             email=UserEmail(email),
         )
-
-    def to_primitives(self) -> dict:
-        return {
-            "id": self._id.value,
-            "name": self._name.value,
-            "username": self._username.value,
-            "email": self._email.value,
-        }
