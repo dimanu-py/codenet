@@ -9,28 +9,28 @@ from src.shared.infra.logger.json_formatter import JSONFormatter
 
 
 class TimeRotatingFileHandler(logging.Handler):
-	@classmethod
-	def create(cls, file_name: str, level_to_record: int) -> Self:
-		root_project_path = cls.find_project_root(markers=["pyproject.toml"])
-		log_folder = root_project_path / "logs"
-		log_folder.mkdir(parents=True, exist_ok=True)
+    @classmethod
+    def create(cls, file_name: str, level_to_record: int) -> Self:
+        root_project_path = cls.find_project_root(markers=["pyproject.toml"])
+        log_folder = root_project_path / "logs"
+        log_folder.mkdir(parents=True, exist_ok=True)
 
-		handler = TimedRotatingFileHandler(
-			filename=f"{log_folder}/{file_name}_{date.today().isoformat()}.log",
-			when="midnight",
-			interval=1,
-			backupCount=7,
-			encoding="utf-8",
-		)
-		handler.setFormatter(JSONFormatter())
-		handler.setLevel(level_to_record)
+        handler = TimedRotatingFileHandler(
+            filename=f"{log_folder}/{file_name}_{date.today().isoformat()}.log",
+            when="midnight",
+            interval=1,
+            backupCount=7,
+            encoding="utf-8",
+        )
+        handler.setFormatter(JSONFormatter())
+        handler.setLevel(level_to_record)
 
-		return handler
+        return handler
 
-	@classmethod
-	def find_project_root(cls, markers: Sequence[str]) -> Path:
-		start = Path(__file__).resolve()
-		for parent in (start, *start.parents):
-			if any((parent / marker).exists() for marker in markers):
-				return parent
-		raise FileNotFoundError(f"Could not find project root (markers: {markers}).")
+    @classmethod
+    def find_project_root(cls, markers: Sequence[str]) -> Path:
+        start = Path(__file__).resolve()
+        for parent in (start, *start.parents):
+            if any((parent / marker).exists() for marker in markers):
+                return parent
+        raise FileNotFoundError(f"Could not find project root (markers: {markers}).")
