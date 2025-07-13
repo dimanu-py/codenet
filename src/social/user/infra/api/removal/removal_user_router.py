@@ -1,12 +1,11 @@
 from collections.abc import AsyncGenerator
 
-from fastapi import APIRouter, Depends
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
+from starlette.responses import JSONResponse
 
 from src.shared.domain.exceptions.domain_error import DomainError
-from src.shared.infra.http.http_response import HttpResponse
-from src.shared.infra.http.status_code import StatusCode
+from src.shared.infra.http.response import ErrorResponse, SuccessResponse
 from src.shared.infra.settings import Settings
 from src.social.user.application.removal.user_removal_command import UserRemovalCommand
 from src.social.user.application.removal.user_remover import UserRemover
@@ -26,7 +25,13 @@ async def engine_generator() -> AsyncGenerator[AsyncEngine]:
         await engine.dispose()
 
 
-@router.delete("/removal/{user_id}")
+@router.delete(
+    "/removal/{user_id}",
+    responses={
+        status.HTTP_200_OK: {"model": SuccessResponse},
+        status.HTTP_404_NOT_FOUND: {"model": ErrorResponse},
+    },
+)
 async def remove_user(
     user_id: str,
     engine: AsyncEngine = Depends(engine_generator),
@@ -38,6 +43,12 @@ async def remove_user(
     try:
         await user_remover(command)
     except DomainError as error:
-        return HttpResponse.domain_error(error, status_code=StatusCode.BAD_REQUEST)
+        return ErrorResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=error.message,
+        ).as_json()
 
-    return HttpResponse.ok(content={})
+    return SuccessResponse(
+        status_code=status.HTTP_200_OK,
+        data={"message": "User removed successfully"},
+    ).as_json()

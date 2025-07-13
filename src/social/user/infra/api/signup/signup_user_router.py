@@ -5,8 +5,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
 
 from src.shared.domain.exceptions.domain_error import DomainError
-from src.shared.infra.http.http_response import HttpResponse
-from src.shared.infra.http.status_code import StatusCode
+from src.shared.infra.http.response import ErrorResponse, SuccessResponse
 from src.shared.infra.settings import Settings
 from src.social.user.application.signup.user_signup import UserSignup
 from src.social.user.application.signup.user_signup_command import UserSignupCommand
@@ -27,7 +26,12 @@ async def engine_generator() -> AsyncGenerator[AsyncEngine]:
         await engine.dispose()
 
 
-@router.post("/signup/{user_id}", status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/signup/{user_id}",
+    responses={
+        status.HTTP_201_CREATED: {"model": SuccessResponse},
+    },
+)
 async def signup_user(
     user_id: str,
     request: UserSignupRequest,
@@ -45,6 +49,12 @@ async def signup_user(
     try:
         await user_signup(command)
     except DomainError as error:
-        return HttpResponse.domain_error(error, status_code=StatusCode.BAD_REQUEST)
+        return ErrorResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=error.message,
+        ).as_json()
 
-    return HttpResponse.created(resource=f"/users/signup/{user_id}")
+    return SuccessResponse(
+        status_code=status.HTTP_201_CREATED,
+        data={"resource": f"/app/users/signup/{user_id}"},
+    ).as_json()
