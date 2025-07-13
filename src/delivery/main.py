@@ -1,3 +1,4 @@
+import logging
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
@@ -5,7 +6,10 @@ from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 
 from src.delivery.alembic_migrator import AlembicMigrator
+from src.delivery.middleware.fast_api_log_middleware import FastapiLogMiddleware
 from src.shared.infra.http.response import ErrorResponse
+from src.shared.infra.logger.fastapi_file_logger import FastApiFileLogger
+from src.shared.infra.logger.file_rotating_handler import TimeRotatingFileHandler
 from src.social.user.infra.api import routes as user_routes
 
 
@@ -16,8 +20,23 @@ async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
     yield
 
 
+logger = FastApiFileLogger(
+    name="ipy_monitoring",
+    handlers=[
+        TimeRotatingFileHandler.create(
+            file_name="production",
+            level_to_record=logging.ERROR,
+        ),
+        TimeRotatingFileHandler.create(
+            file_name="dev",
+            level_to_record=logging.DEBUG,
+        ),
+    ],
+)
+
 app = FastAPI(lifespan=lifespan)
 
+app.add_middleware(FastapiLogMiddleware, logger=logger)
 app.include_router(user_routes.routes)
 
 
