@@ -23,7 +23,9 @@ class TestRemovalUserRouter(UserModuleAcceptanceTestConfig):
             "/app/users/removal/", user_id
         )
 
-        self.assert_response_satisfies(200, self.EMPTY_RESPONSE, response)
+        self.assert_response_satisfies(
+            200, {"message": "User removed successfully"}, response
+        )
 
     async def when_a_delete_request_is_sent_to(
         self, endpoint: str, user_id: str

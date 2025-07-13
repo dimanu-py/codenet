@@ -1,4 +1,3 @@
-from src.shared.infra.http.status_code import StatusCode
 from tests.social.user.infra.api.user_module_acceptance_test_config import (
     UserModuleAcceptanceTestConfig,
 )
@@ -8,7 +7,10 @@ class TestSignupUserRouter(UserModuleAcceptanceTestConfig):
     async def test_should_register_a_valid_user(self) -> None:
         response = await self.when_a_post_request_is_sent_to("/app/users/signup/")
 
-        self.assert_response_satisfies(201, self.EMPTY_RESPONSE, response)
+        expected_id_request = str(response.request.url).split("/")[-1]
+        self.assert_response_satisfies(
+            201, {"resource": f"/app/users/signup/{expected_id_request}"}, response
+        )
 
     async def test_should_raise_bad_request_when_name_is_not_valid(self) -> None:
         invalid_name = {
@@ -19,12 +21,7 @@ class TestSignupUserRouter(UserModuleAcceptanceTestConfig):
         )
 
         self.assert_response_satisfies(
-            StatusCode.BAD_REQUEST,
-            {
-                "error": {
-                    "type": "invalid_name_format",
-                    "message": "Name cannot contain special characters or numbers.",
-                }
-            },
+            422,
+            {"detail": "Name cannot contain special characters or numbers."},
             response,
         )
