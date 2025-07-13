@@ -1,4 +1,4 @@
-POST http://localhost:8000/users/signup/{{$random.uuid}}
+POST http://localhost:8000/app/users/signup/{{$random.uuid}}
 Content-Type: application/json
 
 {

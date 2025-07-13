@@ -1,0 +1,2 @@
+GET http://localhost:8000/app/users/search?filter={"field": "name", "equal": "John Doe"}
+Content-Type: application/json
