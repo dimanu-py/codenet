@@ -1,11 +1,11 @@
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 
 from src.delivery.alembic_migrator import AlembicMigrator
-from src.shared.infra.http.http_response import HttpResponse
+from src.shared.infra.http.response import ErrorResponse
 from src.social.user.infra.api import routes as user_routes
 
 
@@ -22,5 +22,8 @@ app.include_router(user_routes.routes)
 
 
 @app.exception_handler(Exception)
-async def unexpected_exception_handler(_: Request, exc: Exception) -> JSONResponse:
-    return HttpResponse.internal_error(exc)
+async def unexpected_exception_handler(_: Request, __: Exception) -> JSONResponse:
+    return ErrorResponse(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        detail="An unexpected error occurred.",
+    ).as_json()
