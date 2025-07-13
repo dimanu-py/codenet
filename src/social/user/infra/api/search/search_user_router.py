@@ -27,7 +27,7 @@ async def engine_generator() -> AsyncGenerator[AsyncEngine]:
         await engine.dispose()
 
 
-@router.get("/search/")
+@router.get("/search")
 async def get_user_by_criteria(
     filter: str,
     engine: AsyncEngine = Depends(engine_generator),
