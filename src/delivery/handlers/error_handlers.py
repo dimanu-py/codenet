@@ -1,10 +1,13 @@
-from fastapi import Request, status
+from fastapi import Request
 from fastapi.exception_handlers import request_validation_exception_handler
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from src.shared.domain.exceptions.domain_error import DomainError
-from src.shared.infra.http.error_response import ErrorResponse
+from src.shared.infra.http.error_response import (
+    InternalServerError,
+    UnprocessableEntityError,
+)
 from src.shared.infra.logger.fastapi_file_logger import create_api_logger
 
 logger = create_api_logger(name="codenet")
@@ -25,10 +28,7 @@ async def unexpected_exception_handler(
             "source": request.url.path,
         },
     )
-    return ErrorResponse(
-        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        detail="An unexpected error occurred.",
-    ).as_json()
+    return InternalServerError().as_json()
 
 
 async def domain_error_handler(
@@ -43,10 +43,7 @@ async def domain_error_handler(
             "source": request.url.path,
         },
     )
-    return ErrorResponse(
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-        detail=exc.message,
-    ).as_json()
+    return UnprocessableEntityError(detail=exc.message).as_json()
 
 
 async def validation_error_handler(
