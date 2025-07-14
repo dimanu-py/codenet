@@ -21,7 +21,7 @@ async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
 
 
 logger = FastApiFileLogger(
-    name="ipy_monitoring",
+    name="codenet",
     handlers=[
         TimeRotatingFileHandler.create(
             file_name="production",
