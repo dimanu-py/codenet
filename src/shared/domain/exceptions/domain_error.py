@@ -1,22 +1,7 @@
-from abc import ABC
+from src.shared.domain.exceptions.base_error import BaseError
 
 
-class DomainError(Exception, ABC):
-    def __init__(self, message: str, error_type: str) -> None:
-        self._message = message
-        self._type = error_type
-        super().__init__(self._message)
+class DomainError(BaseError):
+    """Errors produced by the domain layer of the application."""
 
-    @property
-    def type(self) -> str:
-        return self._type
-
-    @property
-    def message(self) -> str:
-        return self._message
-
-    def to_primitives(self) -> dict[str, str]:
-        return {
-            "type": self.type,
-            "message": self.message,
-        }
+    ...
