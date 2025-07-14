@@ -4,7 +4,7 @@ from fastapi import APIRouter, status, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
 
-from src.shared.infra.http.response import SuccessResponse
+from src.shared.infra.http.success_response import SuccessResponse
 from src.shared.infra.settings import Settings
 from src.social.user.application.signup.user_signup import UserSignup
 from src.social.user.application.signup.user_signup_command import UserSignupCommand

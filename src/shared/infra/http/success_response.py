@@ -1,13 +1,13 @@
-from fastapi.responses import JSONResponse
 from pydantic import BaseModel
+from starlette.responses import JSONResponse
 
 
-class ErrorResponse(BaseModel):
+class SuccessResponse(BaseModel):
     status_code: int
-    detail: str
+    data: dict
 
     def as_json(self) -> JSONResponse:
         return JSONResponse(
-            content={"detail": self.detail},
+            content=self.data,
             status_code=self.status_code,
         )

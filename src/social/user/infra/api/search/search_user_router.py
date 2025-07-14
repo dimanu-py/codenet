@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
 
-from src.shared.infra.http.response import SuccessResponse
+from src.shared.infra.http.success_response import SuccessResponse
 from src.shared.infra.settings import Settings
 from src.social.user.application.search.search_user_query import SearchUserQuery
 from src.social.user.application.search.user_search_response import UserSearchResponse
