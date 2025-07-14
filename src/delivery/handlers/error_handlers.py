@@ -3,10 +3,11 @@ from fastapi.exception_handlers import request_validation_exception_handler
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
+from src.shared.domain.exceptions.application_error import ApplicationError
 from src.shared.domain.exceptions.domain_error import DomainError
 from src.shared.infra.http.error_response import (
     InternalServerError,
-    UnprocessableEntityError,
+    UnprocessableEntityError, ResourceNotFoundError,
 )
 from src.shared.infra.logger.fastapi_file_logger import create_api_logger
 
@@ -44,6 +45,22 @@ async def domain_error_handler(
         },
     )
     return UnprocessableEntityError(detail=exc.message).as_json()
+
+
+
+async def application_error_handler(
+        request: Request,
+        exc: ApplicationError,
+) -> JSONResponse:
+    logger.error(
+        message=f"error - {request.url.path}",
+        details={
+            "error": exc.to_primitives(),
+            "method": request.method,
+            "source": request.url.path,
+        },
+    )
+    return ResourceNotFoundError(detail=exc.message).as_json()
 
 
 async def validation_error_handler(
