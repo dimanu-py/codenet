@@ -1,5 +1,7 @@
 import logging
 
+from src.shared.infra.logger.file_rotating_handler import TimeRotatingFileHandler
+
 
 class FastApiFileLogger:
     def __init__(self, name: str, handlers: list[logging.Handler]) -> None:
@@ -35,3 +37,19 @@ class FastApiFileLogger:
             msg=message,
             extra={"details": details},
         )
+
+
+def create_api_logger(name: str) -> FastApiFileLogger:
+    return FastApiFileLogger(
+        name=name,
+        handlers=[
+            TimeRotatingFileHandler.create(
+                file_name="production",
+                level_to_record=logging.ERROR,
+            ),
+            TimeRotatingFileHandler.create(
+                file_name="dev",
+                level_to_record=logging.DEBUG,
+            ),
+        ],
+    )
