@@ -7,7 +7,8 @@ from src.shared.domain.exceptions.application_error import ApplicationError
 from src.shared.domain.exceptions.domain_error import DomainError
 from src.shared.infra.http.error_response import (
     InternalServerError,
-    UnprocessableEntityError, ResourceNotFoundError,
+    UnprocessableEntityError,
+    ResourceNotFoundError,
 )
 from src.shared.infra.logger.fastapi_file_logger import create_api_logger
 
@@ -47,10 +48,9 @@ async def domain_error_handler(
     return UnprocessableEntityError(detail=exc.message).as_json()
 
 
-
 async def application_error_handler(
-        request: Request,
-        exc: ApplicationError,
+    request: Request,
+    exc: ApplicationError,
 ) -> JSONResponse:
     logger.error(
         message=f"error - {request.url.path}",

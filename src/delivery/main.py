@@ -8,7 +8,8 @@ from src.delivery.alembic_migrator import AlembicMigrator
 from src.delivery.handlers.error_handlers import (
     unexpected_exception_handler,
     domain_error_handler,
-    validation_error_handler, application_error_handler,
+    validation_error_handler,
+    application_error_handler,
 )
 from src.delivery.middleware.fast_api_log_middleware import FastapiLogMiddleware
 from src.shared.domain.exceptions.application_error import ApplicationError
