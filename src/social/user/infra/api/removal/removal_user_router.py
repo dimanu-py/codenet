@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
 from starlette.responses import JSONResponse
 
-from src.shared.infra.http.error_response import ErrorResponse
+from src.shared.infra.http.error_response import ResourceNotFoundError
 from src.shared.infra.http.success_response import SuccessResponse
 from src.shared.infra.settings import Settings
 from src.social.user.application.removal.user_removal_command import UserRemovalCommand
@@ -29,7 +29,7 @@ async def engine_generator() -> AsyncGenerator[AsyncEngine]:
     "/removal/{user_id}",
     responses={
         status.HTTP_200_OK: {"model": SuccessResponse},
-        status.HTTP_404_NOT_FOUND: {"model": ErrorResponse},
+        status.HTTP_404_NOT_FOUND: {"model": ResourceNotFoundError},
     },
 )
 async def remove_user(
