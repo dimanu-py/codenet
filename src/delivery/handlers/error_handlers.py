@@ -4,7 +4,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from src.shared.domain.exceptions.domain_error import DomainError
-from src.shared.infra.http.response import ErrorResponse
+from src.shared.infra.http.error_response import ErrorResponse
 from src.shared.infra.logger.fastapi_file_logger import create_api_logger
 
 logger = create_api_logger(name="codenet")
