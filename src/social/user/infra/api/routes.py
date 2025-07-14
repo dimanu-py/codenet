@@ -9,21 +9,9 @@ routes = APIRouter(
     prefix="/app/users",
     tags=["Users"],
     responses={
-        status.HTTP_400_BAD_REQUEST: {
-            "model": ErrorResponse,
-            "description": "Bad Request",
-        },
-        status.HTTP_401_UNAUTHORIZED: {
-            "model": ErrorResponse,
-            "description": "Unauthorized",
-        },
         status.HTTP_422_UNPROCESSABLE_ENTITY: {
             "model": ErrorResponse,
             "description": "Unprocessable Entity",
-        },
-        status.HTTP_429_TOO_MANY_REQUESTS: {
-            "model": ErrorResponse,
-            "description": "Too Many Requests",
         },
         status.HTTP_500_INTERNAL_SERVER_ERROR: {
             "model": ErrorResponse,
