@@ -23,19 +23,7 @@ async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
     yield
 
 
-logger = FastApiFileLogger(
-    name="codenet",
-    handlers=[
-        TimeRotatingFileHandler.create(
-            file_name="production",
-            level_to_record=logging.ERROR,
-        ),
-        TimeRotatingFileHandler.create(
-            file_name="dev",
-            level_to_record=logging.DEBUG,
-        ),
-    ],
-)
+logger = create_api_logger(name="codenet")
 
 app = FastAPI(lifespan=lifespan)
 
