@@ -5,8 +5,7 @@ from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
 
-from src.shared.domain.exceptions.domain_error import DomainError
-from src.shared.infra.http.response import ErrorResponse, SuccessResponse
+from src.shared.infra.http.response import SuccessResponse
 from src.shared.infra.settings import Settings
 from src.social.user.application.search.search_user_query import SearchUserQuery
 from src.social.user.application.search.user_search_response import UserSearchResponse
@@ -36,14 +35,8 @@ async def get_user_by_criteria(
     repository = PostgresUserRepository(engine=engine)
     user_searcher = UserSearcher(repository=repository)
 
-    try:
-        users = await user_searcher(query)
-        response = UserSearchResponse([user.to_primitives() for user in users])
-    except DomainError as error:
-        return ErrorResponse(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=error.message,
-        ).as_json()
+    users = await user_searcher(query)
+    response = UserSearchResponse([user.to_primitives() for user in users])
 
     return SuccessResponse(
         status_code=status.HTTP_200_OK,

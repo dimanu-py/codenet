@@ -4,7 +4,6 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
 from starlette.responses import JSONResponse
 
-from src.shared.domain.exceptions.domain_error import DomainError
 from src.shared.infra.http.response import ErrorResponse, SuccessResponse
 from src.shared.infra.settings import Settings
 from src.social.user.application.removal.user_removal_command import UserRemovalCommand
@@ -40,13 +39,7 @@ async def remove_user(
     repository = PostgresUserRepository(engine=engine)
     user_remover = UserRemover(repository)
 
-    try:
-        await user_remover(command)
-    except DomainError as error:
-        return ErrorResponse(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=error.message,
-        ).as_json()
+    await user_remover(command)
 
     return SuccessResponse(
         status_code=status.HTTP_200_OK,
