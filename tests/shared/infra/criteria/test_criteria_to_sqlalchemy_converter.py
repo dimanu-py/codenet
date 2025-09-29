@@ -43,7 +43,7 @@ class TestCriteriaToSqlalchemyConverter:
     ) -> None:
         user_name = UserNameMother.any()
         user_username = UserUsernameMother.any()
-        criteria = CriteriaMother.create(
+        criteria = CriteriaMother.with_conditions(
             {
                 "and": [
                     {
@@ -72,7 +72,7 @@ class TestCriteriaToSqlalchemyConverter:
     ) -> None:
         user_name = UserNameMother.any()
         user_username = UserUsernameMother.any()
-        criteria = CriteriaMother.create(
+        criteria = CriteriaMother.with_conditions(
             {
                 "or": [
                     {
@@ -129,7 +129,7 @@ class TestCriteriaToSqlalchemyConverter:
         first_username = UserUsernameMother.any()
         second_username = UserUsernameMother.any()
 
-        criteria = CriteriaMother.create(
+        criteria = CriteriaMother.with_conditions(
             {
                 "and": [
                     {
