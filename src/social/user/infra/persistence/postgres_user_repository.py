@@ -23,6 +23,11 @@ class PostgresUserRepository(UserRepository):
 
     @override
     async def save(self, user: User) -> None:
+        if self._session:
+            user_to_save = UserModel(**user.to_primitives())
+            self._session.add(user_to_save)
+            await self._session.commit()
+            return
         async with self._session_maker() as session:
             user_to_save = UserModel(**user.to_primitives())
             session.add(user_to_save)
@@ -30,6 +35,9 @@ class PostgresUserRepository(UserRepository):
 
     @override
     async def find(self, user_id: UserId) -> User | None:
+        if self._session:
+            user = await self._session.get(UserModel, user_id.value)
+            return user.to_aggregate() if user else None
         async with self._session_maker() as session:
             user = await session.get(UserModel, user_id.value)
             return user.to_aggregate() if user else None
