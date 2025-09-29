@@ -1,6 +1,7 @@
 from typing import override
 
 from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker
+from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from src.shared.domain.criteria.criteria import Criteria
 from src.shared.infra.criteria.criteria_to_sqlalchemy_converter import (
@@ -15,9 +16,10 @@ from src.social.user.infra.persistence.user_model import UserModel
 class PostgresUserRepository(UserRepository):
     _engine: AsyncEngine
 
-    def __init__(self, engine: AsyncEngine) -> None:
+    def __init__(self, engine: AsyncEngine, session: AsyncSession | None = None) -> None:
         self._engine = engine
         self._session_maker = async_sessionmaker(bind=self._engine)
+        self._session = session
 
     @override
     async def save(self, user: User) -> None:
