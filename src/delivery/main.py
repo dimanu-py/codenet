@@ -1,6 +1,7 @@
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
+from asgi_correlation_id import CorrelationIdMiddleware
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 
@@ -32,6 +33,7 @@ logger = create_api_logger(name="codenet")
 app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(FastapiLogMiddleware, logger=logger)
+app.add_middleware(CorrelationIdMiddleware)
 app.add_exception_handler(Exception, unexpected_exception_handler)
 app.add_exception_handler(DomainError, domain_error_handler)
 app.add_exception_handler(ApplicationError, application_error_handler)
