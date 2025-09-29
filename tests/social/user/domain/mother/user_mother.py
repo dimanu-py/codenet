@@ -10,12 +10,12 @@ class UserMother:
     @staticmethod
     def any() -> User:
         return User(
-            id=UserIdMother.any(),
-            name=UserNameMother.any(),
-            username=UserUsernameMother.any(),
-            email=UserEmailMother.any(),
+            id=UserIdMother.any().value,
+            name=UserNameMother.any().value,
+            username=UserUsernameMother.any().value,
+            email=UserEmailMother.any().value,
         )
 
     @staticmethod
     def from_signup_command(command: UserSignupCommand) -> User:
-        return User.signup(**command.to_primitives())
+        return User(**command.to_primitives())

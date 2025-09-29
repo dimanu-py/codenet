@@ -14,7 +14,7 @@ class UserModel(Base):
     email: Mapped[str] = mapped_column(String, nullable=False, unique=True)
 
     def to_aggregate(self) -> User:
-        return User.signup(
+        return User(
             id=str(self.id),
             name=self.name,
             username=self.username,
