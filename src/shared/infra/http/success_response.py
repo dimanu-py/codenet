@@ -17,7 +17,7 @@ class SuccessResponse(ABC, BaseModel):
 
 
 class CreatedResponse(SuccessResponse):
-    status_code: int = Field(default=status.HTTP_422_UNPROCESSABLE_ENTITY)
+    status_code: int = Field(default=status.HTTP_201_CREATED)
 
 
 class OkResponse(SuccessResponse):
