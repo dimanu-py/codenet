@@ -1,6 +1,6 @@
 from collections.abc import AsyncGenerator
 
-from fastapi import APIRouter, status, Depends
+from fastapi import APIRouter, status, Depends, Path
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
 
@@ -32,8 +32,8 @@ async def engine_generator() -> AsyncGenerator[AsyncEngine]:
     },
 )
 async def signup_user(
-    user_id: str,
     request: UserSignupRequest,
+    user_id: str = Path(..., example="123e4567-e89b-12d3-a456-426614174000"),
     engine: AsyncEngine = Depends(engine_generator),
 ) -> JSONResponse:
     command = UserSignupCommand(
