@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import override, Self, Any
 from inspect import Parameter, _empty, signature
+from typing import Any, Self, override
 
 from src.shared.domain.value_objects.value_object import ValueObject
 
@@ -43,9 +43,7 @@ class Aggregate(ABC):
 
     @classmethod
     def from_primitives(cls, primitives: dict[str, Any]) -> Self:
-        if not isinstance(primitives, dict) or not all(
-            isinstance(key, str) for key in primitives
-        ):
+        if not isinstance(primitives, dict) or not all(isinstance(key, str) for key in primitives):
             raise TypeError(f'{cls.__name__} primitives <<<{primitives}>>> must be a dictionary of strings. Got <<<{type(primitives).__name__}>>> type.')  # noqa: E501  # fmt: skip
 
         constructor_signature = signature(obj=cls.__init__)
@@ -54,9 +52,7 @@ class Aggregate(ABC):
         extra = set(primitives) - parameters.keys()
 
         if missing or extra:
-            cls._raise_value_constructor_parameters_mismatch(
-                primitives=set(primitives), missing=missing, extra=extra
-            )
+            cls._raise_value_constructor_parameters_mismatch(primitives=set(primitives), missing=missing, extra=extra)
 
         return cls(**primitives)
 

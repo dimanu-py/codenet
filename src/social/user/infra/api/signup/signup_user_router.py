@@ -1,8 +1,8 @@
 from collections.abc import AsyncGenerator
 
-from fastapi import APIRouter, status, Depends, Path
+from fastapi import APIRouter, Depends, Path, status
 from fastapi.responses import JSONResponse
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
+from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
 from src.shared.infra.http.success_response import CreatedResponse
 from src.shared.infra.settings import Settings

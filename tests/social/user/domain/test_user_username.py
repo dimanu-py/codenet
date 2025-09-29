@@ -1,9 +1,9 @@
 import pytest
-from expects import expect, equal, raise_error
+from expects import equal, expect, raise_error
 
 from src.social.user.domain.user_username import (
-    UserUsername,
     InvalidUsernameFormatError,
+    UserUsername,
 )
 
 
@@ -19,9 +19,7 @@ class TestUserUsername:
             pytest.param("tech_guru", id="with_underscore_words"),
         ],
     )
-    def test_should_create_user_username_with_valid_format(
-        self, valid_username: str
-    ) -> None:
+    def test_should_create_user_username_with_valid_format(self, valid_username: str) -> None:
         username = UserUsername(valid_username)
 
         expect(username.value).to(equal(valid_username))
@@ -37,9 +35,5 @@ class TestUserUsername:
             pytest.param("john$doe", id="with_dollar_symbol"),
         ],
     )
-    def test_should_raise_error_when_username_has_invalid_format(
-        self, invalid_username: str
-    ) -> None:
-        expect(lambda: UserUsername(invalid_username)).to(
-            raise_error(InvalidUsernameFormatError)
-        )
+    def test_should_raise_error_when_username_has_invalid_format(self, invalid_username: str) -> None:
+        expect(lambda: UserUsername(invalid_username)).to(raise_error(InvalidUsernameFormatError))

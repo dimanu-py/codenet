@@ -1,6 +1,6 @@
 from unittest.mock import AsyncMock
 
-from expects import expect, equal
+from expects import equal, expect
 
 from src.shared.domain.criteria.criteria import Criteria
 from src.social.user.domain.user import User

@@ -6,10 +6,10 @@ from fastapi.exceptions import RequestValidationError
 
 from src.delivery.alembic_migrator import AlembicMigrator
 from src.delivery.handlers.error_handlers import (
-    unexpected_exception_handler,
-    domain_error_handler,
-    validation_error_handler,
     application_error_handler,
+    domain_error_handler,
+    unexpected_exception_handler,
+    validation_error_handler,
 )
 from src.delivery.middleware.fast_api_log_middleware import FastapiLogMiddleware
 from src.shared.domain.exceptions.application_error import ApplicationError
@@ -21,7 +21,7 @@ from src.social.user.infra.api import routes as user_routes
 
 
 @asynccontextmanager
-async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
+async def lifespan(_: FastAPI) -> AsyncGenerator[None]:
     migrator = AlembicMigrator()
     await migrator.migrate()
     yield

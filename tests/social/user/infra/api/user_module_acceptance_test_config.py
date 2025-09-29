@@ -1,5 +1,5 @@
 import pytest
-from expects import expect, equal
+from expects import equal, expect
 from fastapi.testclient import TestClient
 from starlette.responses import JSONResponse
 
@@ -19,15 +19,11 @@ class UserModuleAcceptanceTestConfig:
         self._client = TestClient(app)
 
     @staticmethod
-    def assert_response_satisfies(
-        expected_status_code: int, expected_response: dict, response: JSONResponse
-    ):
+    def assert_response_satisfies(expected_status_code: int, expected_response: dict, response: JSONResponse):
         expect(response.status_code).to(equal(expected_status_code))
         expect(response.json()).to(equal(expected_response))
 
-    async def when_a_post_request_is_sent_to(
-        self, endpoint: str, request: dict | None = None
-    ) -> JSONResponse:
+    async def when_a_post_request_is_sent_to(self, endpoint: str, request: dict | None = None) -> JSONResponse:
         request_body = {
             "name": UserNameMother.any().value,
             "username": UserUsernameMother.any().value,
@@ -43,8 +39,6 @@ class UserModuleAcceptanceTestConfig:
         with self._client as client:
             client.post(f"/app/users/{user_id}", json=request_body)
 
-    async def when_a_get_request_is_made_to(
-        self, path: str, query_params: dict
-    ) -> JSONResponse:
+    async def when_a_get_request_is_made_to(self, path: str, query_params: dict) -> JSONResponse:
         with self._client as client:
             return client.get(path, params=query_params)  # type: ignore

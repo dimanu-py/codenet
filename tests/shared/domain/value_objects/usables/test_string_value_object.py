@@ -1,5 +1,5 @@
 import pytest
-from expects import expect, equal, raise_error
+from expects import equal, expect, raise_error
 
 from src.shared.domain.exceptions.incorrect_value_type_error import (
     IncorrectValueTypeError,

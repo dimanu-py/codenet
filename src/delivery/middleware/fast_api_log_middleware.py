@@ -1,6 +1,6 @@
 import time
 
-from fastapi import Request, Response, FastAPI
+from fastapi import FastAPI, Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 
 from src.shared.infra.logger.fastapi_file_logger import FastApiFileLogger
@@ -11,9 +11,7 @@ class FastapiLogMiddleware(BaseHTTPMiddleware):
         super().__init__(app)
         self._logger = logger
 
-    async def dispatch(
-        self, request: Request, call_next: RequestResponseEndpoint
-    ) -> Response:
+    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         start_time = time.perf_counter()
         response = await call_next(request)
         process_time = time.perf_counter() - start_time

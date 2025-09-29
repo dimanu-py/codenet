@@ -23,9 +23,7 @@ class TestSearchUserRouter(UserModuleAcceptanceTestConfig):
             "equal": request_body["username"],
         }
 
-        response = await self.when_a_get_request_is_made_to(
-            "/app/users/", query_params={"filter": json.dumps(filter_)}
-        )
+        response = await self.when_a_get_request_is_made_to("/app/users/", query_params={"filter": json.dumps(filter_)})
 
         expected_response = {"users": [{"id": user_id, **request_body}]}
         self.assert_response_satisfies(200, expected_response, response)

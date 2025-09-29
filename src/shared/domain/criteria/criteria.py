@@ -1,4 +1,4 @@
-from typing import Any, override, Self
+from typing import Any, Self, override
 
 from src.shared.domain.criteria.condition.condition import Condition
 from src.shared.domain.criteria.condition.nested_logical_condition import (
@@ -11,10 +11,7 @@ class Criteria:
         self._expression = expression
 
     def is_empty(self) -> bool:
-        return (
-            isinstance(self._expression, NestedLogicalCondition)
-            and self._expression.is_empty()
-        )
+        return isinstance(self._expression, NestedLogicalCondition) and self._expression.is_empty()
 
     @classmethod
     def from_primitives(cls, filter_expression: dict[str, Any]) -> Self:

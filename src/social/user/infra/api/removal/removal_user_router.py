@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status, Path
+from fastapi import APIRouter, Depends, Path, status
 from starlette.responses import JSONResponse
 
 from src.shared.infra.http.error_response import ResourceNotFoundError

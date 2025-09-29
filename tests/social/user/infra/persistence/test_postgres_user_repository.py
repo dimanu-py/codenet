@@ -1,8 +1,8 @@
 from collections.abc import AsyncGenerator
 
 import pytest
-from expects import expect, equal, be_empty
-from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine, async_sessionmaker
+from expects import be_empty, equal, expect
+from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker, create_async_engine
 
 from src.shared.domain.criteria.condition.operator import Operator
 from src.social.user.domain.user import User

@@ -23,14 +23,10 @@ class NestedLogicalCondition(Condition):
     @override
     def from_primitives(cls, data: dict[str, str | list]) -> Condition:
         if LogicalOperator.AND in data:
-            conditions = [
-                cls.from_primitives(item) for item in data[LogicalOperator.AND]
-            ]
+            conditions = [cls.from_primitives(item) for item in data[LogicalOperator.AND]]
             return cls(operator=LogicalOperator.AND, conditions=conditions)
         if LogicalOperator.OR in data:
-            conditions = [
-                cls.from_primitives(item) for item in data[LogicalOperator.OR]
-            ]
+            conditions = [cls.from_primitives(item) for item in data[LogicalOperator.OR]]
             return cls(operator=LogicalOperator.OR, conditions=conditions)
         return ComparatorCondition.from_primitives(data)
 
@@ -43,11 +39,7 @@ class NestedLogicalCondition(Condition):
 
     @override
     def to_primitives(self) -> dict[str, str | list]:
-        key = (
-            LogicalOperator.AND
-            if self._logical_operator is LogicalOperator.AND
-            else LogicalOperator.OR
-        )
+        key = LogicalOperator.AND if self._logical_operator is LogicalOperator.AND else LogicalOperator.OR
         return {key: [item.to_primitives() for item in self._conditions]}
 
     def is_empty(self) -> bool:

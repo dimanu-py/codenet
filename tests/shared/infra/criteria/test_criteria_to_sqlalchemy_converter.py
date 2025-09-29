@@ -1,5 +1,5 @@
 import pytest
-from expects import expect, equal
+from expects import equal, expect
 from sqlalchemy.sql.selectable import Select
 
 from src.shared.domain.criteria.condition.operator import Operator
@@ -20,25 +20,15 @@ class TestCriteriaToSqlalchemyConverter:
     def test_should_generate_select_query_from_empty_criteria(self) -> None:
         criteria = CriteriaMother.empty()
 
-        query = self.stringify(
-            self._converter.convert(model=UserModel, criteria=criteria)
-        )
+        query = self.stringify(self._converter.convert(model=UserModel, criteria=criteria))
 
-        expect(query).to(
-            equal(
-                "SELECT users.id, users.name, users.username, users.email \nFROM users"
-            )
-        )
+        expect(query).to(equal("SELECT users.id, users.name, users.username, users.email \nFROM users"))
 
     def test_should_generate_select_query_with_one_filter(self) -> None:
         user_name = UserNameMother.any()
 
-        criteria = CriteriaMother.with_one_condition(
-            "name", Operator.EQUAL, user_name.value
-        )
-        query = self.stringify(
-            self._converter.convert(model=UserModel, criteria=criteria)
-        )
+        criteria = CriteriaMother.with_one_condition("name", Operator.EQUAL, user_name.value)
+        query = self.stringify(self._converter.convert(model=UserModel, criteria=criteria))
 
         expect(query).to(
             equal(
@@ -67,9 +57,7 @@ class TestCriteriaToSqlalchemyConverter:
                 ]
             }
         )
-        query = self.stringify(
-            self._converter.convert(model=UserModel, criteria=criteria)
-        )
+        query = self.stringify(self._converter.convert(model=UserModel, criteria=criteria))
 
         expect(query).to(
             equal(
@@ -98,9 +86,7 @@ class TestCriteriaToSqlalchemyConverter:
                 ]
             }
         )
-        query = self.stringify(
-            self._converter.convert(model=UserModel, criteria=criteria)
-        )
+        query = self.stringify(self._converter.convert(model=UserModel, criteria=criteria))
 
         expect(query).to(
             equal(
@@ -112,13 +98,9 @@ class TestCriteriaToSqlalchemyConverter:
 
     def test_should_generate_negated_query(self) -> None:
         user_name = UserNameMother.any()
-        criteria = CriteriaMother.with_one_condition(
-            "name", Operator.NOT_EQUAL, user_name.value
-        )
+        criteria = CriteriaMother.with_one_condition("name", Operator.NOT_EQUAL, user_name.value)
 
-        query = self.stringify(
-            self._converter.convert(model=UserModel, criteria=criteria)
-        )
+        query = self.stringify(self._converter.convert(model=UserModel, criteria=criteria))
 
         expect(query).to(
             equal(
@@ -130,13 +112,9 @@ class TestCriteriaToSqlalchemyConverter:
 
     def test_should_generate_query_with_contains(self) -> None:
         user_name = UserNameMother.any()
-        criteria = CriteriaMother.with_one_condition(
-            "name", Operator.CONTAINS, user_name.value
-        )
+        criteria = CriteriaMother.with_one_condition("name", Operator.CONTAINS, user_name.value)
 
-        query = self.stringify(
-            self._converter.convert(model=UserModel, criteria=criteria)
-        )
+        query = self.stringify(self._converter.convert(model=UserModel, criteria=criteria))
 
         expect(query).to(
             equal(
@@ -174,15 +152,13 @@ class TestCriteriaToSqlalchemyConverter:
             }
         )
 
-        query = self.stringify(
-            self._converter.convert(model=UserModel, criteria=criteria)
-        )
+        query = self.stringify(self._converter.convert(model=UserModel, criteria=criteria))
 
         expect(query).to(
             equal(
                 f"SELECT users.id, users.name, users.username, users.email \n"
                 f"FROM users \n"
-                f"WHERE users.name = '{user_name.value}' AND (users.username = '{first_username.value}' OR users.username = '{second_username.value}')"
+                f"WHERE users.name = '{user_name.value}' AND (users.username = '{first_username.value}' OR users.username = '{second_username.value}')"  # noqa: E501
             )
         )
 

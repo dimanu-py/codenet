@@ -1,8 +1,8 @@
 from sqlalchemy.ext.asyncio import (
-    async_sessionmaker,
-    create_async_engine,
     AsyncEngine,
     AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
 )
 
 from src.shared.infra.persistence.sqlalchemy.base import (

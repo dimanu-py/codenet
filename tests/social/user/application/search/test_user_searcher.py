@@ -1,4 +1,4 @@
-from expects import expect, equal, be_empty
+from expects import be_empty, equal, expect
 
 from src.social.user.application.search.search_user_query import SearchUserQuery
 from src.social.user.application.search.user_searcher import UserSearcher

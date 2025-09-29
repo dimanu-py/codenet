@@ -1,7 +1,7 @@
 import pytest
-from expects import expect, equal, raise_error
+from expects import equal, expect, raise_error
 
-from src.social.user.domain.user_email import UserEmail, InvalidEmailFormatError
+from src.social.user.domain.user_email import InvalidEmailFormatError, UserEmail
 
 
 @pytest.mark.unit
@@ -24,9 +24,5 @@ class TestUserEmail:
             pytest.param("special#chars@email.com", id="contains_special_chars"),
         ],
     )
-    def test_should_raise_error_when_email_has_invalid_format(
-        self, invalid_email: str
-    ) -> None:
-        expect(lambda: UserEmail(invalid_email)).to(
-            raise_error(InvalidEmailFormatError)
-        )
+    def test_should_raise_error_when_email_has_invalid_format(self, invalid_email: str) -> None:
+        expect(lambda: UserEmail(invalid_email)).to(raise_error(InvalidEmailFormatError))

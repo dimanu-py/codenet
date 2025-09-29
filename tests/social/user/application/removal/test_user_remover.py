@@ -28,6 +28,4 @@ class TestUserRemoval(UserModuleUnitTestConfig):
 
         self._should_not_find(user_id)
 
-        await async_expect(lambda: self._user_remover(command)).to(
-            raise_error(UserNotFoundError)
-        )
+        await async_expect(lambda: self._user_remover(command)).to(raise_error(UserNotFoundError))

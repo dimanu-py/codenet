@@ -21,12 +21,8 @@ class TestRemovalUserRouter(UserModuleAcceptanceTestConfig):
 
         response = await self.when_a_delete_request_is_sent_to("/app/users/", user_id)
 
-        self.assert_response_satisfies(
-            202, {"message": "User removal request has been accepted."}, response
-        )
+        self.assert_response_satisfies(202, {"message": "User removal request has been accepted."}, response)
 
-    async def when_a_delete_request_is_sent_to(
-        self, endpoint: str, user_id: str
-    ) -> JSONResponse:
+    async def when_a_delete_request_is_sent_to(self, endpoint: str, user_id: str) -> JSONResponse:
         with self._client as client:
             return client.delete(f"{endpoint}{user_id}")  # type: ignore

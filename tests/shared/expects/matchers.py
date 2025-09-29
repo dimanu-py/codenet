@@ -26,9 +26,7 @@ class raise_error:
         except Exception as e:
             return (
                 False,
-                [
-                    f"Expected {self._exception_type.__name__}, but got {type(e).__name__}: {str(e)}"
-                ],
+                [f"Expected {self._exception_type.__name__}, but got {type(e).__name__}: {str(e)}"],
             )
         else:
             return (

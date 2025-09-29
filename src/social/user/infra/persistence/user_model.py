@@ -1,5 +1,5 @@
 from sqlalchemy import UUID, String
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy.orm import Mapped, mapped_column
 
 from src.shared.infra.persistence.sqlalchemy.base import Base
 from src.social.user.domain.user import User

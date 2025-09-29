@@ -1,6 +1,6 @@
 import json
 
-from fastapi import APIRouter, Depends, status, Query
+from fastapi import APIRouter, Depends, Query, status
 from fastapi.responses import JSONResponse
 
 from src.shared.infra.http.success_response import OkResponse

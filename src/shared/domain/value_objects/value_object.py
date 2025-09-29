@@ -1,6 +1,6 @@
 from abc import ABC
 from collections.abc import Callable
-from typing import override, Self
+from typing import Self, override
 
 
 class ValueObject[T](ABC):
@@ -64,6 +64,4 @@ class ValueObject[T](ABC):
         if public_name in public_slots:
             raise AttributeError("Cannot modify the value of a ValueObject")
 
-        raise AttributeError(
-            f"Class {self.__class__.__name__} object has no attribute '{name}'"
-        )
+        raise AttributeError(f"Class {self.__class__.__name__} object has no attribute '{name}'")

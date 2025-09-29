@@ -7,8 +7,8 @@ from src.shared.domain.exceptions.application_error import ApplicationError
 from src.shared.domain.exceptions.domain_error import DomainError
 from src.shared.infra.http.error_response import (
     InternalServerError,
-    UnprocessableEntityError,
     ResourceNotFoundError,
+    UnprocessableEntityError,
 )
 from src.shared.infra.logger.fastapi_file_logger import create_api_logger
 

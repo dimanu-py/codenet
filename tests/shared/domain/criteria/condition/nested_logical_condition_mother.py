@@ -19,6 +19,4 @@ class NestedLogicalConditionMother:
 
     @staticmethod
     def empty() -> NestedLogicalCondition:
-        return NestedLogicalCondition(
-            operator=LogicalOperatorMother.any(), conditions=[]
-        )
+        return NestedLogicalCondition(operator=LogicalOperatorMother.any(), conditions=[])
