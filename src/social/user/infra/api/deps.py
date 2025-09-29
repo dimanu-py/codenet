@@ -22,4 +22,4 @@ async def engine_generator() -> AsyncGenerator[AsyncEngine]:
 def postgres_user_repository(
     engine: AsyncEngine = Depends(engine_generator),
 ) -> PostgresUserRepository:
-    return PostgresUserRepository(engine=engine)
+    return PostgresUserRepository()

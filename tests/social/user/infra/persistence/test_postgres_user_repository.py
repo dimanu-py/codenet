@@ -1,8 +1,5 @@
-from collections.abc import AsyncGenerator
-
 import pytest
 from expects import be_empty, equal, expect
-from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker, create_async_engine
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from src.shared.domain.criteria.condition.operator import Operator
@@ -10,37 +7,16 @@ from src.social.user.domain.user import User
 from src.social.user.infra.persistence.postgres_user_repository import (
     PostgresUserRepository,
 )
-from src.social.user.infra.persistence.user_model import UserModel
 from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
 from tests.social.user.domain.mothers.user_mother import UserMother
-from tests.social.user.infra.persistence.postgres_test_container import (
-    PostgresTestContainer,
-)
-
-
-@pytest.fixture
-async def engine() -> AsyncGenerator[AsyncEngine]:
-    with PostgresTestContainer() as postgres_container:
-        engine = create_async_engine(postgres_container.get_base_url())
-
-        async with engine.begin() as conn:
-            await conn.run_sync(UserModel.metadata.create_all)
-
-        yield engine
-
-        async with engine.begin() as conn:
-            await conn.run_sync(UserModel.metadata.drop_all)
-        await engine.dispose()
 
 
 @pytest.mark.integration
 @pytest.mark.asyncio
 class TestPostgresUserRepository:
     @pytest.fixture(autouse=True)
-    def setup_method(self, engine: AsyncEngine, session: AsyncSession) -> None:
-        self._engine = engine
-        self._session = session
-        self._repository = PostgresUserRepository(self._engine, self._session)
+    def setup_method(self, session: AsyncSession) -> None:
+        self._repository = PostgresUserRepository(session)
 
     async def test_should_save_and_find_existing_user(self) -> None:
         user = UserMother.any()
