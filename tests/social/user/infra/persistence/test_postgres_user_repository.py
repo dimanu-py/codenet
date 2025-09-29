@@ -3,6 +3,7 @@ from collections.abc import AsyncGenerator
 import pytest
 from expects import be_empty, equal, expect
 from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from src.shared.domain.criteria.condition.operator import Operator
 from src.social.user.domain.user import User
@@ -36,9 +37,10 @@ async def engine() -> AsyncGenerator[AsyncEngine]:
 @pytest.mark.asyncio
 class TestPostgresUserRepository:
     @pytest.fixture(autouse=True)
-    def setup_method(self, engine: AsyncEngine) -> None:
+    def setup_method(self, engine: AsyncEngine, session: AsyncSession) -> None:
         self._engine = engine
-        self._repository = PostgresUserRepository(self._engine)
+        self._session = session
+        self._repository = PostgresUserRepository(self._engine, self._session)
 
     async def test_should_save_and_find_existing_user(self) -> None:
         user = UserMother.any()
