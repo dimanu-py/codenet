@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, status, Query
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
 
-from src.shared.infra.http.success_response import SuccessResponse
+from src.shared.infra.http.success_response import OkResponse
 from src.shared.infra.settings import Settings
 from src.social.user.application.search.search_user_query import SearchUserQuery
 from src.social.user.application.search.user_search_response import UserSearchResponse
@@ -29,7 +29,7 @@ async def engine_generator() -> AsyncGenerator[AsyncEngine]:
 @router.get(
     "/search",
     responses={
-        status.HTTP_200_OK: {"model": SuccessResponse},
+        status.HTTP_200_OK: {"model": OkResponse},
     },
 )
 async def get_user_by_criteria(
@@ -43,7 +43,6 @@ async def get_user_by_criteria(
     users = await user_searcher(query)
     response = UserSearchResponse([user.to_primitives() for user in users])
 
-    return SuccessResponse(
-        status_code=status.HTTP_200_OK,
+    return OkResponse(
         data=response.dump(),
     ).as_json()
