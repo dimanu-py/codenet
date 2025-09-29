@@ -33,7 +33,7 @@ async def engine_generator() -> AsyncGenerator[AsyncEngine]:
     },
 )
 async def get_user_by_criteria(
-    filter: str = Query(example='{"field": "username", "equal": "john_doe"}'),
+    filter: str = Query(examples=['{"field": "username", "equal": "john_doe"}']),
     engine: AsyncEngine = Depends(engine_generator),
 ) -> JSONResponse:
     query = SearchUserQuery(filters=json.loads(filter))

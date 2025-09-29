@@ -33,7 +33,7 @@ async def engine_generator() -> AsyncGenerator[AsyncEngine]:
 )
 async def signup_user(
     request: UserSignupRequest,
-    user_id: str = Path(..., example="123e4567-e89b-12d3-a456-426614174000"),
+    user_id: str = Path(..., examples=["123e4567-e89b-12d3-a456-426614174000"]),
     engine: AsyncEngine = Depends(engine_generator),
 ) -> JSONResponse:
     command = UserSignupCommand(
