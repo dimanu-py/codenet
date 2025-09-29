@@ -46,6 +46,9 @@ class PostgresUserRepository(UserRepository):
     async def matching(self, criteria: Criteria) -> list[User]:
         converter = CriteriaToSqlalchemyConverter()
         query = converter.convert(UserModel, criteria)
+        if self._session:
+            users = await self._session.scalars(query)
+            return [user.to_aggregate() for user in users]
         async with self._session_maker() as session:
             users = await session.scalars(query)
         return [user.to_aggregate() for user in users]
