@@ -13,5 +13,7 @@ class JSONFormatter(logging.Formatter):
 
         if hasattr(record, "details"):
             log_record["details"] = record.details
+        if hasattr(record, "correlation_id"):
+            log_record["correlation_id"] = record.correlation_id
 
         return json.dumps(log_record)

@@ -1,5 +1,7 @@
 import logging
 
+from asgi_correlation_id import CorrelationIdFilter
+
 from src.shared.infra.logger.file_rotating_handler import TimeRotatingFileHandler
 
 
@@ -7,6 +9,7 @@ class FastApiFileLogger:
     def __init__(self, name: str, handlers: list[logging.Handler]) -> None:
         self._logger = logging.getLogger(name)
         self._logger.setLevel(logging.DEBUG)
+        self._logger.addFilter(CorrelationIdFilter())
 
         if not self._logger.hasHandlers():
             self._logger.handlers.extend(handlers)
