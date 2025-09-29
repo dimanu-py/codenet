@@ -14,9 +14,3 @@ class UserSignupCommandMother:
             username=UserUsernameMother.any().value,
             email=UserEmailMother.any().value,
         )
-
-    @classmethod
-    def invalid(cls, **overrides) -> UserSignupCommand:
-        defaults = cls.any().to_primitives()
-        defaults.update(overrides)
-        return UserSignupCommand(**defaults)
