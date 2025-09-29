@@ -89,7 +89,7 @@ format:  ## Apply ruff format fix.
 
 .PHONY: watch
 watch:  ## Run all test with every change.
-    @echo "\n⌛ Running tests in watch mode...\n"
+	@echo "\n⌛ Running tests in watch mode...\n"
 	@uv run ptw --runner "pytest -n auto test -ra"
 
 .PHONY: show
