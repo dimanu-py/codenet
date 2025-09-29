@@ -28,6 +28,7 @@ dev = [
 ]
 
 test = [
+    "aiosqlite>=0.21.0",
     "coverage>=7.6.9",
     "doublex>=1.9.6.1",
     "doublex-expects>=0.7.1",
