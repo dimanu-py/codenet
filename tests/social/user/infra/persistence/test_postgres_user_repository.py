@@ -82,6 +82,9 @@ class TestPostgresUserRepository:
 
     async def _given_an_user_already_exists(self) -> User:
         user = UserMother.any()
+        if self._session:
+            await self._repository.save(user)
+            return user
         session_maker = async_sessionmaker(bind=self._engine)
         async with session_maker() as session:
             existing_user = UserModel(**user.to_primitives())
