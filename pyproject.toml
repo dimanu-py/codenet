@@ -19,6 +19,12 @@ readme = "README.md"
 license = {text = "MIT"}
 
 [dependency-groups]
+dev = [
+    {include-group = "lint"},
+    {include-group = "test"},
+    {include-group = "git"},
+]
+
 test = [
     "coverage>=7.6.9",
     "doublex>=1.9.6.1",
@@ -35,12 +41,9 @@ test = [
 lint = [
     "mypy>=1.13.0",
     "pip-audit>=2.9.0",
-    "pre-commit>=4.1.0",
     "ruff>=0.8.3",
 ]
 git = [
-    "commitizen>=4.1.1",
-    "cz-conventional-gitmoji>=0.6.1",
     "pre-commit>=4.1.0",
     "python-semantic-release>=10.2.0",
 ]
