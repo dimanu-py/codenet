@@ -23,46 +23,25 @@ class PostgresUserRepository(UserRepository):
 
     @override
     async def save(self, user: User) -> None:
-        if self._session:
-            user_to_save = UserModel(**user.to_primitives())
-            self._session.add(user_to_save)
-            await self._session.commit()
-            return
-        async with self._session_maker() as session:
-            user_to_save = UserModel(**user.to_primitives())
-            session.add(user_to_save)
-            await session.commit()
+        user_to_save = UserModel(**user.to_primitives())
+        self._session.add(user_to_save)
+        await self._session.commit()
 
     @override
     async def find(self, user_id: UserId) -> User | None:
-        if self._session:
-            user = await self._session.get(UserModel, user_id.value)
-            return user.to_aggregate() if user else None
-        async with self._session_maker() as session:
-            user = await session.get(UserModel, user_id.value)
-            return user.to_aggregate() if user else None
+        user = await self._session.get(UserModel, user_id.value)
+        return user.to_aggregate() if user else None
 
     @override
     async def matching(self, criteria: Criteria) -> list[User]:
         converter = CriteriaToSqlalchemyConverter()
         query = converter.convert(UserModel, criteria)
-        if self._session:
-            users = await self._session.scalars(query)
-            return [user.to_aggregate() for user in users]
-        async with self._session_maker() as session:
-            users = await session.scalars(query)
+        users = await self._session.scalars(query)
         return [user.to_aggregate() for user in users]
 
     @override
     async def delete(self, user_id: UserId) -> None:
-        if self._session:
-            user = await self._session.get(UserModel, user_id.value)
-            if user:
-                await self._session.delete(user)
-                await self._session.commit()
-            return
-        async with self._session_maker() as session:
-            user = await session.get(UserModel, user_id.value)
-            if user:
-                await session.delete(user)
-                await session.commit()
+        user = await self._session.get(UserModel, user_id.value)
+        if user:
+            await self._session.delete(user)
+            await self._session.commit()
