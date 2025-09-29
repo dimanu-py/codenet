@@ -8,8 +8,8 @@ from src.shared.infra.criteria.criteria_to_sqlalchemy_converter import (
 )
 from src.social.user.infra.persistence.user_model import UserModel
 from tests.shared.domain.criteria.criteria_mother import CriteriaMother
-from tests.social.user.domain.user_name_mother import UserNameMother
-from tests.social.user.domain.user_username_mother import UserUsernameMother
+from tests.social.user.domain.mother.user_name_mother import UserNameMother
+from tests.social.user.domain.mother.user_username_mother import UserUsernameMother
 
 
 @pytest.mark.unit

@@ -6,7 +6,7 @@ from tests.shared.domain.criteria.criteria_mother import CriteriaMother
 from tests.social.user.application.user_module_unit_test_config import (
     UserModuleUnitTestConfig,
 )
-from tests.social.user.domain.user_mother import UserMother
+from tests.social.user.domain.mother.user_mother import UserMother
 
 
 class TestUserSearcher(UserModuleUnitTestConfig):

@@ -1,8 +1,8 @@
 from src.social.user.application.signup.user_signup_command import UserSignupCommand
-from tests.social.user.domain.user_email_mother import UserEmailMother
-from tests.social.user.domain.user_id_mother import UserIdMother
-from tests.social.user.domain.user_name_mother import UserNameMother
-from tests.social.user.domain.user_username_mother import UserUsernameMother
+from tests.social.user.domain.mother.user_email_mother import UserEmailMother
+from tests.social.user.domain.mother.user_id_mother import UserIdMother
+from tests.social.user.domain.mother.user_name_mother import UserNameMother
+from tests.social.user.domain.mother.user_username_mother import UserUsernameMother
 
 
 class UserSignupCommandMother:

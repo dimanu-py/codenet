@@ -11,7 +11,7 @@ from src.social.user.infra.persistence.postgres_user_repository import (
 )
 from src.social.user.infra.persistence.user_model import UserModel
 from tests.shared.domain.criteria.criteria_mother import CriteriaMother
-from tests.social.user.domain.user_mother import UserMother
+from tests.social.user.domain.mother.user_mother import UserMother
 from tests.social.user.infra.persistence.postgres_test_container import (
     PostgresTestContainer,
 )
