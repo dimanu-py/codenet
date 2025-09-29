@@ -9,7 +9,7 @@ from src.shared.domain.exceptions.invalid_negative_value_error import (
 )
 from src.shared.domain.exceptions.required_value_error import RequiredValueError
 from src.shared.domain.value_objects.usables.int_value_object import IntValueObject
-from tests.shared.domain.value_objects.int_primitives_mother import IntPrimitivesMother
+from tests.shared.domain.value_objects.mothers.int_primitives_mother import IntPrimitivesMother
 
 
 @pytest.mark.unit

@@ -8,7 +8,7 @@ from src.shared.domain.exceptions.required_value_error import RequiredValueError
 from src.shared.domain.value_objects.usables.string_value_object import (
     StringValueObject,
 )
-from tests.shared.domain.value_objects.string_primitives_mother import (
+from tests.shared.domain.value_objects.mothers.string_primitives_mother import (
     StringPrimitivesMother,
 )
 

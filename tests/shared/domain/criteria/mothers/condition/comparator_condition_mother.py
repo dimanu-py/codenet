@@ -1,11 +1,11 @@
 from src.shared.domain.criteria.condition.comparator_condition import (
     ComparatorCondition,
 )
-from tests.shared.domain.criteria.condition.field_mother import FieldMother
-from tests.shared.domain.criteria.condition.operator_mother import (
+from tests.shared.domain.criteria.mothers.condition.field_mother import FieldMother
+from tests.shared.domain.criteria.mothers.condition.operator_mother import (
     OperatorMother,
 )
-from tests.shared.domain.criteria.condition.value_mother import ValueMother
+from tests.shared.domain.criteria.mothers.condition.value_mother import ValueMother
 
 
 class ComparatorConditionMother:

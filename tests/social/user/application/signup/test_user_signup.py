@@ -5,7 +5,7 @@ from tests.social.user.application.signup.user_signup_command_mother import (
 from tests.social.user.application.user_module_unit_test_config import (
     UserModuleUnitTestConfig,
 )
-from tests.social.user.domain.mother.user_mother import UserMother
+from tests.social.user.domain.mothers.user_mother import UserMother
 
 
 class TestUserSignup(UserModuleUnitTestConfig):
