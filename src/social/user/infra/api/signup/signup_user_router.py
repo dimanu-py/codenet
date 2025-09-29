@@ -8,10 +8,9 @@ from src.shared.infra.http.success_response import CreatedResponse
 from src.shared.infra.settings import Settings
 from src.social.user.application.signup.user_signup import UserSignup
 from src.social.user.application.signup.user_signup_command import UserSignupCommand
+from src.social.user.domain.user_repository import UserRepository
+from src.social.user.infra.api.deps import postgres_user_repository
 from src.social.user.infra.api.signup.user_sign_up_request import UserSignupRequest
-from src.social.user.infra.persistence.postgres_user_repository import (
-    PostgresUserRepository,
-)
 
 router = APIRouter()
 
@@ -34,7 +33,7 @@ async def engine_generator() -> AsyncGenerator[AsyncEngine]:
 async def signup_user(
     request: UserSignupRequest,
     user_id: str = Path(..., examples=["123e4567-e89b-12d3-a456-426614174000"]),
-    engine: AsyncEngine = Depends(engine_generator),
+    repository: UserRepository = Depends(postgres_user_repository),
 ) -> JSONResponse:
     command = UserSignupCommand(
         id=user_id,
@@ -42,9 +41,8 @@ async def signup_user(
         username=request.username,
         email=request.email,
     )
-    repository = PostgresUserRepository(engine=engine)
-    user_signup = UserSignup(repository)
 
+    user_signup = UserSignup(repository)
     await user_signup(command)
 
     return CreatedResponse(
