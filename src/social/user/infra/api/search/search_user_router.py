@@ -1,7 +1,7 @@
 import json
 from collections.abc import AsyncGenerator
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, Query
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
 
@@ -33,7 +33,7 @@ async def engine_generator() -> AsyncGenerator[AsyncEngine]:
     },
 )
 async def get_user_by_criteria(
-    filter: str,
+    filter: str = Query(example='{"field": "username", "equal": "john_doe"}'),
     engine: AsyncEngine = Depends(engine_generator),
 ) -> JSONResponse:
     query = SearchUserQuery(filters=json.loads(filter))
