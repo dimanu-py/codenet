@@ -49,6 +49,23 @@ git = [
 ]
 
 
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "C4", "UP", "I"]
+ignore = ["B008"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src", "tests"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+
+
 [tool.semantic_release]
 version_toml = ["pyproject.toml:project.version"]
 commit_message = "bump: new version {version} created"
