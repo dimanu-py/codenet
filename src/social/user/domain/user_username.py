@@ -1,11 +1,9 @@
 import re
 
+from src.shared.domain.exceptions.domain_error import DomainError
 from src.shared.domain.value_objects.decorators.validation import validate
 from src.shared.domain.value_objects.usables.string_value_object import (
     StringValueObject,
-)
-from src.social.user.domain.invalid_username_format_error import (
-    InvalidUsernameFormatError,
 )
 
 
@@ -16,3 +14,11 @@ class UserUsername(StringValueObject):
     def _ensure_name_has_valid_characters(self, value: str) -> None:
         if re.match(self.CORRECT_CHARACTERS, value) is None:
             raise InvalidUsernameFormatError
+
+
+class InvalidUsernameFormatError(DomainError):
+    def __init__(self) -> None:
+        super().__init__(
+            message="Username cannot contain special characters",
+            error_type="invalid_username_format",
+        )

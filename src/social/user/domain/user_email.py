@@ -1,10 +1,10 @@
 import re
 
+from src.shared.domain.exceptions.domain_error import DomainError
 from src.shared.domain.value_objects.decorators.validation import validate
 from src.shared.domain.value_objects.usables.string_value_object import (
     StringValueObject,
 )
-from src.social.user.domain.invalid_email_format_error import InvalidEmailFormatError
 
 
 class UserEmail(StringValueObject):
@@ -14,3 +14,11 @@ class UserEmail(StringValueObject):
     def _ensure_email_has_correct_format(self, value: str) -> None:
         if re.match(self.EMAIL_FORMAT, value) is None:
             raise InvalidEmailFormatError
+
+
+class InvalidEmailFormatError(DomainError):
+    def __init__(self) -> None:
+        super().__init__(
+            message="Email cannot contain special characters and must contain '@' and '.'",
+            error_type="invalid_email_format",
+        )

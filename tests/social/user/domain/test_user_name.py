@@ -1,8 +1,7 @@
 import pytest
 from expects import expect, equal, raise_error
 
-from src.social.user.domain.invalid_name_format_error import InvalidNameFormatError
-from src.social.user.domain.user_name import UserName
+from src.social.user.domain.user_name import UserName, InvalidNameFormatError
 
 
 @pytest.mark.unit

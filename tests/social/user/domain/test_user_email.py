@@ -1,8 +1,7 @@
 import pytest
 from expects import expect, equal, raise_error
 
-from src.social.user.domain.invalid_email_format_error import InvalidEmailFormatError
-from src.social.user.domain.user_email import UserEmail
+from src.social.user.domain.user_email import UserEmail, InvalidEmailFormatError
 
 
 @pytest.mark.unit
