@@ -14,13 +14,21 @@ class ValueObject[T](ABC):
         object.__setattr__(self, "_value", value)
 
     def _validate(self, value: T) -> None:
+        """Gets all methods decorated with @validate and calls them to validate all domain conditions."""
         validators: list[Callable[[T], None]] = []
         for cls in reversed(self.__class__.__mro__):
             if cls is object:
                 continue
+
+            methods: list[tuple[int, Callable[[T], None]]] = []
             for name, member in cls.__dict__.items():
                 if getattr(member, "_is_validator", False):
                     validators.append(getattr(self, name))
+                    order: int = getattr(member, "_order", 0)
+                    methods.append((order, getattr(self, name)))
+
+            for _, method in sorted(methods, key=lambda item: item[0]):
+                validators.append(method)
 
         for validator in validators:
             validator(value)
@@ -40,6 +48,10 @@ class ValueObject[T](ABC):
     @override
     def __str__(self) -> str:
         return str(self._value)
+
+    @override
+    def __hash__(self) -> int:
+        return hash(self._value)
 
     @override
     def __setattr__(self, name: str, value: T) -> None:
