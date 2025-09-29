@@ -1,0 +1,50 @@
+from collections.abc import AsyncGenerator
+
+import pytest
+from sqlalchemy.ext.asyncio.engine import AsyncEngine, create_async_engine, AsyncConnection
+from sqlalchemy.ext.asyncio.session import AsyncSession
+from sqlalchemy_utils import create_database, database_exists
+
+from src.shared.infra.persistence.sqlalchemy.base import Base
+
+
+@pytest.fixture
+def async_engine() -> AsyncEngine:
+    return create_async_engine(
+        "sqlite+aiosqlite:///:memory:",
+        echo=False,
+        connect_args={"check_same_thread": False},
+    )
+
+
+@pytest.fixture
+async def setup_database(async_engine: AsyncEngine) -> AsyncGenerator[None]:
+    if not database_exists(async_engine.url):
+        create_database(async_engine.url)
+
+    async with async_engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+    yield
+
+    async with async_engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+
+
+@pytest.fixture
+async def connection(
+    async_engine: AsyncEngine,
+    setup_database: None,  # noqa: ARG001
+) -> AsyncGenerator[AsyncConnection, None]:
+    async with async_engine.connect() as conn:
+        yield conn
+
+
+@pytest.fixture
+async def session(connection: AsyncConnection) -> AsyncGenerator[AsyncSession, None]:
+    async with AsyncSession(bind=connection) as session:
+        try:
+            yield session
+            await session.rollback()
+        finally:
+            await session.close()
