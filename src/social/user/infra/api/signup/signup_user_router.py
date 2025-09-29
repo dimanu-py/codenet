@@ -26,7 +26,7 @@ async def engine_generator() -> AsyncGenerator[AsyncEngine]:
 
 
 @router.post(
-    "/signup/{user_id}",
+    "/{user_id}",
     responses={
         status.HTTP_201_CREATED: {"model": CreatedResponse},
     },
@@ -48,5 +48,5 @@ async def signup_user(
     await user_signup(command)
 
     return CreatedResponse(
-        data={"resource": f"/app/users/signup/{user_id}"},
+        data={"resource": f"/app/users/{user_id}"},
     ).as_json()

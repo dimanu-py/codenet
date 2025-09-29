@@ -24,7 +24,7 @@ class TestSearchUserRouter(UserModuleAcceptanceTestConfig):
         }
 
         response = await self.when_a_get_request_is_made_to(
-            "/app/users/search/", query_params={"filter": json.dumps(filter_)}
+            "/app/users/", query_params={"filter": json.dumps(filter_)}
         )
 
         expected_response = {"users": [{"id": user_id, **request_body}]}

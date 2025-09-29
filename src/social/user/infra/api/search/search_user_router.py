@@ -27,7 +27,7 @@ async def engine_generator() -> AsyncGenerator[AsyncEngine]:
 
 
 @router.get(
-    "/search",
+    "/",
     responses={
         status.HTTP_200_OK: {"model": OkResponse},
     },

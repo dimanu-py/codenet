@@ -1,6 +1,6 @@
 from collections.abc import AsyncGenerator
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, Path
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
 from starlette.responses import JSONResponse
 
@@ -26,14 +26,14 @@ async def engine_generator() -> AsyncGenerator[AsyncEngine]:
 
 
 @router.delete(
-    "/removal/{user_id}",
+    "/{user_id}",
     responses={
         status.HTTP_202_ACCEPTED: {"model": AcceptedResponse},
         status.HTTP_404_NOT_FOUND: {"model": ResourceNotFoundError},
     },
 )
 async def remove_user(
-    user_id: str,
+    user_id: str = Path(..., example="123e4567-e89b-12d3-a456-426614174000"),
     engine: AsyncEngine = Depends(engine_generator),
 ) -> JSONResponse:
     command = UserRemovalCommand(user_id=user_id)
@@ -43,5 +43,5 @@ async def remove_user(
     await user_remover(command)
 
     return AcceptedResponse(
-        data={"message": "User removed successfully"},
+        data={"message": "User removal request has been accepted."},
     ).as_json()

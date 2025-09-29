@@ -41,7 +41,7 @@ class UserModuleAcceptanceTestConfig:
 
     async def given_a_user_is_signed_up(self, user_id: str, request_body: dict) -> None:
         with self._client as client:
-            client.post(f"/app/users/signup/{user_id}", json=request_body)
+            client.post(f"/app/users/{user_id}", json=request_body)
 
     async def when_a_get_request_is_made_to(
         self, path: str, query_params: dict
