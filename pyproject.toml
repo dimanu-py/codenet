@@ -5,15 +5,15 @@ description = "Project of a social network to practice DDD"
 
 
 dependencies = [
-    "alembic>=1.14.1",
+    "alembic>=1.16.5",
     "asgi-correlation-id>=4.3.4",
     "asyncpg>=0.30.0",
-    "fastapi[standard]>=0.115.7",
+    "fastapi[standard]>=0.118.0",
     "psycopg2-binary>=2.9.10",
-    "pydantic-settings>=2.7.1",
-    "sqlalchemy>=2.0.36",
+    "pydantic-settings>=2.11.0",
+    "sqlalchemy>=2.0.43",
     "sqlalchemy-utils>=0.42.0",
-    "validators>=0.34.0",
+    "validators>=0.35.0",
 ]
 
 requires-python = "==3.13.*"
@@ -29,26 +29,26 @@ dev = [
 
 test = [
     "aiosqlite>=0.21.0",
-    "coverage>=7.6.9",
+    "coverage>=7.10.7",
     "doublex>=1.9.6.1",
     "doublex-expects>=0.7.1",
     "expects>=0.9.0",
-    "faker>=35.0.0",
-    "pytest>=8.3.4",
-    "pytest-asyncio>=0.25.2",
-    "pytest-sugar>=1.0.0",
+    "faker>=37.8.0",
+    "pytest>=8.4.2",
+    "pytest-asyncio>=1.2.0",
+    "pytest-sugar>=1.1.1",
     "pytest-watch>=4.2.0",
-    "pytest-xdist>=3.6.1",
-    "testcontainers>=4.10.0",
+    "pytest-xdist>=3.8.0",
+    "testcontainers>=4.13.1",
 ]
 lint = [
-    "mypy>=1.13.0",
+    "mypy>=1.18.2",
     "pip-audit>=2.9.0",
-    "ruff>=0.8.3",
+    "ruff>=0.13.2",
 ]
 git = [
-    "pre-commit>=4.1.0",
-    "python-semantic-release>=10.2.0",
+    "pre-commit>=4.3.0",
+    "python-semantic-release>=10.4.1",
 ]
 
 
