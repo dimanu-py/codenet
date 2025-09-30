@@ -2,6 +2,106 @@
 
 <!-- version list -->
 
+## v1.3.0 (2025-09-30)
+
+### ✨ Features
+
+- **migration**: Generate migration script modifying id column in users table
+  ([`a62b551`](https://github.com/dimanu-py/codenet/commit/a62b5515cb7f89485bf11b74bc380858501d92d2))
+
+- **user**: Remove not needed engine_generator function and implement new function to be able to
+  inject an async session to the postgres user repository
+  ([`f632904`](https://github.com/dimanu-py/codenet/commit/f632904180f707817eeecc3e1c8d5690cb1e1529))
+
+- **user**: Implement session-based user deletion in PostgresUserRepository
+  ([`a4a0c3d`](https://github.com/dimanu-py/codenet/commit/a4a0c3da3d772640050345e4c5ffecd1f9d4d9a2))
+
+- **user**: Optimize matching method to utilize session when available
+  ([`6a15624`](https://github.com/dimanu-py/codenet/commit/6a15624642cc339492aea93c85c5bf5e9664cf72))
+
+- **user**: Extend PostgresUserRepository's save and find method to use session attribute when is
+  available
+  ([`12c6fe9`](https://github.com/dimanu-py/codenet/commit/12c6fe9676c0a50b1e6a58cbee105542db1373f9))
+
+- **user**: Include session dependency as optional to PostgresUserRepository
+  ([`524ddb9`](https://github.com/dimanu-py/codenet/commit/524ddb96bf00655e1b8dbdf32e2dd55a1952b440))
+
+- **delivery**: Add correlation id middleware to main application
+  ([`09587bd`](https://github.com/dimanu-py/codenet/commit/09587bd66b6d0234b60e611aa554ead292d1e9f8))
+
+- **shared**: Include correlation id filter and data when logging
+  ([`70b37fc`](https://github.com/dimanu-py/codenet/commit/70b37fc861afd6e08657eeb62a63fe3547d0ecd8))
+
+- **user**: Create file to have common dependencies for user aggregate endpoints
+  ([`3e300b4`](https://github.com/dimanu-py/codenet/commit/3e300b482d812433f6e06fb13cf61a92c50cda2b))
+
+- **user**: Update path parameters to use 'examples' as 'example' has been deprecated
+  ([`896744f`](https://github.com/dimanu-py/codenet/commit/896744f8c6f27dbdec2c4a934af1b1933846fa50))
+
+- **user**: Modify endpoint names to use nouns instead of verbs or actions
+  ([`3612be8`](https://github.com/dimanu-py/codenet/commit/3612be8e93ea20367387f4b39ab917945a17396c))
+
+- **user**: Replace SuccessResponse with specific response classes for user removal, search, and
+  signup endpoints
+  ([`be93d99`](https://github.com/dimanu-py/codenet/commit/be93d991405cd0e8e175f179432d0939c20bfe4a))
+
+- **shared**: Extend SuccessResponse to include specific response classes for Created, Ok, and
+  Accepted statuses
+  ([`ec1e61a`](https://github.com/dimanu-py/codenet/commit/ec1e61a22da9922bc695a4d4a099bcedb275ceef))
+
+- **user**: Add example to user_id path parameter in signup user endpoint
+  ([`f204fd8`](https://github.com/dimanu-py/codenet/commit/f204fd8cd7433e6eee4d1a4c7c008d768b867ae9))
+
+- **user**: Add example to filter query parameter in get_user_by_criteria
+  ([`ef1eac7`](https://github.com/dimanu-py/codenet/commit/ef1eac7f92238ecbd325992bda46406fb0fbec19))
+
+### 🪲 Bug Fixes
+
+- **user**: Modify UserModel database representation to store id as a string of max length 36
+  instead of UUID
+  ([`183be4c`](https://github.com/dimanu-py/codenet/commit/183be4c302aeafabeccd6523cac9856987ab8f45))
+
+- **shared**: Set status code for CreatedResponse correctly to 201
+  ([`2df6401`](https://github.com/dimanu-py/codenet/commit/2df640134cb597419187a0ea602b18777f131f78))
+
+### ♻️ Refactoring
+
+- **delivery**: Ignore type error when adding middlewares
+  ([`603e9ed`](https://github.com/dimanu-py/codenet/commit/603e9ed1fdf385f3f533c6720868564168998ceb))
+
+- **shared**: Fix type errors
+  ([`3e937e7`](https://github.com/dimanu-py/codenet/commit/3e937e74306bef9003e70711faed6a3b1a42ad2f))
+
+- **user**: Remove engine argument from PostgresUserRepository constructor
+  ([`e2caeb8`](https://github.com/dimanu-py/codenet/commit/e2caeb8c89e16437a9921fbdc9af6dd658fc9187))
+
+- **user**: Remove all uses of session maker
+  ([`926e8ec`](https://github.com/dimanu-py/codenet/commit/926e8ec50f0be6295035e34a595463907a05847c))
+
+- **user**: Update endpoints to use new 'postgres_user_repository' function to inject concrete user
+  repository to endpoints
+  ([`6b33147`](https://github.com/dimanu-py/codenet/commit/6b33147f00c39e3763fcd34c3f59c5bd60804e3b))
+
+- **user**: Move domain errors to their closest class files to keep information cohesive
+  ([`f96e08b`](https://github.com/dimanu-py/codenet/commit/f96e08ba93261569076aa7d71fd031ba9de83c74))
+
+- **user**: Update domain and application errors to not define unnecessary fields
+  ([`b52ad65`](https://github.com/dimanu-py/codenet/commit/b52ad6521e5ef363353d475ab43e3a1274c6a9b8))
+
+- **user**: Remove named constructor 'signup' from User and leave a single init method
+  ([`5568515`](https://github.com/dimanu-py/codenet/commit/55685158ce5b2e56d7e856c16547fa378705a10e))
+
+- **shared**: Update base value object to manage validation in the order specified by the decorators
+  ([`4e80ef9`](https://github.com/dimanu-py/codenet/commit/4e80ef93f9692242573dd2f5717020303e14de91))
+
+- **shared**: Modify validate decorator to be applied to value object allowing to specify the order
+  of the validation
+  ([`3f540b2`](https://github.com/dimanu-py/codenet/commit/3f540b224181702db2098fd7720239f8541abee5))
+
+- **shared**: Modify basic domain errors to not set unnecessary fields when creating them
+  ([`c20342c`](https://github.com/dimanu-py/codenet/commit/c20342ca716c929315cacc25ec13f3de0d5d065b))
+
+
 ## v1.1.0 (2025-07-12)
 
 ### ✨ Features
