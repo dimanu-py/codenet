@@ -200,4 +200,4 @@ jobs:
           flags: unittests
           name: codecov-coverage
           token: ${{ secrets.CODECOV_TOKEN }}
-          slug: {{ git.username }}/{{ general.slug }}
+          slug: dimanu-py/codenet
