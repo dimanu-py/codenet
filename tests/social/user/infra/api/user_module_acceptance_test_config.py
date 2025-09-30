@@ -1,9 +1,11 @@
 import pytest
 from expects import equal, expect
 from fastapi.testclient import TestClient
+from sqlalchemy.ext.asyncio.session import AsyncSession
 from starlette.responses import JSONResponse
 
 from src.delivery.main import app
+from src.social.user.infra.api.deps import get_async_session
 from tests.social.user.domain.mothers.user_email_mother import UserEmailMother
 from tests.social.user.domain.mothers.user_id_mother import UserIdMother
 from tests.social.user.domain.mothers.user_name_mother import UserNameMother
@@ -15,11 +17,19 @@ from tests.social.user.domain.mothers.user_username_mother import UserUsernameMo
 class UserModuleAcceptanceTestConfig:
     EMPTY_RESPONSE: dict = {}
 
-    def setup_method(self) -> None:
+    @pytest.fixture(autouse=True)
+    def setup_method(self, session: AsyncSession) -> None:
+        def get_override_session() -> AsyncSession:
+            return session
+
+        app.dependency_overrides[get_async_session] = get_override_session
         self._client = TestClient(app)
 
+    def teardown_method(self) -> None:
+        app.dependency_overrides.clear()
+
     @staticmethod
-    def assert_response_satisfies(expected_status_code: int, expected_response: dict, response: JSONResponse):
+    def assert_response_satisfies(expected_status_code: int, expected_response: dict, response: JSONResponse) -> None:
         expect(response.status_code).to(equal(expected_status_code))
         expect(response.json()).to(equal(expected_response))
 
