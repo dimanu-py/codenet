@@ -13,7 +13,7 @@ settings = Settings()  # type: ignore
 engine = create_async_engine(str(settings.postgres_url))
 
 
-async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+async def get_async_session() -> AsyncGenerator[AsyncSession]:
     async with AsyncSession(engine) as session:
         try:
             yield session

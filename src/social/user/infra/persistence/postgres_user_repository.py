@@ -13,7 +13,6 @@ from src.social.user.infra.persistence.user_model import UserModel
 
 
 class PostgresUserRepository(UserRepository):
-
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
