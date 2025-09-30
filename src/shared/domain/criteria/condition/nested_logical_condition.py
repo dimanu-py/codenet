@@ -23,10 +23,10 @@ class NestedLogicalCondition(Condition):
     @override
     def from_primitives(cls, data: dict[str, str | list]) -> Condition:
         if LogicalOperator.AND in data:
-            conditions = [cls.from_primitives(item) for item in data[LogicalOperator.AND]]
+            conditions = [cls.from_primitives(item) for item in data[LogicalOperator.AND]]  # type: ignore
             return cls(operator=LogicalOperator.AND, conditions=conditions)
         if LogicalOperator.OR in data:
-            conditions = [cls.from_primitives(item) for item in data[LogicalOperator.OR]]
+            conditions = [cls.from_primitives(item) for item in data[LogicalOperator.OR]]  # type: ignore
             return cls(operator=LogicalOperator.OR, conditions=conditions)
         return ComparatorCondition.from_primitives(data)
 

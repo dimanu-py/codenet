@@ -23,9 +23,9 @@ class ComparatorCondition(Condition):
         operator = Operator(raw_operator)
 
         return cls(
-            field=condition["field"],
+            field=condition["field"],  # type: ignore
             operator=operator,
-            value=condition[operator],
+            value=condition[operator],  # type: ignore
         )
 
     @override

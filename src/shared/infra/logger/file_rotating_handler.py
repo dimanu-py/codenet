@@ -3,14 +3,13 @@ from collections.abc import Sequence
 from datetime import date
 from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
-from typing import Self
 
 from src.shared.infra.logger.json_formatter import JSONFormatter
 
 
 class TimeRotatingFileHandler(logging.Handler):
     @classmethod
-    def create(cls, file_name: str, level_to_record: int) -> Self:
+    def create(cls, file_name: str, level_to_record: int) -> TimedRotatingFileHandler:
         root_project_path = cls.find_project_root(markers=["pyproject.toml"])
         log_folder = root_project_path / "logs"
         log_folder.mkdir(parents=True, exist_ok=True)

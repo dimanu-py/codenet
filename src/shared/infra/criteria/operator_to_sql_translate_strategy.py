@@ -65,7 +65,7 @@ class OperatorToSqlTranslateStrategyFactory:
             Operator.CONTAINS: ContainsOperatorToSqlTranslateStrategy(),
             Operator.NOT_CONTAINS: NotContainsOperatorToSqlTranslateStrategy(),
         }
-        condition_strategy = strategies.get(operator)
+        condition_strategy = strategies.get(Operator(operator))
         if not condition_strategy:
             raise NotImplementedError(f"Condition strategy for {operator} is not implemented.")
         return condition_strategy
