@@ -1,30 +1,34 @@
-from collections.abc import AsyncGenerator
+from collections.abc import AsyncGenerator, Generator
 
 import pytest
 from httpx import AsyncClient, ASGITransport
 from sqlalchemy.ext.asyncio.engine import AsyncEngine, create_async_engine, AsyncConnection
 from sqlalchemy.ext.asyncio.session import AsyncSession
-from sqlalchemy_utils import create_database, database_exists
 
 from src.delivery.main import app
 from src.shared.infra.persistence.sqlalchemy.base import Base
 from src.social.user.infra.api.deps import get_async_session
+from tests.social.user.infra.persistence.postgres_test_container import PostgresTestContainer
+
+
+@pytest.fixture(scope="session")
+def postgres_container() -> Generator[PostgresTestContainer, None, None]:
+    container = PostgresTestContainer()
+    container.start()
+    yield container
+    container.stop()
 
 
 @pytest.fixture
-def async_engine() -> AsyncEngine:
+def async_engine(postgres_container: PostgresTestContainer) -> AsyncEngine:
     return create_async_engine(
-        "sqlite+aiosqlite:///:memory:",
+        postgres_container.get_base_url(),
         echo=False,
-        connect_args={"check_same_thread": False},
     )
 
 
 @pytest.fixture
 async def setup_database(async_engine: AsyncEngine) -> AsyncGenerator[None]:
-    if not database_exists(async_engine.url):
-        create_database(async_engine.url)
-
     async with async_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
