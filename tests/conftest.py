@@ -1,11 +1,14 @@
 from collections.abc import AsyncGenerator
 
 import pytest
+from httpx import AsyncClient, ASGITransport
 from sqlalchemy.ext.asyncio.engine import AsyncEngine, create_async_engine, AsyncConnection
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlalchemy_utils import create_database, database_exists
 
+from src.delivery.main import app
 from src.shared.infra.persistence.sqlalchemy.base import Base
+from src.social.user.infra.api.deps import get_async_session
 
 
 @pytest.fixture
@@ -48,3 +51,17 @@ async def session(connection: AsyncConnection) -> AsyncGenerator[AsyncSession, N
             await session.rollback()
         finally:
             await session.close()
+
+
+@pytest.fixture
+@pytest.mark.asyncio
+async def client(session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
+    def get_override_session() -> AsyncSession:
+        return session
+
+    app.dependency_overrides[get_async_session] = get_override_session
+
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        yield client
+
+    app.dependency_overrides.clear()
