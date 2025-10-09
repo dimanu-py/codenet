@@ -58,7 +58,6 @@ async def session(connection: AsyncConnection) -> AsyncGenerator[AsyncSession]:
 
 
 @pytest.fixture
-@pytest.mark.asyncio
 async def client(session: AsyncSession) -> AsyncGenerator[AsyncClient]:
     def get_override_session() -> AsyncSession:
         return session
