@@ -1,7 +1,7 @@
 from typing import Self
 
 from testcontainers.core.container import DockerContainer
-from testcontainers.core.waiting_utils import wait_for_logs
+from testcontainers.core.wait_strategies import LogMessageWaitStrategy
 
 
 class PostgresTestContainer(DockerContainer):
@@ -17,10 +17,10 @@ class PostgresTestContainer(DockerContainer):
         self.with_env("POSTGRES_DB", self._DATABASE_NAME)
         self.with_env("POSTGRES_USER", self._USER)
         self.with_env("POSTGRES_PASSWORD", self._PASSWORD)
+        self.waiting_for(LogMessageWaitStrategy("database system is ready to accept connections"))
 
     def start(self) -> Self:
         super().start()
-        wait_for_logs(self, "database system is ready to accept connections")
         return self
 
     def get_base_url(self) -> str:
