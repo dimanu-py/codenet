@@ -14,9 +14,7 @@ local-setup:  ## Setup git hooks and install dependencies.
 .PHONY: test
 test:  ## Run all test.
 	@echo "\n⌛ Running tests...\n"
-	@make up
 	@uv run pytest tests -ra
-	@make down
 
 .PHONY: unit
 unit:  ## Run all unit test.
@@ -31,9 +29,7 @@ integration:  ## Run all integration test.
 .PHONY: acceptance
 acceptance:  ## Run all acceptance test.
 	@echo "\n⌛ Running acceptance tests...\n"
-	@make up
 	@uv run pytest -m "acceptance" -ra
-	@make down
 
 .PHONY: coverage
 coverage:  ## Run all test with coverage.
