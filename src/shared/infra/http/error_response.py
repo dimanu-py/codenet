@@ -17,7 +17,7 @@ class ErrorResponse(ABC, BaseModel):
 
 
 class UnprocessableEntityError(ErrorResponse):
-    status_code: int = Field(default=status.HTTP_422_UNPROCESSABLE_ENTITY)
+    status_code: int = Field(default=status.HTTP_422_UNPROCESSABLE_CONTENT)
     detail: str = Field(default="Unprocessable Entity")
 
 

@@ -12,7 +12,7 @@ routes = APIRouter(
     prefix="/app/users",
     tags=["Users"],
     responses={
-        status.HTTP_422_UNPROCESSABLE_ENTITY: {
+        status.HTTP_422_UNPROCESSABLE_CONTENT: {
             "model": UnprocessableEntityError,
             "description": "Unprocessable Entity",
         },
