@@ -1,8 +1,9 @@
+from sindripy.mothers import ObjectMother
+
 from src.shared.domain.criteria.condition.value import Value
-from tests.shared.domain.random_generator import RandomGenerator
 
 
-class ValueMother:
-    @staticmethod
-    def any() -> Value:
-        return Value(RandomGenerator.word())
+class ValueMother(ObjectMother):
+    @classmethod
+    def any(cls) -> Value:
+        return Value(cls._faker().word())

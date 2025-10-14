@@ -1,8 +1,9 @@
+from sindripy.mothers import ObjectMother
+
 from src.shared.domain.criteria.condition.field import Field
-from tests.shared.domain.random_generator import RandomGenerator
 
 
-class FieldMother:
-    @staticmethod
-    def any() -> Field:
-        return Field(RandomGenerator.word())
+class FieldMother(ObjectMother):
+    @classmethod
+    def any(cls) -> Field:
+        return Field(cls._faker().word())
