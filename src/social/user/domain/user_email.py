@@ -1,10 +1,10 @@
 import re
 
 from src.shared.domain.exceptions.domain_error import DomainError
-from src.shared.domain.value_objects.decorators.validation import validate
-from src.shared.domain.value_objects.usables.string_value_object import (
+from src.shared.domain.value_objects.string_value_object import (
     StringValueObject,
 )
+from src.shared.domain.value_objects.validation import validate
 
 
 class UserEmail(StringValueObject):
