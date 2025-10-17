@@ -37,6 +37,7 @@ test = [
     "faker>=37.8.0",
     "pytest>=8.4.2",
     "pytest-asyncio>=1.2.0",
+    "pytest-bdd>=8.1.0",
     "pytest-sugar>=1.1.1",
     "pytest-watch>=4.2.0",
     "pytest-xdist>=3.8.0",
