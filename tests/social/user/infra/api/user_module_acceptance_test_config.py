@@ -4,7 +4,6 @@ from httpx import AsyncClient
 from starlette.responses import JSONResponse
 
 
-@pytest.mark.acceptance
 @pytest.mark.asyncio
 class UserModuleAcceptanceTestConfig:
     _ROUTE_PATH = "/app/users/"
