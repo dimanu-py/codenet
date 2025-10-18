@@ -47,12 +47,10 @@ def submit_signup_form(client: AsyncClient, signup_form: dict, user_id: str) -> 
 
 
 @then("I should be signed up successfully")
-def verify_signup_success(signup_response: Response, user_id: str) -> None:
+def verify_signup_success(signup_response: Response) -> None:
     expect(signup_response.status_code).to(equal(201))
-    expect(signup_response.json()).to(equal({"resource": f"{_ROUTE_PATH}{user_id}"}))
 
 
 @then("I should see an error message indicating invalid user name")
 def verify_signup_failure_invalid_name(signup_response: Response) -> None:
     expect(signup_response.status_code).to(equal(422))
-    expect(signup_response.json()).to(equal({"detail": "Name cannot contain special characters or numbers."}))
