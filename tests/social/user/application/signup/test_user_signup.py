@@ -18,4 +18,4 @@ class TestUserSignup(UserModuleUnitTestConfig):
 
         self._should_save(user)
 
-        await self._user_signup(command)
+        await self._user_signup.execute(command)

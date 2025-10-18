@@ -9,7 +9,7 @@ class UserSignup:
     def __init__(self, repository: UserRepository) -> None:
         self._repository = repository
 
-    async def __call__(self, command: UserSignupCommand) -> None:
+    async def execute(self, command: UserSignupCommand) -> None:
         user = User(
             id=command.id,
             name=command.name,

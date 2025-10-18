@@ -35,7 +35,7 @@ async def signup_user(
         email=request.email,
     )
 
-    await user_signup(command)
+    await user_signup.execute(command)
 
     return CreatedResponse(
         data={"resource": f"/app/users/{user_id}"},
