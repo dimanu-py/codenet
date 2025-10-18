@@ -7,3 +7,8 @@ Feature: User Signup
         Given I have filled a signup form with valid details
         When I submit the signup form
         Then I should be signed up successfully
+
+    Scenario: Wrong user name signup
+        Given I have filled a signup form with an invalid user name
+        When I submit the signup form
+        Then I should see an error message indicating invalid user name

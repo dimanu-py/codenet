@@ -1,9 +1,9 @@
 import asyncio
 
 import pytest
-from expects import expect, equal
+from expects import equal, expect
 from httpx import AsyncClient, Response
-from pytest_bdd import scenarios, given, when, then
+from pytest_bdd import given, scenarios, then, when
 
 from tests.social.user.domain.mothers.user_email_mother import UserEmailMother
 from tests.social.user.domain.mothers.user_id_mother import UserIdMother
@@ -31,6 +31,15 @@ def filled_signup_form() -> dict:
     }
 
 
+@given("I have filled a signup form with an invalid user name", target_fixture="signup_form")
+def filled_signup_form_invalid_name() -> dict:
+    return {
+        "name": "John!",
+        "username": UserUsernameMother.any().value,
+        "email": UserEmailMother.any().value,
+    }
+
+
 @when("I submit the signup form", target_fixture="signup_response")
 def submit_signup_form(client: AsyncClient, signup_form: dict, user_id: str) -> Response:
     loop = asyncio.get_event_loop()
@@ -41,3 +50,9 @@ def submit_signup_form(client: AsyncClient, signup_form: dict, user_id: str) -> 
 def verify_signup_success(signup_response: Response, user_id: str) -> None:
     expect(signup_response.status_code).to(equal(201))
     expect(signup_response.json()).to(equal({"resource": f"{_ROUTE_PATH}{user_id}"}))
+
+
+@then("I should see an error message indicating invalid user name")
+def verify_signup_failure_invalid_name(signup_response: Response) -> None:
+    expect(signup_response.status_code).to(equal(422))
+    expect(signup_response.json()).to(equal({"detail": "Name cannot contain special characters or numbers."}))
