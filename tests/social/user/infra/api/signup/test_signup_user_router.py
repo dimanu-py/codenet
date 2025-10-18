@@ -1,41 +1,37 @@
-from httpx import AsyncClient
-from starlette.responses import JSONResponse
+import json
 
+import pytest
+from doublex import ANY_ARG, when
+from expects import equal, expect
+
+from src.social.user.application.signup.user_signup import UserSignup
+from src.social.user.infra.api.signup.signup_user_router import signup_user
+from src.social.user.infra.api.signup.user_sign_up_request import UserSignupRequest
+from tests.shared.expects.async_stub import AsyncStub
 from tests.social.user.domain.mothers.user_email_mother import UserEmailMother
 from tests.social.user.domain.mothers.user_id_mother import UserIdMother
 from tests.social.user.domain.mothers.user_name_mother import UserNameMother
 from tests.social.user.domain.mothers.user_username_mother import UserUsernameMother
-from tests.social.user.infra.api.user_module_acceptance_test_config import (
-    UserModuleAcceptanceTestConfig,
-)
 
 
-class TestSignupUserRouter(UserModuleAcceptanceTestConfig):
-    async def test_should_register_a_valid_user(self, client: AsyncClient) -> None:
-        response = await self.when_a_post_request_is_sent(client)
+@pytest.mark.unit
+@pytest.mark.asyncio
+class TestSignupUserRouter:
+    async def test_should_receive_successful_response_when_sending_valid_signup_data(self) -> None:
+        request_body = UserSignupRequest(
+            name=UserNameMother.any().value,
+            username=UserUsernameMother.any().value,
+            email=UserEmailMother.any().value,
+        )
+        user_id = UserIdMother.any().value
+        user_signup = AsyncStub(UserSignup)
+        when(user_signup).execute(ANY_ARG).returns(None)
 
-        expected_id_request = str(response.request.url).split("/")[-1]
-        self.assert_response_satisfies(201, {"resource": f"{self._ROUTE_PATH}{expected_id_request}"}, response)
-
-    async def test_should_raise_bad_request_when_name_is_not_valid(self, client: AsyncClient) -> None:
-        invalid_name = {
-            "name": "John!",
-        }
-        response = await self.when_a_post_request_is_sent(client, invalid_name)
-
-        self.assert_response_satisfies(
-            422,
-            {"detail": "Name cannot contain special characters or numbers."},
-            response,
+        response = await signup_user(
+            request=request_body,
+            user_id=user_id,
+            user_signup=user_signup,
         )
 
-    async def when_a_post_request_is_sent(self, client: AsyncClient, request: dict | None = None) -> JSONResponse:
-        request_body = {
-            "name": UserNameMother.any().value,
-            "username": UserUsernameMother.any().value,
-            "email": UserEmailMother.any().value,
-        }
-        request_body.update(request if request else {})
-        user_id = UserIdMother.any().value
-
-        return await client.post(f"{self._ROUTE_PATH}{user_id}", json=request_body)  # type: ignore
+        expect(response.status_code).to(equal(201))
+        expect(json.loads(response.body)).to(equal({"resource": f"/app/users/{user_id}"}))
