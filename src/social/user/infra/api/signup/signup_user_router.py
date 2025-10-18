@@ -11,6 +11,12 @@ from src.social.user.infra.api.signup.user_sign_up_request import UserSignupRequ
 router = APIRouter()
 
 
+def user_signup_use_case(
+    repository: UserRepository = Depends(postgres_user_repository),
+) -> UserSignup:
+    return UserSignup(repository)
+
+
 @router.post(
     "/{user_id}",
     responses={
@@ -20,7 +26,7 @@ router = APIRouter()
 async def signup_user(
     request: UserSignupRequest,
     user_id: str = Path(..., examples=["123e4567-e89b-12d3-a456-426614174000"]),
-    repository: UserRepository = Depends(postgres_user_repository),
+    user_signup: UserSignup = Depends(user_signup_use_case),
 ) -> JSONResponse:
     command = UserSignupCommand(
         id=user_id,
@@ -29,7 +35,6 @@ async def signup_user(
         email=request.email,
     )
 
-    user_signup = UserSignup(repository)
     await user_signup(command)
 
     return CreatedResponse(
