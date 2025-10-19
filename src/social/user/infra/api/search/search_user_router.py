@@ -31,7 +31,7 @@ async def get_user_by_criteria(
 ) -> JSONResponse:
     query = SearchUserQuery(filters=json.loads(filter))
 
-    users = await user_searcher(query)
+    users = await user_searcher.execute(query)
     response = UserSearchResponse([user.to_primitives() for user in users])
 
     return OkResponse(

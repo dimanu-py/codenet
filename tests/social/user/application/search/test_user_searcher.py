@@ -20,7 +20,7 @@ class TestUserSearcher(UserModuleUnitTestConfig):
 
         self._should_match(criteria, users)
 
-        searched_users = await self._user_searcher(query)
+        searched_users = await self._user_searcher.execute(query)
 
         expect(searched_users).to(equal(users))
 
@@ -30,6 +30,6 @@ class TestUserSearcher(UserModuleUnitTestConfig):
 
         self._should_not_match(criteria)
 
-        searched_users = await self._user_searcher(query)
+        searched_users = await self._user_searcher.execute(query)
 
         expect(searched_users).to(be_empty)

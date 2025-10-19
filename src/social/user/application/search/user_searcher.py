@@ -10,6 +10,6 @@ class UserSearcher:
     def __init__(self, repository: UserRepository) -> None:
         self._repository = repository
 
-    async def __call__(self, query: SearchUserQuery) -> list[User]:
+    async def execute(self, query: SearchUserQuery) -> list[User]:
         criteria = Criteria.from_primitives(query.filters)
         return await self._repository.matching(criteria)
