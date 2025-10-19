@@ -4,6 +4,7 @@ import pytest
 from doublex import ANY_ARG, when
 from expects import equal, expect
 
+from src.social.user.application.removal.user_not_found_error import UserNotFoundError
 from src.social.user.application.removal.user_remover import UserRemover
 from src.social.user.infra.api.removal.removal_user_router import remove_user
 from tests.shared.expects.async_stub import AsyncStub
@@ -26,3 +27,17 @@ class TestRemovalUserRouter:
 
         expect(response.status_code).to(equal(202))
         expect(json.loads(response.body)).to(equal({"message": "User removal request has been accepted."}))
+
+    async def test_should_return_404_when_user_to_remove_does_not_exist(self) -> None:
+        user_id = UserIdMother.any().value
+        user_remover = AsyncStub(UserRemover)
+
+        when(user_remover).execute(ANY_ARG).raises(UserNotFoundError)
+
+        response = await remove_user(
+            user_id=user_id,
+            user_remover=user_remover,
+        )
+
+        expect(response.status_code).to(equal(404))
+        expect(json.loads(response.body)).to(equal({"detail": "User with that id not found"}))
