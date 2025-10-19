@@ -31,13 +31,9 @@ def filled_signup_form() -> dict:
     }
 
 
-@given("I have filled a signup form with an invalid user name", target_fixture="signup_form")
-def filled_signup_form_invalid_name() -> dict:
-    return {
-        "name": "John!",
-        "username": UserUsernameMother.any().value,
-        "email": UserEmailMother.any().value,
-    }
+@given("the user id does not conform to the required format", target_fixture="user_id")
+def invalid_user_id() -> str:
+    return "invalid-uuid-format"
 
 
 @when("I submit the signup form", target_fixture="signup_response")
@@ -51,6 +47,6 @@ def verify_signup_success(signup_response: Response) -> None:
     expect(signup_response.status_code).to(equal(201))
 
 
-@then("I should see an error message indicating invalid user name")
+@then("I should see an error message indicating invalid user id format")
 def verify_signup_failure_invalid_name(signup_response: Response) -> None:
     expect(signup_response.status_code).to(equal(422))

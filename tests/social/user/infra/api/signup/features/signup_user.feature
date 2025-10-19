@@ -8,7 +8,8 @@ Feature: User Signup
         When I submit the signup form
         Then I should be signed up successfully
 
-    Scenario: Wrong user name signup
-        Given I have filled a signup form with an invalid user name
+    Scenario: Wrong user id format
+        Given I have filled a signup form with valid details
+        And the user id does not conform to the required format
         When I submit the signup form
-        Then I should see an error message indicating invalid user name
+        Then I should see an error message indicating invalid user id format
