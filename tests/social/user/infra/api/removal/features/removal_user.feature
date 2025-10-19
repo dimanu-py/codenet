@@ -6,3 +6,8 @@ Feature: User Removal
     Scenario: Not existing user attempts to remove account
         When I attempt to remove the account for non existing user
         Then I should receive an error message indicating the user does not exist
+
+    Scenario: Existing user successfully removes account
+        Given I am an existing user
+        When I request to remove my account
+        Then my account should be successfully removed
