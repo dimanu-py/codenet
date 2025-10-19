@@ -11,6 +11,10 @@ from src.social.user.infra.api.deps import postgres_user_repository
 router = APIRouter()
 
 
+def user_remover_use_case(repository: UserRepository = Depends(postgres_user_repository)) -> UserRemover:
+    return UserRemover(repository)
+
+
 @router.delete(
     "/{user_id}",
     responses={
@@ -20,11 +24,10 @@ router = APIRouter()
 )
 async def remove_user(
     user_id: str = Path(..., examples=["123e4567-e89b-12d3-a456-426614174000"]),
-    repository: UserRepository = Depends(postgres_user_repository),
+    user_remover: UserRemover = Depends(user_remover_use_case),
 ) -> JSONResponse:
     command = UserRemovalCommand(user_id=user_id)
 
-    user_remover = UserRemover(repository)
     await user_remover(command)
 
     return AcceptedResponse(
