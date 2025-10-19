@@ -22,6 +22,7 @@ def user_remover_use_case(repository: UserRepository = Depends(postgres_user_rep
     responses={
         status.HTTP_202_ACCEPTED: {"model": AcceptedResponse},
         status.HTTP_404_NOT_FOUND: {"model": ResourceNotFoundError},
+        status.HTTP_422_UNPROCESSABLE_ENTITY: {"model": UnprocessableEntityError},
     },
 )
 async def remove_user(
