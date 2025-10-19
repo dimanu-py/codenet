@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, Path, status
+from sindripy.value_objects import SindriValidationError
 from starlette.responses import JSONResponse
 
-from src.shared.infra.http.error_response import ResourceNotFoundError
+from src.shared.infra.http.error_response import ResourceNotFoundError, UnprocessableEntityError
 from src.shared.infra.http.success_response import AcceptedResponse
 from src.social.user.application.removal.user_removal_command import UserRemovalCommand
 from src.social.user.application.removal.user_remover import UserRemover
@@ -28,7 +29,10 @@ async def remove_user(
 ) -> JSONResponse:
     command = UserRemovalCommand(user_id=user_id)
 
-    await user_remover.execute(command)
+    try:
+        await user_remover.execute(command)
+    except SindriValidationError as domain_error:
+        return UnprocessableEntityError(detail=domain_error.message).as_json()
 
     return AcceptedResponse(
         data={"message": "User removal request has been accepted."},
