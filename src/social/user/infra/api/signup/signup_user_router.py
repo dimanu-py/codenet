@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Path, status
 from fastapi.responses import JSONResponse
+from sindripy.value_objects import SindriValidationError
 
 from src.shared.domain.exceptions.domain_error import DomainError
 from src.shared.infra.http.error_response import UnprocessableEntityError
@@ -39,7 +40,7 @@ async def signup_user(
 
     try:
         await user_signup.execute(command)
-    except DomainError as domain_error:
+    except (DomainError, SindriValidationError) as domain_error:
         return UnprocessableEntityError(
             detail=domain_error.message,
         ).as_json()
