@@ -6,7 +6,6 @@ from httpx import AsyncClient, Response
 from pytest_bdd import given, scenarios, then, when
 
 from tests.social.user.domain.mothers.user_email_mother import UserEmailMother
-from tests.social.user.domain.mothers.user_id_mother import UserIdMother
 from tests.social.user.domain.mothers.user_name_mother import UserNameMother
 from tests.social.user.domain.mothers.user_username_mother import UserUsernameMother
 
@@ -15,11 +14,6 @@ pytestmark = [pytest.mark.acceptance]
 scenarios("signup_user.feature")
 
 _ROUTE_PATH = "/app/users/"
-
-
-@pytest.fixture
-def user_id() -> str:
-    return UserIdMother.any().value
 
 
 @given("I have filled a signup form with valid details", target_fixture="signup_form")
