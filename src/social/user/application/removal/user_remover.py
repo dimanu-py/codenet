@@ -10,7 +10,7 @@ class UserRemover:
     def __init__(self, repository: UserRepository) -> None:
         self._repository = repository
 
-    async def __call__(self, command: UserRemovalCommand) -> None:
+    async def execute(self, command: UserRemovalCommand) -> None:
         user_id = UserId(command.user_id)
         await self._ensure_user_to_remove_exists(user_id)
         await self._repository.delete(user_id)

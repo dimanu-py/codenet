@@ -9,7 +9,7 @@ from tests.social.user.domain.mothers.user_id_mother import UserIdMother
 from tests.social.user.domain.mothers.user_mother import UserMother
 
 
-class TestUserRemoval(UserModuleUnitTestConfig):
+class TestUserRemover(UserModuleUnitTestConfig):
     def setup_method(self) -> None:
         self._user_remover = UserRemover(repository=self._repository)
 
@@ -20,7 +20,7 @@ class TestUserRemoval(UserModuleUnitTestConfig):
 
         self._should_remove(user)
 
-        await self._user_remover(command)
+        await self._user_remover.execute(command)
 
     async def test_should_not_allow_to_remove_non_existing_user(self) -> None:
         user_id = UserIdMother.any()
@@ -28,4 +28,4 @@ class TestUserRemoval(UserModuleUnitTestConfig):
 
         self._should_not_find(user_id)
 
-        await async_expect(lambda: self._user_remover(command)).to(raise_error(UserNotFoundError))
+        await async_expect(lambda: self._user_remover.execute(command)).to(raise_error(UserNotFoundError))

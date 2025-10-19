@@ -28,7 +28,7 @@ async def remove_user(
 ) -> JSONResponse:
     command = UserRemovalCommand(user_id=user_id)
 
-    await user_remover(command)
+    await user_remover.execute(command)
 
     return AcceptedResponse(
         data={"message": "User removal request has been accepted."},
