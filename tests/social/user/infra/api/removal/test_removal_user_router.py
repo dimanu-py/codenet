@@ -1,28 +1,28 @@
-from httpx import AsyncClient
-from starlette.responses import JSONResponse
+import json
 
-from tests.social.user.domain.mothers.user_email_mother import UserEmailMother
+import pytest
+from doublex import ANY_ARG, when
+from expects import equal, expect
+
+from src.social.user.application.removal.user_remover import UserRemover
+from src.social.user.infra.api.removal.removal_user_router import remove_user
+from tests.shared.expects.async_stub import AsyncStub
 from tests.social.user.domain.mothers.user_id_mother import UserIdMother
-from tests.social.user.domain.mothers.user_name_mother import UserNameMother
-from tests.social.user.domain.mothers.user_username_mother import UserUsernameMother
-from tests.social.user.infra.api.user_module_acceptance_test_config import (
-    UserModuleAcceptanceTestConfig,
-)
 
 
-class TestRemovalUserRouter(UserModuleAcceptanceTestConfig):
-    async def test_should_remove_existing_user(self, client: AsyncClient) -> None:
-        request_body = {
-            "name": UserNameMother.any().value,
-            "username": UserUsernameMother.any().value,
-            "email": UserEmailMother.any().value,
-        }
+@pytest.mark.unit
+@pytest.mark.asyncio
+class TestRemovalUserRouter:
+    async def test_should_return_202_when_user_is_removed(self) -> None:
         user_id = UserIdMother.any().value
-        await self.given_a_user_is_signed_up(client, user_id, request_body)
+        user_remover = AsyncStub(UserRemover)
 
-        response = await self.when_a_delete_request_is_sent(client, user_id)
+        when(user_remover).execute(ANY_ARG).returns(None)
 
-        self.assert_response_satisfies(202, {"message": "User removal request has been accepted."}, response)
+        response = await remove_user(
+            user_id=user_id,
+            user_remover=user_remover,
+        )
 
-    async def when_a_delete_request_is_sent(self, client: AsyncClient, user_id: str) -> JSONResponse:
-        return await client.delete(f"{self._ROUTE_PATH}{user_id}")  # type: ignore
+        expect(response.status_code).to(equal(202))
+        expect(json.loads(response.body)).to(equal({"message": "User removal request has been accepted."}))
