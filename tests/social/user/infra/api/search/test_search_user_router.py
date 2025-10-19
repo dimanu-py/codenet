@@ -1,5 +1,6 @@
 import json
 
+import pytest
 from doublex import when, ANY_ARG
 from expects import expect, equal
 
@@ -8,12 +9,11 @@ from src.social.user.infra.api.search.search_user_router import get_user_by_crit
 from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
 from tests.shared.expects.async_stub import AsyncStub
 from tests.social.user.domain.mothers.user_mother import UserMother
-from tests.social.user.infra.api.user_module_acceptance_test_config import (
-    UserModuleAcceptanceTestConfig,
-)
 
 
-class TestSearchUserRouter(UserModuleAcceptanceTestConfig):
+@pytest.mark.unit
+@pytest.mark.asyncio
+class TestSearchUserRouter:
     async def test_should_return_200_when_users_are_found_and_response_contains_list_of_users(self) -> None:
         filters = CriteriaMother.any().to_primitives()
         user = UserMother.any()
