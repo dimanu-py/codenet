@@ -14,7 +14,7 @@ from tests.social.user.infra.api.user_module_acceptance_test_config import (
 
 
 class TestSearchUserRouter(UserModuleAcceptanceTestConfig):
-    async def test_should_search_user_based_on_filters(self) -> None:
+    async def test_should_return_200_when_users_are_found(self) -> None:
         filters = CriteriaMother.any().to_primitives()
         user = UserMother.any()
         user_searcher = AsyncStub(UserSearcher)
@@ -29,4 +29,20 @@ class TestSearchUserRouter(UserModuleAcceptanceTestConfig):
 
         found_users = {"users": [user.to_primitives()]}
         expect(response.status_code).to(equal(200))
-        expect( json.loads(response.body)).to(equal(found_users))
+        expect(json.loads(response.body)).to(equal(found_users))
+
+    async def test_should_return_200_when_users_are_not_found(self) -> None:
+        filters = CriteriaMother.any().to_primitives()
+        user_searcher = AsyncStub(UserSearcher)
+        when(user_searcher).execute(
+            ANY_ARG,
+        ).returns([])
+
+        response = await get_user_by_criteria(
+            filter=json.dumps(filters),
+            user_searcher=user_searcher,
+        )
+
+        found_users = {"users": []}
+        expect(response.status_code).to(equal(200))
+        expect(json.loads(response.body)).to(equal(found_users))
