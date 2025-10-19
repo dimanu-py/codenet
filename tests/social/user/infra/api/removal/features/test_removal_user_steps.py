@@ -1,10 +1,10 @@
 import asyncio
 
 import pytest
-from expects import expect, equal
+from expects import equal, expect
 from fastapi import Response
 from httpx import AsyncClient
-from pytest_bdd import scenarios, given, when, then
+from pytest_bdd import given, scenarios, then, when
 
 from src.social.user.domain.user import User
 

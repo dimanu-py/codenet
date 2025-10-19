@@ -40,7 +40,7 @@ class TestSignupUserRouter:
             user_signup=self._user_signup,
         )
 
-        self._assert_contract_is_met_with(201, {f"resource": f"/app/users/{user_id}"})
+        self._assert_contract_is_met_with(201, {"resource": f"/app/users/{user_id}"})
 
     async def test_should_return_422_when_user_name_has_invalid_character(self) -> None:
         request_body = UserSignupRequest(
