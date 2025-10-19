@@ -4,6 +4,7 @@ import pytest
 from doublex import ANY_ARG, when
 from expects import equal, expect
 
+from src.shared.domain.exceptions.domain_error import DomainError
 from src.social.user.application.signup.user_signup import UserSignup
 from src.social.user.domain.user_email import InvalidEmailFormatError
 from src.social.user.domain.user_name import InvalidNameFormatError
@@ -20,6 +21,10 @@ from tests.social.user.domain.mothers.user_username_mother import UserUsernameMo
 @pytest.mark.unit
 @pytest.mark.asyncio
 class TestSignupUserRouter:
+    def setup_method(self) -> None:
+        self._user_signup = AsyncStub(UserSignup)
+        self._response = None
+
     async def test_should_return_201_when_signup_data_is_valid(self) -> None:
         request_body = UserSignupRequest(
             name=UserNameMother.any().value,
@@ -27,17 +32,15 @@ class TestSignupUserRouter:
             email=UserEmailMother.any().value,
         )
         user_id = UserIdMother.any().value
-        user_signup = AsyncStub(UserSignup)
-        when(user_signup).execute(ANY_ARG).returns(None)
+        self._stub_successful_signup()
 
-        response = await signup_user(
+        self._response = await signup_user(
             request=request_body,
             user_id=user_id,
-            user_signup=user_signup,
+            user_signup=self._user_signup,
         )
 
-        expect(response.status_code).to(equal(201))
-        expect(json.loads(response.body)).to(equal({"resource": f"/app/users/{user_id}"}))
+        self._assert_contract_is_met_with(201, {f"resource": f"/app/users/{user_id}"})
 
     async def test_should_return_422_when_user_name_has_invalid_character(self) -> None:
         request_body = UserSignupRequest(
@@ -46,17 +49,15 @@ class TestSignupUserRouter:
             email=UserEmailMother.any().value,
         )
         user_id = UserIdMother.any().value
-        user_signup = AsyncStub(UserSignup)
-        when(user_signup).execute(ANY_ARG).raises(InvalidNameFormatError)
+        self._stub_signup_error(InvalidNameFormatError)
 
-        response = await signup_user(
+        self._response = await signup_user(
             request=request_body,
             user_id=user_id,
-            user_signup=user_signup,
+            user_signup=self._user_signup,
         )
 
-        expect(response.status_code).to(equal(422))
-        expect(json.loads(response.body)).to((equal({"detail": "Name cannot contain special characters or numbers."})))
+        self._assert_contract_is_met_with(422, {"detail": "Name cannot contain special characters or numbers."})
 
     async def test_should_return_422_when_user_username_has_invalid_character(self) -> None:
         request_body = UserSignupRequest(
@@ -65,17 +66,15 @@ class TestSignupUserRouter:
             email=UserEmailMother.any().value,
         )
         user_id = UserIdMother.any().value
-        user_signup = AsyncStub(UserSignup)
-        when(user_signup).execute(ANY_ARG).raises(InvalidUsernameFormatError)
+        self._stub_signup_error(InvalidUsernameFormatError)
 
-        response = await signup_user(
+        self._response = await signup_user(
             request=request_body,
             user_id=user_id,
-            user_signup=user_signup,
+            user_signup=self._user_signup,
         )
 
-        expect(response.status_code).to(equal(422))
-        expect(json.loads(response.body)).to((equal({"detail": "Username cannot contain special characters"})))
+        self._assert_contract_is_met_with(422, {"detail": "Username cannot contain special characters"})
 
     async def test_should_return_422_when_email_does_not_have_valid_format(self) -> None:
         request_body = UserSignupRequest(
@@ -84,14 +83,24 @@ class TestSignupUserRouter:
             email="invalid-email-format",
         )
         user_id = UserIdMother.any().value
-        user_signup = AsyncStub(UserSignup)
-        when(user_signup).execute(ANY_ARG).raises(InvalidEmailFormatError)
+        self._stub_signup_error(InvalidEmailFormatError)
 
-        response = await signup_user(
+        self._response = await signup_user(
             request=request_body,
             user_id=user_id,
-            user_signup=user_signup,
+            user_signup=self._user_signup,
         )
 
-        expect(response.status_code).to(equal(422))
-        expect(json.loads(response.body)).to((equal({"detail": "Email cannot contain special characters and must contain '@' and '.'"})))
+        self._assert_contract_is_met_with(
+            422, {"detail": "Email cannot contain special characters and must contain '@' and '.'"}
+        )
+
+    def _stub_successful_signup(self) -> None:
+        when(self._user_signup).execute(ANY_ARG).returns(None)
+
+    def _stub_signup_error(self, error: DomainError) -> None:
+        when(self._user_signup).execute(ANY_ARG).raises(error)
+
+    def _assert_contract_is_met_with(self, expected_status_code: int, expected_body: dict) -> None:
+        expect(self._response.status_code).to(equal(expected_status_code))
+        expect(json.loads(self._response.body)).to(equal(expected_body))
