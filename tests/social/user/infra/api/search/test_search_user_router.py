@@ -1,35 +1,32 @@
 import json
 
-from httpx import AsyncClient
-from starlette.responses import JSONResponse
+from doublex import when, ANY_ARG
+from expects import expect, equal
 
-from tests.social.user.domain.mothers.user_email_mother import UserEmailMother
-from tests.social.user.domain.mothers.user_id_mother import UserIdMother
-from tests.social.user.domain.mothers.user_name_mother import UserNameMother
-from tests.social.user.domain.mothers.user_username_mother import UserUsernameMother
+from src.social.user.application.search.user_searcher import UserSearcher
+from src.social.user.infra.api.search.search_user_router import get_user_by_criteria
+from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
+from tests.shared.expects.async_stub import AsyncStub
+from tests.social.user.domain.mothers.user_mother import UserMother
 from tests.social.user.infra.api.user_module_acceptance_test_config import (
     UserModuleAcceptanceTestConfig,
 )
 
 
 class TestSearchUserRouter(UserModuleAcceptanceTestConfig):
-    async def test_should_search_user_based_on_filters(self, client: AsyncClient) -> None:
-        request_body = {
-            "name": UserNameMother.any().value,
-            "username": UserUsernameMother.any().value,
-            "email": UserEmailMother.any().value,
-        }
-        user_id = UserIdMother.any().value
-        await self.given_a_user_is_signed_up(client, user_id, request_body)
-        filter_ = {
-            "field": "username",
-            "equal": request_body["username"],
-        }
+    async def test_should_search_user_based_on_filters(self) -> None:
+        filters = CriteriaMother.any().to_primitives()
+        user = UserMother.any()
+        user_searcher = AsyncStub(UserSearcher)
+        when(user_searcher).execute(
+            ANY_ARG,
+        ).returns([user])
 
-        response = await self.when_a_get_request_is_made_to(client, query_params={"filter": json.dumps(filter_)})
+        response = await get_user_by_criteria(
+            filter=json.dumps(filters),
+            user_searcher=user_searcher,
+        )
 
-        expected_response = {"users": [{"id": user_id, **request_body}]}
-        self.assert_response_satisfies(200, expected_response, response)
-
-    async def when_a_get_request_is_made_to(self, client: AsyncClient, query_params: dict) -> JSONResponse:
-        return await client.get(self._ROUTE_PATH, params=query_params)  # type: ignore
+        found_users = {"users": [user.to_primitives()]}
+        expect(response.status_code).to(equal(200))
+        expect( json.loads(response.body)).to(equal(found_users))
