@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Depends, Path, status
 from fastapi.responses import JSONResponse
 
+from src.shared.domain.exceptions.domain_error import DomainError
+from src.shared.infra.http.error_response import UnprocessableEntityError
 from src.shared.infra.http.success_response import CreatedResponse
 from src.social.user.application.signup.user_signup import UserSignup
 from src.social.user.application.signup.user_signup_command import UserSignupCommand
@@ -35,7 +37,12 @@ async def signup_user(
         email=request.email,
     )
 
-    await user_signup.execute(command)
+    try:
+        await user_signup.execute(command)
+    except DomainError as domain_error:
+        return UnprocessableEntityError(
+            detail=domain_error.message,
+        ).as_json()
 
     return CreatedResponse(
         data={"resource": f"/app/users/{user_id}"},
