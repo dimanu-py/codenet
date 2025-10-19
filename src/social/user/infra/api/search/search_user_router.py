@@ -13,6 +13,12 @@ from src.social.user.infra.api.deps import postgres_user_repository
 router = APIRouter()
 
 
+def user_searcher_use_case(
+    repository: UserRepository = Depends(postgres_user_repository),
+) -> UserSearcher:
+    return UserSearcher(repository=repository)
+
+
 @router.get(
     "/",
     responses={
@@ -21,11 +27,10 @@ router = APIRouter()
 )
 async def get_user_by_criteria(
     filter: str = Query(examples=['{"field": "username", "equal": "john_doe"}']),
-    repository: UserRepository = Depends(postgres_user_repository),
+    user_searcher: UserSearcher = Depends(user_searcher_use_case),
 ) -> JSONResponse:
     query = SearchUserQuery(filters=json.loads(filter))
 
-    user_searcher = UserSearcher(repository=repository)
     users = await user_searcher(query)
     response = UserSearchResponse([user.to_primitives() for user in users])
 
