@@ -24,6 +24,7 @@ def user_signup_use_case(
     "/{user_id}",
     responses={
         status.HTTP_201_CREATED: {"model": CreatedResponse},
+        status.HTTP_422_UNPROCESSABLE_CONTENT: {"model": UnprocessableEntityError},
     },
 )
 async def signup_user(

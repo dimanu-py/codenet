@@ -2,7 +2,6 @@ from fastapi import APIRouter, status
 
 from src.shared.infra.http.error_response import (
     InternalServerError,
-    UnprocessableEntityError,
 )
 from src.social.user.infra.api.removal import removal_user_router as removal_router
 from src.social.user.infra.api.search import search_user_router as search_router
@@ -12,10 +11,6 @@ routes = APIRouter(
     prefix="/app/users",
     tags=["Users"],
     responses={
-        status.HTTP_422_UNPROCESSABLE_CONTENT: {
-            "model": UnprocessableEntityError,
-            "description": "Unprocessable Entity",
-        },
         status.HTTP_500_INTERNAL_SERVER_ERROR: {
             "model": InternalServerError,
             "description": "Internal Server Error",
