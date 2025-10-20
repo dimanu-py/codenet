@@ -1,8 +1,6 @@
 import json
 
-import pytest
 from doublex import when, ANY_ARG
-from expects import expect, equal
 
 from src.social.user.application.search.user_searcher import UserSearcher
 from src.social.user.domain.user import User
@@ -10,14 +8,12 @@ from src.social.user.infra.api.search.search_user_router import get_user_by_crit
 from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
 from tests.shared.expects.async_stub import AsyncStub
 from tests.social.user.domain.mothers.user_mother import UserMother
+from tests.social.user.infra.api.user_module_routers_test_config import UserModuleRoutersTestConfig
 
 
-@pytest.mark.unit
-@pytest.mark.asyncio
-class TestSearchUserRouter:
+class TestSearchUserRouter(UserModuleRoutersTestConfig):
     def setup_method(self) -> None:
         self._user_searcher = AsyncStub(UserSearcher)
-        self._response = None
 
     async def test_should_return_200_when_users_are_found_and_response_contains_list_of_users(self) -> None:
         filters = CriteriaMother.any().to_primitives()
@@ -29,7 +25,7 @@ class TestSearchUserRouter:
             user_searcher=self._user_searcher,
         )
 
-        self._assert_contract_is_met_with(200, [user.to_primitives()])
+        self._assert_contract_is_met_with(200, {"users": [user.to_primitives()]})
 
     async def test_should_return_200_when_users_are_not_found_and_response_is_an_empty_list(self) -> None:
         filters = CriteriaMother.any().to_primitives()
@@ -40,7 +36,7 @@ class TestSearchUserRouter:
             user_searcher=self._user_searcher,
         )
 
-        self._assert_contract_is_met_with(200, [])
+        self._assert_contract_is_met_with(200, {"users": []})
 
     def _should_not_find_user(self) -> None:
         when(self._user_searcher).execute(
@@ -51,7 +47,3 @@ class TestSearchUserRouter:
         when(self._user_searcher).execute(
             ANY_ARG,
         ).returns([user])
-
-    def _assert_contract_is_met_with(self, expected_status_code: int, found_users: list) -> None:
-        expect(self._response.status_code).to(equal(expected_status_code))
-        expect(json.loads(self._response.body)).to(equal({"users": found_users}))

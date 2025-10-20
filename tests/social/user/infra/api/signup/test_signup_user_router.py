@@ -1,8 +1,4 @@
-import json
-
-import pytest
 from doublex import ANY_ARG, when
-from expects import equal, expect
 
 from src.shared.domain.exceptions.domain_error import DomainError
 from src.social.user.application.signup.user_signup import UserSignup
@@ -16,14 +12,12 @@ from tests.social.user.domain.mothers.user_email_mother import UserEmailMother
 from tests.social.user.domain.mothers.user_id_mother import UserIdMother
 from tests.social.user.domain.mothers.user_name_mother import UserNameMother
 from tests.social.user.domain.mothers.user_username_mother import UserUsernameMother
+from tests.social.user.infra.api.user_module_routers_test_config import UserModuleRoutersTestConfig
 
 
-@pytest.mark.unit
-@pytest.mark.asyncio
-class TestSignupUserRouter:
+class TestSignupUserRouter(UserModuleRoutersTestConfig):
     def setup_method(self) -> None:
         self._user_signup = AsyncStub(UserSignup)
-        self._response = None
 
     async def test_should_return_201_when_signup_data_is_valid(self) -> None:
         request_body = UserSignupRequest(
@@ -100,7 +94,3 @@ class TestSignupUserRouter:
 
     def _stub_signup_error(self, error: DomainError) -> None:
         when(self._user_signup).execute(ANY_ARG).raises(error)
-
-    def _assert_contract_is_met_with(self, expected_status_code: int, expected_body: dict) -> None:
-        expect(self._response.status_code).to(equal(expected_status_code))
-        expect(json.loads(self._response.body)).to(equal(expected_body))

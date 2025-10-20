@@ -1,8 +1,4 @@
-import json
-
-import pytest
 from doublex import ANY_ARG, when
-from expects import equal, expect
 
 from src.shared.domain.exceptions.application_error import ApplicationError
 from src.social.user.application.removal.user_not_found_error import UserNotFoundError
@@ -10,14 +6,12 @@ from src.social.user.application.removal.user_remover import UserRemover
 from src.social.user.infra.api.removal.removal_user_router import remove_user
 from tests.shared.expects.async_stub import AsyncStub
 from tests.social.user.domain.mothers.user_id_mother import UserIdMother
+from tests.social.user.infra.api.user_module_routers_test_config import UserModuleRoutersTestConfig
 
 
-@pytest.mark.unit
-@pytest.mark.asyncio
-class TestRemovalUserRouter:
+class TestRemovalUserRouter(UserModuleRoutersTestConfig):
     def setup_method(self) -> None:
         self._user_remover = AsyncStub(UserRemover)
-        self._response = None
 
     async def test_should_return_202_when_user_is_removed(self) -> None:
         user_id = UserIdMother.any().value
@@ -46,7 +40,3 @@ class TestRemovalUserRouter:
 
     def _stub_removal_error(self, error: ApplicationError) -> None:
         when(self._user_remover).execute(ANY_ARG).raises(error)
-
-    def _assert_contract_is_met_with(self, expected_status_code: int, expected_body: dict[str, str]):
-        expect(self._response.status_code).to(equal(expected_status_code))
-        expect(json.loads(self._response.body)).to(equal(expected_body))
