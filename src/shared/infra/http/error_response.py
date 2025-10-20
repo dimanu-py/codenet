@@ -15,6 +15,9 @@ class ErrorResponse(ABC, BaseModel):
             status_code=self.status_code,
         )
 
+    def __str__(self) -> str:
+        return f"{self.detail}"
+
 
 class UnprocessableEntityError(ErrorResponse):
     status_code: int = Field(default=status.HTTP_422_UNPROCESSABLE_CONTENT)

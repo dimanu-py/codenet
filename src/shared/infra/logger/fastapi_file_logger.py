@@ -1,8 +1,23 @@
 import logging
+from typing import TypedDict
 
 from asgi_correlation_id import CorrelationIdFilter
 
 from src.shared.infra.logger.file_rotating_handler import TimeRotatingFileHandler
+
+
+class SuccessRecordDetails(TypedDict):
+    method: str
+    source: str
+    process_time: float
+    status_code: int
+
+
+class ErrorRecordDetails(TypedDict):
+    method: str
+    error_message: str
+    source: str
+    status_code: int
 
 
 class FastApiFileLogger:
@@ -14,30 +29,15 @@ class FastApiFileLogger:
         if not self._logger.hasHandlers():
             self._logger.handlers.extend(handlers)
 
-    def debug(self, message: str, details: dict) -> None:
-        self._logger.debug(
-            msg=message,
-            extra={"details": details},
-        )
-
-    def info(self, message: str, details: dict) -> None:
+    def success(self, message: str, details: SuccessRecordDetails) -> None:
         self._logger.info(
-            msg=message,
+            msg=f"success - {message}",
             extra={"details": details},
         )
 
-    def warning(self, message: str, details: dict) -> None:
-        raise NotImplementedError
-
-    def error(self, message: str, details: dict) -> None:
+    def error(self, message: str, details: ErrorRecordDetails) -> None:
         self._logger.error(
-            msg=message,
-            extra={"details": details},
-        )
-
-    def critical(self, message: str, details: dict) -> None:
-        self._logger.critical(
-            msg=message,
+            msg=f"error - {message}",
             extra={"details": details},
         )
 
