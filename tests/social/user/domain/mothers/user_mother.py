@@ -19,3 +19,12 @@ class UserMother:
     @staticmethod
     def from_signup_command(command: UserSignupCommand) -> User:
         return User(**command.to_primitives())
+
+    @staticmethod
+    def with_username(username: str) -> User:
+        return User(
+            id=UserIdMother.any().value,
+            name=UserNameMother.any().value,
+            username=username,
+            email=UserEmailMother.any().value,
+        )
