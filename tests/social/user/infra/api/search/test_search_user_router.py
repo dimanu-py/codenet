@@ -1,6 +1,6 @@
 import json
 
-from doublex import when, ANY_ARG
+from doublex import ANY_ARG, when
 
 from src.social.user.application.search.user_searcher import UserSearcher
 from src.social.user.domain.user import User

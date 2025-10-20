@@ -3,10 +3,10 @@ import asyncio
 import json
 
 import pytest
-from expects import expect, equal, contain, have_length
+from expects import contain, equal, expect, have_length
 from fastapi import Response
 from httpx import AsyncClient
-from pytest_bdd import scenarios, given, when, parsers, then
+from pytest_bdd import given, parsers, scenarios, then, when
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from src.social.user.infra.persistence.user_model import UserModel
@@ -32,10 +32,7 @@ def existing_users(session: AsyncSession, usernames: str) -> None:
 
 @when(parsers.parse('I search for users with username "{username}"'), target_fixture="search_response")
 def search_users_by_username(client: AsyncClient, username: str) -> Response:
-    filters = {
-        "field": "username",
-        "contains": username
-    }
+    filters = {"field": "username", "contains": username}
     loop = asyncio.get_event_loop()
     return loop.run_until_complete(client.get(_ROUTE_PATH, params={"filter": json.dumps(filters)}))
 
