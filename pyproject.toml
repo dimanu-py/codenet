@@ -6,6 +6,7 @@ description = "Project of a social network to practice DDD"
 
 dependencies = [
     "alembic>=1.16.5",
+    "argon2-cffi>=25.1.0",
     "asgi-correlation-id>=4.3.4",
     "asyncpg>=0.30.0",
     "fastapi[standard]>=0.118.0",
