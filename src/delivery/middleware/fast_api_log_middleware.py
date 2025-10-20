@@ -3,7 +3,7 @@ import time
 from fastapi import FastAPI, Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 
-from src.shared.infra.logger.fastapi_file_logger import FastApiFileLogger, SuccessRecordDetails, ErrorRecordDetails
+from src.shared.infra.logger.fastapi_file_logger import ErrorRecordDetails, FastApiFileLogger, SuccessRecordDetails
 
 
 class FastapiLogMiddleware(BaseHTTPMiddleware):
