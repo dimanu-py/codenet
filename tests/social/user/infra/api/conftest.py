@@ -13,8 +13,8 @@ def user_id() -> str:
 
 
 @pytest.fixture
-def existing_user(session: AsyncSession) -> User:
+async def existing_user(session: AsyncSession) -> User:
     user = UserMother.any()
     session.add(UserModel(**user.to_primitives()))
-    session.commit()
+    await session.commit()
     return user
