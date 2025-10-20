@@ -26,7 +26,7 @@ class TestSignupUserRouter(UserModuleRoutersTestConfig):
             email=UserEmailMother.any().value,
         )
         user_id = UserIdMother.any().value
-        self._stub_successful_signup()
+        self._should_signup_user()
 
         self._response = await signup_user(
             request=request_body,
@@ -43,7 +43,7 @@ class TestSignupUserRouter(UserModuleRoutersTestConfig):
             email=UserEmailMother.any().value,
         )
         user_id = UserIdMother.any().value
-        self._stub_signup_error(InvalidNameFormatError)
+        self._should_fail_validating_user_data_with(InvalidNameFormatError)
 
         self._response = await signup_user(
             request=request_body,
@@ -60,7 +60,7 @@ class TestSignupUserRouter(UserModuleRoutersTestConfig):
             email=UserEmailMother.any().value,
         )
         user_id = UserIdMother.any().value
-        self._stub_signup_error(InvalidUsernameFormatError)
+        self._should_fail_validating_user_data_with(InvalidUsernameFormatError)
 
         self._response = await signup_user(
             request=request_body,
@@ -77,7 +77,7 @@ class TestSignupUserRouter(UserModuleRoutersTestConfig):
             email="invalid-email-format",
         )
         user_id = UserIdMother.any().value
-        self._stub_signup_error(InvalidEmailFormatError)
+        self._should_fail_validating_user_data_with(InvalidEmailFormatError)
 
         self._response = await signup_user(
             request=request_body,
@@ -89,8 +89,8 @@ class TestSignupUserRouter(UserModuleRoutersTestConfig):
             422, {"detail": "Email cannot contain special characters and must contain '@' and '.'"}
         )
 
-    def _stub_successful_signup(self) -> None:
+    def _should_signup_user(self) -> None:
         when(self._user_signup).execute(ANY_ARG).returns(None)
 
-    def _stub_signup_error(self, error: DomainError) -> None:
+    def _should_fail_validating_user_data_with(self, error: DomainError) -> None:
         when(self._user_signup).execute(ANY_ARG).raises(error)
