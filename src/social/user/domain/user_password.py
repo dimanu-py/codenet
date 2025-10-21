@@ -1,7 +1,7 @@
 from typing import Self
 
 from argon2 import PasswordHasher, extract_parameters
-from argon2.exceptions import InvalidHash
+from argon2.exceptions import InvalidHash, VerifyMismatchError
 
 from src.shared.domain.exceptions.domain_error import DomainError
 from src.shared.domain.value_objects.string_value_object import StringValueObject
@@ -21,7 +21,10 @@ class UserPassword(StringValueObject):
         return cls(hashed_password)
 
     def verify(self, password: str) -> bool:
-        return self._hasher.verify(self._value, password)
+        try:
+            return self._hasher.verify(self._value, password)
+        except VerifyMismatchError:
+            return False
 
     @validate
     def _ensure_stored_password_is_hashed(self, value: str) -> None:
