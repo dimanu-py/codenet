@@ -2,6 +2,7 @@ from typing import Self
 
 from argon2 import PasswordHasher
 
+from src.shared.domain.exceptions.domain_error import DomainError
 from src.shared.domain.value_objects.string_value_object import StringValueObject
 
 
@@ -15,3 +16,11 @@ class UserPassword(StringValueObject):
         )
         hashed_password = hasher.hash(password)
         return cls(hashed_password)
+
+
+class CannotStorePlainTextPassword(DomainError):
+    def __init__(self) -> None:
+        super().__init__(
+            message="Cannot store plain text password.",
+            error_type="invalid_password_format",
+        )
