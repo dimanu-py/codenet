@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass(frozen=True)
@@ -7,6 +7,7 @@ class UserSignupCommand:
     name: str
     username: str
     email: str
+    password: str = field(default="")
 
     def to_primitives(self) -> dict[str, str]:
         return {
