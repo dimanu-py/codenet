@@ -15,6 +15,7 @@ class UserSignup:
             name=command.name,
             username=command.username,
             email=command.email,
+            password=command.password,
         )
 
         await self._repository.save(user)
