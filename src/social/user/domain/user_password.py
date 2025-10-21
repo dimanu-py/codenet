@@ -1,9 +1,11 @@
 from typing import Self
 
-from argon2 import PasswordHasher
+from argon2 import PasswordHasher, extract_parameters
+from argon2.exceptions import InvalidHash
 
 from src.shared.domain.exceptions.domain_error import DomainError
 from src.shared.domain.value_objects.string_value_object import StringValueObject
+from src.shared.domain.value_objects.validation import validate
 
 
 class UserPassword(StringValueObject):
@@ -16,6 +18,13 @@ class UserPassword(StringValueObject):
         )
         hashed_password = hasher.hash(password)
         return cls(hashed_password)
+
+    @validate
+    def _ensure_stored_password_is_hashed(self, value: str) -> None:
+        try:
+            extract_parameters(value)
+        except InvalidHash as error:
+            raise CannotStorePlainTextPassword from error
 
 
 class CannotStorePlainTextPassword(DomainError):
