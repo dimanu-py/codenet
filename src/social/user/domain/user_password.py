@@ -19,6 +19,14 @@ class UserPassword(StringValueObject):
         hashed_password = hasher.hash(password)
         return cls(hashed_password)
 
+    def verify(self, password: str) -> bool:
+        hasher = PasswordHasher(
+            time_cost=2,
+            memory_cost=65536,
+            parallelism=4,
+        )
+        return hasher.verify(self._value, password)
+
     @validate
     def _ensure_stored_password_is_hashed(self, value: str) -> None:
         try:
