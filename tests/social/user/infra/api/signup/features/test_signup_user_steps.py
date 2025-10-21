@@ -5,9 +5,9 @@ from expects import equal, expect
 from httpx import AsyncClient, Response
 from pytest_bdd import given, scenarios, then, when
 
-from tests.social.user.domain.mothers.user_email_mother import UserEmailMother
-from tests.social.user.domain.mothers.user_name_mother import UserNameMother
-from tests.social.user.domain.mothers.user_username_mother import UserUsernameMother
+from tests.social.user.domain.mothers.user_email_primitives_mother import UserEmailPrimitivesMother
+from tests.social.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
+from tests.social.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
 
 pytestmark = [pytest.mark.acceptance]
 
@@ -19,9 +19,9 @@ _ROUTE_PATH = "/app/users/"
 @given("I have filled a signup form with valid details", target_fixture="signup_form")
 def filled_signup_form() -> dict:
     return {
-        "name": UserNameMother.any().value,
-        "username": UserUsernameMother.any().value,
-        "email": UserEmailMother.any().value,
+        "name": UserNamePrimitivesMother.any(),
+        "username": UserUsernamePrimitivesMother.any(),
+        "email": UserEmailPrimitivesMother.any(),
     }
 
 

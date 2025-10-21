@@ -8,10 +8,10 @@ from src.social.user.domain.user_username import InvalidUsernameFormatError
 from src.social.user.infra.api.signup.signup_user_router import signup_user
 from src.social.user.infra.api.signup.user_sign_up_request import UserSignupRequest
 from tests.shared.expects.async_stub import AsyncStub
-from tests.social.user.domain.mothers.user_email_mother import UserEmailMother
-from tests.social.user.domain.mothers.user_id_mother import UserIdMother
-from tests.social.user.domain.mothers.user_name_mother import UserNameMother
-from tests.social.user.domain.mothers.user_username_mother import UserUsernameMother
+from tests.social.user.domain.mothers.user_email_primitives_mother import UserEmailPrimitivesMother
+from tests.social.user.domain.mothers.user_id_primitives_mother import UserIdPrimitivesMother
+from tests.social.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
+from tests.social.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
 from tests.social.user.infra.api.user_module_routers_test_config import UserModuleRoutersTestConfig
 
 
@@ -21,11 +21,11 @@ class TestSignupUserRouter(UserModuleRoutersTestConfig):
 
     async def test_should_return_201_when_signup_data_is_valid(self) -> None:
         request_body = UserSignupRequest(
-            name=UserNameMother.any().value,
-            username=UserUsernameMother.any().value,
-            email=UserEmailMother.any().value,
+            name=UserNamePrimitivesMother.any(),
+            username=UserUsernamePrimitivesMother.any(),
+            email=UserEmailPrimitivesMother.any(),
         )
-        user_id = UserIdMother.any().value
+        user_id = UserIdPrimitivesMother.any()
         self._should_signup_user()
 
         self._response = await signup_user(
@@ -39,10 +39,10 @@ class TestSignupUserRouter(UserModuleRoutersTestConfig):
     async def test_should_return_422_when_user_name_has_invalid_character(self) -> None:
         request_body = UserSignupRequest(
             name="Invalid@Name",
-            username=UserUsernameMother.any().value,
-            email=UserEmailMother.any().value,
+            username=UserUsernamePrimitivesMother.any(),
+            email=UserEmailPrimitivesMother.any(),
         )
-        user_id = UserIdMother.any().value
+        user_id = UserIdPrimitivesMother.any()
         self._should_fail_validating_user_data_with(InvalidNameFormatError)
 
         self._response = await signup_user(
@@ -55,11 +55,11 @@ class TestSignupUserRouter(UserModuleRoutersTestConfig):
 
     async def test_should_return_422_when_user_username_has_invalid_character(self) -> None:
         request_body = UserSignupRequest(
-            name=UserNameMother.any().value,
+            name=UserNamePrimitivesMother.any(),
             username="Invalid*Username",
-            email=UserEmailMother.any().value,
+            email=UserEmailPrimitivesMother.any(),
         )
-        user_id = UserIdMother.any().value
+        user_id = UserIdPrimitivesMother.any()
         self._should_fail_validating_user_data_with(InvalidUsernameFormatError)
 
         self._response = await signup_user(
@@ -72,11 +72,11 @@ class TestSignupUserRouter(UserModuleRoutersTestConfig):
 
     async def test_should_return_422_when_email_does_not_have_valid_format(self) -> None:
         request_body = UserSignupRequest(
-            name=UserNameMother.any().value,
-            username=UserUsernameMother.any().value,
+            name=UserNamePrimitivesMother.any(),
+            username=UserUsernamePrimitivesMother.any(),
             email="invalid-email-format",
         )
-        user_id = UserIdMother.any().value
+        user_id = UserIdPrimitivesMother.any()
         self._should_fail_validating_user_data_with(InvalidEmailFormatError)
 
         self._response = await signup_user(

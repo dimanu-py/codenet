@@ -5,7 +5,7 @@ from tests.shared.expects.matchers import async_expect, raise_error
 from tests.social.user.application.user_module_unit_test_config import (
     UserModuleUnitTestConfig,
 )
-from tests.social.user.domain.mothers.user_id_mother import UserIdMother
+from tests.social.user.domain.mothers.user_id_primitives_mother import UserIdPrimitivesMother
 from tests.social.user.domain.mothers.user_mother import UserMother
 
 
@@ -23,8 +23,8 @@ class TestUserRemover(UserModuleUnitTestConfig):
         await self._user_remover.execute(command)
 
     async def test_should_not_allow_to_remove_non_existing_user(self) -> None:
-        user_id = UserIdMother.any()
-        command = UserRemovalCommand(user_id=user_id.value)
+        user_id = UserIdPrimitivesMother.any()
+        command = UserRemovalCommand(user_id=user_id)
 
         self._should_not_find(user_id)
 

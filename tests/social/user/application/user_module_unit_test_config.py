@@ -26,5 +26,5 @@ class UserModuleUnitTestConfig:
     def _should_remove(self, user: User) -> None:
         self._repository.should_remove(user)
 
-    def _should_not_find(self, user_id: UserId) -> None:
-        self._repository.should_not_find(user_id)
+    def _should_not_find(self, user_id: str) -> None:
+        self._repository.should_not_find(UserId(user_id))

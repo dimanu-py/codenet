@@ -1,19 +1,19 @@
 from src.social.user.application.signup.user_signup_command import UserSignupCommand
 from src.social.user.domain.user import User
-from tests.social.user.domain.mothers.user_email_mother import UserEmailMother
-from tests.social.user.domain.mothers.user_id_mother import UserIdMother
-from tests.social.user.domain.mothers.user_name_mother import UserNameMother
-from tests.social.user.domain.mothers.user_username_mother import UserUsernameMother
+from tests.social.user.domain.mothers.user_email_primitives_mother import UserEmailPrimitivesMother
+from tests.social.user.domain.mothers.user_id_primitives_mother import UserIdPrimitivesMother
+from tests.social.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
+from tests.social.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
 
 
 class UserMother:
     @staticmethod
     def any() -> User:
         return User(
-            id=UserIdMother.any().value,
-            name=UserNameMother.any().value,
-            username=UserUsernameMother.any().value,
-            email=UserEmailMother.any().value,
+            id=UserIdPrimitivesMother.any(),
+            name=UserNamePrimitivesMother.any(),
+            username=UserUsernamePrimitivesMother.any(),
+            email=UserEmailPrimitivesMother.any(),
         )
 
     @staticmethod
@@ -23,8 +23,8 @@ class UserMother:
     @staticmethod
     def with_username(username: str) -> User:
         return User(
-            id=UserIdMother.any().value,
-            name=UserNameMother.any().value,
+            id=UserIdPrimitivesMother.any(),
+            name=UserNamePrimitivesMother.any(),
             username=username,
-            email=UserEmailMother.any().value,
+            email=UserEmailPrimitivesMother.any(),
         )
