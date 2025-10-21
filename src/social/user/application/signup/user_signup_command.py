@@ -15,4 +15,5 @@ class UserSignupCommand:
             "name": self.name,
             "username": self.username,
             "email": self.email,
+            "password": self.password,
         }
