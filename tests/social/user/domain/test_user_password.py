@@ -1,5 +1,5 @@
 import pytest
-from expects import expect, equal, raise_error, be_true
+from expects import expect, equal, raise_error, be_true, be_false
 
 from src.social.user.domain.user_password import UserPassword, CannotStorePlainTextPassword
 
@@ -25,3 +25,12 @@ class TestUserPassword:
         password_matches = stored_password.verify(plain_password)
 
         expect(password_matches).to(be_true)
+
+    def test_should_return_false_when_password_does_not_match_stored_value(self) -> None:
+        plain_password = "securePassword123!"
+        stored_password = UserPassword.from_plain_text(plain_password)
+        wrong_password = "wrongPassword456!"
+
+        password_matches = stored_password.verify(wrong_password)
+
+        expect(password_matches).to(be_false)
