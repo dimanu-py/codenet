@@ -9,23 +9,19 @@ from src.shared.domain.value_objects.validation import validate
 
 
 class UserPassword(StringValueObject):
+    _hasher: PasswordHasher = PasswordHasher(
+        time_cost=2,
+        memory_cost=65536,
+        parallelism=4,
+    )
+
     @classmethod
     def from_plain_text(cls, password: str) -> Self:
-        hasher = PasswordHasher(
-            time_cost=2,
-            memory_cost=65536,
-            parallelism=4,
-        )
-        hashed_password = hasher.hash(password)
+        hashed_password = cls._hasher.hash(password)
         return cls(hashed_password)
 
     def verify(self, password: str) -> bool:
-        hasher = PasswordHasher(
-            time_cost=2,
-            memory_cost=65536,
-            parallelism=4,
-        )
-        return hasher.verify(self._value, password)
+        return self._hasher.verify(self._value, password)
 
     @validate
     def _ensure_stored_password_is_hashed(self, value: str) -> None:
