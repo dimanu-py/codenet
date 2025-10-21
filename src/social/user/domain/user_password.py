@@ -1,4 +1,4 @@
-from typing import Self
+from typing import override
 
 from argon2 import PasswordHasher, extract_parameters
 from argon2.exceptions import InvalidHash, VerifyMismatchError
@@ -15,10 +15,10 @@ class UserPassword(StringValueObject):
         parallelism=4,
     )
 
-    @classmethod
-    def from_plain_text(cls, password: str) -> Self:
-        hashed_password = cls._hasher.hash(password)
-        return cls(hashed_password)
+    @override
+    def __init__(self, value: str) -> None:
+        hashed_password = self._hash_plain_password(value)
+        super().__init__(hashed_password)
 
     def verify(self, password: str) -> bool:
         try:
@@ -32,6 +32,9 @@ class UserPassword(StringValueObject):
             extract_parameters(value)
         except InvalidHash as error:
             raise CannotStorePlainTextPassword from error
+
+    def _hash_plain_password(self, value: str) -> str:
+        return self._hasher.hash(value)
 
 
 class CannotStorePlainTextPassword(DomainError):

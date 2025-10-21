@@ -17,7 +17,7 @@ class User(Aggregate):
         self._name = UserName(name)
         self._username = UserUsername(username)
         self._email = UserEmail(email)
-        self._password = UserPassword.from_plain_text(password) if password else None
+        self._password = UserPassword(password) if password else None
 
     @property
     def id(self) -> UserId:
