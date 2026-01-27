@@ -20,7 +20,7 @@ class PostgresUserRepository(UserRepository):
     async def save(self, user: User) -> None:
         user_to_save = UserModel(**user.to_primitives())
         self._session.add(user_to_save)
-        await self._session.commit()
+        await self._session.flush()
 
     @override
     async def find(self, user_id: UserId) -> User | None:
@@ -39,4 +39,4 @@ class PostgresUserRepository(UserRepository):
         user = await self._session.get(UserModel, user_id.value)
         if user:
             await self._session.delete(user)
-            await self._session.commit()
+            await self._session.flush()
