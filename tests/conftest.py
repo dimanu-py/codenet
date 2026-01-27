@@ -52,7 +52,6 @@ async def session(connection: AsyncConnection) -> AsyncGenerator[AsyncSession]:
     async with AsyncSession(bind=connection) as session:
         try:
             yield session
-            await session.rollback()
         finally:
             await session.close()
 
