@@ -29,7 +29,7 @@ class MockUserRepository(UserRepository):
 
     def should_save(self, user: User) -> None:
         def verify(expected_user: User) -> None:
-            expect(user).to(equal(expected_user))
+            expect(user.to_public_primitives()).to(equal(expected_user.to_public_primitives()))
 
         self._mock_save = verify  # type: ignore
 
