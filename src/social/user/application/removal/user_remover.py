@@ -13,7 +13,10 @@ class UserRemover:
     async def execute(self, command: UserRemovalCommand) -> None:
         user_id = UserId(command.user_id)
         await self._ensure_user_to_remove_exists(user_id)
-        await self._repository.delete(user_id)
+        await self._remove_user(user_id)
+
+    async def _remove_user(self, user_id: UserId) -> None:
+        return await self._repository.delete(user_id)
 
     async def _ensure_user_to_remove_exists(self, user_id: UserId) -> None:
         user = await self._repository.find(user_id)

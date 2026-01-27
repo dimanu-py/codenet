@@ -18,4 +18,7 @@ class UserSignup:
             password=command.password,
         )
 
+        await self._store_user(user)
+
+    async def _store_user(self, user: User) -> None:
         await self._repository.save(user)
