@@ -114,3 +114,14 @@ up: ## Create and start containers.
 .PHONY: down
 down: ## Stop and remove containers.
 	@docker-compose down -v --remove-orphans
+
+.PHONY: migration
+migration:  ## Generate a new migration with alembic.
+	@echo "\n⌛ Generating new migration...\n"
+	@read -p "Enter message (required): " MESSAGE
+	@alembic revision --autogenerate -m "$$MESSAGE"
+
+.PHONY: migrate
+migrate: ## Apply migrations with alembic.
+	@echo "\n⌛ Applying migrations...\n"
+	@alembic upgrade head
