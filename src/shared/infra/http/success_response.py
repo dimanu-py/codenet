@@ -7,11 +7,11 @@ from pydantic import BaseModel, Field
 
 class SuccessResponse(ABC, BaseModel):
     status_code: int
-    data: dict
+    detail: dict
 
     def as_json(self) -> JSONResponse:
         return JSONResponse(
-            content=self.data,
+            content=self.detail,
             status_code=self.status_code,
         )
 

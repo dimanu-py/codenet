@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 
 class ErrorResponse(ABC, BaseModel):
     status_code: int
-    detail: str
+    detail: dict
 
     def as_json(self) -> JSONResponse:
         return JSONResponse(
@@ -21,14 +21,14 @@ class ErrorResponse(ABC, BaseModel):
 
 class UnprocessableEntityError(ErrorResponse):
     status_code: int = Field(default=status.HTTP_422_UNPROCESSABLE_CONTENT)
-    detail: str = Field(default="Unprocessable Entity")
+    detail: dict = Field(default={"message": "Unprocessable Entity"})
 
 
 class ResourceNotFoundError(ErrorResponse):
     status_code: int = Field(default=status.HTTP_404_NOT_FOUND)
-    detail: str = Field(default="Not Found")
+    detail: dict = Field(default={"message": "Not Found"})
 
 
 class InternalServerError(ErrorResponse):
     status_code: int = Field(default=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    detail: str = Field(default="An unexpected error occurred.")
+    detail: dict = Field(default={"message": "An unexpected error occurred."})
