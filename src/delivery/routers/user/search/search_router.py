@@ -1,6 +1,7 @@
 import json
 
 from fastapi import APIRouter, Depends, Query, status
+from fastapi.openapi.models import Example
 from fastapi.responses import JSONResponse
 
 from src.delivery.routers.user.deps import postgres_user_repository
@@ -31,7 +32,7 @@ def get_controller(
     },
 )
 async def get_user_by_criteria(
-    filter: str = Query(examples=['{"field": "username", "equal": "john_doe"}']),
+    filter: str = Query(openapi_examples={"simple_filter": Example(value='{"field": "username", "equal": "johndoe"}')}),
     controller: UserSearchController = Depends(get_controller),
 ) -> JSONResponse:
     result = await controller.search(filters=json.loads(filter))

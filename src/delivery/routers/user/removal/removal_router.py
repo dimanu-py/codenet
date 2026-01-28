@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, Path, status
+from fastapi.openapi.models import Example
 from starlette.responses import JSONResponse
 
 from src.delivery.routers.user.deps import postgres_user_repository
@@ -28,7 +29,7 @@ def get_controller(use_case: UserRemover = Depends(get_use_case)):
     },
 )
 async def remove_user(
-    user_id: str = Path(..., examples=["123e4567-e89b-12d3-a456-426614174000"]),
+    user_id: str = Path(..., openapi_examples={"valid_id": Example(value="123e4567-e89b-12d3-a456-426614174000")}),
     controller: UserRemovalController = Depends(get_controller),
 ) -> JSONResponse:
     result = await controller.remove(user_id=user_id)

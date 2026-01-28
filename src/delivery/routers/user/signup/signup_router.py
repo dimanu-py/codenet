@@ -32,7 +32,7 @@ def get_controller(
 )
 async def signup_user(
     request: SignupRequest,
-    user_id: str = Path(..., examples=["123e4567-e89b-12d3-a456-426614174000"]),
+    user_id: str = Path(..., openapi_examples={"valid_id": Example(value="123e4567-e89b-12d3-a456-426614174000")}),
     controller: UserSignupController = Depends(get_controller),
 ) -> JSONResponse:
     result = await controller.signup(
