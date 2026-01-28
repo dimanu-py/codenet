@@ -39,5 +39,5 @@ async def remove_user(
         return ResourceNotFoundError(detail=application_error.message).as_json()
 
     return AcceptedResponse(
-        data={"message": "User removal request has been accepted."},
+        detail={"message": "User removal request has been accepted."},
     ).as_json()

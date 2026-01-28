@@ -47,5 +47,5 @@ async def signup_user(
         ).as_json()
 
     return CreatedResponse(
-        data={"resource": f"/app/users/{user_id}"},
+        detail={"resource": f"/app/users/{user_id}"},
     ).as_json()

@@ -35,5 +35,5 @@ async def get_user_by_criteria(
     response = UserSearchResponse([user.to_public_primitives() for user in users])
 
     return OkResponse(
-        data=response.dump(),
+        detail=response.dump(),
     ).as_json()
