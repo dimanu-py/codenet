@@ -1,4 +1,4 @@
-from src.shared.infra.http.success_response import SuccessResponse, OkResponse
+from src.shared.infra.http.success_response import OkResponse, SuccessResponse
 from src.social.user.application.search.search_user_query import SearchUserQuery
 from src.social.user.application.search.user_search_response import UserSearchResponse
 from src.social.user.application.search.user_searcher import UserSearcher

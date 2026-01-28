@@ -1,7 +1,7 @@
 from sindripy.value_objects import SindriValidationError
 
 from src.shared.domain.exceptions.application_error import ApplicationError
-from src.shared.infra.http.error_response import UnprocessableEntityError, ResourceNotFoundError, ErrorResponse
+from src.shared.infra.http.error_response import ErrorResponse, ResourceNotFoundError, UnprocessableEntityError
 from src.shared.infra.http.success_response import AcceptedResponse, SuccessResponse
 from src.social.user.application.removal.user_removal_command import UserRemovalCommand
 from src.social.user.application.removal.user_remover import UserRemover

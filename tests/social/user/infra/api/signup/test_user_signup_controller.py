@@ -33,7 +33,7 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
 
         self._response = await self._controller.signup(id=user_id, **request_body.model_dump())
 
-        self._assert_contract_is_met_with(202, {'message': 'User signup request has been accepted.'})
+        self._assert_contract_is_met_with(202, {"message": "User signup request has been accepted."})
 
     async def test_should_return_422_when_user_name_has_invalid_character(self) -> None:
         request_body = SignupRequest(

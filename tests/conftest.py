@@ -6,8 +6,8 @@ from sqlalchemy.ext.asyncio.engine import AsyncConnection, AsyncEngine, create_a
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from src.delivery.main import app
-from src.shared.infra.persistence.sqlalchemy.base import Base
 from src.delivery.routers.user.deps import get_async_session
+from src.shared.infra.persistence.sqlalchemy.base import Base
 from tests.social.user.infra.persistence.postgres_test_container import PostgresTestContainer
 
 

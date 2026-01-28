@@ -18,6 +18,7 @@ def get_use_case(
 ) -> UserSignup:
     return UserSignup(repository)
 
+
 def get_controller(
     use_case: UserSignup = Depends(get_use_case),
 ) -> UserSignupController:
