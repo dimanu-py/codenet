@@ -118,8 +118,8 @@ down: ## Stop and remove containers.
 .PHONY: migration
 migration:  ## Generate a new migration with alembic.
 	@echo "\n⌛ Generating new migration...\n"
-	@read -p "Enter message (required): " MESSAGE
-	@alembic revision --autogenerate -m "$$MESSAGE"
+	@read -p "Enter message (required): " MESSAGE;
+	alembic revision --autogenerate -m "$$MESSAGE"
 
 .PHONY: migrate
 migrate: ## Apply migrations with alembic.
