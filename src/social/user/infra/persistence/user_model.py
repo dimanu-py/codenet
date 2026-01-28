@@ -1,3 +1,5 @@
+from typing import Self
+
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -13,6 +15,10 @@ class UserModel(Base):
     username: Mapped[str] = mapped_column(String, nullable=False, unique=True)
     email: Mapped[str] = mapped_column(String, nullable=False, unique=True)
     password: Mapped[str] = mapped_column(String)
+
+    @classmethod
+    def from_domain(cls, user: User) -> Self:
+        return cls(**user.to_primitives())
 
     def to_aggregate(self) -> User:
         return User(

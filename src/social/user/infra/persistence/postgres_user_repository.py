@@ -18,8 +18,8 @@ class PostgresUserRepository(UserRepository):
 
     @override
     async def save(self, user: User) -> None:
-        user_to_save = UserModel(**user.to_primitives())
-        self._session.add(user_to_save)
+        user_to_save = UserModel.from_domain(user)
+        await self._session.merge(user_to_save)
         await self._session.flush()
 
     @override
