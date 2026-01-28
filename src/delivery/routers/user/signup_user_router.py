@@ -42,7 +42,4 @@ async def signup_user(
         email=request.email,
         password=request.password,
     )
-    return JSONResponse(
-        status_code=result.status_code,
-        content=result.detail,
-    )
+    return result.as_json()

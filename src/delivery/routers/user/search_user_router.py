@@ -35,8 +35,4 @@ async def get_user_by_criteria(
     controller: UserSearchController = Depends(get_controller),
 ) -> JSONResponse:
     result = await controller.search(filters=json.loads(filter))
-
-    return JSONResponse(
-        status_code=result.status_code,
-        content=result.detail,
-    )
+    return result.as_json()
