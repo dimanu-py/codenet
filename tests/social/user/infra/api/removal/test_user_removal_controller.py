@@ -10,8 +10,7 @@ from tests.social.user.infra.api.user_module_routers_test_config import UserModu
 
 class TestUserRemovalController(UserModuleRoutersTestConfig):
     def setup_method(self) -> None:
-        self._use_case = AsyncStub(UserRemover)
-        self._controller = UserRemovalController(use_case=self._use_case)
+        self._controller = UserRemovalController(use_case=AsyncStub(UserRemover))
 
     async def test_should_return_202_when_user_is_removed(self) -> None:
         user_id = UserIdPrimitivesMother.any()
