@@ -17,8 +17,10 @@ class UserPassword(StringValueObject):
 
     @override
     def __init__(self, value: str) -> None:
-        hashed_password = self._hash_plain_password(value)
-        super().__init__(hashed_password)
+        if self._is_already_hashed(value):
+            super().__init__(value)
+        else:
+            super().__init__(self._hash_plain_password(value))
 
     def verify(self, password: str) -> bool:
         try:
@@ -35,6 +37,14 @@ class UserPassword(StringValueObject):
 
     def _hash_plain_password(self, value: str) -> str:
         return self._hasher.hash(value)
+
+    @staticmethod
+    def _is_already_hashed(value: str) -> bool:
+        try:
+            extract_parameters(value)
+            return True
+        except InvalidHash:
+            return False
 
 
 class CannotStorePlainTextPassword(DomainError):
