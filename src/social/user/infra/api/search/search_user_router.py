@@ -32,7 +32,7 @@ async def get_user_by_criteria(
     query = SearchUserQuery(filters=json.loads(filter))
 
     users = await user_searcher.execute(query)
-    response = UserSearchResponse([user.to_primitives() for user in users])
+    response = UserSearchResponse([user.to_public_primitives() for user in users])
 
     return OkResponse(
         data=response.dump(),
