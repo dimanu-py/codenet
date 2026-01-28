@@ -11,7 +11,7 @@ class SuccessResponse(ABC, BaseModel):
 
     def as_json(self) -> JSONResponse:
         return JSONResponse(
-            content=self.detail,
+            content={"detail": self.detail},
             status_code=self.status_code,
         )
 
