@@ -1,10 +1,9 @@
 from fastapi import APIRouter, status
 
-from src.delivery.routers.user import removal_user_router, search_user_router
+from src.delivery.routers.user import removal_user_router, search_user_router, signup_user_router as signup_router
 from src.shared.infra.http.error_response import (
     InternalServerError,
 )
-from src.social.user.infra.api.signup import signup_user_router as signup_router
 
 routes = APIRouter(
     prefix="/app/users",

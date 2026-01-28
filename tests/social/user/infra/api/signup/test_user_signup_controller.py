@@ -1,11 +1,11 @@
 from doublex import ANY_ARG, when
 
+from src.delivery.routers.user.user_sign_up_request import UserSignupRequest
 from src.shared.domain.exceptions.domain_error import DomainError
 from src.social.user.application.signup.user_signup import UserSignup
 from src.social.user.domain.user_email import InvalidEmailFormatError
 from src.social.user.domain.user_name import InvalidNameFormatError
 from src.social.user.domain.user_username import InvalidUsernameFormatError
-from src.social.user.infra.api.signup.user_sign_up_request import UserSignupRequest
 from src.social.user.infra.api.signup.user_signup_controller import UserSignupController
 from tests.shared.expects.async_stub import AsyncStub
 from tests.social.user.domain.mothers.user_email_primitives_mother import UserEmailPrimitivesMother
