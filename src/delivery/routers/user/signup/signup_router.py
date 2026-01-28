@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Path, status
 from fastapi.responses import JSONResponse
 
 from src.delivery.routers.user.deps import postgres_user_repository
-from src.delivery.routers.user.user_sign_up_request import UserSignupRequest
+from src.delivery.routers.user.signup.signup_request import SignupRequest
 from src.shared.infra.http.error_response import UnprocessableEntityError
 from src.shared.infra.http.success_response import CreatedResponse
 from src.social.user.application.signup.user_signup import UserSignup
@@ -31,7 +31,7 @@ def get_controller(
     },
 )
 async def signup_user(
-    request: UserSignupRequest,
+    request: SignupRequest,
     user_id: str = Path(..., examples=["123e4567-e89b-12d3-a456-426614174000"]),
     controller: UserSignupController = Depends(get_controller),
 ) -> JSONResponse:

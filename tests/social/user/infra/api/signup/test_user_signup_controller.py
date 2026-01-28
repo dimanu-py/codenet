@@ -1,6 +1,6 @@
 from doublex import ANY_ARG, when
 
-from src.delivery.routers.user.user_sign_up_request import UserSignupRequest
+from src.delivery.routers.user.signup.signup_request import SignupRequest
 from src.shared.domain.exceptions.domain_error import DomainError
 from src.social.user.application.signup.user_signup import UserSignup
 from src.social.user.domain.user_email import InvalidEmailFormatError
@@ -22,7 +22,7 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
         self._controller = UserSignupController(use_case=self._use_case)
 
     async def test_should_return_201_when_signup_data_is_valid(self) -> None:
-        request_body = UserSignupRequest(
+        request_body = SignupRequest(
             name=UserNamePrimitivesMother.any(),
             username=UserUsernamePrimitivesMother.any(),
             email=UserEmailPrimitivesMother.any(),
@@ -36,7 +36,7 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
         self._assert_contract_is_met_with(201, {"resource": f"/app/users/{user_id}"})
 
     async def test_should_return_422_when_user_name_has_invalid_character(self) -> None:
-        request_body = UserSignupRequest(
+        request_body = SignupRequest(
             name="Invalid@Name",
             username=UserUsernamePrimitivesMother.any(),
             email=UserEmailPrimitivesMother.any(),
@@ -50,7 +50,7 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
         self._assert_contract_is_met_with(422, {"message": "Name cannot contain special characters or numbers."})
 
     async def test_should_return_422_when_user_username_has_invalid_character(self) -> None:
-        request_body = UserSignupRequest(
+        request_body = SignupRequest(
             name=UserNamePrimitivesMother.any(),
             username="Invalid*Username",
             email=UserEmailPrimitivesMother.any(),
@@ -64,7 +64,7 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
         self._assert_contract_is_met_with(422, {"message": "Username cannot contain special characters"})
 
     async def test_should_return_422_when_email_does_not_have_valid_format(self) -> None:
-        request_body = UserSignupRequest(
+        request_body = SignupRequest(
             name=UserNamePrimitivesMother.any(),
             username=UserUsernamePrimitivesMother.any(),
             email="invalid-email-format",
