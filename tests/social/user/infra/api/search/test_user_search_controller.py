@@ -11,7 +11,8 @@ from tests.social.user.infra.api.user_module_routers_test_config import UserModu
 
 class TestUserSearchController(UserModuleRoutersTestConfig):
     def setup_method(self) -> None:
-        self._controller = UserSearchController(use_case=AsyncStub(UserSearcher))
+        self._use_case = AsyncStub(UserSearcher)
+        self._controller = UserSearchController(use_case=self._use_case)
 
     async def test_should_return_200_when_users_are_found_and_response_contains_list_of_users(self) -> None:
         filters = CriteriaMother.any().to_primitives()

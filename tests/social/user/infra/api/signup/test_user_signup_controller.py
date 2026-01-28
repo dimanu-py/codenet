@@ -18,7 +18,8 @@ from tests.social.user.infra.api.user_module_routers_test_config import UserModu
 
 class TestUserSignupController(UserModuleRoutersTestConfig):
     def setup_method(self) -> None:
-        self._controller = UserSignupController(use_case=AsyncStub(UserSignup))
+        self._use_case = AsyncStub(UserSignup)
+        self._controller = UserSignupController(use_case=self._use_case)
 
     async def test_should_return_201_when_signup_data_is_valid(self) -> None:
         request_body = UserSignupRequest(
@@ -79,7 +80,7 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
         )
 
     def _should_signup_user(self) -> None:
-        when(self._user_signup).execute(ANY_ARG).returns(None)
+        when(self._use_case).execute(ANY_ARG).returns(None)
 
     def _should_fail_validating_user_data_with(self, error: DomainError) -> None:
-        when(self._user_signup).execute(ANY_ARG).raises(error)
+        when(self._use_case).execute(ANY_ARG).raises(error)
