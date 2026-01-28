@@ -29,3 +29,11 @@ class TestUserPassword:
         password_matches = stored_password.verify(wrong_password)
 
         expect(password_matches).to(be_false)
+
+    def test_should_not_hash_again_a_hashed_password(self) -> None:
+        plain_password = "securePassword123!"
+        stored_password = UserPassword(plain_password)
+
+        rehashed_password = UserPassword(stored_password.value)
+
+        expect(rehashed_password).to(equal(stored_password))
