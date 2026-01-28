@@ -125,3 +125,10 @@ migration:  ## Generate a new migration with alembic.
 migrate: ## Apply migrations with alembic.
 	@echo "\n⌛ Applying migrations...\n"
 	@alembic upgrade head
+
+.PHONY: autostyle
+autostyle:  ## Apply all code style fixes.
+	@echo "\n⌛ Applying all code style fixes...\n"
+	@make format
+	@make lint
+	@git add . && git commit -m "style: apply code style fixes"
