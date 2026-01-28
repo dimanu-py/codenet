@@ -7,7 +7,7 @@ from src.social.user.application.removal.user_removal_command import UserRemoval
 from src.social.user.application.removal.user_remover import UserRemover
 
 
-class RemovalUserController:
+class UserRemovalController:
     def __init__(self, use_case: UserRemover) -> None:
         self._remover = use_case
 

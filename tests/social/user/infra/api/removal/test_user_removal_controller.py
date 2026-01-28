@@ -2,16 +2,16 @@ from doublex import ANY_ARG, when
 
 from src.social.user.application.removal.user_not_found_error import UserNotFoundError
 from src.social.user.application.removal.user_remover import UserRemover
-from src.social.user.infra.api.removal.removal_user_controller import RemovalUserController
+from src.social.user.infra.api.removal.user_removal_controller import UserRemovalController
 from tests.shared.expects.async_stub import AsyncStub
 from tests.social.user.domain.mothers.user_id_primitives_mother import UserIdPrimitivesMother
 from tests.social.user.infra.api.user_module_routers_test_config import UserModuleRoutersTestConfig
 
 
-class TestRemovalUserRouter(UserModuleRoutersTestConfig):
+class TestUserRemovalController(UserModuleRoutersTestConfig):
     def setup_method(self) -> None:
         self._use_case = AsyncStub(UserRemover)
-        self._controller = RemovalUserController(use_case=self._use_case)
+        self._controller = UserRemovalController(use_case=self._use_case)
 
     async def test_should_return_202_when_user_is_removed(self) -> None:
         user_id = UserIdPrimitivesMother.any()
