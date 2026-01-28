@@ -12,7 +12,7 @@ from src.delivery.middleware.fast_api_log_middleware import FastapiLogMiddleware
 from src.shared.infra.logger.fastapi_file_logger import (
     create_api_logger,
 )
-from src.social.user.infra.api import routes as user_routes
+from src.delivery.routers.user import routes as user_routes
 
 
 @asynccontextmanager

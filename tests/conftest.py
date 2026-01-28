@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from src.delivery.main import app
 from src.shared.infra.persistence.sqlalchemy.base import Base
-from src.social.user.infra.api.deps import get_async_session
+from src.delivery.routers.user.deps import get_async_session
 from tests.social.user.infra.persistence.postgres_test_container import PostgresTestContainer
 
 
