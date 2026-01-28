@@ -11,6 +11,7 @@ class User(Aggregate):
     _name: UserName
     _username: UserUsername
     _email: UserEmail
+    _password: UserPassword
 
     def __init__(self, id: str, name: str, username: str, email: str, password: str) -> None:
         self._id = UserId(id)
