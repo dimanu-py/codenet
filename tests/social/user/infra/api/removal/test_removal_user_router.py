@@ -2,7 +2,7 @@ from doublex import ANY_ARG, when
 
 from src.social.user.application.removal.user_not_found_error import UserNotFoundError
 from src.social.user.application.removal.user_remover import UserRemover
-from src.social.user.infra.api.removal.removal_user_router import remove_user
+from src.social.user.infra.api.removal.removal_user_controller import RemovalUserController
 from tests.shared.expects.async_stub import AsyncStub
 from tests.social.user.domain.mothers.user_id_primitives_mother import UserIdPrimitivesMother
 from tests.social.user.infra.api.user_module_routers_test_config import UserModuleRoutersTestConfig
@@ -10,16 +10,14 @@ from tests.social.user.infra.api.user_module_routers_test_config import UserModu
 
 class TestRemovalUserRouter(UserModuleRoutersTestConfig):
     def setup_method(self) -> None:
-        self._user_remover = AsyncStub(UserRemover)
+        self._use_case = AsyncStub(UserRemover)
+        self._controller = RemovalUserController(use_case=self._use_case)
 
     async def test_should_return_202_when_user_is_removed(self) -> None:
         user_id = UserIdPrimitivesMother.any()
         self._should_remove_user()
 
-        self._response = await remove_user(
-            user_id=user_id,
-            user_remover=self._user_remover,
-        )
+        self._response = await self._controller.remove(user_id=user_id)
 
         self._assert_contract_is_met_with(202, {"message": "User removal request has been accepted."})
 
@@ -27,15 +25,12 @@ class TestRemovalUserRouter(UserModuleRoutersTestConfig):
         user_id = UserIdPrimitivesMother.any()
         self._should_not_find_user()
 
-        self._response = await remove_user(
-            user_id=user_id,
-            user_remover=self._user_remover,
-        )
+        self._response = await self._controller.remove(user_id=user_id)
 
-        self._assert_contract_is_met_with(404, {"detail": "User with that id not found"})
+        self._assert_contract_is_met_with(404, {"message": "User with that id not found"})
 
     def _should_remove_user(self) -> None:
-        when(self._user_remover).execute(ANY_ARG).returns(None)
+        when(self._use_case).execute(ANY_ARG).returns(None)
 
     def _should_not_find_user(self) -> None:
-        when(self._user_remover).execute(ANY_ARG).raises(UserNotFoundError)
+        when(self._use_case).execute(ANY_ARG).raises(UserNotFoundError)
