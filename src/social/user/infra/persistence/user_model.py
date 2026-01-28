@@ -12,7 +12,7 @@ class UserModel(Base):
     name: Mapped[str] = mapped_column(String, nullable=False)
     username: Mapped[str] = mapped_column(String, nullable=False, unique=True)
     email: Mapped[str] = mapped_column(String, nullable=False, unique=True)
-    password: Mapped[str | None] = mapped_column(String)
+    password: Mapped[str] = mapped_column(String)
 
     def to_aggregate(self) -> User:
         return User(
