@@ -12,12 +12,12 @@ class User(Aggregate):
     _username: UserUsername
     _email: UserEmail
 
-    def __init__(self, id: str, name: str, username: str, email: str, password: str | None = None) -> None:
+    def __init__(self, id: str, name: str, username: str, email: str, password: str) -> None:
         self._id = UserId(id)
         self._name = UserName(name)
         self._username = UserUsername(username)
         self._email = UserEmail(email)
-        self._password = UserPassword(password) if password else None
+        self._password = UserPassword(password)
 
     @property
     def id(self) -> UserId:
