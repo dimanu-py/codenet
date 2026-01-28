@@ -29,5 +29,5 @@ class UserMother:
             name=UserNamePrimitivesMother.any(),
             username=username,
             email=UserEmailPrimitivesMother.any(),
-            password=UserPasswordPrimitivesMother.any()
+            password=UserPasswordPrimitivesMother.any(),
         )

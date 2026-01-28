@@ -6,8 +6,8 @@ from src.shared.domain.criteria.condition.operator import Operator
 from src.shared.infra.criteria.criteria_to_sqlalchemy_converter import (
     CriteriaToSqlalchemyConverter,
 )
-from tests.shared.infra.criteria.test_model import TestModel
 from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
+from tests.shared.infra.criteria.test_model import TestModel
 from tests.social.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
 from tests.social.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
 

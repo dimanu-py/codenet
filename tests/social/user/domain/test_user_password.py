@@ -1,5 +1,5 @@
 import pytest
-from expects import expect, equal, be_true, be_false
+from expects import be_false, be_true, equal, expect
 
 from src.social.user.domain.user_password import UserPassword
 
