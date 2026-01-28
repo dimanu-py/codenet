@@ -2,7 +2,7 @@ from sindripy.value_objects import SindriValidationError
 
 from src.shared.domain.exceptions.domain_error import DomainError
 from src.shared.infra.http.error_response import UnprocessableEntityError, ErrorResponse
-from src.shared.infra.http.success_response import CreatedResponse, SuccessResponse
+from src.shared.infra.http.success_response import SuccessResponse, AcceptedResponse
 from src.social.user.application.signup.user_signup import UserSignup
 from src.social.user.application.signup.user_signup_command import UserSignupCommand
 
@@ -25,6 +25,4 @@ class UserSignupController:
         except (DomainError, SindriValidationError) as domain_error:
             return UnprocessableEntityError(detail={"message": domain_error.message})
 
-        return CreatedResponse(
-            detail={"resource": f"/app/users/{id}"},
-        )
+        return AcceptedResponse(detail={"message": "User signup request has been accepted."})
