@@ -3,20 +3,25 @@ import json
 from fastapi import APIRouter, Depends, Query, status
 from fastapi.responses import JSONResponse
 
+from src.delivery.routers.user.deps import postgres_user_repository
 from src.shared.infra.http.success_response import OkResponse
-from src.social.user.application.search.search_user_query import SearchUserQuery
-from src.social.user.application.search.user_search_response import UserSearchResponse
 from src.social.user.application.search.user_searcher import UserSearcher
 from src.social.user.domain.user_repository import UserRepository
-from src.social.user.infra.api.deps import postgres_user_repository
+from src.social.user.infra.api.search.user_search_controller import UserSearchController
 
 router = APIRouter()
 
 
-def user_searcher_use_case(
+def get_use_case(
     repository: UserRepository = Depends(postgres_user_repository),
 ) -> UserSearcher:
     return UserSearcher(repository=repository)
+
+
+def get_controller(
+    use_case: UserSearcher = Depends(get_use_case),
+) -> UserSearchController:
+    return UserSearchController(use_case=use_case)
 
 
 @router.get(
@@ -27,13 +32,11 @@ def user_searcher_use_case(
 )
 async def get_user_by_criteria(
     filter: str = Query(examples=['{"field": "username", "equal": "john_doe"}']),
-    user_searcher: UserSearcher = Depends(user_searcher_use_case),
+    controller: UserSearchController = Depends(get_controller),
 ) -> JSONResponse:
-    query = SearchUserQuery(filters=json.loads(filter))
+    result = await controller.search(filters=json.loads(filter))
 
-    users = await user_searcher.execute(query)
-    response = UserSearchResponse([user.to_public_primitives() for user in users])
-
-    return OkResponse(
-        detail=response.dump(),
-    ).as_json()
+    return JSONResponse(
+        status_code=result.status_code,
+        content=result.detail,
+    )
