@@ -30,6 +30,11 @@ class ResourceNotFoundError(ErrorResponse):
     detail: dict = Field(default={"message": HTTPStatus.NOT_FOUND.phrase})
 
 
+class ConflictErrorResponse(ErrorResponse):
+    status_code: int = Field(default=status.HTTP_409_CONFLICT)
+    detail: dict = Field(default={"message": HTTPStatus.CONFLICT.phrase})
+
+
 class InternalServerError(ErrorResponse):
     status_code: int = Field(default=status.HTTP_500_INTERNAL_SERVER_ERROR)
     detail: dict = Field(default={"message": HTTPStatus.INTERNAL_SERVER_ERROR.phrase})
