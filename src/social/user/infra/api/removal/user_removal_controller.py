@@ -11,8 +11,8 @@ class UserRemovalController:
     def __init__(self, use_case: UserRemover) -> None:
         self._remover = use_case
 
-    async def remove(self, user_id: str) -> SuccessResponse | ErrorResponse:
-        command = UserRemovalCommand(user_id=user_id)
+    async def remove(self, username: str) -> SuccessResponse | ErrorResponse:
+        command = UserRemovalCommand(username=username)
 
         try:
             await self._remover.execute(command)

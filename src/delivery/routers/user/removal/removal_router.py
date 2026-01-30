@@ -32,5 +32,5 @@ async def remove_user(
     user_id: str = Path(..., openapi_examples={"valid_id": Example(value="123e4567-e89b-12d3-a456-426614174000")}),
     controller: UserRemovalController = Depends(get_controller),
 ) -> JSONResponse:
-    result = await controller.remove(user_id=user_id)
+    result = await controller.remove(username=user_id)
     return result.as_json()
