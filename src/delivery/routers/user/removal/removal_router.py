@@ -25,7 +25,7 @@ def get_controller(use_case: UserRemover = Depends(get_use_case)) -> UserRemoval
     responses={
         status.HTTP_202_ACCEPTED: {"model": AcceptedResponse},
         status.HTTP_404_NOT_FOUND: {"model": ResourceNotFoundError},
-        status.HTTP_422_UNPROCESSABLE_ENTITY: {"model": UnprocessableEntityError},
+        status.HTTP_422_UNPROCESSABLE_CONTENT: {"model": UnprocessableEntityError},
     },
 )
 async def remove_user(
