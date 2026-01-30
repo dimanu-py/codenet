@@ -1,5 +1,6 @@
 from typing import override
 
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from src.shared.domain.criteria.criteria import Criteria
@@ -7,8 +8,8 @@ from src.shared.infra.criteria.criteria_to_sqlalchemy_converter import (
     CriteriaToSqlalchemyConverter,
 )
 from src.social.user.domain.user import User
-from src.social.user.domain.user_id import UserId
 from src.social.user.domain.user_repository import UserRepository
+from src.social.user.domain.user_username import UserUsername
 from src.social.user.infra.persistence.user_model import UserModel
 
 
@@ -23,8 +24,10 @@ class PostgresUserRepository(UserRepository):
         await self._session.flush()
 
     @override
-    async def search(self, username: UserId) -> User | None:
-        user = await self._session.get(UserModel, username.value)
+    async def search(self, username: UserUsername) -> User | None:
+        query = select(UserModel).where(UserModel.username == username.value)
+        result = await self._session.execute(query)
+        user = result.scalar_one_or_none()
         return user.to_aggregate() if user else None
 
     @override
@@ -35,8 +38,11 @@ class PostgresUserRepository(UserRepository):
         return [user.to_aggregate() for user in users]
 
     @override
-    async def delete(self, username: UserId) -> None:
-        user = await self._session.get(UserModel, username.value)
-        if user:
-            await self._session.delete(user)
-            await self._session.flush()
+    async def delete(self, username: UserUsername) -> None:
+        query = select(UserModel).where(UserModel.username == username.value)
+        result = await self._session.execute(query)
+        user = result.scalar_one_or_none()
+        if not user:
+            return
+        await self._session.delete(user)
+        await self._session.flush()

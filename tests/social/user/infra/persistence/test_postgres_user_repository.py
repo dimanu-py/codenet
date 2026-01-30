@@ -22,7 +22,7 @@ class TestPostgresUserRepository:
         user = UserMother.any()
 
         await self._repository.save(user)
-        saved_user = await self._repository.search(user.id)
+        saved_user = await self._repository.search(user.username)
 
         expect(user).to(equal(saved_user))
 
@@ -46,12 +46,12 @@ class TestPostgresUserRepository:
     async def test_should_delete_existing_user(self) -> None:
         user = await self._given_an_user_already_exists()
 
-        await self._repository.delete(user.id)
+        await self._repository.delete(user.username)
 
         await self._should_have_deleted(user)
 
     async def _should_have_deleted(self, user: User) -> None:
-        saved_user = await self._repository.search(user.id)
+        saved_user = await self._repository.search(user.username)
         expect(saved_user).to(equal(None))
 
     async def _given_an_user_already_exists(self) -> User:
