@@ -1,6 +1,6 @@
 from doublex import ANY_ARG, when
 
-from src.social.user.application.removal.user_not_found_error import UserNotFoundError
+from src.social.user.application.removal.user_not_found import UserNotFound
 from src.social.user.application.removal.user_remover import UserRemover
 from src.social.user.infra.api.removal.user_removal_controller import UserRemovalController
 from tests.shared.expects.async_stub import AsyncStub
@@ -33,4 +33,4 @@ class TestUserRemovalController(UserModuleRoutersTestConfig):
         when(self._use_case).execute(ANY_ARG).returns(None)
 
     def _should_not_find_user(self) -> None:
-        when(self._use_case).execute(ANY_ARG).raises(UserNotFoundError)
+        when(self._use_case).execute(ANY_ARG).raises(UserNotFound)

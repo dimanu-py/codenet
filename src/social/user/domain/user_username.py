@@ -13,10 +13,10 @@ class UserUsername(StringValueObject):
     @validate
     def _ensure_name_has_valid_characters(self, value: str) -> None:
         if re.match(self.CORRECT_CHARACTERS, value) is None:
-            raise InvalidUsernameFormatError
+            raise InvalidUsernameFormat
 
 
-class InvalidUsernameFormatError(DomainError):
+class InvalidUsernameFormat(DomainError):
     def __init__(self) -> None:
         super().__init__(
             message="Username cannot contain special characters",

@@ -1,4 +1,4 @@
-from src.social.user.application.removal.user_not_found_error import UserNotFoundError
+from src.social.user.application.removal.user_not_found import UserNotFound
 from src.social.user.application.removal.user_removal_command import UserRemovalCommand
 from src.social.user.application.removal.user_remover import UserRemover
 from tests.shared.expects.matchers import async_expect, raise_error
@@ -28,4 +28,4 @@ class TestUserRemover(UserModuleUnitTestConfig):
 
         self._should_not_find(user_username)
 
-        await async_expect(lambda: self._user_remover.execute(command)).to(raise_error(UserNotFoundError))
+        await async_expect(lambda: self._user_remover.execute(command)).to(raise_error(UserNotFound))

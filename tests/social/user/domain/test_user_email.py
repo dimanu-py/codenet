@@ -1,7 +1,7 @@
 import pytest
 from expects import equal, expect, raise_error
 
-from src.social.user.domain.user_email import InvalidEmailFormatError, UserEmail
+from src.social.user.domain.user_email import InvalidEmailFormat, UserEmail
 
 
 @pytest.mark.unit
@@ -25,4 +25,4 @@ class TestUserEmail:
         ],
     )
     def test_should_raise_error_when_email_has_invalid_format(self, invalid_email: str) -> None:
-        expect(lambda: UserEmail(invalid_email)).to(raise_error(InvalidEmailFormatError))
+        expect(lambda: UserEmail(invalid_email)).to(raise_error(InvalidEmailFormat))

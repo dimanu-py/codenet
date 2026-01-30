@@ -13,10 +13,10 @@ class UserEmail(StringValueObject):
     @validate
     def _ensure_email_has_correct_format(self, value: str) -> None:
         if re.match(self.EMAIL_FORMAT, value) is None:
-            raise InvalidEmailFormatError
+            raise InvalidEmailFormat
 
 
-class InvalidEmailFormatError(DomainError):
+class InvalidEmailFormat(DomainError):
     def __init__(self) -> None:
         super().__init__(
             message="Email cannot contain special characters and must contain '@' and '.'",

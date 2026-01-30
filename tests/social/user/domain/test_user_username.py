@@ -2,7 +2,7 @@ import pytest
 from expects import equal, expect, raise_error
 
 from src.social.user.domain.user_username import (
-    InvalidUsernameFormatError,
+    InvalidUsernameFormat,
     UserUsername,
 )
 
@@ -36,4 +36,4 @@ class TestUserUsername:
         ],
     )
     def test_should_raise_error_when_username_has_invalid_format(self, invalid_username: str) -> None:
-        expect(lambda: UserUsername(invalid_username)).to(raise_error(InvalidUsernameFormatError))
+        expect(lambda: UserUsername(invalid_username)).to(raise_error(InvalidUsernameFormat))
