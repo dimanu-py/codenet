@@ -22,7 +22,7 @@ class TestUserRemover(UserModuleUnitTestConfig):
 
         await self._user_remover.execute(command)
 
-    async def test_should_not_allow_to_remove_non_existing_user(self) -> None:
+    async def test_should_not_allow_to_remove_non_signup_user(self) -> None:
         user_username = UserUsernamePrimitivesMother.any()
         command = UserRemovalCommand(username=user_username)
 
