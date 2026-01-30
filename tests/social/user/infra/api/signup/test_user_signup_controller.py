@@ -1,11 +1,11 @@
 from doublex import ANY_ARG, when
 
 from src.delivery.routers.user.signup.signup_request import SignupRequest
-from src.shared.domain.exceptions.domain_error import DomainError
+from src.shared.domain.exceptions.base_error import BaseError
 from src.social.user.application.signup.user_signup import UserSignup
-from src.social.user.domain.user_email import InvalidEmailFormatError
-from src.social.user.domain.user_name import InvalidNameFormatError
-from src.social.user.domain.user_username import InvalidUsernameFormatError
+from src.social.user.domain.user_email import InvalidEmailFormat
+from src.social.user.domain.user_name import InvalidNameFormat
+from src.social.user.domain.user_username import InvalidUsernameFormat
 from src.social.user.infra.api.signup.user_signup_controller import UserSignupController
 from tests.shared.expects.async_stub import AsyncStub
 from tests.social.user.domain.mothers.user_email_primitives_mother import UserEmailPrimitivesMother
@@ -13,6 +13,7 @@ from tests.social.user.domain.mothers.user_id_primitives_mother import UserIdPri
 from tests.social.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
 from tests.social.user.domain.mothers.user_password_primitives_mother import UserPasswordPrimitivesMother
 from tests.social.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
+from tests.social.user.domain.user_already_exists import UsernameAlreadyExists
 from tests.social.user.infra.api.user_module_routers_test_config import UserModuleRoutersTestConfig
 
 
@@ -43,7 +44,7 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
             password=UserPasswordPrimitivesMother.any(),
         )
         user_id = UserIdPrimitivesMother.any()
-        self._should_fail_validating_user_data_with(InvalidNameFormatError)
+        self._should_fail_validating_user_data_with(InvalidNameFormat)
 
         self._response = await self._controller.signup(id=user_id, **request_body.model_dump())
 
@@ -57,7 +58,7 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
             password=UserPasswordPrimitivesMother.any(),
         )
         user_id = UserIdPrimitivesMother.any()
-        self._should_fail_validating_user_data_with(InvalidUsernameFormatError)
+        self._should_fail_validating_user_data_with(InvalidUsernameFormat)
 
         self._response = await self._controller.signup(id=user_id, **request_body.model_dump())
 
@@ -71,7 +72,7 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
             password=UserPasswordPrimitivesMother.any(),
         )
         user_id = UserIdPrimitivesMother.any()
-        self._should_fail_validating_user_data_with(InvalidEmailFormatError)
+        self._should_fail_validating_user_data_with(InvalidEmailFormat)
 
         self._response = await self._controller.signup(id=user_id, **request_body.model_dump())
 
@@ -79,8 +80,25 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
             422, {"message": "Email cannot contain special characters and must contain '@' and '.'"}
         )
 
+    async def test_should_return_409_when_username_is_already_registered(self) -> None:
+        request_body = SignupRequest(
+            name=UserNamePrimitivesMother.any(),
+            username=UserUsernamePrimitivesMother.any(),
+            email=UserEmailPrimitivesMother.any(),
+            password=UserPasswordPrimitivesMother.any(),
+        )
+        user_id = UserIdPrimitivesMother.any()
+        self._should_fail_checking_username_is_unique_with(UsernameAlreadyExists)
+
+        self._response = await self._controller.signup(id=user_id, **request_body.model_dump())
+
+        self._assert_contract_is_met_with(409, {"message": "Username is already registered."})
+
     def _should_signup_user(self) -> None:
         when(self._use_case).execute(ANY_ARG).returns(None)
 
-    def _should_fail_validating_user_data_with(self, error: DomainError) -> None:
+    def _should_fail_validating_user_data_with(self, error: BaseError) -> None:
+        when(self._use_case).execute(ANY_ARG).raises(error)
+
+    def _should_fail_checking_username_is_unique_with(self, error: BaseError) -> None:
         when(self._use_case).execute(ANY_ARG).raises(error)
