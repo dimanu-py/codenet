@@ -1,7 +1,7 @@
 from src.social.user.application.removal.user_not_found_error import UserNotFoundError
 from src.social.user.application.removal.user_removal_command import UserRemovalCommand
-from src.social.user.domain.user_id import UserId
 from src.social.user.domain.user_repository import UserRepository
+from src.social.user.domain.user_username import UserUsername
 
 
 class UserRemover:
@@ -11,14 +11,14 @@ class UserRemover:
         self._repository = repository
 
     async def execute(self, command: UserRemovalCommand) -> None:
-        user_id = UserId(command.user_id)
-        await self._ensure_user_to_remove_exists(user_id)
-        await self._remove_user(user_id)
+        user_username = UserUsername(command.username)
+        await self._ensure_user_to_remove_exists(user_username)
+        await self._remove_user(user_username)
 
-    async def _remove_user(self, user_id: UserId) -> None:
-        return await self._repository.delete(user_id)
+    async def _remove_user(self, username: UserUsername) -> None:
+        return await self._repository.delete(username)
 
-    async def _ensure_user_to_remove_exists(self, user_id: UserId) -> None:
-        user = await self._repository.search(user_id)
+    async def _ensure_user_to_remove_exists(self, username: UserUsername) -> None:
+        user = await self._repository.search(username)
         if not user:
             raise UserNotFoundError()

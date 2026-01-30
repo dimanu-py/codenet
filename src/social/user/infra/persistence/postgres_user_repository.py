@@ -23,8 +23,8 @@ class PostgresUserRepository(UserRepository):
         await self._session.flush()
 
     @override
-    async def search(self, user_id: UserId) -> User | None:
-        user = await self._session.get(UserModel, user_id.value)
+    async def search(self, username: UserId) -> User | None:
+        user = await self._session.get(UserModel, username.value)
         return user.to_aggregate() if user else None
 
     @override
@@ -35,8 +35,8 @@ class PostgresUserRepository(UserRepository):
         return [user.to_aggregate() for user in users]
 
     @override
-    async def delete(self, user_id: UserId) -> None:
-        user = await self._session.get(UserModel, user_id.value)
+    async def delete(self, username: UserId) -> None:
+        user = await self._session.get(UserModel, username.value)
         if user:
             await self._session.delete(user)
             await self._session.flush()

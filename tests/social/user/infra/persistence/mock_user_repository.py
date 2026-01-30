@@ -6,6 +6,7 @@ from src.shared.domain.criteria.criteria import Criteria
 from src.social.user.domain.user import User
 from src.social.user.domain.user_id import UserId
 from src.social.user.domain.user_repository import UserRepository
+from src.social.user.domain.user_username import UserUsername
 
 
 class MockUserRepository(UserRepository):
@@ -18,14 +19,14 @@ class MockUserRepository(UserRepository):
     async def save(self, user: User) -> None:
         self._mock_save(user)
 
-    async def search(self, user_id: UserId) -> User | None:
-        return self._mock_find(user_id)  # type: ignore
+    async def search(self, username: UserId) -> User | None:
+        return self._mock_find(username)  # type: ignore
 
     async def matching(self, criteria: Criteria) -> list[User]:
         return self._mock_match(criteria)  # type: ignore
 
-    async def delete(self, user_id: UserId) -> None:
-        return self._mock_remove(user_id)  # type: ignore
+    async def delete(self, username: UserId) -> None:
+        return self._mock_remove(username)  # type: ignore
 
     def should_save(self, user: User) -> None:
         def verify(expected_user: User) -> None:
@@ -48,21 +49,21 @@ class MockUserRepository(UserRepository):
         self._mock_match = verify  # type: ignore
 
     def should_find(self, user: User) -> None:
-        def verify(expected_user_id: UserId) -> User:
-            expect(user.id).to(equal(expected_user_id))
+        def verify(expected_user_username: UserUsername) -> User:
+            expect(user.username).to(equal(expected_user_username))
             return user
 
         self._mock_find = verify  # type: ignore
 
     def should_remove(self, user: User) -> None:
-        def verify(expected_user_id: User) -> None:
-            expect(user.id).to(equal(expected_user_id))
+        def verify(expected_user_username: UserUsername) -> None:
+            expect(user.username).to(equal(expected_user_username))
 
         self._mock_remove = verify  # type: ignore
 
-    def should_not_find(self, user_id: UserId) -> None:
-        def verify(expected_user_id: UserId) -> None:
-            expect(user_id).to(equal(expected_user_id))
+    def should_not_find(self, user_username: UserUsername) -> None:
+        def verify(expected_user_username: UserUsername) -> None:
+            expect(user_username).to(equal(expected_user_username))
             return None
 
         self._mock_find = verify  # type: ignore
