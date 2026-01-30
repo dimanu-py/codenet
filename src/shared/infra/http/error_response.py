@@ -1,4 +1,5 @@
 from abc import ABC
+from http import HTTPStatus
 
 from fastapi import status
 from fastapi.responses import JSONResponse
@@ -20,15 +21,15 @@ class ErrorResponse(ABC, BaseModel):
 
 
 class UnprocessableEntityError(ErrorResponse):
-    status_code: int = Field(default=status.HTTP_422_UNPROCESSABLE_CONTENT)
-    detail: dict = Field(default={"message": "Unprocessable Entity"})
+    status_code: int = Field(default=status.HTTP_422_UNPROCESSABLE_ENTITY)
+    detail: dict = Field(default={"message": HTTPStatus.UNPROCESSABLE_ENTITY.phrase})
 
 
 class ResourceNotFoundError(ErrorResponse):
     status_code: int = Field(default=status.HTTP_404_NOT_FOUND)
-    detail: dict = Field(default={"message": "Not Found"})
+    detail: dict = Field(default={"message": HTTPStatus.NOT_FOUND.phrase})
 
 
 class InternalServerError(ErrorResponse):
     status_code: int = Field(default=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    detail: dict = Field(default={"message": "An unexpected error occurred."})
+    detail: dict = Field(default={"message": HTTPStatus.INTERNAL_SERVER_ERROR.phrase})

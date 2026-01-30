@@ -1,4 +1,5 @@
 from abc import ABC
+from http import HTTPStatus
 
 from fastapi import status
 from fastapi.responses import JSONResponse
@@ -18,11 +19,14 @@ class SuccessResponse(ABC, BaseModel):
 
 class CreatedResponse(SuccessResponse):
     status_code: int = Field(default=status.HTTP_201_CREATED)
+    detail: dict = Field(default={"message": HTTPStatus.CREATED.phrase})
 
 
 class OkResponse(SuccessResponse):
     status_code: int = Field(default=status.HTTP_200_OK)
+    detail: dict = Field(default={"message": HTTPStatus.OK.phrase})
 
 
 class AcceptedResponse(SuccessResponse):
     status_code: int = Field(default=status.HTTP_202_ACCEPTED)
+    detail: dict = Field(default={"message": HTTPStatus.ACCEPTED.phrase})
