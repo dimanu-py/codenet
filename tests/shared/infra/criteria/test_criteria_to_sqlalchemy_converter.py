@@ -7,7 +7,7 @@ from src.shared.infra.criteria.criteria_to_sqlalchemy_converter import (
     CriteriaToSqlalchemyConverter,
 )
 from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
-from tests.shared.infra.criteria.test_model import TestModel
+from tests.shared.infra.criteria.dummy_model import DummyModel
 from tests.social.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
 from tests.social.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
 
@@ -20,7 +20,7 @@ class TestCriteriaToSqlalchemyConverter:
     def test_should_generate_select_query_from_empty_criteria(self) -> None:
         criteria = CriteriaMother.empty()
 
-        query = self.stringify(self._converter.convert(model=TestModel, criteria=criteria))
+        query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
 
         expect(query).to(equal("SELECT test_table.id, test_table.name, test_table.username \nFROM test_table"))
 
@@ -28,7 +28,7 @@ class TestCriteriaToSqlalchemyConverter:
         user_name = UserNamePrimitivesMother.any()
 
         criteria = CriteriaMother.with_one_condition("name", Operator.EQUAL, user_name)
-        query = self.stringify(self._converter.convert(model=TestModel, criteria=criteria))
+        query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
 
         expect(query).to(
             equal(
@@ -57,7 +57,7 @@ class TestCriteriaToSqlalchemyConverter:
                 ]
             }
         )
-        query = self.stringify(self._converter.convert(model=TestModel, criteria=criteria))
+        query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
 
         expect(query).to(
             equal(
@@ -86,7 +86,7 @@ class TestCriteriaToSqlalchemyConverter:
                 ]
             }
         )
-        query = self.stringify(self._converter.convert(model=TestModel, criteria=criteria))
+        query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
 
         expect(query).to(
             equal(
@@ -100,7 +100,7 @@ class TestCriteriaToSqlalchemyConverter:
         user_name = UserNamePrimitivesMother.any()
         criteria = CriteriaMother.with_one_condition("name", Operator.NOT_EQUAL, user_name)
 
-        query = self.stringify(self._converter.convert(model=TestModel, criteria=criteria))
+        query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
 
         expect(query).to(
             equal(
@@ -114,7 +114,7 @@ class TestCriteriaToSqlalchemyConverter:
         user_name = UserNamePrimitivesMother.any()
         criteria = CriteriaMother.with_one_condition("name", Operator.CONTAINS, user_name)
 
-        query = self.stringify(self._converter.convert(model=TestModel, criteria=criteria))
+        query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
 
         expect(query).to(
             equal(
@@ -152,7 +152,7 @@ class TestCriteriaToSqlalchemyConverter:
             }
         )
 
-        query = self.stringify(self._converter.convert(model=TestModel, criteria=criteria))
+        query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
 
         expect(query).to(
             equal(

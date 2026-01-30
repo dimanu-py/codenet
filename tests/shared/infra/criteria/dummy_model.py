@@ -4,7 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from src.shared.infra.persistence.sqlalchemy.base import Base
 
 
-class TestModel(Base):
+class DummyModel(Base):
     __tablename__ = "test_table"
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True)
