@@ -3,7 +3,7 @@ from typing import override
 from argon2 import PasswordHasher, extract_parameters
 from argon2.exceptions import InvalidHash, VerifyMismatchError
 
-from src.shared.domain.exceptions.domain_error import DomainError
+from src.shared.domain.exceptions.domain_validation_error import DomainValidationError
 from src.shared.domain.value_objects.string_value_object import StringValueObject
 from src.shared.domain.value_objects.validation import validate
 
@@ -47,7 +47,7 @@ class UserPassword(StringValueObject):
             return False
 
 
-class CannotStorePlainTextPassword(DomainError):
+class CannotStorePlainTextPassword(DomainValidationError):
     def __init__(self) -> None:
         super().__init__(
             message="Cannot store plain text password.",

@@ -1,6 +1,6 @@
 import re
 
-from src.shared.domain.exceptions.domain_error import DomainError
+from src.shared.domain.exceptions.domain_validation_error import DomainValidationError
 from src.shared.domain.value_objects.string_value_object import (
     StringValueObject,
 )
@@ -16,7 +16,7 @@ class UserUsername(StringValueObject):
             raise InvalidUsernameFormat
 
 
-class InvalidUsernameFormat(DomainError):
+class InvalidUsernameFormat(DomainValidationError):
     def __init__(self) -> None:
         super().__init__(
             message="Username cannot contain special characters",
