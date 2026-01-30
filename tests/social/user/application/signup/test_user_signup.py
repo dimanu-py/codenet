@@ -1,4 +1,5 @@
 from src.social.user.application.signup.user_signup import UserSignup
+from tests.shared.expects.matchers import async_expect, raise_error
 from tests.social.user.application.signup.user_signup_command_mother import (
     UserSignupCommandMother,
 )
@@ -6,6 +7,7 @@ from tests.social.user.application.user_module_unit_test_config import (
     UserModuleUnitTestConfig,
 )
 from tests.social.user.domain.mothers.user_mother import UserMother
+from tests.social.user.domain.user_already_exists import UsernameAlreadyExists
 
 
 class TestUserSignup(UserModuleUnitTestConfig):
@@ -19,3 +21,11 @@ class TestUserSignup(UserModuleUnitTestConfig):
         self._should_save(user)
 
         await self._user_signup.execute(command)
+
+    async def test_should_not_allow_signup_user_with_existing_username(self) -> None:
+        command = UserSignupCommandMother.any()
+        existing_user = UserMother.from_signup_command(command)
+        self._should_find(existing_user)
+
+        await async_expect(lambda: self._user_signup.execute(command)).to(raise_error(UsernameAlreadyExists))
+
