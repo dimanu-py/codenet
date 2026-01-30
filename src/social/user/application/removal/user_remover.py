@@ -19,6 +19,6 @@ class UserRemover:
         return await self._repository.delete(user_id)
 
     async def _ensure_user_to_remove_exists(self, user_id: UserId) -> None:
-        user = await self._repository.find(user_id)
+        user = await self._repository.search(user_id)
         if not user:
             raise UserNotFoundError()

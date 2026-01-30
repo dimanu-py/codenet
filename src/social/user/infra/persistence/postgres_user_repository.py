@@ -23,7 +23,7 @@ class PostgresUserRepository(UserRepository):
         await self._session.flush()
 
     @override
-    async def find(self, user_id: UserId) -> User | None:
+    async def search(self, user_id: UserId) -> User | None:
         user = await self._session.get(UserModel, user_id.value)
         return user.to_aggregate() if user else None
 
