@@ -7,6 +7,7 @@ from pytest_bdd import given, scenarios, then, when
 
 from tests.social.user.domain.mothers.user_email_primitives_mother import UserEmailPrimitivesMother
 from tests.social.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
+from tests.social.user.domain.mothers.user_password_primitives_mother import UserPasswordPrimitivesMother
 from tests.social.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
 
 pytestmark = [pytest.mark.acceptance]
@@ -22,6 +23,7 @@ def filled_signup_form() -> dict:
         "name": UserNamePrimitivesMother.any(),
         "username": UserUsernamePrimitivesMother.any(),
         "email": UserEmailPrimitivesMother.any(),
+        "password": UserPasswordPrimitivesMother.any(),
     }
 
 
@@ -38,7 +40,7 @@ def submit_signup_form(client: AsyncClient, signup_form: dict, user_id: str) -> 
 
 @then("I should be signed up successfully")
 def verify_signup_success(signup_response: Response) -> None:
-    expect(signup_response.status_code).to(equal(201))
+    expect(signup_response.status_code).to(equal(202))
 
 
 @then("I should see an error message indicating invalid user id format")
