@@ -25,7 +25,7 @@ def existing_users(session: AsyncSession, usernames: str) -> None:
     usernames = ast.literal_eval(usernames)
     users = [UserMother.with_username(username) for username in usernames]
     for user in users:
-        session.add(UserModel(**user.to_primitives()))
+        session.add(UserModel.from_domain(user))
     loop = asyncio.get_event_loop()
     loop.run_until_complete(session.commit())
 

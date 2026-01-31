@@ -21,6 +21,6 @@ def user_username() -> str:
 @pytest.fixture
 async def existing_user(session: AsyncSession) -> User:
     user = UserMother.any()
-    session.add(UserModel(**user.to_primitives()))
+    session.add(UserModel.from_domain(user))
     await session.commit()
     return user
