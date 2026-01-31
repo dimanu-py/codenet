@@ -17,7 +17,7 @@ class TestUserSignup(UserModuleUnitTestConfig):
     async def test_should_signup_user(self) -> None:
         command = UserSignupCommandMother.any()
         user = UserMother.from_signup_command(command)
-        self._should_not_find(user.username.value)
+        self._should_search_and_not_find(user)
 
         self._should_save(user)
 
@@ -26,7 +26,7 @@ class TestUserSignup(UserModuleUnitTestConfig):
     async def test_should_not_allow_signup_user_with_existing_username(self) -> None:
         command = UserSignupCommandMother.any()
         existing_user = UserMother.from_signup_command(command)
-        self._should_find(existing_user)
+        self._should_search_and_find(existing_user)
 
         await async_expect(lambda: self._user_signup.execute(command)).to(raise_error(UsernameAlreadyExists))
 

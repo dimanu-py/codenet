@@ -15,7 +15,7 @@ class TestUserRemover(UserModuleUnitTestConfig):
 
     async def test_should_remove_existing_user_based_on_username(self) -> None:
         user = UserMother.any()
-        self._should_find(user)
+        self._should_search_and_find(user)
         command = UserRemovalCommand(username=user.username.value)
 
         self._should_remove(user)
@@ -26,6 +26,7 @@ class TestUserRemover(UserModuleUnitTestConfig):
         user_username = UserUsernamePrimitivesMother.any()
         command = UserRemovalCommand(username=user_username)
 
-        self._should_not_find(user_username)
+        user = UserMother.with_username(user_username)
+        self._should_search_and_not_find(user)
 
         await async_expect(lambda: self._user_remover.execute(command)).to(raise_error(UserNotFound))
