@@ -15,6 +15,6 @@ class TestOptionalBasicConstructor:
         expect(optional.is_present()).to(be_true)
 
     def test_should_raise_error_when_creating_optional_with_invalid_value(self) -> None:
-        nothing_value = None
+        empty_value = None
 
-        expect(lambda: Optional.of(nothing_value)).to(raise_error(ValueError))
+        expect(lambda: Optional.of(empty_value)).to(raise_error(ValueError))

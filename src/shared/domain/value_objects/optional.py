@@ -1,10 +1,10 @@
-_NOTHING = object()
+_EMPTY = object()
 
 
 class Optional[T]:
     __slots__ = ("_value",)
 
-    def __init__(self, value: object = _NOTHING) -> None:
+    def __init__(self, value: object = _EMPTY) -> None:
         self._value = value
 
     @classmethod
@@ -14,4 +14,4 @@ class Optional[T]:
         return cls(value)
 
     def is_present(self) -> bool:
-        return self._value is not _NOTHING
+        return self._value is not _EMPTY
