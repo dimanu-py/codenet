@@ -9,6 +9,8 @@ class Optional[T]:
 
     @classmethod
     def of(cls, value: T) -> "Optional[T]":
+        if value is None:
+            raise ValueError("Optional.of(None) is not valid. Use Optional.nothing() instead.")
         return cls(value)
 
     def is_present(self) -> bool:

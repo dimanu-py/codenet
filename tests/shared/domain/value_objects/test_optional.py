@@ -1,5 +1,5 @@
 import pytest
-from expects import expect, be_true
+from expects import expect, be_true, raise_error
 
 from src.shared.domain.value_objects.optional import Optional
 from src.shared.domain.value_objects.string_value_object import StringValueObject
@@ -13,3 +13,8 @@ class TestOptionalBasicConstructor:
         optional = Optional.of(value)
 
         expect(optional.is_present()).to(be_true)
+
+    def test_should_raise_error_when_creating_optional_with_invalid_value(self) -> None:
+        nothing_value = None
+
+        expect(lambda: Optional.of(nothing_value)).to(raise_error(ValueError))
