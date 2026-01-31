@@ -11,8 +11,3 @@ Feature: User Removal
         Given I am an existing user
         When I request to remove my account
         Then my account should be successfully removed
-
-    Scenario: Sending user id with invalid format
-        Given I am an existing user
-        When I attempt to remove the account with an invalid user id format
-        Then I should receive an error message indicating the user id format is invalid

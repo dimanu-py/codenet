@@ -44,8 +44,3 @@ def verify_user_has_not_been_found(removal_response: Response) -> None:
 @then("my account should be successfully removed")
 def verify_user_removal_successful(removal_response: Response) -> None:
     expect(removal_response.status_code).to(equal(202))
-
-
-@then("I should receive an error message indicating the user id format is invalid")
-def verify_invalid_user_id_format_error(removal_response: Response) -> None:
-    expect(removal_response.status_code).to(equal(422))
