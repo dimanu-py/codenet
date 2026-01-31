@@ -16,31 +16,24 @@ scenarios("removal_user.feature")
 _ROUTE_PATH = "/app/users/"
 
 
-@given("I am an existing user", target_fixture="existing_user_id")
+@given("I am an existing user", target_fixture="existing_user_username")
 def existing_user_to_remove(existing_user: User) -> str:
-    return existing_user.id.value
+    return existing_user.username.value
 
 
 @when("I request to remove my account", target_fixture="removal_response")
 def attempt_remove_existing_user(
     client: AsyncClient,
-    existing_user_id: str,
+    existing_user_username: str,
 ) -> Response:
     loop = asyncio.get_event_loop()
-    return loop.run_until_complete(client.delete(f"{_ROUTE_PATH}{existing_user_id}"))
+    return loop.run_until_complete(client.delete(f"{_ROUTE_PATH}{existing_user_username}"))
 
 
 @when("I attempt to remove the account for non existing user", target_fixture="removal_response")
-def attempt_remove_non_existing_user(client: AsyncClient, user_id: str) -> Response:
+def attempt_remove_non_existing_user(client: AsyncClient, user_username: str) -> Response:
     loop = asyncio.get_event_loop()
-    return loop.run_until_complete(client.delete(f"{_ROUTE_PATH}{user_id}"))
-
-
-@when("I attempt to remove the account with an invalid user id format", target_fixture="removal_response")
-def attempt_remove_user_with_invalid_id_format(client: AsyncClient) -> Response:
-    loop = asyncio.get_event_loop()
-    invalid_user_id = "invalid-uuid-format"
-    return loop.run_until_complete(client.delete(f"{_ROUTE_PATH}{invalid_user_id}"))
+    return loop.run_until_complete(client.delete(f"{_ROUTE_PATH}{user_username}"))
 
 
 @then("I should receive an error message indicating the user does not exist")
