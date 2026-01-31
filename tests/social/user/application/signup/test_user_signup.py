@@ -17,6 +17,7 @@ class TestUserSignup(UserModuleUnitTestConfig):
     async def test_should_signup_user(self) -> None:
         command = UserSignupCommandMother.any()
         user = UserMother.from_signup_command(command)
+        self._should_not_find(user.username.value)
 
         self._should_save(user)
 
