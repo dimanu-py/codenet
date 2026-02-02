@@ -21,6 +21,12 @@ class Optional[T]:
         return cls(_EMPTY)
 
     @classmethod
+    def lift[U](cls, value: U | None, mapper: Callable[[U], T]) -> Optional[T]:
+        if value is None:
+            return cls.empty()
+        return cls.of(mapper(value))
+
+    @classmethod
     def from_nullable(cls, value: T | None) -> "Optional[T]":
         return cls.of(value) if value else cls.empty()
 
