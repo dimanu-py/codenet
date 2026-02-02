@@ -13,5 +13,12 @@ class Optional[T]:
             raise ValueError("Optional.of(None) is not valid. Use Optional.nothing() instead.")
         return cls(value)
 
+    @classmethod
+    def empty(cls) -> "Optional[T]":
+        return cls(_EMPTY)
+
     def is_present(self) -> bool:
         return self._value is not _EMPTY
+
+    def is_empty(self) -> bool:
+        return self._value is _EMPTY

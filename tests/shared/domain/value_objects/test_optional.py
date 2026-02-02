@@ -18,3 +18,8 @@ class TestOptionalBasicConstructor:
         empty_value = None
 
         expect(lambda: Optional.of(empty_value)).to(raise_error(ValueError))
+
+    def test_should_be_able_to_create_empty_optional(self) -> None:
+        optional = Optional.empty()
+
+        expect(optional.is_empty()).to(be_true)
