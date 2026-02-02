@@ -30,5 +30,7 @@ class Optional[T]:
         return self._value is _EMPTY
 
     def unwrap(self) -> T:
+        if self.is_empty():
+            raise ValueError("Cannot unwrap an empty Optional.")
         return cast(T, self._value)
 

@@ -31,3 +31,8 @@ class TestOptionalBasicConstructor:
         stored_value = optional.unwrap()
 
         expect(stored_value).to(equal(value))
+
+    def test_should_raise_error_when_unwrapping_empty(self) -> None:
+        optional = Optional.empty()
+
+        expect(lambda: optional.unwrap()).to(raise_error(ValueError))
