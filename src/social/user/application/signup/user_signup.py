@@ -1,3 +1,4 @@
+from src.shared.domain.value_objects.optional import raise_error
 from src.social.user.application.signup.user_signup_command import UserSignupCommand
 from src.social.user.domain.user import User
 from src.social.user.domain.user_repository import UserRepository
@@ -29,5 +30,7 @@ class UserSignup:
 
     async def _ensure_user_with_same_username_is_not_signed_up(self, username: str) -> None:
         already_signed_up_user = await self._repository.search(UserUsername(username))
-        if already_signed_up_user:
-            raise UsernameAlreadyExists
+        already_signed_up_user.match(
+            of=lambda _: raise_error(UsernameAlreadyExists()),
+            empty=lambda: None,
+        )

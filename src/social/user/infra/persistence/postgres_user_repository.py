@@ -3,6 +3,7 @@ from typing import override
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from src.shared.domain.criteria.criteria import Criteria
+from src.shared.domain.value_objects.optional import Optional
 from src.shared.infra.criteria.criteria_to_sqlalchemy_converter import (
     CriteriaToSqlalchemyConverter,
 )
@@ -23,7 +24,7 @@ class PostgresUserRepository(UserRepository):
         await self._session.flush()
 
     @override
-    async def search(self, username: UserUsername) -> User | None:
+    async def search(self, username: UserUsername) -> User | None | Optional[User]:
         user = await self._session.get(UserModel, username.value)
         return user.to_aggregate() if user else None
 

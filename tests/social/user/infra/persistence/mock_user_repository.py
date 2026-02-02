@@ -1,6 +1,7 @@
 from unittest.mock import AsyncMock
 
 from src.shared.domain.criteria.criteria import Criteria
+from src.shared.domain.value_objects.optional import Optional
 from src.social.user.domain.user import User
 from src.social.user.domain.user_repository import UserRepository
 from src.social.user.domain.user_username import UserUsername
@@ -40,11 +41,11 @@ class MockUserRepository(UserRepository):
 
     def should_search(self, user: User) -> None:
         self._mock_search(user.username)
-        self._mock_search.return_value = user
+        self._mock_search.return_value = Optional.of(user)
 
     def should_not_search(self, user: User) -> None:
         self._mock_search(user.username)
-        self._mock_search.return_value = None
+        self._mock_search.return_value = Optional.empty()
 
     def should_remove(self, user: User) -> None:
         self._mock_remove(user.username)
