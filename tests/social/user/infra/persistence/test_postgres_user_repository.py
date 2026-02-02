@@ -3,6 +3,7 @@ from expects import be_empty, equal, expect
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from src.shared.domain.criteria.condition.operator import Operator
+from src.shared.domain.value_objects.optional import Optional
 from src.social.user.domain.user import User
 from src.social.user.infra.persistence.postgres_user_repository import (
     PostgresUserRepository,
@@ -24,7 +25,7 @@ class TestPostgresUserRepository:
         await self._repository.save(user)
         saved_user = await self._repository.search(user.username)
 
-        expect(user).to(equal(saved_user))
+        expect(user).to(equal(saved_user.unwrap()))
 
     async def test_should_match_a_user_based_on_criteria(self) -> None:
         user = await self._given_an_user_already_exists()
@@ -52,7 +53,7 @@ class TestPostgresUserRepository:
 
     async def _should_have_deleted(self, user: User) -> None:
         saved_user = await self._repository.search(user.username)
-        expect(saved_user).to(equal(None))
+        expect(saved_user).to(equal(Optional.empty()))
 
     async def _given_an_user_already_exists(self) -> User:
         user = UserMother.any()

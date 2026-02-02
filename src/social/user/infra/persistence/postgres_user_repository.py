@@ -24,9 +24,9 @@ class PostgresUserRepository(UserRepository):
         await self._session.flush()
 
     @override
-    async def search(self, username: UserUsername) -> User | None | Optional[User]:
+    async def search(self, username: UserUsername) -> Optional[User]:
         user = await self._session.get(UserModel, username.value)
-        return user.to_aggregate() if user else None
+        return Optional.from_nullable(user).map(lambda u: u.to_aggregate())
 
     @override
     async def matching(self, criteria: Criteria) -> list[User]:

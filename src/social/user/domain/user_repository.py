@@ -12,7 +12,7 @@ class UserRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def search(self, username: UserUsername) -> User | None | Optional[User]:
+    async def search(self, username: UserUsername) -> Optional[User]:
         raise NotImplementedError
 
     @abstractmethod
