@@ -69,3 +69,17 @@ class TestOptionalBasicConstructor:
 
         expect(result).to(equal(value))
 
+    def test_should_handle_complex_objects(self) -> None:
+        complex_value = {"key": "value", "nested": {"data": 42}}
+        optional = Optional.of(complex_value)
+
+        result = optional.map(lambda x: x["nested"]["data"])
+
+        expect(result.unwrap()).to(equal(42))
+
+    def test_should_chain_multiple_operations(self) -> None:
+        optional = Optional.of("  hello world  ")
+
+        result = optional.map(str.strip).map(lambda value: value.upper()).map(lambda value: value.split())
+
+        expect(result.unwrap()).to(equal(["HELLO", "WORLD"]))
