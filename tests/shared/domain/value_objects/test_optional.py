@@ -1,5 +1,5 @@
 import pytest
-from expects import expect, be_true, raise_error
+from expects import expect, be_true, raise_error, equal
 
 from src.shared.domain.value_objects.optional import Optional
 from src.shared.domain.value_objects.string_value_object import StringValueObject
@@ -23,3 +23,11 @@ class TestOptionalBasicConstructor:
         optional = Optional.empty()
 
         expect(optional.is_empty()).to(be_true)
+
+    def test_should_return_value_when_unwrapping_present_optional(self) -> None:
+        value = "test_value"
+        optional = Optional.of(value)
+
+        stored_value = optional.unwrap()
+
+        expect(stored_value).to(equal(value))

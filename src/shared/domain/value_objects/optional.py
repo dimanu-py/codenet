@@ -1,3 +1,5 @@
+from typing import cast
+
 _EMPTY = object()
 
 
@@ -26,3 +28,7 @@ class Optional[T]:
 
     def is_empty(self) -> bool:
         return self._value is _EMPTY
+
+    def unwrap(self) -> T:
+        return cast(T, self._value)
+
