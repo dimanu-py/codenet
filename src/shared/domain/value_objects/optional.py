@@ -36,4 +36,6 @@ class Optional[T]:
         return cast(T, self._value)
 
     def map[U](self, func: Callable[[T], U]) -> "Optional[U]":
-        return Optional.empty()
+        if self.is_empty():
+            return Optional.empty()
+        return Optional.of(func(cast(T, self._value)))

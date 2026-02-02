@@ -43,3 +43,10 @@ class TestOptionalBasicConstructor:
         result = optional.map(lambda value: value.upper())
 
         expect(result.is_empty()).to(be_true)
+
+    def test_should_transform_present_value_with_map(self) -> None:
+        optional = Optional.of("hello")
+
+        result = optional.map(lambda value: value.upper())
+
+        expect(result.unwrap()).to(equal("HELLO"))
