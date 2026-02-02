@@ -59,7 +59,9 @@ class TestOptional:
     def test_should_raise_custom_error_when_unwrap_or_raise_on_empty(self) -> None:
         optional = Optional.empty()
 
-        expect(lambda: optional.unwrap_or_raise(lambda: RuntimeError("Custom error message"))).to(raise_error(RuntimeError, "Custom error message"))
+        expect(lambda: optional.unwrap_or_raise(lambda: RuntimeError("Custom error message"))).to(
+            raise_error(RuntimeError, "Custom error message")
+        )
 
     def test_should_return_value_when_unwrap_or_raise_on_present_optional(self) -> None:
         value = "test_value"
@@ -83,3 +85,35 @@ class TestOptional:
         result = optional.map(str.strip).map(lambda value: value.upper()).map(lambda value: value.split())
 
         expect(result.unwrap()).to(equal(["HELLO", "WORLD"]))
+
+    def test_should_execute_of_function_when_match_on_present_optional(self) -> None:
+        value = "test_value"
+        optional = Optional.of(value)
+
+        result = optional.match(of=lambda v: f"processed: {v}", empty=lambda: "default")
+
+        expect(result).to(equal("processed: test_value"))
+
+    def test_should_execute_empty_function_when_match_on_empty_optional(self) -> None:
+        optional = Optional.empty()
+
+        result = optional.match(of=lambda v: f"processed: {v}", empty=lambda: "default")
+
+        expect(result).to(equal("default"))
+
+    def test_should_handle_complex_operations_with_match(self) -> None:
+        optional = Optional.of(42)
+
+        result = optional.match(of=lambda n: n * 2 if n > 20 else n, empty=lambda: 0)
+
+        expect(result).to(equal(84))
+
+    def test_should_handle_exceptions_in_match_functions(self) -> None:
+        optional = Optional.of("test")
+
+        expect(
+            lambda: optional.match(
+                of=lambda v: int(v),
+                empty=lambda: 0,
+            )
+        ).to(raise_error(ValueError))

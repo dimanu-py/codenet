@@ -35,6 +35,11 @@ class Optional[T]:
             return Optional.empty()
         return Optional.of(func(cast(T, self._value)))
 
+    def match[U](self, of: Callable[[T], U], empty: Callable[[], U]) -> U:
+        if self.is_empty():
+            return empty()
+        return of(cast(T, self._value))
+
     def unwrap(self) -> T:
         if self.is_empty():
             raise ValueError("Cannot unwrap an empty Optional.")
