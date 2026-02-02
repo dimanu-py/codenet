@@ -36,3 +36,10 @@ class TestOptionalBasicConstructor:
         optional = Optional.empty()
 
         expect(lambda: optional.unwrap()).to(raise_error(ValueError))
+
+    def test_should_return_empty_when_mapping_empty(self) -> None:
+        optional = Optional.empty()
+
+        result = optional.map(lambda value: value.upper())
+
+        expect(result.is_empty()).to(be_true)

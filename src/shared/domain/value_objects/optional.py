@@ -1,3 +1,4 @@
+from collections.abc import Callable
 from typing import cast
 
 _EMPTY = object()
@@ -34,3 +35,5 @@ class Optional[T]:
             raise ValueError("Cannot unwrap an empty Optional.")
         return cast(T, self._value)
 
+    def map[U](self, func: Callable[[T], U]) -> "Optional[U]":
+        return Optional.empty()
