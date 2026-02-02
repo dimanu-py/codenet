@@ -49,3 +49,7 @@ class Optional[T]:
         if self.is_empty():
             raise error_builder()
         return cast(T, self._value)
+
+
+def raise_error(exception: Exception) -> None:
+    raise exception
