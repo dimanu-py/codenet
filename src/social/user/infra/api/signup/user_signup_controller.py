@@ -2,7 +2,7 @@ from sindripy.value_objects import SindriValidationError
 
 from src.shared.domain.exceptions.application_error import ConflictError
 from src.shared.domain.exceptions.domain_validation_error import DomainValidationError
-from src.shared.infra.http.error_response import ErrorResponse, UnprocessableEntityError, ConflictErrorResponse
+from src.shared.infra.http.error_response import ConflictErrorResponse, ErrorResponse, UnprocessableEntityError
 from src.shared.infra.http.success_response import AcceptedResponse, SuccessResponse
 from src.social.user.application.signup.user_signup import UserSignup
 from src.social.user.application.signup.user_signup_command import UserSignupCommand

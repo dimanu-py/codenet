@@ -1,5 +1,5 @@
 import pytest
-from expects import expect, be_true, raise_error, equal
+from expects import be_true, equal, expect, raise_error
 
 from src.shared.domain.value_objects.optional import Optional
 from src.shared.domain.value_objects.string_value_object import StringValueObject

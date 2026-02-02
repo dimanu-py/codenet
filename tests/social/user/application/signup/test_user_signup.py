@@ -29,4 +29,3 @@ class TestUserSignup(UserModuleUnitTestConfig):
         self._should_search_and_find(existing_user)
 
         await async_expect(lambda: self._user_signup.execute(command)).to(raise_error(UsernameAlreadyExists))
-
