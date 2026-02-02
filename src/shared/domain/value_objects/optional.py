@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import cast
+from typing import cast, Self
 
 _EMPTY = object()
 
@@ -49,6 +49,14 @@ class Optional[T]:
         if self.is_empty():
             raise error_builder()
         return cast(T, self._value)
+
+    def __repr__(self)-> str:
+        return "Empty" if self.is_empty() else f"Optional({self._value})"
+
+    def __eq__(self, other: Self) -> bool:
+        if not isinstance(other, Optional):
+            return False
+        return self._value == other._value
 
 
 def raise_error(exception: Exception) -> None:
