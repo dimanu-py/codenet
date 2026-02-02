@@ -6,7 +6,7 @@ from src.shared.domain.value_objects.string_value_object import StringValueObjec
 
 
 @pytest.mark.unit
-class TestOptionalBasicConstructor:
+class TestOptional:
     def test_should_be_able_to_create_optional_with_valid_value(self) -> None:
         value = StringValueObject("test")
 
