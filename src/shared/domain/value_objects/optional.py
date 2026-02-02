@@ -17,6 +17,10 @@ class Optional[T]:
     def empty(cls) -> "Optional[T]":
         return cls(_EMPTY)
 
+    @classmethod
+    def from_nullable(cls, value: T | None) -> "Optional[T]":
+        return cls.of(value) if value else cls.empty()
+
     def is_present(self) -> bool:
         return self._value is not _EMPTY
 
