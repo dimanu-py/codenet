@@ -50,3 +50,9 @@ class TestOptionalBasicConstructor:
         result = optional.map(lambda value: value.upper())
 
         expect(result.unwrap()).to(equal("HELLO"))
+
+    def test_should_raise_error_when_map_function_returns_none(self) -> None:
+        optional = Optional.of("test")
+
+        expect(lambda: optional.map(lambda x: None)).to(raise_error(ValueError))
+
