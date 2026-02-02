@@ -56,3 +56,8 @@ class TestOptionalBasicConstructor:
 
         expect(lambda: optional.map(lambda x: None)).to(raise_error(ValueError))
 
+    def test_should_raise_custom_error_when_unwrap_or_raise_on_empty(self) -> None:
+        optional = Optional.empty()
+
+        expect(lambda: optional.unwrap_or_raise(lambda: RuntimeError("Custom error message"))).to(raise_error(RuntimeError, "Custom error message"))
+

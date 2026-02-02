@@ -39,3 +39,7 @@ class Optional[T]:
         if self.is_empty():
             raise ValueError("Cannot unwrap an empty Optional.")
         return cast(T, self._value)
+
+    def unwrap_or_raise(self, error_builder: Callable[[], Exception]) -> T:
+        if self.is_empty():
+            raise error_builder()
