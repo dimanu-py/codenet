@@ -61,3 +61,11 @@ class TestOptionalBasicConstructor:
 
         expect(lambda: optional.unwrap_or_raise(lambda: RuntimeError("Custom error message"))).to(raise_error(RuntimeError, "Custom error message"))
 
+    def test_should_return_value_when_unwrap_or_raise_on_present_optional(self) -> None:
+        value = "test_value"
+        optional = Optional.of(value)
+
+        result = optional.unwrap_or_raise(lambda: RuntimeError("Should not be called"))
+
+        expect(result).to(equal(value))
+

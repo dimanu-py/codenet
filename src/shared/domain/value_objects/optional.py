@@ -43,3 +43,4 @@ class Optional[T]:
     def unwrap_or_raise(self, error_builder: Callable[[], Exception]) -> T:
         if self.is_empty():
             raise error_builder()
+        return cast(T, self._value)
