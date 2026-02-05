@@ -3,7 +3,7 @@ from fastapi.openapi.models import Example
 from fastapi.responses import JSONResponse
 
 from src.delivery.routers.fastapi_response import FastAPIResponse
-from src.delivery.routers.user.deps import postgres_user_repository
+from src.delivery.routers.social.user.deps import postgres_user_repository
 from src.shared.infra.http.error_response import ResourceNotFoundError, UnprocessableEntityError
 from src.shared.infra.http.success_response import AcceptedResponse
 from src.social.user.application.removal.user_remover import UserRemover
