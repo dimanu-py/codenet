@@ -7,7 +7,8 @@ from sindripy.value_objects import SindriValidationError
 
 from src.delivery.alembic_migrator import AlembicMigrator
 from src.delivery.handlers.error_handlers import (
-    unexpected_exception_handler, sindri_validation_error_handler,
+    sindri_validation_error_handler,
+    unexpected_exception_handler,
 )
 from src.delivery.middleware.fast_api_log_middleware import FastapiLogMiddleware
 from src.delivery.routers.user import routes as user_routes
