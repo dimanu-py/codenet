@@ -13,12 +13,8 @@ from src.social.user.infra.api.removal.user_removal_controller import UserRemova
 router = APIRouter()
 
 
-def get_use_case(repository: UserRepository = Depends(postgres_user_repository)) -> UserRemover:
-    return UserRemover(repository)
-
-
-def get_controller(use_case: UserRemover = Depends(get_use_case)) -> UserRemovalController:
-    return UserRemovalController(use_case)
+def get_controller(repository: UserRepository = Depends(postgres_user_repository)) -> UserRemovalController:
+    return UserRemovalController(use_case=UserRemover(repository))
 
 
 @router.delete(

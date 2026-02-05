@@ -14,16 +14,10 @@ from src.social.user.infra.api.signup.user_signup_controller import UserSignupCo
 router = APIRouter()
 
 
-def get_use_case(
-    repository: UserRepository = Depends(postgres_user_repository),
-) -> UserSignup:
-    return UserSignup(repository)
-
-
 def get_controller(
-    use_case: UserSignup = Depends(get_use_case),
+    repository: UserRepository = Depends(postgres_user_repository),
 ) -> UserSignupController:
-    return UserSignupController(use_case=use_case)
+    return UserSignupController(use_case=UserSignup(repository))
 
 
 @router.post(

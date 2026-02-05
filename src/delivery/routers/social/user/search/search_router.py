@@ -14,16 +14,10 @@ from src.social.user.infra.api.search.user_search_controller import UserSearchCo
 router = APIRouter()
 
 
-def get_use_case(
-    repository: UserRepository = Depends(postgres_user_repository),
-) -> UserSearcher:
-    return UserSearcher(repository=repository)
-
-
 def get_controller(
-    use_case: UserSearcher = Depends(get_use_case),
+    repository: UserRepository = Depends(postgres_user_repository),
 ) -> UserSearchController:
-    return UserSearchController(use_case=use_case)
+    return UserSearchController(use_case=UserSearcher(repository=repository))
 
 
 @router.get(
