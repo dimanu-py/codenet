@@ -18,17 +18,5 @@ class User(Aggregate):
         self._email = UserEmail(email)
 
     @property
-    def id(self) -> UserId:
-        return self._id
-
-    @property
     def username(self) -> UserUsername:
         return self._username
-
-    def to_public_primitives(self) -> dict[str, str]:
-        return {
-            "id": self._id.value,
-            "name": self._name.value,
-            "username": self._username.value,
-            "email": self._email.value,
-        }

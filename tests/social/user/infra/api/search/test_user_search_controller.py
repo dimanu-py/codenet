@@ -21,7 +21,7 @@ class TestUserSearchController(UserModuleRoutersTestConfig):
 
         self._response = await self._controller.search(filters=filters)
 
-        self._assert_contract_is_met_on_success(200, [user.to_public_primitives()])
+        self._assert_contract_is_met_on_success(200, [user.to_primitives()])
 
     async def test_should_return_200_when_users_are_not_found_and_response_is_an_empty_list(self) -> None:
         filters = CriteriaMother.any().to_primitives()

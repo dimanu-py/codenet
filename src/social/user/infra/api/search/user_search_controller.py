@@ -12,4 +12,4 @@ class UserSearchController:
 
         users = await self._searcher.execute(query)
 
-        return OkResponse(data=[user.to_public_primitives() for user in users])
+        return OkResponse(data=[user.to_primitives() for user in users])

@@ -15,7 +15,7 @@ class MockUserRepository(UserRepository):
         self._mock_remove = AsyncMock()
 
     async def save(self, user: User) -> None:
-        self._mock_save.assert_called_once_with(user.to_public_primitives())
+        self._mock_save.assert_called_once_with(user.to_primitives())
 
     async def search(self, username: UserUsername) -> User | None:
         self._mock_search.assert_called_once_with(username)
@@ -29,7 +29,7 @@ class MockUserRepository(UserRepository):
         self._mock_remove.assert_called_once_with(username)
 
     def should_save(self, user: User) -> None:
-        self._mock_save(user.to_public_primitives())
+        self._mock_save(user.to_primitives())
 
     def should_match(self, criteria: Criteria, users: list[User]) -> None:
         self._mock_match(criteria)
