@@ -7,5 +7,11 @@ class SignupController:
         self._signup = use_case
 
     async def signup(self, account_id: str, name: str, username: str, email: str, password: str) -> SuccessResponse:
-        await self._signup.execute()
+        await self._signup.execute(
+            account_id=account_id,
+            name=name,
+            username=username,
+            email=email,
+            password=password,
+        )
         return AcceptedResponse()
