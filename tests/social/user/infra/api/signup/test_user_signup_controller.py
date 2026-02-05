@@ -22,7 +22,7 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
         self._use_case = AsyncStub(UserSignup)
         self._controller = UserSignupController(use_case=self._use_case)
 
-    async def test_should_return_201_when_signup_data_is_valid(self) -> None:
+    async def test_should_return_202_when_signup_data_is_valid(self) -> None:
         request_body = SignupRequest(
             name=UserNamePrimitivesMother.any(),
             username=UserUsernamePrimitivesMother.any(),
@@ -34,7 +34,7 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
 
         self._response = await self._controller.signup(id=user_id, **request_body.model_dump())
 
-        self._assert_contract_is_met_with(202, {"message": "User signup request has been accepted."})
+        self._assert_contract_is_met_on_success(202, {"accepted": True})
 
     async def test_should_return_422_when_user_name_has_invalid_character(self) -> None:
         request_body = SignupRequest(
@@ -48,7 +48,7 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
 
         self._response = await self._controller.signup(id=user_id, **request_body.model_dump())
 
-        self._assert_contract_is_met_with(422, {"message": "Name cannot contain special characters or numbers."})
+        self._assert_contract_is_met_on_error(422, "Name cannot contain special characters or numbers.")
 
     async def test_should_return_422_when_user_username_has_invalid_character(self) -> None:
         request_body = SignupRequest(
@@ -62,7 +62,7 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
 
         self._response = await self._controller.signup(id=user_id, **request_body.model_dump())
 
-        self._assert_contract_is_met_with(422, {"message": "Username cannot contain special characters"})
+        self._assert_contract_is_met_on_error(422, "Username cannot contain special characters")
 
     async def test_should_return_422_when_email_does_not_have_valid_format(self) -> None:
         request_body = SignupRequest(
@@ -76,8 +76,8 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
 
         self._response = await self._controller.signup(id=user_id, **request_body.model_dump())
 
-        self._assert_contract_is_met_with(
-            422, {"message": "Email cannot contain special characters and must contain '@' and '.'"}
+        self._assert_contract_is_met_on_error(
+            422, "Email cannot contain special characters and must contain '@' and '.'"
         )
 
     async def test_should_return_409_when_username_is_already_registered(self) -> None:
@@ -92,7 +92,7 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
 
         self._response = await self._controller.signup(id=user_id, **request_body.model_dump())
 
-        self._assert_contract_is_met_with(409, {"message": "Username is already registered."})
+        self._assert_contract_is_met_on_error(409, "Username is already registered.")
 
     def _should_signup_user(self) -> None:
         when(self._use_case).execute(ANY_ARG).returns(None)

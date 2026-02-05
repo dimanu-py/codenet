@@ -7,6 +7,12 @@ from expects import equal, expect
 class UserModuleRoutersTestConfig:
     _response = None
 
-    def _assert_contract_is_met_with(self, expected_status_code: int, expected_body: dict[str, str]):
-        expect(self._response.status_code).to(equal(expected_status_code))
-        expect(self._response.detail).to(equal(expected_body))
+    def _assert_contract_is_met_on_success(
+        self, expected_status_code: int, expected_body: dict[str, str] | list[dict]
+    ) -> None:
+        expect(self._response.status).to(equal(expected_status_code))
+        expect(self._response.data).to(equal(expected_body))
+
+    def _assert_contract_is_met_on_error(self, expected_status_code: int, expected_message: str) -> None:
+        expect(self._response.status).to(equal(expected_status_code))
+        expect(self._response.error["message"]).to(equal(expected_message))

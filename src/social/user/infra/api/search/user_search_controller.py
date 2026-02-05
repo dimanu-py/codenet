@@ -15,4 +15,4 @@ class UserSearchController:
 
         response = UserSearchResponse([user.to_public_primitives() for user in users])
 
-        return OkResponse(detail=response.dump())
+        return OkResponse(data=[user.to_public_primitives() for user in users])

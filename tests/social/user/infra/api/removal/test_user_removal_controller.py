@@ -19,7 +19,7 @@ class TestUserRemovalController(UserModuleRoutersTestConfig):
 
         self._response = await self._controller.remove(username=user_username)
 
-        self._assert_contract_is_met_with(202, {"message": "User removal request has been accepted."})
+        self._assert_contract_is_met_on_success(202, {"accepted": True})
 
     async def test_should_return_404_when_user_to_remove_does_not_exist(self) -> None:
         user_username = UserUsernamePrimitivesMother.any()
@@ -27,7 +27,7 @@ class TestUserRemovalController(UserModuleRoutersTestConfig):
 
         self._response = await self._controller.remove(username=user_username)
 
-        self._assert_contract_is_met_with(404, {"message": "User with that id not found"})
+        self._assert_contract_is_met_on_error(404, "User with that id not found")
 
     def _should_remove_user(self) -> None:
         when(self._use_case).execute(ANY_ARG).returns(None)

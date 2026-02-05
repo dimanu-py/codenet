@@ -1,5 +1,3 @@
-from sindripy.value_objects import SindriValidationError
-
 from src.shared.domain.exceptions.application_error import ConflictError
 from src.shared.domain.exceptions.domain_validation_error import DomainValidationError
 from src.shared.infra.http.error_response import ConflictErrorResponse, ErrorResponse, UnprocessableEntityError
@@ -25,9 +23,9 @@ class UserSignupController:
 
         try:
             await self._signup.execute(command)
-        except (DomainValidationError, SindriValidationError) as domain_error:
-            return UnprocessableEntityError(detail={"message": domain_error.message})
-        except ConflictError as conflict_error:
-            return ConflictErrorResponse(detail={"message": conflict_error.message})
+        except DomainValidationError as error:
+            return UnprocessableEntityError(error=error.to_primitives())
+        except ConflictError as error:
+            return ConflictErrorResponse(error=error.to_primitives())
 
-        return AcceptedResponse(detail={"message": "User signup request has been accepted."})
+        return AcceptedResponse()
