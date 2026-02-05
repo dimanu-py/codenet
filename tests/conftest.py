@@ -10,6 +10,8 @@ from src.delivery.routers.social.user.deps import get_async_session
 from src.shared.infra.persistence.sqlalchemy.base import Base
 from tests.social.user.infra.persistence.postgres_test_container import PostgresTestContainer
 
+pytest_plugins = ["tests.delivery.routers.social.user.fixtures_user"]
+
 
 @pytest.fixture(scope="session")
 def postgres_container() -> Generator[PostgresTestContainer]:
