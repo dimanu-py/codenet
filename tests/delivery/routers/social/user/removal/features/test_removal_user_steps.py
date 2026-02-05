@@ -13,7 +13,7 @@ pytestmark = [pytest.mark.acceptance]
 scenarios("removal_user.feature")
 
 
-_ROUTE_PATH = "/app/users/"
+_ROUTE_PATH = "/app/social/users/"
 
 
 @given("I am an existing user", target_fixture="existing_user_username")

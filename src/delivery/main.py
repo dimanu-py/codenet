@@ -11,7 +11,7 @@ from src.delivery.handlers.error_handlers import (
     unexpected_exception_handler,
 )
 from src.delivery.middleware.fast_api_log_middleware import FastapiLogMiddleware
-from src.delivery.routers.social.user import routes as user_routes
+from src.delivery.routers.social import routes as social_routes
 from src.shared.infra.logger.fastapi_file_logger import (
     create_api_logger,
 )
@@ -32,4 +32,4 @@ app.add_middleware(FastapiLogMiddleware, logger=logger)  # type: ignore
 app.add_middleware(CorrelationIdMiddleware)  # type: ignore
 app.add_exception_handler(Exception, unexpected_exception_handler)
 app.add_exception_handler(SindriValidationError, sindri_validation_error_handler)
-app.include_router(user_routes.routes)
+app.include_router(social_routes.routes)

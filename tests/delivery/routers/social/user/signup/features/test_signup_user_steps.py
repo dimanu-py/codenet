@@ -14,7 +14,7 @@ pytestmark = [pytest.mark.acceptance]
 
 scenarios("signup_user.feature")
 
-_ROUTE_PATH = "/app/users/"
+_ROUTE_PATH = "/app/social/users/"
 
 
 @given("I have filled a signup form with valid details", target_fixture="signup_form")

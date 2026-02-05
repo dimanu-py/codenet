@@ -17,7 +17,7 @@ pytestmark = [pytest.mark.acceptance]
 scenarios("search_user.feature")
 
 
-_ROUTE_PATH = "/app/users/"
+_ROUTE_PATH = "/app/social/users/"
 
 
 @given(parsers.parse("there are users with usernames {usernames}"))

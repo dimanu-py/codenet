@@ -8,8 +8,8 @@ from src.shared.infra.http.error_response import (
 )
 
 routes = APIRouter(
-    prefix="/app/users",
-    tags=["Users"],
+    prefix="/users",
+    tags=["Social / Users"],
     responses={
         status.HTTP_500_INTERNAL_SERVER_ERROR: {
             "model": InternalServerError,
