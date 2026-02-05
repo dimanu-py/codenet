@@ -1,2 +1,3 @@
 class AccountSignup:
-    pass
+    async def execute(self) -> None:
+        raise NotImplementedError
