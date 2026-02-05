@@ -2,6 +2,7 @@ from fastapi import APIRouter, status, Path, Depends
 from fastapi.openapi.models import Example
 from starlette.responses import JSONResponse
 
+from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
 from src.auth.account.infra.api.signup.signup_controller import SignupController
 from src.delivery.routers.auth.account.signup.signup_request import SignupRequest
 from src.delivery.routers.fastapi_response import FastAPIResponse
@@ -12,7 +13,7 @@ signup_router = APIRouter()
 
 
 def get_controller() -> SignupController:
-    return SignupController()
+    return SignupController(use_case=AccountWithUserSignup())
 
 
 @signup_router.post(
