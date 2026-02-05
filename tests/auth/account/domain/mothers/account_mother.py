@@ -7,6 +7,6 @@ class AccountMother(ObjectMother):
         return {
             "id": StringUuidPrimitivesMother.any(),
             "email": cls._faker().email(),
-            "password": cls._faker().password(),
+            "plain_password": cls._faker().password(),
             "status": "active",
         }

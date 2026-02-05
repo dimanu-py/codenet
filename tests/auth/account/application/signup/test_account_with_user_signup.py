@@ -25,7 +25,7 @@ class TestAccountWithUserSignup:
             name=user["name"],
             username=user["username"],
             email=account["email"],
-            password=account["password"],
+            password=account["plain_password"],
         )
 
     def _should_save_account(self, account: dict) -> None:
