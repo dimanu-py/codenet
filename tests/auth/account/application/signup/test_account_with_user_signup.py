@@ -2,6 +2,7 @@ import pytest
 
 from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
 from tests.auth.account.domain.mothers.account_mother import AccountMother
+from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
 from tests.social.user.domain.mothers.user_mother import UserMother
 
 
@@ -9,7 +10,8 @@ from tests.social.user.domain.mothers.user_mother import UserMother
 @pytest.mark.asyncio
 class TestAccountWithUserSignup:
     def setup_method(self) -> None:
-        self._signup = AccountWithUserSignup()
+        self._repository = MockAccountRepository()
+        self._signup = AccountWithUserSignup(repository=self._repository)
 
     async def test_should_signup_account_and_user(self) -> None:
         account = AccountMother.any()

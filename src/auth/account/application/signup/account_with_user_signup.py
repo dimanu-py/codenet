@@ -1,4 +1,10 @@
+from src.auth.account.domain.account_repository import AccountRepository
+
+
 class AccountWithUserSignup:
+    def __init__(self, repository: AccountRepository) -> None:
+        self._repository = repository
+
     async def execute(
         self,
         account_id: str,
