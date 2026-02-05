@@ -29,7 +29,7 @@ class TestAccountWithUserSignup:
         )
 
     def _should_save_account(self, account: dict) -> None:
-        pass
+        self._repository.should_save(account)
 
     def _should_save_user(self, user: dict) -> None:
         pass
