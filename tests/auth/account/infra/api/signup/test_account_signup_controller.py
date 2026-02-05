@@ -2,9 +2,11 @@ import pytest
 from doublex import when, ANY_ARG
 from expects import expect, equal
 
+from src.auth.account.application.signup.account_signup import AccountSignup
 from src.auth.account.infra.api.signup.account_signup_controller import AccountSignupController
 from src.delivery.routers.auth.account.signup.signup_request import SignupRequest
 from tests.auth.account.domain.mothers.account_id_primitives_mother import AccountIdPrimitivesMother
+from tests.shared.expects.async_stub import AsyncStub
 from tests.social.user.domain.mothers.user_email_primitives_mother import UserEmailPrimitivesMother
 from tests.social.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
 from tests.social.user.domain.mothers.user_password_primitives_mother import UserPasswordPrimitivesMother
@@ -17,7 +19,8 @@ class TestAccountSignupController:
     _response = None
 
     def setup_method(self) -> None:
-        self._controller = AccountSignupController()
+        self._use_case = AsyncStub(AccountSignup)
+        self._controller = AccountSignupController(use_case=self._use_case)
 
     async def test_should_return_202_when_signing_up_an_account_and_a_user_successfully(self) -> None:
         request_body = SignupRequest(
