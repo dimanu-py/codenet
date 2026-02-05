@@ -2,7 +2,7 @@ from fastapi import APIRouter, status, Path, Depends
 from fastapi.openapi.models import Example
 from starlette.responses import JSONResponse
 
-from src.auth.account.infra.api.signup.account_signup_controller import AccountSignupController
+from src.auth.account.infra.api.signup.signup_controller import SignupController
 from src.delivery.routers.auth.account.signup.signup_request import SignupRequest
 from src.delivery.routers.fastapi_response import FastAPIResponse
 from src.shared.infra.http.error_response import UnprocessableEntityError
@@ -11,8 +11,8 @@ from src.shared.infra.http.success_response import AcceptedResponse
 signup_router = APIRouter()
 
 
-def get_controller() -> AccountSignupController:
-    return AccountSignupController()
+def get_controller() -> SignupController:
+    return SignupController()
 
 
 @signup_router.post(
@@ -27,7 +27,7 @@ async def signup_account_and_user(
     account_id: str = Path(
         openapi_examples={"valid_id": Example(value="123e4567-e89b-12d3-a456-426614174000")},
     ),
-    controller: AccountSignupController = Depends(get_controller),
+    controller: SignupController = Depends(get_controller),
 ) -> JSONResponse:
     result = await controller.signup()
     return FastAPIResponse.as_json(result)
