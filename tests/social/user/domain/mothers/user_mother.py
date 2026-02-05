@@ -28,3 +28,8 @@ class UserMother:
             username=username,
             email=UserEmailPrimitivesMother.any(),
         )
+
+    @classmethod
+    def create(cls, **overrides) -> User:
+        default = cls.any().to_primitives()
+        return User(**{**default, **overrides})
