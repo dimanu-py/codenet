@@ -30,5 +30,11 @@ async def signup_account_and_user(
     ),
     controller: SignupController = Depends(get_controller),
 ) -> JSONResponse:
-    result = await controller.signup()
+    result = await controller.signup(
+        account_id=account_id,
+        name=request.name,
+        username=request.username,
+        email=request.email,
+        password=request.password,
+    )
     return FastAPIResponse.as_json(result)
