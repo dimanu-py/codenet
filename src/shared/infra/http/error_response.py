@@ -1,40 +1,31 @@
 from abc import ABC
 from http import HTTPStatus
+from typing import Literal
 
-from fastapi import status
-from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
+from pydantic import Field, BaseModel
 
 
 class ErrorResponse(ABC, BaseModel):
-    status_code: int
-    detail: dict
-
-    def as_json(self) -> JSONResponse:
-        return JSONResponse(
-            content={"detail": self.detail},
-            status_code=self.status_code,
-        )
-
-    def __str__(self) -> str:
-        return f"{self.detail}"
+    status: int
+    result: Literal["error"] = "error"
+    error: dict
 
 
 class UnprocessableEntityError(ErrorResponse):
-    status_code: int = Field(default=status.HTTP_422_UNPROCESSABLE_ENTITY)
-    detail: dict = Field(default={"message": HTTPStatus.UNPROCESSABLE_ENTITY.phrase})
+    status: int = Field(default=HTTPStatus.UNPROCESSABLE_ENTITY)
+    error: dict = Field(default={"message": HTTPStatus.UNPROCESSABLE_ENTITY.phrase})
 
 
 class ResourceNotFoundError(ErrorResponse):
-    status_code: int = Field(default=status.HTTP_404_NOT_FOUND)
-    detail: dict = Field(default={"message": HTTPStatus.NOT_FOUND.phrase})
+    status: int = Field(default=HTTPStatus.NOT_FOUND)
+    error: dict = Field(default={"message": HTTPStatus.NOT_FOUND.phrase})
 
 
 class ConflictErrorResponse(ErrorResponse):
-    status_code: int = Field(default=status.HTTP_409_CONFLICT)
-    detail: dict = Field(default={"message": HTTPStatus.CONFLICT.phrase})
+    status: int = Field(default=HTTPStatus.CONFLICT)
+    error: dict = Field(default={"message": HTTPStatus.CONFLICT.phrase})
 
 
 class InternalServerError(ErrorResponse):
-    status_code: int = Field(default=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    detail: dict = Field(default={"message": HTTPStatus.INTERNAL_SERVER_ERROR.phrase})
+    status: int = Field(default=HTTPStatus.INTERNAL_SERVER_ERROR)
+    error: dict = Field(default={"message": HTTPStatus.INTERNAL_SERVER_ERROR.phrase})
