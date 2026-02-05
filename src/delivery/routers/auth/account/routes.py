@@ -2,7 +2,7 @@ from fastapi import APIRouter, status
 
 from src.shared.infra.http.error_response import InternalServerError
 
-routes = APIRouter(
+account_routes = APIRouter(
     prefix="/account",
     tags=["Auth / Account"],
     responses={

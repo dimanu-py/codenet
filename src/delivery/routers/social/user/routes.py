@@ -7,7 +7,7 @@ from src.shared.infra.http.error_response import (
     InternalServerError,
 )
 
-routes = APIRouter(
+user_routes = APIRouter(
     prefix="/users",
     tags=["Social / Users"],
     responses={
@@ -18,6 +18,6 @@ routes = APIRouter(
     },
 )
 
-routes.include_router(signup_router.router)
-routes.include_router(search_router.router)
-routes.include_router(removal_router.router)
+user_routes.include_router(signup_router.router)
+user_routes.include_router(search_router.router)
+user_routes.include_router(removal_router.router)

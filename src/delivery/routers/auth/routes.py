@@ -1,9 +1,9 @@
 from fastapi import APIRouter, status
 
-from src.delivery.routers.auth.account.routes import routes as account_routes
+from src.delivery.routers.auth.account.routes import account_routes
 from src.shared.infra.http.error_response import InternalServerError
 
-routes = APIRouter(
+auth_routes = APIRouter(
     prefix="/app/auth",
     responses={
         status.HTTP_500_INTERNAL_SERVER_ERROR: {
@@ -13,4 +13,4 @@ routes = APIRouter(
     },
 )
 
-routes.include_router(account_routes)
+auth_routes.include_router(account_routes)
