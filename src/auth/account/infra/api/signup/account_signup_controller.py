@@ -1,5 +1,5 @@
 from src.auth.account.application.signup.account_signup import AccountSignup
-from src.shared.infra.http.success_response import SuccessResponse
+from src.shared.infra.http.success_response import SuccessResponse, AcceptedResponse
 
 
 class AccountSignupController:
@@ -7,4 +7,5 @@ class AccountSignupController:
         self._signup = use_case
 
     async def signup(self, account_id: str, name: str, username: str, email: str, password: str) -> SuccessResponse:
-        raise NotImplementedError
+        await self._signup.execute()
+        return AcceptedResponse()
