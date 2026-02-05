@@ -40,7 +40,9 @@ def search_users_by_username(client: AsyncClient, username: str) -> Response:
 @then(parsers.parse('I should see the users with username "{username}"'))
 def verify_users_found_by_username(search_response: Response, username: str) -> None:
     expect(search_response.status_code).to(equal(200))
-    users = search_response.json()["detail"]["data"]
+    response_json = search_response.json()
+
+    users = response_json["data"]
     expect(users).to(have_length(2))
     for user in users:
         expect(user["username"]).to(contain(username))

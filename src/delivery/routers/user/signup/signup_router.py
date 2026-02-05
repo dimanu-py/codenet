@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, Path, status
 from fastapi.openapi.models import Example
 from fastapi.responses import JSONResponse
 
+from src.delivery.routers.fastapi_response import FastAPIResponse
 from src.delivery.routers.user.deps import postgres_user_repository
 from src.delivery.routers.user.signup.signup_request import SignupRequest
 from src.shared.infra.http.error_response import UnprocessableEntityError
@@ -44,4 +45,4 @@ async def signup_user(
         email=request.email,
         password=request.password,
     )
-    return result.as_json()
+    return FastAPIResponse.as_json(result)

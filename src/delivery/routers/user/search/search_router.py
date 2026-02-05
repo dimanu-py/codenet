@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, Query, status
 from fastapi.openapi.models import Example
 from fastapi.responses import JSONResponse
 
+from src.delivery.routers.fastapi_response import FastAPIResponse
 from src.delivery.routers.user.deps import postgres_user_repository
 from src.shared.infra.http.success_response import OkResponse
 from src.social.user.application.search.user_searcher import UserSearcher
@@ -36,4 +37,4 @@ async def get_user_by_criteria(
     controller: UserSearchController = Depends(get_controller),
 ) -> JSONResponse:
     result = await controller.search(filters=json.loads(filter))
-    return result.as_json()
+    return FastAPIResponse.as_json(result)
