@@ -37,6 +37,5 @@ async def signup_user(
         name=request.name,
         username=request.username,
         email=request.email,
-        password=request.password,
     )
     return FastAPIResponse.as_json(result)

@@ -2,7 +2,6 @@ from src.shared.domain.value_objects.aggregate import Aggregate
 from src.social.user.domain.user_email import UserEmail
 from src.social.user.domain.user_id import UserId
 from src.social.user.domain.user_name import UserName
-from src.social.user.domain.user_password import UserPassword
 from src.social.user.domain.user_username import UserUsername
 
 
@@ -11,14 +10,12 @@ class User(Aggregate):
     _name: UserName
     _username: UserUsername
     _email: UserEmail
-    _password: UserPassword
 
-    def __init__(self, id: str, name: str, username: str, email: str, password: str) -> None:
+    def __init__(self, id: str, name: str, username: str, email: str) -> None:
         self._id = UserId(id)
         self._name = UserName(name)
         self._username = UserUsername(username)
         self._email = UserEmail(email)
-        self._password = UserPassword(password)
 
     @property
     def id(self) -> UserId:

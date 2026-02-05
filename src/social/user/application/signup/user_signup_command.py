@@ -7,7 +7,6 @@ class UserSignupCommand:
     name: str
     username: str
     email: str
-    password: str
 
     def to_primitives(self) -> dict[str, str]:
         return {
@@ -15,5 +14,4 @@ class UserSignupCommand:
             "name": self.name,
             "username": self.username,
             "email": self.email,
-            "password": self.password,
         }

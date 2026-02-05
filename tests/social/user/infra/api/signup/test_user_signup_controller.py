@@ -11,7 +11,6 @@ from tests.shared.expects.async_stub import AsyncStub
 from tests.social.user.domain.mothers.user_email_primitives_mother import UserEmailPrimitivesMother
 from tests.social.user.domain.mothers.user_id_primitives_mother import UserIdPrimitivesMother
 from tests.social.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
-from tests.social.user.domain.mothers.user_password_primitives_mother import UserPasswordPrimitivesMother
 from tests.social.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
 from tests.social.user.domain.user_already_exists import UsernameAlreadyExists
 from tests.social.user.infra.api.user_module_routers_test_config import UserModuleRoutersTestConfig
@@ -27,7 +26,6 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
             name=UserNamePrimitivesMother.any(),
             username=UserUsernamePrimitivesMother.any(),
             email=UserEmailPrimitivesMother.any(),
-            password=UserPasswordPrimitivesMother.any(),
         )
         user_id = UserIdPrimitivesMother.any()
         self._should_signup_user()
@@ -41,7 +39,6 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
             name="Invalid@Name",
             username=UserUsernamePrimitivesMother.any(),
             email=UserEmailPrimitivesMother.any(),
-            password=UserPasswordPrimitivesMother.any(),
         )
         user_id = UserIdPrimitivesMother.any()
         self._should_fail_validating_user_data_with(InvalidNameFormat)
@@ -55,7 +52,6 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
             name=UserNamePrimitivesMother.any(),
             username="Invalid*Username",
             email=UserEmailPrimitivesMother.any(),
-            password=UserPasswordPrimitivesMother.any(),
         )
         user_id = UserIdPrimitivesMother.any()
         self._should_fail_validating_user_data_with(InvalidUsernameFormat)
@@ -69,7 +65,6 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
             name=UserNamePrimitivesMother.any(),
             username=UserUsernamePrimitivesMother.any(),
             email="invalid-email-format",
-            password=UserPasswordPrimitivesMother.any(),
         )
         user_id = UserIdPrimitivesMother.any()
         self._should_fail_validating_user_data_with(InvalidEmailFormat)
@@ -85,7 +80,6 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
             name=UserNamePrimitivesMother.any(),
             username=UserUsernamePrimitivesMother.any(),
             email=UserEmailPrimitivesMother.any(),
-            password=UserPasswordPrimitivesMother.any(),
         )
         user_id = UserIdPrimitivesMother.any()
         self._should_fail_checking_username_is_unique_with(UsernameAlreadyExists)

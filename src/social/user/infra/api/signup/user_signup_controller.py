@@ -11,14 +11,13 @@ class UserSignupController:
         self._signup = use_case
 
     async def signup(
-        self, id: str, name: str, username: str, email: str, password: str
+        self, id: str, name: str, username: str, email: str
     ) -> SuccessResponse | ErrorResponse:
         command = UserSignupCommand(
             id=id,
             name=name,
             username=username,
             email=email,
-            password=password,
         )
 
         try:
