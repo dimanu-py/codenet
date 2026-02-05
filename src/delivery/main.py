@@ -11,7 +11,7 @@ from src.delivery.handlers.error_handlers import (
     unexpected_exception_handler,
 )
 from src.delivery.middleware.fast_api_log_middleware import FastapiLogMiddleware
-from src.delivery.routers.social.user.routes import routes as user_routes
+from src.delivery.routers.social.user import routes as user_routes
 from src.shared.infra.logger.fastapi_file_logger import (
     create_api_logger,
 )
