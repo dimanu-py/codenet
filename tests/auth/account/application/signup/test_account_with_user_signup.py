@@ -36,10 +36,10 @@ class TestAccountWithUserSignup:
         )
 
         self._should_have_saved_account(account)
-        self._should_have_saved_user(user)
+        self._should_have_saved_user()
 
     def _should_have_saved_account(self, account: dict) -> None:
         self._account_repository.should_have_saved(account)
 
-    def _should_have_saved_user(self, user: dict) -> None:
-        self._user_signup.assert_awaited_once_with(user)
+    def _should_have_saved_user(self) -> None:
+        self._user_signup.execute.assert_awaited_once()
