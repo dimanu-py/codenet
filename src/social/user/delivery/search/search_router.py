@@ -3,11 +3,11 @@ import json
 from fastapi import APIRouter, Depends, Query, status
 from fastapi.openapi.models import Example
 from fastapi.responses import JSONResponse
-from src.app.routers.social.user import postgres_user_repository
 
 from src.shared.delivery.fastapi_response import FastAPIResponse
 from src.shared.infra.http.success_response import OkResponse
 from src.social.user.application.search.user_searcher import UserSearcher
+from src.social.user.delivery.deps import postgres_user_repository
 from src.social.user.domain.user_repository import UserRepository
 from src.social.user.infra.api.search.user_search_controller import UserSearchController
 

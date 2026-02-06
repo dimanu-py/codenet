@@ -4,7 +4,7 @@ import pytest
 from expects import expect, equal
 
 from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
-from src.auth.account.delivery.signup import SignupRequest
+from src.auth.account.delivery.signup.signup_request import SignupRequest
 from src.auth.account.infra.api.signup.signup_controller import SignupController
 from tests.auth.account.domain.mothers.account_id_primitives_mother import AccountIdPrimitivesMother
 from tests.social.user.domain.mothers.user_email_primitives_mother import UserEmailPrimitivesMother

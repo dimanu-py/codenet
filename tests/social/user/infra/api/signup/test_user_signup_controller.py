@@ -2,7 +2,7 @@ from unittest.mock import AsyncMock
 
 from src.shared.domain.exceptions.base_error import BaseError
 from src.social.user.application.signup.user_signup import UserSignup
-from src.social.user.delivery.signup import SignupRequest
+from src.social.user.delivery.signup.signup_request import SignupRequest
 from src.social.user.domain.user_email import InvalidEmailFormat
 from src.social.user.domain.user_name import InvalidNameFormat
 from src.social.user.domain.user_username import InvalidUsernameFormat

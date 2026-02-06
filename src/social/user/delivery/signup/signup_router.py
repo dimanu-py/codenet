@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, Path, status
 from fastapi.openapi.models import Example
 from fastapi.responses import JSONResponse
-from src.app.routers.social.user import postgres_user_repository
 
 from src.shared.delivery.fastapi_response import FastAPIResponse
 from src.shared.infra.http.error_response import UnprocessableEntityError
 from src.shared.infra.http.success_response import AcceptedResponse
 from src.social.user.application.signup.user_signup import UserSignup
+from src.social.user.delivery.deps import postgres_user_repository
 from src.social.user.delivery.signup.signup_request import SignupRequest
 from src.social.user.domain.user_repository import UserRepository
 from src.social.user.infra.api.signup.user_signup_controller import UserSignupController
