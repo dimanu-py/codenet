@@ -12,6 +12,6 @@ class SignupController:
             name=name,
             username=username,
             email=email,
-            password=password,
+            plain_password=password,
         )
         return AcceptedResponse()
