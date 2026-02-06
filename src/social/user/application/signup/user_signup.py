@@ -1,5 +1,4 @@
 from src.shared.domain.value_objects.optional import raise_error
-from src.social.user.application.signup.user_signup_command import UserSignupCommand
 from src.social.user.domain.user import User
 from src.social.user.domain.user_repository import UserRepository
 from src.social.user.domain.user_username import UserUsername
@@ -12,14 +11,14 @@ class UserSignup:
     def __init__(self, repository: UserRepository) -> None:
         self._repository = repository
 
-    async def execute(self, command: UserSignupCommand) -> None:
-        await self._ensure_user_with_same_username_is_not_signed_up(command.username)
+    async def execute(self, id: str, name: str, username: str, email: str) -> None:
+        await self._ensure_user_with_same_username_is_not_signed_up(username)
 
         user = User(
-            id=command.id,
-            name=command.name,
-            username=command.username,
-            email=command.email,
+            id=id,
+            name=name,
+            username=username,
+            email=email,
         )
 
         await self._store_user(user)

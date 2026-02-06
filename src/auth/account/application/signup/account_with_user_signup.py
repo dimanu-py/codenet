@@ -2,7 +2,6 @@ from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_repository import AccountRepository
 from src.shared.domain.clock import Clock
 from src.social.user.application.signup.user_signup import UserSignup
-from src.social.user.application.signup.user_signup_command import UserSignupCommand
 
 
 class AccountWithUserSignup:
@@ -33,12 +32,10 @@ class AccountWithUserSignup:
 
     async def _signup_user_with(self, user_id: str, name: str, username: str, email: str) -> None:
         await self._user_signup.execute(
-            UserSignupCommand(
-                id=user_id,
-                name=name,
-                username=username,
-                email=email,
-            )
+            id=user_id,
+            name=name,
+            username=username,
+            email=email,
         )
 
     async def _signup_account_with(self, account_id: str, email: str, plain_password: str) -> None:
