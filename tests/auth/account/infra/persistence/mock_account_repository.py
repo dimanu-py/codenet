@@ -9,7 +9,7 @@ class MockAccountRepository(AccountRepository):
         self._mock_save = AsyncMock()
 
     async def save(self, account: Account) -> None:
-        await self._mock_save(account.to_primitives())
+        await self._mock_save(account)
 
-    def should_have_saved(self, account: dict) -> None:
+    def should_have_saved(self, account: Account) -> None:
         self._mock_save.assert_awaited_once_with(account)

@@ -3,6 +3,7 @@ from unittest.mock import AsyncMock
 import pytest
 
 from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
+from src.auth.account.domain.account import Account
 from src.social.user.application.signup.user_signup import UserSignup
 from tests.auth.account.domain.mothers.account_mother import AccountMother
 from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
@@ -23,22 +24,23 @@ class TestAccountWithUserSignup:
 
     async def test_should_signup_account_and_user(self) -> None:
         account = AccountMother.any()
-        user_primitives = UserMother.create(id=account["id"], email=account["email"]).to_primitives()
+        account_primitives = account.to_primitives()
+        user_primitives = UserMother.create(id=account_primitives["id"], email=account_primitives["email"]).to_primitives()
 
-        self._clock.should_generate(account["created_at"])
+        self._clock.should_generate(account_primitives["created_at"])
 
         await self._signup.execute(
-            account_id=account["id"],
+            account_id=account_primitives["id"],
             name=user_primitives["name"],
             username=user_primitives["username"],
-            email=account["email"],
-            plain_password=account["password"],
+            email=account_primitives["email"],
+            plain_password=account_primitives["password"],
         )
 
         self._should_have_saved_account(account)
         self._should_have_saved_user(user_primitives)
 
-    def _should_have_saved_account(self, account: dict) -> None:
+    def _should_have_saved_account(self, account: Account) -> None:
         self._account_repository.should_have_saved(account)
 
     def _should_have_saved_user(self, user: dict) -> None:
