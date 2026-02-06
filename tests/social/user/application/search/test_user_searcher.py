@@ -1,6 +1,5 @@
 from expects import be_empty, equal, expect
 
-from src.social.user.application.search.search_user_query import SearchUserQuery
 from src.social.user.application.search.user_searcher import UserSearcher
 from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
 from tests.social.user.application.user_module_unit_test_config import (
@@ -15,21 +14,17 @@ class TestUserSearcher(UserModuleUnitTestConfig):
 
     async def test_should_search_existing_user(self) -> None:
         criteria = CriteriaMother.any()
-        query = SearchUserQuery(criteria.to_primitives())
         users = [UserMother.any()]
-
         self._should_match_criteria_with(users)
 
-        searched_users = await self._user_searcher.execute(query)
+        found_users = await self._user_searcher.execute(criteria.to_primitives())
 
-        expect(searched_users).to(equal(users))
+        expect(found_users).to(equal(users))
 
     async def test_should_return_empty_list_when_no_user_matches_criteria(self) -> None:
         criteria = CriteriaMother.any()
-        query = SearchUserQuery(criteria.to_primitives())
-
         self._should_not_match_criteria()
 
-        searched_users = await self._user_searcher.execute(query)
+        found_users = await self._user_searcher.execute(criteria.to_primitives())
 
-        expect(searched_users).to(be_empty)
+        expect(found_users).to(be_empty)

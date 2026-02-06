@@ -1,6 +1,5 @@
 from src.shared.domain.value_objects.optional import raise_error
 from src.social.user.application.removal.user_not_found import UserNotFound
-from src.social.user.application.removal.user_removal_command import UserRemovalCommand
 from src.social.user.domain.user_repository import UserRepository
 from src.social.user.domain.user_username import UserUsername
 
@@ -11,8 +10,8 @@ class UserRemover:
     def __init__(self, repository: UserRepository) -> None:
         self._repository = repository
 
-    async def execute(self, command: UserRemovalCommand) -> None:
-        user_username = UserUsername(command.username)
+    async def execute(self, username: str) -> None:
+        user_username = UserUsername(username)
         await self._ensure_user_to_remove_exists(user_username)
         await self._remove_user(user_username)
 
