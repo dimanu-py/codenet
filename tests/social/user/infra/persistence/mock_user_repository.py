@@ -14,7 +14,7 @@ class MockUserRepository(UserRepository):
         self._mock_search = AsyncMock()
 
     async def save(self, user: User) -> None:
-        await self._mock_save(user.to_primitives())
+        await self._mock_save(user)
 
     async def search(self, username: UserUsername) -> User | None:
         await self._mock_search(username)
@@ -28,7 +28,7 @@ class MockUserRepository(UserRepository):
         await self._mock_save(username)
 
     def should_have_saved(self, user: User) -> None:
-        self._mock_save.assert_awaited_once_with(user.to_primitives())
+        self._mock_save.assert_awaited_once_with(user)
 
     def should_match_criteria_with(self, users: list[User]) -> None:
         self._mock_match.return_value = users
