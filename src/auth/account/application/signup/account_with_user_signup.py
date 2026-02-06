@@ -1,10 +1,12 @@
 from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_repository import AccountRepository
+from src.shared.domain.clock import Clock
 
 
 class AccountWithUserSignup:
-    def __init__(self, repository: AccountRepository) -> None:
+    def __init__(self, repository: AccountRepository, clock: Clock) -> None:
         self._repository = repository
+        self._clock = clock
 
     async def execute(
         self,
