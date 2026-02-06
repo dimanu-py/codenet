@@ -9,5 +9,5 @@ class AccountMother(ObjectMother):
             "email": cls._faker().email(),
             "password": cls._faker().password(),
             "status": "active",
-            "created_at": cls._faker().iso8601(),
+            "created_at": cls._faker().date_time(),
         }
