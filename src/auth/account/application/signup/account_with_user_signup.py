@@ -1,3 +1,4 @@
+from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_repository import AccountRepository
 
 
@@ -29,4 +30,5 @@ class AccountWithUserSignup:
         pass
 
     async def _signup_account_with(self, account_id: str, email: str, plain_password: str) -> None:
-        pass
+        account = Account.signup(id=account_id, email=email, password=plain_password)
+        await self._repository.save(account)

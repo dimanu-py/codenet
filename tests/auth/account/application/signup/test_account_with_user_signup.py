@@ -26,7 +26,7 @@ class TestAccountWithUserSignup:
             name=user["name"],
             username=user["username"],
             email=account["email"],
-            password=account["plain_password"],
+            plain_password=account["password"],
         )
 
         self._should_have_saved_account(account)
