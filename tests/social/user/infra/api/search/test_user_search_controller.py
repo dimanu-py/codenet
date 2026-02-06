@@ -1,17 +1,16 @@
-from doublex import ANY_ARG, when
+from unittest.mock import AsyncMock
 
 from src.social.user.application.search.user_searcher import UserSearcher
 from src.social.user.domain.user import User
 from src.social.user.infra.api.search.user_search_controller import UserSearchController
 from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
-from tests.shared.expects.async_stub import AsyncStub
 from tests.social.user.domain.mothers.user_mother import UserMother
 from tests.social.user.infra.api.user_module_routers_test_config import UserModuleRoutersTestConfig
 
 
 class TestUserSearchController(UserModuleRoutersTestConfig):
     def setup_method(self) -> None:
-        self._use_case = AsyncStub(UserSearcher)
+        self._use_case = AsyncMock(spec=UserSearcher)
         self._controller = UserSearchController(use_case=self._use_case)
 
     async def test_should_return_200_when_users_are_found_and_response_contains_list_of_users(self) -> None:
@@ -32,11 +31,7 @@ class TestUserSearchController(UserModuleRoutersTestConfig):
         self._assert_contract_is_met_on_success(200, [])
 
     def _should_not_find_user(self) -> None:
-        when(self._use_case).execute(
-            ANY_ARG,
-        ).returns([])
+        self._use_case.execute.return_value = []
 
     def _should_find_user(self, user: User) -> None:
-        when(self._use_case).execute(
-            ANY_ARG,
-        ).returns([user])
+        self._use_case.execute.return_value = [user]

@@ -1,4 +1,4 @@
-from doublex import ANY_ARG, when
+from unittest.mock import AsyncMock
 
 from src.delivery.routers.social.user.signup.signup_request import SignupRequest
 from src.shared.domain.exceptions.base_error import BaseError
@@ -7,7 +7,6 @@ from src.social.user.domain.user_email import InvalidEmailFormat
 from src.social.user.domain.user_name import InvalidNameFormat
 from src.social.user.domain.user_username import InvalidUsernameFormat
 from src.social.user.infra.api.signup.user_signup_controller import UserSignupController
-from tests.shared.expects.async_stub import AsyncStub
 from tests.social.user.domain.mothers.user_email_primitives_mother import UserEmailPrimitivesMother
 from tests.social.user.domain.mothers.user_id_primitives_mother import UserIdPrimitivesMother
 from tests.social.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
@@ -18,7 +17,7 @@ from tests.social.user.infra.api.user_module_routers_test_config import UserModu
 
 class TestUserSignupController(UserModuleRoutersTestConfig):
     def setup_method(self) -> None:
-        self._use_case = AsyncStub(UserSignup)
+        self._use_case = AsyncMock(spec=UserSignup)
         self._controller = UserSignupController(use_case=self._use_case)
 
     async def test_should_return_202_when_signup_data_is_valid(self) -> None:
@@ -89,10 +88,10 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
         self._assert_contract_is_met_on_error(409, "Username is already registered.")
 
     def _should_signup_user(self) -> None:
-        when(self._use_case).execute(ANY_ARG).returns(None)
+        self._use_case.execute.return_value = None
 
     def _should_fail_validating_user_data_with(self, error: BaseError) -> None:
-        when(self._use_case).execute(ANY_ARG).raises(error)
+        self._use_case.execute.side_effect = error
 
     def _should_fail_checking_username_is_unique_with(self, error: BaseError) -> None:
-        when(self._use_case).execute(ANY_ARG).raises(error)
+        self._use_case.execute.side_effect = error
