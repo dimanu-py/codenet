@@ -11,12 +11,12 @@ class AccountWithUserSignup:
         name: str,
         username: str,
         email: str,
-        password: str,
+        plain_password: str,
     ) -> None:
         await self._signup_account_with(
             account_id=account_id,
             email=email,
-            plain_password=password,
+            plain_password=plain_password,
         )
         await self._signup_user_with(
             user_id=account_id,
