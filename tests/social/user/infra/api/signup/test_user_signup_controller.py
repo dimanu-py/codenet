@@ -40,7 +40,7 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
             email=UserEmailPrimitivesMother.any(),
         )
         user_id = UserIdPrimitivesMother.any()
-        self._should_fail_validating_user_data_with(InvalidNameFormat)
+        self._should_fail_with_error(InvalidNameFormat)
 
         self._response = await self._controller.signup(id=user_id, **request_body.model_dump())
 
@@ -53,7 +53,7 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
             email=UserEmailPrimitivesMother.any(),
         )
         user_id = UserIdPrimitivesMother.any()
-        self._should_fail_validating_user_data_with(InvalidUsernameFormat)
+        self._should_fail_with_error(InvalidUsernameFormat)
 
         self._response = await self._controller.signup(id=user_id, **request_body.model_dump())
 
@@ -66,7 +66,7 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
             email="invalid-email-format",
         )
         user_id = UserIdPrimitivesMother.any()
-        self._should_fail_validating_user_data_with(InvalidEmailFormat)
+        self._should_fail_with_error(InvalidEmailFormat)
 
         self._response = await self._controller.signup(id=user_id, **request_body.model_dump())
 
@@ -81,7 +81,7 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
             email=UserEmailPrimitivesMother.any(),
         )
         user_id = UserIdPrimitivesMother.any()
-        self._should_fail_checking_username_is_unique_with(UsernameAlreadyExists)
+        self._should_fail_with_error(UsernameAlreadyExists)
 
         self._response = await self._controller.signup(id=user_id, **request_body.model_dump())
 
@@ -90,8 +90,5 @@ class TestUserSignupController(UserModuleRoutersTestConfig):
     def _should_signup_user(self) -> None:
         self._use_case.execute.return_value = None
 
-    def _should_fail_validating_user_data_with(self, error: BaseError) -> None:
-        self._use_case.execute.side_effect = error
-
-    def _should_fail_checking_username_is_unique_with(self, error: BaseError) -> None:
+    def _should_fail_with_error(self, error: BaseError) -> None:
         self._use_case.execute.side_effect = error
