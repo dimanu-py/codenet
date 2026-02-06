@@ -1,5 +1,5 @@
 from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
-from src.shared.infra.http.success_response import SuccessResponse, AcceptedResponse
+from src.shared.infra.http.success_response import AcceptedResponse, SuccessResponse
 
 
 class SignupController:

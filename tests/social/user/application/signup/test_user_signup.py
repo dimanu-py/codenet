@@ -23,4 +23,6 @@ class TestUserSignup(UserModuleUnitTestConfig):
         existing_user = UserMother.any()
         self._should_search_and_find(existing_user)
 
-        await async_expect(lambda: self._user_signup.execute(**existing_user.to_primitives())).to(raise_error(UsernameAlreadyExists))
+        await async_expect(lambda: self._user_signup.execute(**existing_user.to_primitives())).to(
+            raise_error(UsernameAlreadyExists)
+        )

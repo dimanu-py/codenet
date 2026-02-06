@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, Path, Depends
+from fastapi import APIRouter, Depends, Path, status
 from fastapi.openapi.models import Example
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.responses import JSONResponse

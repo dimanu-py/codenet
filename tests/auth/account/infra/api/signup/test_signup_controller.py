@@ -1,7 +1,7 @@
 from unittest.mock import AsyncMock
 
 import pytest
-from expects import expect, equal
+from expects import equal, expect
 
 from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
 from src.auth.account.delivery.signup.signup_request import SignupRequest

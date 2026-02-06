@@ -1,9 +1,9 @@
 import asyncio
 
 import pytest
-from expects import expect, equal
+from expects import equal, expect
 from httpx import AsyncClient, Response
-from pytest_bdd import scenarios, given, when, then
+from pytest_bdd import given, scenarios, then, when
 
 from tests.social.user.domain.mothers.user_email_primitives_mother import UserEmailPrimitivesMother
 from tests.social.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
@@ -36,4 +36,3 @@ def submit_signup_form(client: AsyncClient, signup_form: dict, user_id: str) -> 
 @then("I should have an account and a user profile created")
 def verify_signup_success(signup_response: Response) -> None:
     expect(signup_response.status_code).to(equal(202))
-
