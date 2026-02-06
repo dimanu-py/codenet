@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status, Path, Depends
 from fastapi.openapi.models import Example
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.delivery.routers.social.user import get_async_session
+from src.app.routers.social.user import get_async_session
 from starlette.responses import JSONResponse
 
 from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup

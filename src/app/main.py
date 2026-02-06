@@ -5,13 +5,13 @@ from asgi_correlation_id import CorrelationIdMiddleware
 from fastapi import FastAPI
 from sindripy.value_objects import SindriValidationError
 
-from src.auth.routes import auth_routes
-from src.delivery.alembic_migrator import AlembicMigrator
-from src.delivery.handlers.error_handlers import (
+from src.app.alembic_migrator import AlembicMigrator
+from src.app.handlers.error_handlers import (
     sindri_validation_error_handler,
     unexpected_exception_handler,
 )
-from src.delivery.middleware.fast_api_log_middleware import FastapiLogMiddleware
+from src.app.middleware.fast_api_log_middleware import FastapiLogMiddleware
+from src.auth.routes import auth_routes
 from src.shared.infra.logger.fastapi_file_logger import (
     create_api_logger,
 )

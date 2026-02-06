@@ -3,9 +3,9 @@ from collections.abc import AsyncGenerator
 import pytest
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio.session import AsyncSession
-from src.delivery.routers.social.user import get_async_session
 
-from src.delivery.main import app
+from src.app.main import app
+from src.shared.delivery.db_session import get_async_session
 
 pytest_plugins = [
     "tests.shared.infra.database_fixtures",
