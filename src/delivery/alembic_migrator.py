@@ -3,7 +3,7 @@ import asyncio
 from alembic import command
 from alembic.config import Config
 
-from src.shared.infra.settings import Settings
+from src.shared.delivery.settings import Settings
 
 
 class AlembicMigrator:

@@ -12,10 +12,10 @@ from src.delivery.handlers.error_handlers import (
 )
 from src.delivery.middleware.fast_api_log_middleware import FastapiLogMiddleware
 from src.delivery.routers.auth.routes import auth_routes
-from src.delivery.routers.social.routes import social_routes
 from src.shared.infra.logger.fastapi_file_logger import (
     create_api_logger,
 )
+from src.social.routes import social_routes
 
 
 @asynccontextmanager

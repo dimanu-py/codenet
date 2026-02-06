@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status
 
-from src.delivery.routers.social.user.routes import user_routes
 from src.shared.infra.http.error_response import InternalServerError
+from src.social.user.delivery.routes import user_routes
 
 social_routes = APIRouter(
     prefix="/app/social",

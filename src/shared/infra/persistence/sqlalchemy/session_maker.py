@@ -5,10 +5,10 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
+from src.shared.delivery.settings import Settings
 from src.shared.infra.persistence.sqlalchemy.base import (
     Base,
 )
-from src.shared.infra.settings import Settings
 
 
 class SessionMaker:
