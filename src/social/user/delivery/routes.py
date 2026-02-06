@@ -5,7 +5,6 @@ from src.shared.infra.http.error_response import (
 )
 from src.social.user.delivery.removal import removal_router
 from src.social.user.delivery.search import search_router
-from src.social.user.delivery.signup import signup_router
 
 user_routes = APIRouter(
     prefix="/users",
@@ -18,6 +17,5 @@ user_routes = APIRouter(
     },
 )
 
-user_routes.include_router(signup_router.router)
 user_routes.include_router(search_router.router)
 user_routes.include_router(removal_router.router)
