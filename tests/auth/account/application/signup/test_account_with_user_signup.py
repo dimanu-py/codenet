@@ -1,6 +1,9 @@
+from unittest.mock import AsyncMock
+
 import pytest
 
 from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
+from src.social.user.application.signup.user_signup import UserSignup
 from tests.auth.account.domain.mothers.account_mother import AccountMother
 from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
 from tests.social.user.domain.mothers.user_mother import UserMother
@@ -11,6 +14,7 @@ from tests.social.user.domain.mothers.user_mother import UserMother
 class TestAccountWithUserSignup:
     def setup_method(self) -> None:
         self._account_repository = MockAccountRepository()
+        self._user_creator = AsyncMock(spec=UserSignup)
         self._signup = AccountWithUserSignup(repository=self._account_repository)
 
     async def test_should_signup_account_and_user(self) -> None:
@@ -32,3 +36,4 @@ class TestAccountWithUserSignup:
         self._account_repository.should_have_saved(account)
 
     def _should_have_saved_user(self, user: dict) -> None:
+        self._user_creator.assert_awaited_once_with(user)
