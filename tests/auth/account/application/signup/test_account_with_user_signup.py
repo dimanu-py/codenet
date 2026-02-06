@@ -23,20 +23,20 @@ class TestAccountWithUserSignup:
 
     async def test_should_signup_account_and_user(self) -> None:
         account = AccountMother.any()
-        user = UserMother.create(id=account["id"], email=account["email"]).to_primitives()
+        user_primitives = UserMother.create(id=account["id"], email=account["email"]).to_primitives()
 
         self._clock.should_generate(account["created_at"])
 
         await self._signup.execute(
             account_id=account["id"],
-            name=user["name"],
-            username=user["username"],
+            name=user_primitives["name"],
+            username=user_primitives["username"],
             email=account["email"],
             plain_password=account["password"],
         )
 
         self._should_have_saved_account(account)
-        self._should_have_saved_user(user)
+        self._should_have_saved_user(user_primitives)
 
     def _should_have_saved_account(self, account: dict) -> None:
         self._account_repository.should_have_saved(account)
