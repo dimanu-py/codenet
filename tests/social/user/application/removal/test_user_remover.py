@@ -18,15 +18,14 @@ class TestUserRemover(UserModuleUnitTestConfig):
         self._should_search_and_find(user)
         command = UserRemovalCommand(username=user.username.value)
 
-        self._should_remove(user)
-
         await self._user_remover.execute(command)
+
+        self._should_have_removed(user)
 
     async def test_should_not_allow_to_remove_non_signup_user(self) -> None:
         user_username = UserUsernamePrimitivesMother.any()
         command = UserRemovalCommand(username=user_username)
 
-        user = UserMother.with_username(user_username)
-        self._should_search_and_not_find(user)
+        self._should_search_and_not_find_user()
 
         await async_expect(lambda: self._user_remover.execute(command)).to(raise_error(UserNotFound))
