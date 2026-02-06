@@ -54,6 +54,18 @@ git = [
     "python-semantic-release>=10.4.1",
 ]
 
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
+pythonpath = ["."]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+markers = [
+    "unit: mark a test as a unit test",
+    "integration: mark a test as an integration test",
+    "acceptance: mark a test as an acceptance test"
+]
 
 [tool.ruff]
 line-length = 120
