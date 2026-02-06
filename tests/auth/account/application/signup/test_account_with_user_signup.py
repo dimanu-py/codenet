@@ -15,9 +15,11 @@ from tests.social.user.domain.mothers.user_mother import UserMother
 class TestAccountWithUserSignup:
     def setup_method(self) -> None:
         self._account_repository = MockAccountRepository()
-        self._user_creator = AsyncMock(spec=UserSignup)
+        self._user_signup = AsyncMock(spec=UserSignup)
         self._clock = MockClock()
-        self._signup = AccountWithUserSignup(repository=self._account_repository, clock=self._clock)
+        self._signup = AccountWithUserSignup(
+            repository=self._account_repository, user_signup=self._user_signup, clock=self._clock
+        )
 
     async def test_should_signup_account_and_user(self) -> None:
         account = AccountMother.any()
@@ -40,4 +42,4 @@ class TestAccountWithUserSignup:
         self._account_repository.should_have_saved(account)
 
     def _should_have_saved_user(self, user: dict) -> None:
-        self._user_creator.assert_awaited_once_with(user)
+        self._user_signup.assert_awaited_once_with(user)
