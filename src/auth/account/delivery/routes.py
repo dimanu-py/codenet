@@ -1,10 +1,11 @@
 from fastapi import APIRouter, status
 
-from src.delivery.routers.auth.account.routes import account_routes
+from src.auth.account.delivery.signup.signup_router import signup_router
 from src.shared.infra.http.error_response import InternalServerError
 
-auth_routes = APIRouter(
-    prefix="/app/auth",
+account_routes = APIRouter(
+    prefix="/account",
+    tags=["Auth / Account"],
     responses={
         status.HTTP_500_INTERNAL_SERVER_ERROR: {
             "model": InternalServerError,
@@ -13,4 +14,4 @@ auth_routes = APIRouter(
     },
 )
 
-auth_routes.include_router(account_routes)
+account_routes.include_router(signup_router)
