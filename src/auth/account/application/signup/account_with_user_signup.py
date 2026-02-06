@@ -32,5 +32,5 @@ class AccountWithUserSignup:
         pass
 
     async def _signup_account_with(self, account_id: str, email: str, plain_password: str) -> None:
-        account = Account.signup(id=account_id, email=email, password=plain_password)
+        account = Account.signup(id=account_id, email=email, password=plain_password, clock=self._clock)
         await self._repository.save(account)

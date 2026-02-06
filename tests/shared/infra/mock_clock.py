@@ -13,4 +13,5 @@ class MockClock(Clock):
         return self._mock_now.return_value
 
     def should_generate(self, date: datetime) -> None:
+        self._mock_now()
         self._mock_now.return_value = date
