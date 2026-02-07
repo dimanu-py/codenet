@@ -2,7 +2,7 @@ from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_repository import AccountRepository
 from src.auth.account.domain.password_manager import PasswordManager
 from src.shared.domain.clock import Clock
-from src.social.user.application.signup.user_signup import UserSignup
+from src.backoffice.user.application.signup.user_signup import UserSignup
 
 
 class AccountWithUserSignup:

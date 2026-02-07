@@ -13,8 +13,8 @@ from src.shared.delivery.fastapi_response import FastAPIResponse
 from src.shared.infra.datetime_clock import DatetimeClock
 from src.shared.infra.http.error_response import UnprocessableEntityError
 from src.shared.infra.http.success_response import AcceptedResponse
-from src.social.user.application.signup.user_signup import UserSignup
-from src.social.user.infra.persistence.postgres_user_repository import PostgresUserRepository
+from src.backoffice.user.application.signup.user_signup import UserSignup
+from src.backoffice.user.infra.persistence.postgres_user_repository import PostgresUserRepository
 
 signup_router = APIRouter()
 

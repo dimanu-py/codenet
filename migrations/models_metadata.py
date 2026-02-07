@@ -7,7 +7,7 @@ needed models.
 """
 from src.auth.account.infra.persistence.account_model import AccountModel
 from src.shared.infra.persistence.sqlalchemy.base import Base
-from src.social.user.infra.persistence.user_model import UserModel
+from src.backoffice.user.infra.persistence.user_model import UserModel
 
 base = Base
 

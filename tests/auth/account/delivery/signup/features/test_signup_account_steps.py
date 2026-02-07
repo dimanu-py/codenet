@@ -7,8 +7,8 @@ from pytest_bdd import given, scenarios, then, when
 
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
 from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import AccountPasswordHashPrimitivesMother
-from tests.social.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
-from tests.social.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
+from tests.backoffice.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
+from tests.backoffice.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
 
 pytestmark = [pytest.mark.acceptance]
 

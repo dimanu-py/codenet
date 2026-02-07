@@ -4,12 +4,12 @@ import pytest
 
 from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
 from src.auth.account.domain.account import Account
-from src.social.user.application.signup.user_signup import UserSignup
+from src.backoffice.user.application.signup.user_signup import UserSignup
 from tests.auth.account.domain.mothers.account_mother import AccountMother
 from tests.auth.account.infra.fake_password_manager import FakePasswordManager
 from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
 from tests.shared.infra.mock_clock import MockClock
-from tests.social.user.domain.mothers.user_mother import UserMother
+from tests.backoffice.user.domain.mothers.user_mother import UserMother
 
 
 @pytest.mark.unit

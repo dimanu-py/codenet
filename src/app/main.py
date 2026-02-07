@@ -15,7 +15,7 @@ from src.auth.routes import auth_routes
 from src.shared.infra.logger.fastapi_file_logger import (
     create_api_logger,
 )
-from src.social.routes import social_routes
+from src.backoffice.routes import social_routes
 
 
 @asynccontextmanager
