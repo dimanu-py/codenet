@@ -11,8 +11,8 @@ class AccountEmail(StringValueObject):
     EMAIL_FORMAT = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 
     @validate
-    def _ensure_email_has_correct_format(self, value: str) -> None:
-        if re.match(self.EMAIL_FORMAT, value) is None:
+    def _ensure_email_has_correct_format(self) -> None:
+        if re.match(self.EMAIL_FORMAT, self._value) is None:
             raise InvalidEmailFormat
 
 

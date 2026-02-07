@@ -11,8 +11,8 @@ class UserUsername(StringValueObject):
     CORRECT_CHARACTERS = r"^[a-zA-Z0-9_.]+$"
 
     @validate
-    def _ensure_name_has_valid_characters(self, value: str) -> None:
-        if re.match(self.CORRECT_CHARACTERS, value) is None:
+    def _ensure_name_has_valid_characters(self) -> None:
+        if re.match(self.CORRECT_CHARACTERS, self._value) is None:
             raise InvalidUsernameFormat
 
 
