@@ -1,5 +1,6 @@
 import pytest
 from expects import be_empty, equal, expect
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from src.shared.domain.criteria.condition.operator import Operator
@@ -50,6 +51,12 @@ class TestPostgresUserRepository:
         await self._repository.delete(user.username)
 
         await self._should_have_deleted(user)
+
+    async def test_should_raise_error_if_user_does_not_match_existing_an_account(self) -> None:
+        user = UserMother.any()
+
+        with pytest.raises(IntegrityError):
+            await self._repository.save(user)
 
     async def _should_have_deleted(self, user: User) -> None:
         saved_user = await self._repository.search(user.username)
