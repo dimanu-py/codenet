@@ -6,6 +6,7 @@ from src.auth.account.application.signup.account_with_user_signup import Account
 from src.auth.account.domain.account import Account
 from src.social.user.application.signup.user_signup import UserSignup
 from tests.auth.account.domain.mothers.account_mother import AccountMother
+from tests.auth.account.infra.fake_password_manager import FakePasswordManager
 from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
 from tests.shared.infra.mock_clock import MockClock
 from tests.social.user.domain.mothers.user_mother import UserMother
@@ -18,8 +19,12 @@ class TestAccountWithUserSignup:
         self._account_repository = MockAccountRepository()
         self._user_signup = AsyncMock(spec=UserSignup)
         self._clock = MockClock()
+        self._password_manager = FakePasswordManager()
         self._signup = AccountWithUserSignup(
-            repository=self._account_repository, user_signup=self._user_signup, clock=self._clock
+            repository=self._account_repository,
+            user_signup=self._user_signup,
+            password_manager=self._password_manager,
+            clock=self._clock,
         )
 
     async def test_should_signup_account_and_user(self) -> None:

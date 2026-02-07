@@ -5,6 +5,7 @@ from starlette.responses import JSONResponse
 
 from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
 from src.auth.account.delivery.signup.signup_request import SignupRequest
+from src.auth.account.domain.password_manager import PasswordManager
 from src.auth.account.infra.api.signup.signup_controller import SignupController
 from src.auth.account.infra.persistence.postgres_account_repository import PostgresAccountRepository
 from src.shared.delivery.db_session import get_async_session
@@ -25,6 +26,7 @@ def get_controller(session: AsyncSession = Depends(get_async_session)) -> Signup
             user_signup=UserSignup(
                 repository=PostgresUserRepository(session=session),
             ),
+            password_manager=PasswordManager(),
             clock=DatetimeClock(),
         )
     )

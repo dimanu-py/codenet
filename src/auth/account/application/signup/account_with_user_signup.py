@@ -1,14 +1,16 @@
 from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_repository import AccountRepository
+from src.auth.account.domain.password_manager import PasswordManager
 from src.shared.domain.clock import Clock
 from src.social.user.application.signup.user_signup import UserSignup
 
 
 class AccountWithUserSignup:
-    def __init__(self, repository: AccountRepository, user_signup: UserSignup, clock: Clock) -> None:
+    def __init__(self, repository: AccountRepository, user_signup: UserSignup, password_manager: PasswordManager, clock: Clock) -> None:
         self._repository = repository
         self._user_signup = user_signup
         self._clock = clock
+        self._password_manager = password_manager
 
     async def execute(
         self,
