@@ -27,3 +27,7 @@ class Account(Aggregate):
             status=AccountStatus.default(),
             created_at=clock.now(),
         )
+
+    @property
+    def id(self) -> AccountId:
+        return self._id
