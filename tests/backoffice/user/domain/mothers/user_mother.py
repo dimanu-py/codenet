@@ -14,6 +14,11 @@ class UserMother:
         )
 
     @classmethod
+    def create(cls, **overrides) -> User:
+        default = cls.any().to_primitives()
+        return User(**{**default, **overrides})
+
+    @classmethod
     def with_username(cls, username: str) -> User:
         return cls.create(username=username)
 
