@@ -6,8 +6,8 @@ from expects import equal, expect
 from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
 from src.auth.account.delivery.signup.signup_request import SignupRequest
 from src.auth.account.infra.api.signup.signup_controller import SignupController
+from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
 from tests.auth.account.domain.mothers.account_id_primitives_mother import AccountIdPrimitivesMother
-from tests.social.user.domain.mothers.user_email_primitives_mother import UserEmailPrimitivesMother
 from tests.social.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
 from tests.social.user.domain.mothers.user_password_primitives_mother import UserPasswordPrimitivesMother
 from tests.social.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
@@ -26,7 +26,7 @@ class TestSignupController:
         request_body = SignupRequest(
             name=UserNamePrimitivesMother.any(),
             username=UserUsernamePrimitivesMother.any(),
-            email=UserEmailPrimitivesMother.any(),
+            email=AccountEmailPrimitivesMother.any(),
             password=UserPasswordPrimitivesMother.any(),
         )
         account_id = AccountIdPrimitivesMother.any()

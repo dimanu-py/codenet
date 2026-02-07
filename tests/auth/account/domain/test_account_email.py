@@ -1,15 +1,15 @@
 import pytest
 from expects import equal, expect, raise_error
 
-from src.social.user.domain.user_email import InvalidEmailFormat, UserEmail
+from src.auth.account.domain.account_email import InvalidEmailFormat, AccountEmail
 
 
 @pytest.mark.unit
-class TestUserEmail:
-    def test_should_create_user_email_with_valid_format(self) -> None:
+class TestAccountEmail:
+    def test_should_create_email_with_valid_format(self) -> None:
         valid_email = "test.user@example.com"
 
-        email = UserEmail(valid_email)
+        email = AccountEmail(valid_email)
 
         expect(email.value).to(equal(valid_email))
 
@@ -25,4 +25,4 @@ class TestUserEmail:
         ],
     )
     def test_should_raise_error_when_email_has_invalid_format(self, invalid_email: str) -> None:
-        expect(lambda: UserEmail(invalid_email)).to(raise_error(InvalidEmailFormat))
+        expect(lambda: AccountEmail(invalid_email)).to(raise_error(InvalidEmailFormat))

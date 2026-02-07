@@ -7,7 +7,7 @@ from src.shared.domain.value_objects.string_value_object import (
 from src.shared.domain.value_objects.validation import validate
 
 
-class UserEmail(StringValueObject):
+class AccountEmail(StringValueObject):
     EMAIL_FORMAT = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 
     @validate
