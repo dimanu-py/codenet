@@ -26,4 +26,4 @@ class SqlAlchemyRepository[Model: Base]:
     def search_by_id(self, entity_id: Uuid) -> Entity | None:
         with self._session_maker.get_session() as session:
             entity_model = session.query(self._model_class).filter(self._model_class.id == entity_id.value).first()
-            return entity_model.to_aggregate() if entity_model else None
+            return entity_model.to_domain() if entity_model else None

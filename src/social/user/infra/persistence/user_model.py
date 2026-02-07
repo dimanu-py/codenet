@@ -18,7 +18,7 @@ class UserModel(Base):
     def from_domain(cls, user: User) -> Self:
         return cls(**user.to_primitives())
 
-    def to_aggregate(self) -> User:
+    def to_domain(self) -> User:
         return User(
             id=str(self.id),
             name=self.name,

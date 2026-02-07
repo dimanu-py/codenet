@@ -26,14 +26,14 @@ class PostgresUserRepository(UserRepository):
     @override
     async def search(self, username: UserUsername) -> Optional[User]:
         user = await self._session.get(UserModel, username.value)
-        return Optional.from_nullable(user).map(lambda u: u.to_aggregate())
+        return Optional.from_nullable(user).map(lambda u: u.to_domain())
 
     @override
     async def matching(self, criteria: Criteria) -> list[User]:
         converter = CriteriaToSqlalchemyConverter()
         query = converter.convert(UserModel, criteria)
         users = await self._session.scalars(query)
-        return [user.to_aggregate() for user in users]
+        return [user.to_domain() for user in users]
 
     @override
     async def delete(self, username: UserUsername) -> None:
