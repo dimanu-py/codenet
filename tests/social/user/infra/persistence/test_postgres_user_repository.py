@@ -19,7 +19,7 @@ class TestPostgresUserRepository:
     def setup_method(self, session: AsyncSession) -> None:
         self._repository = PostgresUserRepository(session)
 
-    async def test_should_save_and_find_existing_user(self) -> None:
+    async def test_should_save_and_find_stored_user(self) -> None:
         user = UserMother.any()
 
         await self._repository.save(user)
@@ -27,7 +27,7 @@ class TestPostgresUserRepository:
 
         expect(user).to(equal(saved_user.unwrap()))
 
-    async def test_should_match_a_user_based_on_criteria(self) -> None:
+    async def test_should_match_an_existing_user_based_on_criteria(self) -> None:
         user = await self._given_an_user_already_exists()
         criteria = CriteriaMother.with_one_condition(
             field="username", operator=Operator.EQUAL, value=user.username.value
@@ -37,7 +37,7 @@ class TestPostgresUserRepository:
 
         expect(searched_users).to(equal([user]))
 
-    async def test_should_return_empty_list_if_no_users_are_found(self) -> None:
+    async def test_should_return_empty_list_if_no_users_match_criteria(self) -> None:
         criteria = CriteriaMother.empty()
 
         searched_users = await self._repository.matching(criteria)
