@@ -22,7 +22,7 @@ signup_router = APIRouter()
 def get_controller(session: AsyncSession = Depends(get_async_session)) -> SignupController:
     return SignupController(
         use_case=AccountWithUserSignup(
-            repository=PostgresAccountRepository(),
+            repository=PostgresAccountRepository(session=session),
             user_signup=UserSignup(
                 repository=PostgresUserRepository(session=session),
             ),
