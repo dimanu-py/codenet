@@ -7,7 +7,11 @@ from sqlalchemy.ext.asyncio.session import AsyncSession
 from src.app.main import app
 from src.shared.delivery.db_session import get_async_session
 
-pytest_plugins = ["tests.shared.infra.database_fixtures", "tests.backoffice.user.user_fixtures"]
+pytest_plugins = [
+    "tests.shared.infra.database_fixtures",
+    "tests.backoffice.user.user_fixtures",
+    "tests.auth.account.account_fixtures",
+]
 
 
 @pytest.fixture
