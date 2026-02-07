@@ -35,7 +35,6 @@ class AccountWithUserSignup:
             id=user_id,
             name=name,
             username=username,
-            email=email,
         )
 
     async def _signup_account_with(self, account_id: str, email: str, plain_password: str) -> None:

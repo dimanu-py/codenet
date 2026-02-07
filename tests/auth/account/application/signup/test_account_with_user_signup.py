@@ -25,7 +25,7 @@ class TestAccountWithUserSignup:
     async def test_should_signup_account_and_user(self) -> None:
         account = AccountMother.any()
         account_primitives = account.to_primitives()
-        user_primitives = UserMother.create(id=account_primitives["id"], email=account_primitives["email"]).to_primitives()
+        user_primitives = UserMother.create(id=account_primitives["id"]).to_primitives()
 
         self._clock.should_generate(account_primitives["created_at"])
 

@@ -11,14 +11,13 @@ class UserSignup:
     def __init__(self, repository: UserRepository) -> None:
         self._repository = repository
 
-    async def execute(self, id: str, name: str, username: str, email: str) -> None:
+    async def execute(self, id: str, name: str, username: str) -> None:
         await self._ensure_user_with_same_username_is_not_signed_up(username)
 
         user = User(
             id=id,
             name=name,
             username=username,
-            email=email,
         )
 
         await self._store_user(user)

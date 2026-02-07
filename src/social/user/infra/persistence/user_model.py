@@ -13,7 +13,6 @@ class UserModel(Base):
     id: Mapped[str] = mapped_column(String(36))
     name: Mapped[str] = mapped_column(String, nullable=False)
     username: Mapped[str] = mapped_column(String, primary_key=True)
-    email: Mapped[str] = mapped_column(String, nullable=False)
 
     @classmethod
     def from_domain(cls, user: User) -> Self:
@@ -24,5 +23,4 @@ class UserModel(Base):
             id=str(self.id),
             name=self.name,
             username=self.username,
-            email=self.email,
         )
