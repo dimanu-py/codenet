@@ -8,7 +8,7 @@ from src.auth.account.delivery.signup.signup_request import SignupRequest
 from src.auth.account.infra.api.signup.signup_controller import SignupController
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
 from tests.auth.account.domain.mothers.account_id_primitives_mother import AccountIdPrimitivesMother
-from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import UserPasswordPrimitivesMother
+from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import AccountPasswordHashPrimitivesMother
 from tests.social.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
 from tests.social.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
 
@@ -27,7 +27,7 @@ class TestSignupController:
             name=UserNamePrimitivesMother.any(),
             username=UserUsernamePrimitivesMother.any(),
             email=AccountEmailPrimitivesMother.any(),
-            password=UserPasswordPrimitivesMother.any(),
+            password=AccountPasswordHashPrimitivesMother.any(),
         )
         account_id = AccountIdPrimitivesMother.any()
         self._should_signup_account_and_user()
