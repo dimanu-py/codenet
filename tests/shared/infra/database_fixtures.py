@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio.engine import AsyncConnection, AsyncEngine, create_a
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from src.shared.infra.persistence.sqlalchemy.base import Base
-from tests.backoffice.user.infra.persistence.postgres_test_container import PostgresTestContainer
+from tests.shared.infra.postgres_test_container import PostgresTestContainer
 
 
 @pytest.fixture(scope="session")
