@@ -8,6 +8,10 @@ class AccountStatus(StrEnum):
     ACTIVE = "active"
 
     @classmethod
+    def default(cls) -> str:
+        return cls.ACTIVE
+
+    @classmethod
     @override
     def _missing_(cls, value: object) -> None:
         raise AccountStatusDoesNotExists(str(value))

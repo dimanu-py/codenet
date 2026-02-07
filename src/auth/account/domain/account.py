@@ -23,6 +23,6 @@ class Account(Aggregate):
             id=id,
             email=email,
             password=password,
-            status="active",
+            status=AccountStatus.default(),
             created_at=clock.now(),
         )
