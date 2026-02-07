@@ -20,3 +20,12 @@ class AccountModel(Base):
     @classmethod
     def from_domain(cls, account: Account) -> Self:
         return cls(**account.to_primitives())
+
+    def to_domain(self) -> Account:
+        return Account(
+            id=self.id,
+            email=self.email,
+            password=self.password,
+            status=self.status,
+            created_at=self.created_at,
+        )
