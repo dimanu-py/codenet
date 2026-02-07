@@ -1,0 +1,4 @@
+from src.shared.domain.value_objects.uuid import Uuid
+
+
+class AccountId(Uuid): ...

@@ -1,13 +1,14 @@
 from datetime import datetime
 from typing import Self
 
+from src.auth.account.domain.account_id import AccountId
 from src.shared.domain.clock import Clock
 from src.shared.domain.value_objects.aggregate import Aggregate
 
 
 class Account(Aggregate):
     def __init__(self, id: str, email: str, password: str, status: str, created_at: datetime) -> None:
-        self._id = id
+        self._id = AccountId(id)
         self._email = email
         self._password = password
         self._status = status
