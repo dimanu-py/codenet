@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Self
 
+from src.auth.account.domain.account_created_at import AccountCreatedAt
 from src.auth.account.domain.account_email import AccountEmail
 from src.auth.account.domain.account_id import AccountId
 from src.auth.account.domain.account_password_hash import AccountPasswordHash
@@ -15,7 +16,7 @@ class Account(Aggregate):
         self._email = AccountEmail(email)
         self._password = AccountPasswordHash(password)
         self._status = AccountStatus(status)
-        self._created_at = created_at
+        self._created_at = AccountCreatedAt(created_at)
 
     @classmethod
     def signup(cls, id: str, email: str, password: str, clock: Clock) -> Self:
