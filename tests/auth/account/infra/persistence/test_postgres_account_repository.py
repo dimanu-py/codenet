@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_id import AccountId
+from src.auth.account.infra.persistence.account_model import AccountModel
 from src.auth.account.infra.persistence.postgres_account_repository import PostgresAccountRepository
 from tests.auth.account.domain.mothers.account_mother import AccountMother
 
@@ -26,4 +27,5 @@ class TestPostgresAccountRepository:
         expect(account).to(equal(saved_account))
 
     async def _get_saved_account(self, account_id: AccountId) -> Account | None:
-        pass
+        account = await self._session.get(AccountModel, account_id.value)
+        return account.to_domain() if account else None
