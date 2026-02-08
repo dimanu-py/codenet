@@ -9,11 +9,6 @@ from httpx import AsyncClient
 from pytest_bdd import given, parsers, scenarios, then, when
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
-from src.auth.account.infra.persistence.account_model import AccountModel
-from src.backoffice.user.infra.persistence.user_model import UserModel
-from tests.auth.account.domain.mothers.account_mother import AccountMother
-from tests.backoffice.user.domain.mothers.user_mother import UserMother
-
 pytestmark = [pytest.mark.acceptance]
 
 scenarios("search_user.feature")
@@ -23,15 +18,11 @@ _ROUTE_PATH = "/app/backoffice/users/"
 
 
 @given(parsers.parse("there are users with usernames {usernames}"))
-def existing_users(session: AsyncSession, usernames: str) -> None:
+def existing_users(session: AsyncSession, create_user_with_account, usernames: str) -> None:
     usernames = ast.literal_eval(usernames)
-    users = [UserMother.with_username(username) for username in usernames]
-    for user in users:
-        user_primitives = user.to_primitives()
-        account = AccountMother.with_id(user_primitives["id"])
-        session.add(AccountModel.from_domain(account))
-        session.add(UserModel.from_domain(user))
     loop = asyncio.get_event_loop()
+    for username in usernames:
+        loop.run_until_complete(create_user_with_account(username=username))
     loop.run_until_complete(session.commit())
 
 
