@@ -20,5 +20,5 @@ class InvalidUsernameFormat(DomainValidationError):
     def __init__(self) -> None:
         super().__init__(
             message="Username cannot contain special characters",
-            error_type="invalid_username_format",
+            error_type="user_validation_error",
         )
