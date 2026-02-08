@@ -47,14 +47,11 @@ class TestPostgresUserRepository:
     async def test_should_delete_existing_user(self, existing_user: User) -> None:
         await self._repository.delete(existing_user.username)
 
-        await self._should_have_deleted(existing_user)
+        saved_user = await self._repository.search(existing_user.username)
+        expect(saved_user).to(equal(Optional.empty()))
 
-    async def test_should_raise_error_if_user_does_not_match_existing_an_account(self) -> None:
+    async def test_should_raise_error_if_user_does_not_match_an_existing_account(self) -> None:
         user = UserMother.any()
 
         with pytest.raises(IntegrityError):
             await self._repository.save(user)
-
-    async def _should_have_deleted(self, user: User) -> None:
-        saved_user = await self._repository.search(user.username)
-        expect(saved_user).to(equal(Optional.empty()))
