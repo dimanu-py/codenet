@@ -6,6 +6,7 @@ from httpx import AsyncClient, Response
 from pytest_bdd import given, scenarios, then, when
 
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
+from tests.auth.account.domain.mothers.account_id_primitives_mother import AccountIdPrimitivesMother
 from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import AccountPasswordHashPrimitivesMother
 from tests.backoffice.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
 from tests.backoffice.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
@@ -48,9 +49,10 @@ async def filled_signup_form_with_existing_email(existing_account_email: str) ->
 
 
 @when("I submit the signup form", target_fixture="signup_response")
-def submit_signup_form(client: AsyncClient, signup_form: dict, user_id: str) -> Response:
+def submit_signup_form(client: AsyncClient, signup_form: dict) -> Response:
+    account_id = AccountIdPrimitivesMother.any()
     loop = asyncio.get_event_loop()
-    return loop.run_until_complete(client.post(f"{_ROUTE_PATH}{user_id}", json=signup_form))
+    return loop.run_until_complete(client.post(f"{_ROUTE_PATH}{account_id}", json=signup_form))
 
 
 @then("I should have an account and a user profile created")
