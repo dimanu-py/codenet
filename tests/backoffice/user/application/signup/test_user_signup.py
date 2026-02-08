@@ -18,7 +18,7 @@ class TestUserSignup(UserModuleUnitTestConfig):
 
         self._should_have_saved(user)
 
-    async def test_should_not_allow_signup_user_with_existing_username(self) -> None:
+    async def test_should_not_allow_to_signup_a_user_with_existing_username(self) -> None:
         existing_user = UserMother.any()
         self._should_search_and_find(existing_user)
 
