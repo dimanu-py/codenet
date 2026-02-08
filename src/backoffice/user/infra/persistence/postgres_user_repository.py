@@ -2,15 +2,15 @@ from typing import override
 
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
+from src.backoffice.user.domain.user import User
+from src.backoffice.user.domain.user_repository import UserRepository
+from src.backoffice.user.domain.user_username import UserUsername
+from src.backoffice.user.infra.persistence.user_model import UserModel
 from src.shared.domain.criteria.criteria import Criteria
 from src.shared.domain.value_objects.optional import Optional
 from src.shared.infra.criteria.criteria_to_sqlalchemy_converter import (
     CriteriaToSqlalchemyConverter,
 )
-from src.backoffice.user.domain.user import User
-from src.backoffice.user.domain.user_repository import UserRepository
-from src.backoffice.user.domain.user_username import UserUsername
-from src.backoffice.user.infra.persistence.user_model import UserModel
 
 
 class PostgresUserRepository(UserRepository):
@@ -26,7 +26,7 @@ class PostgresUserRepository(UserRepository):
     @override
     async def search(self, username: UserUsername) -> Optional[User]:
         user = await self._session.get(UserModel, username.value)
-        return Optional.from_nullable(user).map(lambda u: u.to_domain())
+        return Optional.lift(user, lambda model: model.to_domain())
 
     @override
     async def matching(self, criteria: Criteria) -> list[User]:
