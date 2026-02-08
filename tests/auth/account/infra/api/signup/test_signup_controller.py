@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock
 import pytest
 from expects import equal, expect
 
-from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
+from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup, EmailAlreadyExists
 from src.auth.account.delivery.signup.signup_request import SignupRequest
 from src.auth.account.infra.api.signup.signup_controller import SignupController
 from src.backoffice.user.application.signup.user_signup import UsernameAlreadyExists
@@ -47,6 +47,20 @@ class TestSignupController:
         )
         account_id = AccountIdPrimitivesMother.any()
         self._should_fail_validating_signup_data_with(UsernameAlreadyExists)
+
+        self._response = await self._controller.signup(account_id=account_id, **request_body.model_dump())
+
+        self._assert_contract_is_met_on_error(409)
+
+    async def test_should_return_409_when_signing_up_an_account_with_existing_email(self) -> None:
+        request_body = SignupRequest(
+            name=UserNamePrimitivesMother.any(),
+            username=UserUsernamePrimitivesMother.any(),
+            email=AccountEmailPrimitivesMother.any(),
+            password=AccountPasswordHashPrimitivesMother.any(),
+        )
+        account_id = AccountIdPrimitivesMother.any()
+        self._should_fail_validating_signup_data_with(EmailAlreadyExists)
 
         self._response = await self._controller.signup(account_id=account_id, **request_body.model_dump())
 
