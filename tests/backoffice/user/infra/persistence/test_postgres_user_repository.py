@@ -28,15 +28,14 @@ class TestPostgresUserRepository:
 
         expect(user).to(equal(saved_user.unwrap()))
 
-    async def test_should_match_an_existing_user_based_on_criteria(self, existing_account_id: str) -> None:
-        user = await self._given_an_user_already_exists(existing_account_id)
+    async def test_should_match_an_existing_user_based_on_criteria(self, existing_user: User) -> None:
         criteria = CriteriaMother.with_one_condition(
-            field="username", operator=Operator.EQUAL, value=user.username.value
+            field="username", operator=Operator.EQUAL, value=existing_user.username.value
         )
 
         searched_users = await self._repository.matching(criteria)
 
-        expect(searched_users).to(equal([user]))
+        expect(searched_users).to(equal([existing_user]))
 
     async def test_should_return_empty_list_if_no_users_match_criteria(self) -> None:
         criteria = CriteriaMother.empty()
@@ -45,12 +44,10 @@ class TestPostgresUserRepository:
 
         expect(searched_users).to(be_empty)
 
-    async def test_should_delete_existing_user(self, existing_account_id: str) -> None:
-        user = await self._given_an_user_already_exists(existing_account_id)
+    async def test_should_delete_existing_user(self, existing_user: User) -> None:
+        await self._repository.delete(existing_user.username)
 
-        await self._repository.delete(user.username)
-
-        await self._should_have_deleted(user)
+        await self._should_have_deleted(existing_user)
 
     async def test_should_raise_error_if_user_does_not_match_existing_an_account(self) -> None:
         user = UserMother.any()
@@ -61,8 +58,3 @@ class TestPostgresUserRepository:
     async def _should_have_deleted(self, user: User) -> None:
         saved_user = await self._repository.search(user.username)
         expect(saved_user).to(equal(Optional.empty()))
-
-    async def _given_an_user_already_exists(self, user_id: str) -> User:
-        user = UserMother.with_id(user_id)
-        await self._repository.save(user)
-        return user
