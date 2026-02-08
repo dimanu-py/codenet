@@ -13,3 +13,22 @@ async def existing_account_id(session: AsyncSession) -> str:
     session.add(AccountModel.from_domain(account))
     await session.commit()
     return account_id
+
+
+@pytest.fixture
+async def existing_account_ids(session: AsyncSession, request) -> list[str]:
+    """Create multiple accounts and return their IDs.
+
+    Use with pytest.mark.parametrize on 'request' or by passing count directly.
+    Example: @pytest.mark.parametrize('existing_account_ids', [3], indirect=True)
+    """
+    count = getattr(request, 'param', 3)
+    account_ids = []
+    for _ in range(count):
+        account_id = AccountIdPrimitivesMother.any()
+        account = AccountMother.with_id(account_id)
+        session.add(AccountModel.from_domain(account))
+        account_ids.append(account_id)
+    await session.commit()
+    return account_ids
+
