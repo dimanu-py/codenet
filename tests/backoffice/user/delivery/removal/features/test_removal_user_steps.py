@@ -6,7 +6,7 @@ from fastapi import Response
 from httpx import AsyncClient
 from pytest_bdd import given, scenarios, then, when
 
-from src.backoffice.user.domain.user import User
+from tests.backoffice.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
 
 pytestmark = [pytest.mark.acceptance]
 
@@ -17,8 +17,8 @@ _ROUTE_PATH = "/app/backoffice/users/"
 
 
 @given("I am an existing user", target_fixture="existing_user_username")
-def existing_user_to_remove(existing_user: User) -> str:
-    return existing_user.username.value
+def existing_user_to_remove(existing_username: str) -> str:
+    return existing_username
 
 
 @when("I request to remove my account", target_fixture="removal_response")
@@ -31,9 +31,10 @@ def attempt_remove_existing_user(
 
 
 @when("I attempt to remove the account for non existing user", target_fixture="removal_response")
-def attempt_remove_non_existing_user(client: AsyncClient, user_username: str) -> Response:
+def attempt_remove_non_existing_user(client: AsyncClient) -> Response:
+    non_existing_username = UserUsernamePrimitivesMother.any()
     loop = asyncio.get_event_loop()
-    return loop.run_until_complete(client.delete(f"{_ROUTE_PATH}{user_username}"))
+    return loop.run_until_complete(client.delete(f"{_ROUTE_PATH}{non_existing_username}"))
 
 
 @then("I should receive an error message indicating the user does not exist")

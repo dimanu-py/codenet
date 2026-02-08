@@ -1,13 +1,13 @@
 import ast
 import asyncio
 import json
+from collections.abc import Callable
 
 import pytest
 from expects import contain, equal, expect, have_length
 from fastapi import Response
 from httpx import AsyncClient
 from pytest_bdd import given, parsers, scenarios, then, when
-from sqlalchemy.ext.asyncio.session import AsyncSession
 
 pytestmark = [pytest.mark.acceptance]
 
@@ -18,12 +18,10 @@ _ROUTE_PATH = "/app/backoffice/users/"
 
 
 @given(parsers.parse("there are users with usernames {usernames}"))
-def existing_users(session: AsyncSession, create_user_with_account, usernames: str) -> None:
-    usernames = ast.literal_eval(usernames)
+def existing_users(create_users_with_usernames: Callable, usernames: str) -> list[str]:
+    usernames_list = ast.literal_eval(usernames)
     loop = asyncio.get_event_loop()
-    for username in usernames:
-        loop.run_until_complete(create_user_with_account(username=username))
-    loop.run_until_complete(session.commit())
+    return loop.run_until_complete(create_users_with_usernames(usernames_list))
 
 
 @when(parsers.parse('I search for users with username "{username}"'), target_fixture="search_response")
