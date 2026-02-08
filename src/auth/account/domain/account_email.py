@@ -20,5 +20,5 @@ class InvalidEmailFormat(DomainValidationError):
     def __init__(self) -> None:
         super().__init__(
             message="Email cannot contain special characters and must contain '@' and '.'",
-            error_type="invalid_email_format",
+            error_type="account_validation_error",
         )
