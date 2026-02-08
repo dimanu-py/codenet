@@ -2,6 +2,7 @@ import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.account.infra.persistence.account_model import AccountModel
+from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
 from tests.auth.account.domain.mothers.account_id_primitives_mother import AccountIdPrimitivesMother
 from tests.auth.account.domain.mothers.account_mother import AccountMother
 
@@ -32,3 +33,11 @@ async def existing_account_ids(session: AsyncSession, request) -> list[str]:
     await session.commit()
     return account_ids
 
+
+@pytest.fixture
+async def existing_account_email(session: AsyncSession) -> str:
+    email = AccountEmailPrimitivesMother.any()
+    account = AccountMother.create(email=email)
+    session.add(AccountModel.from_domain(account))
+    await session.commit()
+    return email

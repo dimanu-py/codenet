@@ -27,6 +27,26 @@ def filled_signup_form() -> dict:
     }
 
 
+@given("I have filled in the signup form with a username that is already registered", target_fixture="signup_form")
+async def filled_signup_form_with_existing_username(existing_username: str) -> dict:
+    return {
+        "name": UserNamePrimitivesMother.any(),
+        "username": existing_username,
+        "email": AccountEmailPrimitivesMother.any(),
+        "password": AccountPasswordHashPrimitivesMother.any(),
+    }
+
+
+@given("I have filled in the signup form with an email that is already registered", target_fixture="signup_form")
+async def filled_signup_form_with_existing_email(existing_account_email: str) -> dict:
+    return {
+        "name": UserNamePrimitivesMother.any(),
+        "username": UserUsernamePrimitivesMother.any(),
+        "email": existing_account_email,
+        "password": AccountPasswordHashPrimitivesMother.any(),
+    }
+
+
 @when("I submit the signup form", target_fixture="signup_response")
 def submit_signup_form(client: AsyncClient, signup_form: dict, user_id: str) -> Response:
     loop = asyncio.get_event_loop()
@@ -36,3 +56,14 @@ def submit_signup_form(client: AsyncClient, signup_form: dict, user_id: str) -> 
 @then("I should have an account and a user profile created")
 def verify_signup_success(signup_response: Response) -> None:
     expect(signup_response.status_code).to(equal(202))
+
+
+@then("I should see an error message indicating the username is already in use")
+def verify_username_already_in_use_error(signup_response: Response) -> None:
+    expect(signup_response.status_code).to(equal(409))
+
+
+@then("I should see an error message indicating the email is already in use")
+def verify_email_already_in_use_error(signup_response: Response) -> None:
+    expect(signup_response.status_code).to(equal(409))
+

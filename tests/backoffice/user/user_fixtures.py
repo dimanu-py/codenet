@@ -29,6 +29,15 @@ async def existing_user(session: AsyncSession, existing_account_id: str) -> User
 
 
 @pytest.fixture
+async def existing_username(session: AsyncSession, existing_account_id: str) -> str:
+    username = UserUsernamePrimitivesMother.any()
+    user = UserMother.create(id=existing_account_id, username=username)
+    session.add(UserModel.from_domain(user))
+    await session.commit()
+    return username
+
+
+@pytest.fixture
 def create_user_with_account(session: AsyncSession):
     """Factory fixture to create users with their corresponding accounts.
 
