@@ -38,7 +38,14 @@ class TestSignupController:
 
         self._assert_contract_is_met_on_success(202, {"accepted": True})
 
-    async def test_should_return_409_when_signing_up_an_account_with_existing_username(self) -> None:
+    @pytest.mark.parametrize(
+        "expected_error",
+        [
+            pytest.param(UsernameAlreadyExists, id="username"),
+            pytest.param(EmailAlreadyExists, id="email"),
+        ]
+    )
+    async def test_should_return_409_when_signing_up_an_account_with_existing(self, expected_error: type[BaseError]) -> None:
         request_body = SignupRequest(
             name=UserNamePrimitivesMother.any(),
             username=UserUsernamePrimitivesMother.any(),
@@ -46,21 +53,7 @@ class TestSignupController:
             password=AccountPasswordHashPrimitivesMother.any(),
         )
         account_id = AccountIdPrimitivesMother.any()
-        self._should_fail_validating_signup_data_with(UsernameAlreadyExists)
-
-        self._response = await self._controller.signup(account_id=account_id, **request_body.model_dump())
-
-        self._assert_contract_is_met_on_error(409)
-
-    async def test_should_return_409_when_signing_up_an_account_with_existing_email(self) -> None:
-        request_body = SignupRequest(
-            name=UserNamePrimitivesMother.any(),
-            username=UserUsernamePrimitivesMother.any(),
-            email=AccountEmailPrimitivesMother.any(),
-            password=AccountPasswordHashPrimitivesMother.any(),
-        )
-        account_id = AccountIdPrimitivesMother.any()
-        self._should_fail_validating_signup_data_with(EmailAlreadyExists)
+        self._should_fail_validating_signup_data_with(expected_error)
 
         self._response = await self._controller.signup(account_id=account_id, **request_body.model_dump())
 
