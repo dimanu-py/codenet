@@ -1,8 +1,8 @@
-from src.shared.domain.value_objects.optional import raise_error
 from src.backoffice.user.domain.user import User
 from src.backoffice.user.domain.user_repository import UserRepository
 from src.backoffice.user.domain.user_username import UserUsername
-from tests.backoffice.user.domain.user_already_exists import UsernameAlreadyExists
+from src.shared.domain.exceptions.application_error import ConflictError
+from src.shared.domain.value_objects.optional import raise_error
 
 
 class UserSignup:
@@ -30,4 +30,12 @@ class UserSignup:
         already_signed_up_user.match(
             of=lambda _: raise_error(UsernameAlreadyExists()),
             empty=lambda: None,
+        )
+
+
+class UsernameAlreadyExists(ConflictError):
+    def __init__(self) -> None:
+        super().__init__(
+            message="Username is already registered.",
+            error_type="username_already_exists",
         )

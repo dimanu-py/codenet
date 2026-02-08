@@ -1,10 +1,9 @@
-from src.backoffice.user.application.signup.user_signup import UserSignup
-from tests.shared.expects.matchers import async_expect, raise_error
+from src.backoffice.user.application.signup.user_signup import UserSignup, UsernameAlreadyExists
 from tests.backoffice.user.application.user_module_unit_test_config import (
     UserModuleUnitTestConfig,
 )
 from tests.backoffice.user.domain.mothers.user_mother import UserMother
-from tests.backoffice.user.domain.user_already_exists import UsernameAlreadyExists
+from tests.shared.expects.matchers import async_expect, raise_error
 
 
 class TestUserSignup(UserModuleUnitTestConfig):
