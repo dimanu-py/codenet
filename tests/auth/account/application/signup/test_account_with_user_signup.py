@@ -48,11 +48,18 @@ class TestAccountWithUserSignup:
 
     async def test_should_raise_error_when_account_email_is_already_signed_up(self) -> None:
         existing_account = AccountMother.any()
+        existing_account_primitives = existing_account.to_primitives()
+        user_primitives = UserMother.create(id=existing_account_primitives["id"]).to_primitives()
         self._should_search_and_find(existing_account)
 
-        await async_expect(lambda: self._user_signup.execute(**existing_account.to_primitives())).to(
-            raise_error(EmailAlreadyExists)
-        )
+        signup_information = {
+            "account_id": existing_account_primitives["id"],
+            "name": user_primitives["name"],
+            "username": user_primitives["username"],
+            "email": existing_account_primitives["email"],
+            "plain_password": existing_account_primitives["password"],
+        }
+        await async_expect(lambda: self._signup.execute(**signup_information)).to(raise_error(EmailAlreadyExists))
 
     def _should_have_saved_account(self, account: Account) -> None:
         self._account_repository.should_have_saved(account)
@@ -61,4 +68,4 @@ class TestAccountWithUserSignup:
         self._user_signup.execute.assert_awaited_once_with(**user)
 
     def _should_search_and_find(self, account: Account) -> None:
-        pass
+        self._account_repository.should_search(account)
