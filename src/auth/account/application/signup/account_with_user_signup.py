@@ -3,10 +3,13 @@ from src.auth.account.domain.account_repository import AccountRepository
 from src.auth.account.domain.password_manager import PasswordManager
 from src.shared.domain.clock import Clock
 from src.backoffice.user.application.signup.user_signup import UserSignup
+from src.shared.domain.exceptions.application_error import ConflictError
 
 
 class AccountWithUserSignup:
-    def __init__(self, repository: AccountRepository, user_signup: UserSignup, password_manager: PasswordManager, clock: Clock) -> None:
+    def __init__(
+        self, repository: AccountRepository, user_signup: UserSignup, password_manager: PasswordManager, clock: Clock
+    ) -> None:
         self._repository = repository
         self._user_signup = user_signup
         self._clock = clock
@@ -45,3 +48,11 @@ class AccountWithUserSignup:
     async def _signup_account_with(self, account_id: str, email: str, password: str) -> None:
         account = Account.signup(id=account_id, email=email, password=password, clock=self._clock)
         await self._repository.save(account)
+
+
+class EmailAlreadyExists(ConflictError):
+    def __init__(self) -> None:
+        super().__init__(
+            message="Email is already signed up",
+            error_type="account_resource_conflict_error",
+        )
