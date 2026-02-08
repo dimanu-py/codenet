@@ -7,7 +7,9 @@ from pytest_bdd import given, scenarios, then, when
 
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
 from tests.auth.account.domain.mothers.account_id_primitives_mother import AccountIdPrimitivesMother
-from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import AccountPasswordHashPrimitivesMother
+from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import (
+    AccountPasswordHashPrimitivesMother,
+)
 from tests.backoffice.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
 from tests.backoffice.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
 
@@ -68,4 +70,3 @@ def verify_username_already_in_use_error(signup_response: Response) -> None:
 @then("I should see an error message indicating the email is already in use")
 def verify_email_already_in_use_error(signup_response: Response) -> None:
     expect(signup_response.status_code).to(equal(409))
-

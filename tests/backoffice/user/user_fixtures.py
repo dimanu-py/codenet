@@ -1,4 +1,5 @@
-from typing import Callable, Any, Coroutine
+from collections.abc import Callable, Coroutine
+from typing import Any
 
 import pytest
 from sqlalchemy.ext.asyncio.session import AsyncSession
@@ -38,7 +39,7 @@ def create_users_with_usernames(
     """
 
     async def _create(usernames: list[str]) -> list[str]:
-        for account_id, username in zip(existing_account_ids, usernames):
+        for account_id, username in zip(existing_account_ids, usernames, strict=True):
             user = UserMother.create(id=account_id, username=username)
             session.add(UserModel.from_domain(user))
         await session.commit()

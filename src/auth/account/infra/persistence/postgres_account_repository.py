@@ -21,8 +21,6 @@ class PostgresAccountRepository(AccountRepository):
         await self._session.flush()
 
     async def search_by_email(self, email: AccountEmail) -> Optional[Account]:
-        result = await self._session.execute(
-            select(AccountModel).where(AccountModel.email == email.value)
-        )
+        result = await self._session.execute(select(AccountModel).where(AccountModel.email == email.value))
         account = result.scalar_one_or_none()
         return Optional.lift(account, lambda model: model.to_domain())

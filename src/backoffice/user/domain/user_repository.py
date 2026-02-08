@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
-from src.shared.domain.criteria.criteria import Criteria
-from src.shared.domain.value_objects.optional import Optional
 from src.backoffice.user.domain.user import User
 from src.backoffice.user.domain.user_username import UserUsername
+from src.shared.domain.criteria.criteria import Criteria
+from src.shared.domain.value_objects.optional import Optional
 
 
 class UserRepository(ABC):

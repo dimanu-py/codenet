@@ -1,5 +1,5 @@
 import pytest
-from expects import expect, equal, be_none
+from expects import be_none, equal, expect
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.account.domain.account import Account

@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from expects import equal, expect, raise_error
 from sindripy.value_objects import SindriValidationError
@@ -8,7 +8,7 @@ from src.auth.account.domain.account_created_at import AccountCreatedAt
 
 class TestAccountCreatedAt:
     def test_should_create_as_datetime_with_utc_timezone(self) -> None:
-        value = datetime(2020, 1, 1, tzinfo=timezone.utc)
+        value = datetime(2020, 1, 1, tzinfo=UTC)
 
         created_at = AccountCreatedAt(value)
 

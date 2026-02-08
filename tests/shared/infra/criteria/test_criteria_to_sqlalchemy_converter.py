@@ -6,10 +6,10 @@ from src.shared.domain.criteria.condition.operator import Operator
 from src.shared.infra.criteria.criteria_to_sqlalchemy_converter import (
     CriteriaToSqlalchemyConverter,
 )
-from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
-from tests.shared.infra.criteria.dummy_model import DummyModel
 from tests.backoffice.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
 from tests.backoffice.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
+from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
+from tests.shared.infra.criteria.dummy_model import DummyModel
 
 
 @pytest.mark.unit

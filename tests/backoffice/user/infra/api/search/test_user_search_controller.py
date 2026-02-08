@@ -3,9 +3,9 @@ from unittest.mock import AsyncMock
 from src.backoffice.user.application.search.user_searcher import UserSearcher
 from src.backoffice.user.domain.user import User
 from src.backoffice.user.infra.api.search.user_search_controller import UserSearchController
-from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
 from tests.backoffice.user.domain.mothers.user_mother import UserMother
 from tests.backoffice.user.infra.api.user_module_routers_test_config import UserModuleRoutersTestConfig
+from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
 
 
 class TestUserSearchController(UserModuleRoutersTestConfig):

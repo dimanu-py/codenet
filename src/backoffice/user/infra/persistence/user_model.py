@@ -1,6 +1,6 @@
 from typing import Self
 
-from sqlalchemy import String, UUID, ForeignKey
+from sqlalchemy import UUID, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.backoffice.user.domain.user import User

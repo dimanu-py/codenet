@@ -1,7 +1,7 @@
 import pytest
 from expects import equal, expect, raise_error
 
-from src.auth.account.domain.account_email import InvalidEmailFormat, AccountEmail
+from src.auth.account.domain.account_email import AccountEmail, InvalidEmailFormat
 
 
 @pytest.mark.unit

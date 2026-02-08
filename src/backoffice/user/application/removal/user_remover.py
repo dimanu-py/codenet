@@ -1,7 +1,7 @@
-from src.shared.domain.value_objects.optional import raise_error
 from src.backoffice.user.application.removal.user_not_found import UserNotFound
 from src.backoffice.user.domain.user_repository import UserRepository
 from src.backoffice.user.domain.user_username import UserUsername
+from src.shared.domain.value_objects.optional import raise_error
 
 
 class UserRemover:

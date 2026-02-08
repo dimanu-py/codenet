@@ -1,11 +1,11 @@
 from src.backoffice.user.application.removal.user_not_found import UserNotFound
 from src.backoffice.user.application.removal.user_remover import UserRemover
-from tests.shared.expects.matchers import async_expect, raise_error
 from tests.backoffice.user.application.user_module_unit_test_config import (
     UserModuleUnitTestConfig,
 )
 from tests.backoffice.user.domain.mothers.user_mother import UserMother
 from tests.backoffice.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
+from tests.shared.expects.matchers import async_expect, raise_error
 
 
 class TestUserRemover(UserModuleUnitTestConfig):

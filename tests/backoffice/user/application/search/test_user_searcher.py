@@ -1,11 +1,11 @@
 from expects import be_empty, equal, expect
 
 from src.backoffice.user.application.search.user_searcher import UserSearcher
-from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
 from tests.backoffice.user.application.user_module_unit_test_config import (
     UserModuleUnitTestConfig,
 )
 from tests.backoffice.user.domain.mothers.user_mother import UserMother
+from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
 
 
 class TestUserSearcher(UserModuleUnitTestConfig):

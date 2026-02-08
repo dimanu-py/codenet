@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Self
 
-from sqlalchemy import DateTime, String, UUID
+from sqlalchemy import UUID, DateTime, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.auth.account.domain.account import Account

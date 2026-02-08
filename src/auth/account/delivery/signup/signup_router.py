@@ -8,13 +8,13 @@ from src.auth.account.delivery.signup.signup_request import SignupRequest
 from src.auth.account.infra.api.signup.signup_controller import SignupController
 from src.auth.account.infra.argon_password_manager import ArgonPasswordManager
 from src.auth.account.infra.persistence.postgres_account_repository import PostgresAccountRepository
+from src.backoffice.user.application.signup.user_signup import UserSignup
+from src.backoffice.user.infra.persistence.postgres_user_repository import PostgresUserRepository
 from src.shared.delivery.db_session import get_async_session
 from src.shared.delivery.fastapi_response import FastAPIResponse
 from src.shared.infra.datetime_clock import DatetimeClock
 from src.shared.infra.http.error_response import UnprocessableEntityError
 from src.shared.infra.http.success_response import AcceptedResponse
-from src.backoffice.user.application.signup.user_signup import UserSignup
-from src.backoffice.user.infra.persistence.postgres_user_repository import PostgresUserRepository
 
 signup_router = APIRouter()
 

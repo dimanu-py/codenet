@@ -1,6 +1,6 @@
-from src.shared.domain.criteria.criteria import Criteria
 from src.backoffice.user.domain.user import User
 from src.backoffice.user.domain.user_repository import UserRepository
+from src.shared.domain.criteria.criteria import Criteria
 
 
 class UserSearcher:

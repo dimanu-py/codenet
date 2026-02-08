@@ -1,4 +1,4 @@
-from src.backoffice.user.application.signup.user_signup import UserSignup, UsernameAlreadyExists
+from src.backoffice.user.application.signup.user_signup import UsernameAlreadyExists, UserSignup
 from tests.backoffice.user.application.user_module_unit_test_config import (
     UserModuleUnitTestConfig,
 )

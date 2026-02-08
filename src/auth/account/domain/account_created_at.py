@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from sindripy.value_objects import ValueObject, SindriValidationError
+from sindripy.value_objects import SindriValidationError, ValueObject
 
 from src.shared.domain.value_objects.validation import validate
 

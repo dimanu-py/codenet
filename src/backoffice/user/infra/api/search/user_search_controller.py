@@ -1,5 +1,5 @@
-from src.shared.infra.http.success_response import OkResponse, SuccessResponse
 from src.backoffice.user.application.search.user_searcher import UserSearcher
+from src.shared.infra.http.success_response import OkResponse, SuccessResponse
 
 
 class UserSearchController:

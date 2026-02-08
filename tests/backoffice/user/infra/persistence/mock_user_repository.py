@@ -1,10 +1,10 @@
 from unittest.mock import AsyncMock
 
-from src.shared.domain.criteria.criteria import Criteria
-from src.shared.domain.value_objects.optional import Optional
 from src.backoffice.user.domain.user import User
 from src.backoffice.user.domain.user_repository import UserRepository
 from src.backoffice.user.domain.user_username import UserUsername
+from src.shared.domain.criteria.criteria import Criteria
+from src.shared.domain.value_objects.optional import Optional
 
 
 class MockUserRepository(UserRepository):

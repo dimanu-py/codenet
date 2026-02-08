@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status
 
-from src.shared.infra.http.error_response import InternalServerError
 from src.backoffice.user.delivery.routes import user_routes
+from src.shared.infra.http.error_response import InternalServerError
 
 social_routes = APIRouter(
     prefix="/app/backoffice",

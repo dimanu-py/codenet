@@ -1,5 +1,5 @@
 import pytest
-from expects import expect, equal, raise_error
+from expects import equal, expect, raise_error
 
 from src.auth.account.domain.account_status import AccountStatus, AccountStatusDoesNotExists
 

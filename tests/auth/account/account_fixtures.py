@@ -32,7 +32,7 @@ async def existing_account_ids(session: AsyncSession, request) -> list[str]:
     Use with pytest.mark.parametrize on 'request' or by passing count directly.
     Example: @pytest.mark.parametrize('existing_account_ids', [3], indirect=True)
     """
-    count = getattr(request, 'param', 3)
+    count = getattr(request, "param", 3)
     account_ids = []
     for _ in range(count):
         account_id = AccountIdPrimitivesMother.any()

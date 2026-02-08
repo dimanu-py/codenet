@@ -8,7 +8,9 @@ class SignupController:
     def __init__(self, use_case: AccountWithUserSignup) -> None:
         self._signup = use_case
 
-    async def signup(self, account_id: str, name: str, username: str, email: str, password: str) -> SuccessResponse | ErrorResponse:
+    async def signup(
+        self, account_id: str, name: str, username: str, email: str, password: str
+    ) -> SuccessResponse | ErrorResponse:
         try:
             await self._signup.execute(
                 account_id=account_id,
