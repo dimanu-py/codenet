@@ -1,5 +1,6 @@
 from typing import override
 
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.account.domain.account import Account
@@ -20,4 +21,8 @@ class PostgresAccountRepository(AccountRepository):
         await self._session.flush()
 
     async def search_by_email(self, email: AccountEmail) -> Optional[Account]:
-        raise NotImplementedError
+        result = await self._session.execute(
+            select(AccountModel).where(AccountModel.email == email.value)
+        )
+        account = result.scalar_one_or_none()
+        return Optional.lift(account, lambda model: model.to_domain())
