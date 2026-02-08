@@ -34,6 +34,7 @@ class TestAccountWithUserSignup:
         user_primitives = UserMother.create(id=account_primitives["id"]).to_primitives()
 
         self._clock.should_generate(account_primitives["created_at"])
+        self._should_search_and_not_find_account()
 
         await self._signup.execute(
             account_id=account_primitives["id"],
@@ -69,3 +70,6 @@ class TestAccountWithUserSignup:
 
     def _should_search_and_find(self, account: Account) -> None:
         self._account_repository.should_search(account)
+
+    def _should_search_and_not_find_account(self) -> None:
+        self._account_repository.should_not_search_account()

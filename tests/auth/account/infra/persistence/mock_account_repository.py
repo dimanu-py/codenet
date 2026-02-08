@@ -23,3 +23,6 @@ class MockAccountRepository(AccountRepository):
 
     def should_search(self, account: Account) -> None:
         self._mock_search.return_value = Optional.of(account)
+
+    def should_not_search_account(self) -> None:
+        self._mock_search.return_value = Optional.empty()
