@@ -8,7 +8,7 @@ from src.shared.domain.uuid_generator import UuidGenerator
 
 class DomainEventPrimitives(TypedDict):
     id: str
-    occurred_at: str
+    occurred_at: datetime
     type: str
     attributes: TypedDict
 
@@ -27,7 +27,7 @@ class DomainEvent(ABC):
     def to_primitives(self) -> DomainEventPrimitives:
         return DomainEventPrimitives(
             id=self.id,
-            occurred_at=self.occurred_at.isoformat(),
+            occurred_at=self.occurred_at,
             type=self.type,
             attributes=self.attributes,
         )
