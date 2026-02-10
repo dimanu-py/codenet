@@ -26,6 +26,14 @@ class TestPostgresEventBus:
         inserted_event = await self._get_events_to_consume(events=events)
         expect(inserted_event).to(equal(events))
 
+    async def test_should_publish_multiple_events(self) -> None:
+        events = [DummyDomainEventMother.any() for _ in range(3)]
+
+        await self._event_bus.publish(events)
+
+        inserted_events = await self._get_events_to_consume(events)
+        expect(inserted_events).to(equal(events))
+
     async def _get_events_to_consume(self, events: list[DomainEvent]) -> list[DomainEvent]:
         event_ids = [event.id for event in events]
         result = await self._session.execute(
