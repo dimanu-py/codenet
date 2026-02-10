@@ -12,7 +12,9 @@ class PostgresEventBus(EventBus):
     async def publish(self, events: list[DomainEvent]) -> None:
         if not events:
             return
+        await self._store_events(events)
 
+    async def _store_events(self, events: list[DomainEvent]) -> None:
         events_to_publish = [DomainEventToConsumeModel.from_domain(event) for event in events]
         self._session.add_all(events_to_publish)
         await self._session.commit()
