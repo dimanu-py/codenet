@@ -6,8 +6,8 @@ have already been imported. To keep the env.py file clean, we import the Base.me
 needed models.
 """
 from src.auth.account.infra.persistence.account_model import AccountModel
-from src.shared.infra.persistence.sqlalchemy.base import Base
 from src.backoffice.user.infra.persistence.user_model import UserModel
+from src.shared.infra.persistence.sqlalchemy.base import Base
 
 base = Base
 
