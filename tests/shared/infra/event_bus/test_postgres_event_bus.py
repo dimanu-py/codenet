@@ -1,5 +1,6 @@
 import pytest
 from expects import expect, equal
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.shared.domain.event_bus.domain_event import DomainEvent
 from src.shared.infra.event_bus.postgres_event_bus import PostgresEventBus
@@ -9,8 +10,9 @@ from tests.shared.domain.event_bus.mothers.domain_event_mother import DomainEven
 @pytest.mark.integration
 @pytest.mark.asyncio
 class TestPostgresEventBus:
-    def setup_method(self) -> None:
-        self._event_bus = PostgresEventBus()
+    @pytest.fixture(autouse=True)
+    def setup_method(self, session: AsyncSession) -> None:
+        self._event_bus = PostgresEventBus(session=session)
 
     async def test_should_publish_a_single_event(self) -> None:
         event = DomainEventMother.any()
