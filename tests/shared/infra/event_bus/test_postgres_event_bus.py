@@ -34,6 +34,14 @@ class TestPostgresEventBus:
         inserted_events = await self._get_events_to_consume(events)
         expect(inserted_events).to(equal(events))
 
+    async def test_should_not_publish_events_when_there_are_no_events_to_publish(self) -> None:
+        events = []
+
+        await self._event_bus.publish(events)
+
+        inserted_events = await self._get_events_to_consume(events)
+        expect(inserted_events).to(equal(events))
+
     async def _get_events_to_consume(self, events: list[DomainEvent]) -> list[DomainEvent]:
         event_ids = [event.id for event in events]
         result = await self._session.execute(
