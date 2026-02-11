@@ -33,10 +33,10 @@ class TestPostgresAccountRepository:
 
         expect(searched_account.unwrap()).to(equal(existing_account))
 
-    async def test_should_not_allow_to_store_account_with_repeated_email(self, existing_account_email: str) -> None:
-        account_with_repeated_email = AccountMother.with_email(existing_account_email)
+    async def test_should_not_allow_to_store_account_with_duplicated_email(self, existing_account_email: str) -> None:
+        account_with_duplicated_email = AccountMother.with_email(existing_account_email)
 
-        await async_expect(lambda: self._repository.save(account_with_repeated_email)).to(raise_error(AccountEmailAlreadyExists))
+        await async_expect(lambda: self._repository.save(account_with_duplicated_email)).to(raise_error(AccountEmailAlreadyExists))
 
     async def _get_saved_account(self, account_id: AccountId) -> Account | None:
         account = await self._session.get(AccountModel, account_id.value)
