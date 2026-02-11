@@ -12,7 +12,7 @@ class AccountModel(Base):
     __tablename__ = "accounts"
 
     id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True)
-    email: Mapped[str] = mapped_column(String)
+    email: Mapped[str] = mapped_column(String, unique=True)
     password: Mapped[str] = mapped_column(String)
     status: Mapped[str] = mapped_column(String)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
