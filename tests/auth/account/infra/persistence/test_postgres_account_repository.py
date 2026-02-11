@@ -2,11 +2,13 @@ import pytest
 from expects import be_none, equal, expect
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.auth.account.application.signup.account_with_user_signup import EmailAlreadyExists
 from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_id import AccountId
 from src.auth.account.infra.persistence.account_model import AccountModel
 from src.auth.account.infra.persistence.postgres_account_repository import PostgresAccountRepository
 from tests.auth.account.domain.mothers.account_mother import AccountMother
+from tests.shared.expects.matchers import async_expect, raise_error
 
 
 @pytest.mark.integration
@@ -30,6 +32,11 @@ class TestPostgresAccountRepository:
         searched_account = await self._repository.search_by_email(existing_account._email)
 
         expect(searched_account.unwrap()).to(equal(existing_account))
+
+    async def test_should_not_allow_to_store_account_with_repeated_email(self, existing_account_email: str) -> None:
+        account_with_repeated_email = AccountMother.with_email(existing_account_email)
+
+        await async_expect(lambda: self._repository.save(account_with_repeated_email)).to(raise_error(EmailAlreadyExists))
 
     async def _get_saved_account(self, account_id: AccountId) -> Account | None:
         account = await self._session.get(AccountModel, account_id.value)

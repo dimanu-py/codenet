@@ -29,3 +29,7 @@ class AccountMother(ObjectMother):
     @classmethod
     def with_id(cls, id: str) -> Account:
         return cls.create(id=id)
+
+    @classmethod
+    def with_email(cls, email: str) -> Account:
+        return cls.create(email=email)
