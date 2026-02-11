@@ -2,8 +2,9 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup, EmailAlreadyExists
+from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
 from src.auth.account.domain.account import Account
+from src.auth.account.domain.account_email_already_exists import AccountEmailAlreadyExists
 from src.backoffice.user.application.signup.user_signup import UserSignup
 from tests.auth.account.domain.mothers.account_mother import AccountMother
 from tests.auth.account.infra.fake_password_manager import FakePasswordManager
@@ -60,7 +61,7 @@ class TestAccountWithUserSignup:
             "email": existing_account_primitives["email"],
             "plain_password": existing_account_primitives["password"],
         }
-        await async_expect(lambda: self._signup.execute(**signup_information)).to(raise_error(EmailAlreadyExists))
+        await async_expect(lambda: self._signup.execute(**signup_information)).to(raise_error(AccountEmailAlreadyExists))
 
     def _should_have_saved_account(self, account: Account) -> None:
         self._account_repository.should_have_saved(account)

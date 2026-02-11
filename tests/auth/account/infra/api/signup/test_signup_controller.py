@@ -3,8 +3,9 @@ from unittest.mock import AsyncMock
 import pytest
 from expects import equal, expect
 
-from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup, EmailAlreadyExists
+from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
 from src.auth.account.delivery.signup.signup_request import SignupRequest
+from src.auth.account.domain.account_email_already_exists import AccountEmailAlreadyExists
 from src.auth.account.infra.api.signup.signup_controller import SignupController
 from src.backoffice.user.application.signup.user_signup import UsernameAlreadyExists
 from src.shared.domain.exceptions.base_error import BaseError
@@ -46,7 +47,7 @@ class TestSignupController:
         "expected_error",
         [
             pytest.param(UsernameAlreadyExists, id="username"),
-            pytest.param(EmailAlreadyExists, id="email"),
+            pytest.param(AccountEmailAlreadyExists, id="email"),
         ],
     )
     async def test_should_return_409_when_signing_up_an_account_with_existing(

@@ -4,9 +4,9 @@ from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.auth.account.application.signup.account_with_user_signup import EmailAlreadyExists
 from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_email import AccountEmail
+from src.auth.account.domain.account_email_already_exists import AccountEmailAlreadyExists
 from src.auth.account.domain.account_repository import AccountRepository
 from src.auth.account.infra.persistence.account_model import AccountModel
 from src.shared.domain.value_objects.optional import Optional
@@ -24,7 +24,7 @@ class PostgresAccountRepository(AccountRepository):
             await self._session.flush()
         except IntegrityError as error:
             if self._is_email_unique_constraint_violation(error):
-                raise EmailAlreadyExists() from error
+                raise AccountEmailAlreadyExists() from error
             raise error
 
     async def search_by_email(self, email: AccountEmail) -> Optional[Account]:

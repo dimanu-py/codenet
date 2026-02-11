@@ -1,10 +1,10 @@
 from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_email import AccountEmail
+from src.auth.account.domain.account_email_already_exists import AccountEmailAlreadyExists
 from src.auth.account.domain.account_repository import AccountRepository
 from src.auth.account.domain.password_manager import PasswordManager
 from src.backoffice.user.application.signup.user_signup import UserSignup
 from src.shared.domain.clock import Clock
-from src.shared.domain.exceptions.application_error import ConflictError
 from src.shared.domain.value_objects.optional import raise_error
 
 
@@ -55,14 +55,6 @@ class AccountWithUserSignup:
     async def _ensure_account_with_same_email_is_not_already_signed_up(self, email: str) -> None:
         signed_up_account = await self._repository.search_by_email(AccountEmail(email))
         signed_up_account.match(
-            of=lambda _: raise_error(EmailAlreadyExists()),
+            of=lambda _: raise_error(AccountEmailAlreadyExists()),
             empty=lambda: None,
-        )
-
-
-class EmailAlreadyExists(ConflictError):
-    def __init__(self) -> None:
-        super().__init__(
-            message="Email is already signed up",
-            error_type="account_resource_conflict_error",
         )
