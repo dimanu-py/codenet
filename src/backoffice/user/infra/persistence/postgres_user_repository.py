@@ -1,7 +1,9 @@
 from typing import override
 
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
+from src.backoffice.user.application.signup.user_signup import UsernameAlreadyExists
 from src.backoffice.user.domain.user import User
 from src.backoffice.user.domain.user_repository import UserRepository
 from src.backoffice.user.domain.user_username import UserUsername
@@ -20,9 +22,13 @@ class PostgresUserRepository(UserRepository):
     @override
     async def save(self, user: User) -> None:
         user_to_save = UserModel.from_domain(user)
-        await self._session.merge(user_to_save)
-        await self._session.flush()
         self._session.add(user_to_save)
+        try:
+            await self._session.flush()
+        except IntegrityError as error:
+            if self._is_username_unique_constraint_violation(error):
+                raise UsernameAlreadyExists() from error
+            raise error
 
     @override
     async def search(self, username: UserUsername) -> Optional[User]:
@@ -43,3 +49,8 @@ class PostgresUserRepository(UserRepository):
             return
         await self._session.delete(user)
         await self._session.flush()
+
+    @staticmethod
+    def _is_username_unique_constraint_violation(error: IntegrityError) -> bool:
+        error_message = str(error.orig)
+        return "users_pkey" in error_message
