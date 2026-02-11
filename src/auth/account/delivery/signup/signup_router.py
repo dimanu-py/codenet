@@ -1,16 +1,16 @@
 from fastapi import APIRouter, Depends, Path, status
 from fastapi.openapi.models import Example
-from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.responses import JSONResponse
 
 from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
+from src.auth.account.delivery.deps import postgres_account_repository
 from src.auth.account.delivery.signup.signup_request import SignupRequest
 from src.auth.account.infra.api.signup.signup_controller import SignupController
 from src.auth.account.infra.argon_password_manager import ArgonPasswordManager
 from src.auth.account.infra.persistence.postgres_account_repository import PostgresAccountRepository
 from src.backoffice.user.application.signup.user_signup import UserSignup
+from src.backoffice.user.delivery.deps import postgres_user_repository
 from src.backoffice.user.infra.persistence.postgres_user_repository import PostgresUserRepository
-from src.shared.delivery.db_session import get_async_session
 from src.shared.delivery.fastapi_response import FastAPIResponse
 from src.shared.infra.datetime_clock import DatetimeClock
 from src.shared.infra.http.error_response import UnprocessableEntityError
@@ -19,12 +19,15 @@ from src.shared.infra.http.success_response import AcceptedResponse
 signup_router = APIRouter()
 
 
-def get_controller(session: AsyncSession = Depends(get_async_session)) -> SignupController:
+def get_controller(
+    account_repository: PostgresAccountRepository = Depends(postgres_account_repository),
+    user_repository: PostgresUserRepository = Depends(postgres_user_repository),
+) -> SignupController:
     return SignupController(
         use_case=AccountWithUserSignup(
-            repository=PostgresAccountRepository(session=session),
+            repository=account_repository,
             user_signup=UserSignup(
-                repository=PostgresUserRepository(session=session),
+                repository=user_repository,
             ),
             password_manager=ArgonPasswordManager(),
             clock=DatetimeClock(),
