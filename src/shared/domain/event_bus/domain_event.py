@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from typing import TypedDict
 
 from src.shared.domain.uuid_generator import UuidGenerator
@@ -9,25 +9,25 @@ from src.shared.domain.uuid_generator import UuidGenerator
 class DomainEventPrimitives(TypedDict):
     id: str
     occurred_at: datetime
-    type: str
-    attributes: TypedDict
+    name: str
+    attributes: dict
 
 
 @dataclass(frozen=True, kw_only=True)
 class DomainEvent(ABC):
     id: str = field(default_factory=lambda: UuidGenerator.random())
     occurred_at: datetime = field(default_factory=lambda: datetime.now(UTC))
-    attributes: TypedDict
+    attributes: dict
 
     @property
     @abstractmethod
-    def type(self) -> str:
+    def name(self) -> str:
         raise NotImplementedError
 
     def to_primitives(self) -> DomainEventPrimitives:
         return DomainEventPrimitives(
             id=self.id,
             occurred_at=self.occurred_at,
-            type=self.type,
+            name=self.name,
             attributes=self.attributes,
         )

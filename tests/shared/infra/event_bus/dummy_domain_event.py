@@ -14,5 +14,5 @@ class DummyDomainEvent(DomainEvent):
     attributes: DummyDomainEventAttributes
 
     @property
-    def type(self) -> str:
+    def name(self) -> str:
         return "dummy_event"

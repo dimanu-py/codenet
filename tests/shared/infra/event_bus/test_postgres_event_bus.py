@@ -1,5 +1,5 @@
 import pytest
-from expects import expect, equal
+from expects import equal, expect
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -50,9 +50,7 @@ class TestPostgresEventBus:
         events_to_consume = result.scalars().all()
         return [
             DummyDomainEvent(
-                id=event.id,
-                occurred_at=event.occurred_at,
-                attributes=DummyDomainEventAttributes(**event.attributes)
+                id=event.id, occurred_at=event.occurred_at, attributes=DummyDomainEventAttributes(**event.attributes)
             )
             for event in events_to_consume
         ]

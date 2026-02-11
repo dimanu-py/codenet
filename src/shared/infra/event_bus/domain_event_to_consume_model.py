@@ -16,7 +16,7 @@ class DomainEventToConsumeModel(Base):
     id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True)
     occurred_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     inserted_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.now)
-    type: Mapped[str] = mapped_column()
+    name: Mapped[str] = mapped_column()
     attributes: Mapped[dict] = mapped_column(JSONB)
 
     @classmethod
