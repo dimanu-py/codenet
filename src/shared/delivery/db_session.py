@@ -10,10 +10,12 @@ engine = create_async_engine(str(settings.postgres_url))
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession]:
-    async with AsyncSession(engine) as session:
+    async with AsyncSession(engine, expire_on_commit=False, autoflush=False) as session:
         try:
             yield session
             await session.commit()
         except Exception:
             await session.rollback()
             raise
+        finally:
+            await session.close()

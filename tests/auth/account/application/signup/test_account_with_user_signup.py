@@ -61,7 +61,9 @@ class TestAccountWithUserSignup:
             "email": existing_account_primitives["email"],
             "plain_password": existing_account_primitives["password"],
         }
-        await async_expect(lambda: self._signup.execute(**signup_information)).to(raise_error(AccountEmailAlreadyExists))
+        await async_expect(lambda: self._signup.execute(**signup_information)).to(
+            raise_error(AccountEmailAlreadyExists)
+        )
 
     def _should_have_saved_account(self, account: Account) -> None:
         self._account_repository.should_have_saved(account)

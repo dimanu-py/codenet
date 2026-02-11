@@ -26,11 +26,7 @@ class PostgresEventBus(EventBus):
         await self._session.commit()
 
     async def _retry(
-        self,
-        func: Callable[[], Awaitable],
-        max_attempts: int = 3,
-        delay: float = 30,
-        _attempt: int = 1
+        self, func: Callable[[], Awaitable], max_attempts: int = 3, delay: float = 30, _attempt: int = 1
     ) -> None:
         try:
             await func()
