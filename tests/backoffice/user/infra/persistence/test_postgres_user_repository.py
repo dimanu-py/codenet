@@ -3,6 +3,7 @@ from expects import be_empty, equal, expect
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
+from src.backoffice.user.application.signup.user_signup import UsernameAlreadyExists
 from src.backoffice.user.domain.user import User
 from src.backoffice.user.infra.persistence.postgres_user_repository import (
     PostgresUserRepository,
@@ -55,3 +56,12 @@ class TestPostgresUserRepository:
         user = UserMother.any()
 
         await async_expect(lambda: self._repository.save(user)).to(raise_error(IntegrityError))
+
+    async def test_should_not_allow_to_store_user_with_duplicated_username(self, existing_account_id: str) -> None:
+        user = UserMother.with_id(existing_account_id)
+        await self._repository.save(user)
+        user_with_duplicated_username = UserMother.create(id=existing_account_id, username=user.username.value)
+
+        await async_expect(lambda: self._repository.save(user_with_duplicated_username)).to(
+            raise_error(UsernameAlreadyExists)
+        )
