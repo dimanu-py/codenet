@@ -11,6 +11,7 @@ from src.shared.domain.criteria.condition.operator import Operator
 from src.shared.domain.value_objects.optional import Optional
 from tests.backoffice.user.domain.mothers.user_mother import UserMother
 from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
+from tests.shared.expects.matchers import async_expect, raise_error
 
 
 @pytest.mark.integration
@@ -53,5 +54,4 @@ class TestPostgresUserRepository:
     async def test_should_raise_error_if_user_does_not_match_an_existing_account(self) -> None:
         user = UserMother.any()
 
-        with pytest.raises(IntegrityError):
-            await self._repository.save(user)
+        await async_expect(lambda: self._repository.save(user)).to(raise_error(IntegrityError))
