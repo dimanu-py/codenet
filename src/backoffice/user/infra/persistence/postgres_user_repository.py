@@ -22,6 +22,7 @@ class PostgresUserRepository(UserRepository):
         user_to_save = UserModel.from_domain(user)
         await self._session.merge(user_to_save)
         await self._session.flush()
+        self._session.add(user_to_save)
 
     @override
     async def search(self, username: UserUsername) -> Optional[User]:
