@@ -1,7 +1,7 @@
 from src.backoffice.user.domain.user import User
 from src.backoffice.user.domain.user_repository import UserRepository
 from src.backoffice.user.domain.user_username import UserUsername
-from src.shared.domain.exceptions.application_error import ConflictError
+from src.shared.domain.exceptions.domain_error import ConflictError
 from src.shared.domain.value_objects.optional import raise_error
 
 

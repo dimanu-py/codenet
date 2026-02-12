@@ -1,5 +1,5 @@
 from src.backoffice.user.application.removal.user_remover import UserRemover
-from src.shared.domain.exceptions.application_error import ApplicationError
+from src.shared.domain.exceptions.domain_error import NotFoundError
 from src.shared.infra.http.error_response import ErrorResponse, ResourceNotFoundError
 from src.shared.infra.http.success_response import AcceptedResponse, SuccessResponse
 
@@ -11,7 +11,7 @@ class UserRemovalController:
     async def remove(self, username: str) -> SuccessResponse | ErrorResponse:
         try:
             await self._remover.execute(username)
-        except ApplicationError as error:
+        except NotFoundError as error:
             return ResourceNotFoundError(error=error.to_primitives())
 
         return AcceptedResponse()

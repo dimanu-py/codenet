@@ -1,4 +1,4 @@
-from src.shared.domain.exceptions.application_error import ConflictError
+from src.shared.domain.exceptions.domain_error import ConflictError
 
 
 class AccountEmailAlreadyExists(ConflictError):

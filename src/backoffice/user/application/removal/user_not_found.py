@@ -1,7 +1,7 @@
-from src.shared.domain.exceptions.application_error import ApplicationError
+from src.shared.domain.exceptions.domain_error import NotFoundError
 
 
-class UserNotFound(ApplicationError):
+class UserNotFound(NotFoundError):
     def __init__(self) -> None:
         super().__init__(
             message="User with that id not found",

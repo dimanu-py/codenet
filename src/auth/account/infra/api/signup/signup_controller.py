@@ -1,5 +1,5 @@
 from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
-from src.shared.domain.exceptions.application_error import ConflictError
+from src.shared.domain.exceptions.domain_error import ConflictError
 from src.shared.infra.http.error_response import ConflictErrorResponse, ErrorResponse
 from src.shared.infra.http.success_response import AcceptedResponse, SuccessResponse
 

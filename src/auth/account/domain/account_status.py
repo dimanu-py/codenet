@@ -1,7 +1,7 @@
 from enum import StrEnum
 from typing import override
 
-from src.shared.domain.exceptions.domain_validation_error import DomainValidationError
+from src.shared.domain.exceptions.domain_error import DomainValidationError
 
 
 class AccountStatus(StrEnum):

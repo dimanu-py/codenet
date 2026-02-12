@@ -1,0 +1,13 @@
+from src.shared.domain.exceptions.base_error import BaseError
+
+
+class DomainError(BaseError): ...
+
+
+class DomainValidationError(DomainError): ...
+
+
+class ConflictError(DomainError): ...
+
+
+class NotFoundError(DomainError): ...
