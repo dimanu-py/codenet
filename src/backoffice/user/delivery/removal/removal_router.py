@@ -7,8 +7,8 @@ from src.backoffice.user.application.removal.user_remover import UserRemover
 from src.backoffice.user.delivery.deps import postgres_user_repository
 from src.backoffice.user.domain.user_repository import UserRepository
 from src.backoffice.user.infra.api.removal.user_removal_controller import UserRemovalController
+from src.shared.delivery.api_parameter import PathParameter, ApiDocExample
 from src.shared.delivery.fastapi_response import FastAPIResponse
-from src.shared.delivery.path_parameter import PathParameter
 from src.shared.infra.api.error_response import ResourceNotFoundError, UnprocessableEntityError
 from src.shared.infra.api.success_response import AcceptedResponse
 
@@ -16,7 +16,7 @@ router = APIRouter()
 
 UsernamePathParameter = Annotated[
     str,
-    PathParameter(description="Username", example_name="valid_username", example_value="johndoe"),
+    PathParameter(description="Username", examples=[ApiDocExample(name="valid_username", value="johndoe")]),
 ]
 
 

@@ -1,5 +1,3 @@
-from fastapi import APIRouter, Depends, Path, status
-from fastapi.openapi.models import Example
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
@@ -14,8 +12,8 @@ from src.auth.account.infra.persistence.postgres_account_repository import Postg
 from src.backoffice.user.application.signup.user_signup import UserSignup
 from src.backoffice.user.delivery.deps import postgres_user_repository
 from src.backoffice.user.infra.persistence.postgres_user_repository import PostgresUserRepository
+from src.shared.delivery.api_parameter import PathParameter, ApiDocExample
 from src.shared.delivery.fastapi_response import FastAPIResponse
-from src.shared.delivery.path_parameter import PathParameter
 from src.shared.infra.api.error_response import UnprocessableEntityError
 from src.shared.infra.api.success_response import AcceptedResponse
 from src.shared.infra.datetime_clock import DatetimeClock
@@ -25,7 +23,7 @@ signup_router = APIRouter()
 AccountIdPathParameter = Annotated[
     str,
     PathParameter(
-        description="Account ID", example_name="valid_id", example_value="123e4567-e89b-12d3-a456-426614174000"
+        description="Account ID", examples=[ApiDocExample(name="valid_id", value="123e4567-e89b-12d3-a456-426614174000")]
     ),
 ]
 
