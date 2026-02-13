@@ -46,6 +46,10 @@ class AccountDependencyProvider(Provider):
         return PostgresAccountRepository(session=session)
 
     @provide
+    def user_repository(self, session: AsyncSession) -> PostgresUserRepository:
+        return PostgresUserRepository(session=session)
+
+    @provide
     def user_signup(self, repository: PostgresUserRepository) -> UserSignup:
         return UserSignup(repository=repository)
 
