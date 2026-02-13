@@ -2,7 +2,7 @@ from fastapi import Request
 from fastapi.responses import JSONResponse
 
 from src.shared.delivery.fastapi_response import FastAPIResponse
-from src.shared.infra.http.error_response import (
+from src.shared.infra.api.error_response import (
     InternalServerError,
     UnprocessableEntityError,
 )

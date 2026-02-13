@@ -7,8 +7,8 @@ from src.backoffice.user.delivery.deps import postgres_user_repository
 from src.backoffice.user.domain.user_repository import UserRepository
 from src.backoffice.user.infra.api.removal.user_removal_controller import UserRemovalController
 from src.shared.delivery.fastapi_response import FastAPIResponse
-from src.shared.infra.http.error_response import ResourceNotFoundError, UnprocessableEntityError
-from src.shared.infra.http.success_response import AcceptedResponse
+from src.shared.infra.api.error_response import ResourceNotFoundError, UnprocessableEntityError
+from src.shared.infra.api.success_response import AcceptedResponse
 
 router = APIRouter()
 

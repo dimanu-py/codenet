@@ -1,7 +1,7 @@
 from src.backoffice.user.application.removal.user_remover import UserRemover
 from src.shared.domain.exceptions.domain_error import NotFoundError
-from src.shared.infra.http.error_response import ErrorResponse, ResourceNotFoundError
-from src.shared.infra.http.success_response import AcceptedResponse, SuccessResponse
+from src.shared.infra.api.error_response import ErrorResponse, ResourceNotFoundError
+from src.shared.infra.api.success_response import AcceptedResponse, SuccessResponse
 
 
 class UserRemovalController:

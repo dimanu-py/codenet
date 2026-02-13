@@ -2,7 +2,7 @@ from fastapi import APIRouter, status
 
 from src.backoffice.user.delivery.removal import removal_router
 from src.backoffice.user.delivery.search import search_router
-from src.shared.infra.http.error_response import (
+from src.shared.infra.api.error_response import (
     InternalServerError,
 )
 

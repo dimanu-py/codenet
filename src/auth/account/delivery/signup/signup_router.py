@@ -12,9 +12,9 @@ from src.backoffice.user.application.signup.user_signup import UserSignup
 from src.backoffice.user.delivery.deps import postgres_user_repository
 from src.backoffice.user.infra.persistence.postgres_user_repository import PostgresUserRepository
 from src.shared.delivery.fastapi_response import FastAPIResponse
+from src.shared.infra.api.error_response import UnprocessableEntityError
+from src.shared.infra.api.success_response import AcceptedResponse
 from src.shared.infra.datetime_clock import DatetimeClock
-from src.shared.infra.http.error_response import UnprocessableEntityError
-from src.shared.infra.http.success_response import AcceptedResponse
 
 signup_router = APIRouter()
 

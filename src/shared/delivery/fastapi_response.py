@@ -1,7 +1,7 @@
 from fastapi.responses import JSONResponse
 
-from src.shared.infra.http.error_response import ErrorResponse
-from src.shared.infra.http.success_response import SuccessResponse
+from src.shared.infra.api.error_response import ErrorResponse
+from src.shared.infra.api.success_response import SuccessResponse
 
 
 class FastAPIResponse:
