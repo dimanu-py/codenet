@@ -1,5 +1,8 @@
 from fastapi import APIRouter, Depends, Path, status
 from fastapi.openapi.models import Example
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, status
 from starlette.responses import JSONResponse
 
 from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
@@ -12,11 +15,19 @@ from src.backoffice.user.application.signup.user_signup import UserSignup
 from src.backoffice.user.delivery.deps import postgres_user_repository
 from src.backoffice.user.infra.persistence.postgres_user_repository import PostgresUserRepository
 from src.shared.delivery.fastapi_response import FastAPIResponse
+from src.shared.delivery.path_parameter import PathParameter
 from src.shared.infra.api.error_response import UnprocessableEntityError
 from src.shared.infra.api.success_response import AcceptedResponse
 from src.shared.infra.datetime_clock import DatetimeClock
 
 signup_router = APIRouter()
+
+AccountIdPathParameter = Annotated[
+    str,
+    PathParameter(
+        description="Account ID", example_name="valid_id", example_value="123e4567-e89b-12d3-a456-426614174000"
+    ),
+]
 
 
 def get_controller(
@@ -44,10 +55,8 @@ def get_controller(
 )
 async def signup_account_and_user(
     request: SignupRequest,
-    account_id: str = Path(
-        openapi_examples={"valid_id": Example(value="123e4567-e89b-12d3-a456-426614174000")},
-    ),
     controller: SignupController = Depends(get_controller),
+    account_id: AccountIdPathParameter,
 ) -> JSONResponse:
     result = await controller.signup(
         account_id=account_id,
