@@ -1,11 +1,10 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, status
+from dishka import FromDishka
+from dishka.integrations.fastapi import inject
+from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
-from src.backoffice.user.application.removal.user_remover import UserRemover
-from src.backoffice.user.delivery.deps import postgres_user_repository
-from src.backoffice.user.domain.user_repository import UserRepository
 from src.backoffice.user.infra.api.removal.user_removal_controller import UserRemovalController
 from src.shared.delivery.api_parameter import PathParameter, ApiDocExample
 from src.shared.delivery.fastapi_response import FastAPIResponse
@@ -20,10 +19,6 @@ UsernamePathParameter = Annotated[
 ]
 
 
-def get_controller(repository: UserRepository = Depends(postgres_user_repository)) -> UserRemovalController:
-    return UserRemovalController(use_case=UserRemover(repository))
-
-
 @router.delete(
     "/{user_username}",
     responses={
@@ -32,9 +27,10 @@ def get_controller(repository: UserRepository = Depends(postgres_user_repository
         status.HTTP_422_UNPROCESSABLE_CONTENT: {"model": UnprocessableEntityError},
     },
 )
+@inject
 async def remove_user(
     user_username: UsernamePathParameter,
-    controller: UserRemovalController = Depends(get_controller),
+    controller: FromDishka[UserRemovalController],
 ) -> JSONResponse:
     result = await controller.remove(username=user_username)
     return FastAPIResponse.as_json(result)
