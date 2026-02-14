@@ -11,8 +11,10 @@ from src.backoffice.user.application.signup.user_signup import UserSignup
 from src.backoffice.user.infra.persistence.postgres_user_repository import PostgresUserRepository
 from src.shared.domain.clock import Clock
 from src.shared.infra.datetime_clock import DatetimeClock
+from src.shared.infra.injector.registry import register_provider
 
 
+@register_provider
 class AccountDependencyProvider(Provider):
     scope = Scope.REQUEST
 
