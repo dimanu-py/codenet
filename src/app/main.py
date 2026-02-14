@@ -17,6 +17,7 @@ from src.auth.account.infra.injector.account_dependency_provider import AccountD
 from src.auth.routes import auth_routes
 from src.backoffice.routes import social_routes
 from src.backoffice.user.infra.injector.user_dependency_provider import UserDependencyProvider
+from src.shared.infra.injector.databse_session_provider import DatabaseSessionProvider
 from src.shared.infra.logger.fastapi_file_logger import (
     create_api_logger,
 )
@@ -41,7 +42,9 @@ def create_app() -> FastAPI:
 def create_production_app() -> FastAPI:
     production_app = create_app()
 
-    di_container = make_async_container(AccountDependencyProvider(), UserDependencyProvider())
+    di_container = make_async_container(
+        DatabaseSessionProvider(), AccountDependencyProvider(), UserDependencyProvider()
+    )
     setup_dishka(di_container, production_app)
 
     logger = create_api_logger(name="codenet")
