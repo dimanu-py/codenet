@@ -24,10 +24,11 @@ from src.shared.infra.logger.fastapi_file_logger import (
 
 
 @asynccontextmanager
-async def lifespan(_: FastAPI) -> AsyncGenerator[None]:
+async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     migrator = AlembicMigrator()
     await migrator.migrate()
     yield
+    await app.state.dishka_container.close()
 
 
 def create_app() -> FastAPI:
