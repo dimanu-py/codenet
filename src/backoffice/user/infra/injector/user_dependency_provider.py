@@ -1,4 +1,4 @@
-from dishka import Provider, provide, Scope
+from dishka import Provider, Scope, provide
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.backoffice.user.application.removal.user_remover import UserRemover

@@ -1,4 +1,4 @@
-from dishka import Provider, provide, Scope
+from dishka import Provider, Scope, provide
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup

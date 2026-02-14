@@ -6,7 +6,7 @@ from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
 from src.backoffice.user.infra.api.removal.user_removal_controller import UserRemovalController
-from src.shared.delivery.api_parameter import PathParameter, ApiDocExample
+from src.shared.delivery.api_parameter import ApiDocExample, PathParameter
 from src.shared.delivery.fastapi_response import FastAPIResponse
 from src.shared.infra.api.error_response import ResourceNotFoundError, UnprocessableEntityError
 from src.shared.infra.api.success_response import AcceptedResponse

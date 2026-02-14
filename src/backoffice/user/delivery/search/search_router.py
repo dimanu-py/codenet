@@ -7,7 +7,7 @@ from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
 from src.backoffice.user.infra.api.search.user_search_controller import UserSearchController
-from src.shared.delivery.api_parameter import QueryParameter, ApiDocExample
+from src.shared.delivery.api_parameter import ApiDocExample, QueryParameter
 from src.shared.delivery.fastapi_response import FastAPIResponse
 from src.shared.infra.api.success_response import OkResponse
 
