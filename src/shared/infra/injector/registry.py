@@ -1,0 +1,44 @@
+import importlib
+from pathlib import Path
+
+from dishka import Provider
+
+
+class ProviderRegistry:
+    def __init__(self) -> None:
+        self._providers: dict[str, type] = {}
+
+    def register(self, provider_class: type) -> type:
+        self._providers[provider_class.__module__] = provider_class
+        return provider_class
+
+    def _find_potential_modules(self) -> list[str]:
+        modules = []
+        src_path = Path("src")
+        for injector_dir in src_path.rglob("injector"):
+            for provider_file in injector_dir.glob("*_provider.py"):
+                relative = provider_file.relative_to(src_path.parent)
+                module = ".".join(relative.with_suffix("").parts)
+                modules.append(module)
+        return modules
+
+    def get_providers(self) -> list[Provider]:
+        for module_name in self._find_potential_modules():
+            if module_name not in self._providers:
+                try:
+                    importlib.import_module(module_name)
+                except ImportError:
+                    pass
+
+        return [provider() for provider in self._providers.values()]
+
+
+_registry = ProviderRegistry()
+
+
+def register_provider(cls: type) -> type:
+    return _registry.register(cls)
+
+
+def get_registered_providers() -> list[Provider]:
+    return _registry.get_providers()
