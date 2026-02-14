@@ -19,7 +19,7 @@ class PostgresAccountRepository(AccountRepository):
     @override
     async def save(self, account: Account) -> None:
         account_to_save = AccountModel.from_domain(account)
-        await self._session.merge(account_to_save)
+        self._session.add(account_to_save)
         try:
             await self._session.flush()
         except IntegrityError as error:
