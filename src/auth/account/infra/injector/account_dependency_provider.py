@@ -1,7 +1,5 @@
-from collections.abc import AsyncGenerator
-
 from dishka import Provider, provide, Scope
-from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine, async_sessionmaker, AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
 from src.auth.account.domain.account_repository import AccountRepository
@@ -11,35 +9,12 @@ from src.auth.account.infra.argon_password_manager import ArgonPasswordManager
 from src.auth.account.infra.persistence.postgres_account_repository import PostgresAccountRepository
 from src.backoffice.user.application.signup.user_signup import UserSignup
 from src.backoffice.user.infra.persistence.postgres_user_repository import PostgresUserRepository
-from src.shared.delivery.settings import Settings
 from src.shared.domain.clock import Clock
 from src.shared.infra.datetime_clock import DatetimeClock
 
 
 class AccountDependencyProvider(Provider):
     scope = Scope.REQUEST
-
-    @provide
-    def settings(self) -> Settings:
-        return Settings()  # type: ignore[call-arg]
-
-    @provide
-    def engine(self, settings: Settings) -> AsyncEngine:
-        return create_async_engine(str(settings.postgres_url), echo=False)
-
-    @provide
-    def session_factory(self, engine: AsyncEngine) -> async_sessionmaker[AsyncSession]:
-        return async_sessionmaker(bind=engine, expire_on_commit=False, autoflush=False)
-
-    @provide(scope=Scope.REQUEST)
-    async def session(self, session_factory: async_sessionmaker[AsyncSession]) -> AsyncGenerator[AsyncSession]:
-        async with session_factory() as session:
-            try:
-                yield session
-                await session.commit()
-            except Exception:
-                await session.rollback()
-                raise
 
     @provide
     def account_repository(self, session: AsyncSession) -> AccountRepository:
