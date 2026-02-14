@@ -16,7 +16,7 @@ from src.app.middleware.fast_api_log_middleware import FastapiLogMiddleware
 from src.auth.routes import auth_routes
 from src.backoffice.routes import social_routes
 from src.shared.infra.injector.databse_session_provider import DatabaseSessionProvider
-from src.shared.infra.injector.registry import register_providers, get_registered_providers
+from src.shared.infra.injector.registry import get_registered_providers, register_providers
 from src.shared.infra.logger.fastapi_file_logger import (
     create_api_logger,
 )
