@@ -6,10 +6,10 @@ from dishka import Provider
 
 class ProviderRegistry:
     def __init__(self) -> None:
-        self._providers: dict[str, type] = {}
+        self._providers: dict[str, Provider] = {}
 
     def register(self, provider_class: type) -> type:
-        self._providers[provider_class.__module__] = provider_class
+        self._providers[provider_class.__module__] = provider_class()
         return provider_class
 
     def _find_potential_modules(self) -> list[str]:
@@ -22,7 +22,7 @@ class ProviderRegistry:
                 modules.append(module)
         return modules
 
-    def get_providers(self) -> list[Provider]:
+    def register_providers(self) -> None:
         for module_name in self._find_potential_modules():
             if module_name not in self._providers:
                 try:
@@ -30,7 +30,8 @@ class ProviderRegistry:
                 except ImportError:
                     pass
 
-        return [provider() for provider in self._providers.values()]
+    def get_registered_providers(self) -> list[Provider]:
+        return list(self._providers.values())
 
 
 _registry = ProviderRegistry()
@@ -40,5 +41,9 @@ def register_provider(cls: type) -> type:
     return _registry.register(cls)
 
 
+def register_providers() -> None:
+    _registry.register_providers()
+
+
 def get_registered_providers() -> list[Provider]:
-    return _registry.get_providers()
+    return _registry.get_registered_providers()
