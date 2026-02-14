@@ -11,7 +11,7 @@ from src.auth.account.infra.injector.account_dependency_provider import AccountD
 from src.backoffice.user.infra.injector.user_dependency_provider import UserDependencyProvider
 
 pytest_plugins = [
-    "tests.shared.infra.database_fixtures",
+    "tests.shared.infra.persistence.database_fixtures",
     "tests.backoffice.user.user_fixtures",
     "tests.auth.account.account_fixtures",
 ]
