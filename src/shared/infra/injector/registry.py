@@ -5,6 +5,8 @@ from dishka import Provider
 
 
 class ProviderRegistry:
+    _SRC_DIR = Path("src")
+
     def __init__(self) -> None:
         self._providers: dict[str, Provider] = {}
 
@@ -14,10 +16,10 @@ class ProviderRegistry:
 
     def _find_potential_modules(self) -> list[str]:
         modules = []
-        src_path = Path("src")
-        for injector_dir in src_path.rglob("injector"):
-            for provider_file in injector_dir.glob("*_provider.py"):
-                relative = provider_file.relative_to(src_path.parent)
+        for injector_dir in self._SRC_DIR.rglob("injector"):
+            provider_file = next(injector_dir.glob("*_provider.py"), None)
+            if provider_file:
+                relative = provider_file.relative_to(self._SRC_DIR.parent)
                 module = ".".join(relative.with_suffix("").parts)
                 modules.append(module)
         return modules
