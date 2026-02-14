@@ -1,9 +1,9 @@
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 
 import pytest
 from dishka import AsyncContainer
 from dishka.integrations.fastapi import setup_dishka
-from httpx import AsyncClient, ASGITransport
+from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.app.main import create_app
