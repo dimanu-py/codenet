@@ -12,6 +12,7 @@ class AccountModel(Base):
     __tablename__ = "accounts"
 
     id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True)
+    username: Mapped[str] = mapped_column(String, unique=True)
     email: Mapped[str] = mapped_column(String, unique=True)
     password: Mapped[str] = mapped_column(String)
     status: Mapped[str] = mapped_column(String)
@@ -24,6 +25,7 @@ class AccountModel(Base):
     def to_domain(self) -> Account:
         return Account(
             id=self.id,
+            username=self.username,
             email=self.email,
             password=self.password,
             status=self.status,

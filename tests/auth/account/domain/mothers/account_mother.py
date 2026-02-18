@@ -8,6 +8,7 @@ from tests.auth.account.domain.mothers.account_password_hash_primitives_mother i
     AccountPasswordHashPrimitivesMother,
 )
 from tests.auth.account.domain.mothers.account_status_primitives_mother import AccountStatusPrimitivesMother
+from tests.backoffice.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
 
 
 class AccountMother(ObjectMother):
@@ -15,6 +16,7 @@ class AccountMother(ObjectMother):
     def any() -> Account:
         return Account(
             id=AccountIdPrimitivesMother.any(),
+            username=UserUsernamePrimitivesMother.any(),
             email=AccountEmailPrimitivesMother.any(),
             password=AccountPasswordHashPrimitivesMother.any(),
             status=AccountStatusPrimitivesMother.active(),

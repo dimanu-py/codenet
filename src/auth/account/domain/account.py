@@ -11,17 +11,19 @@ from src.shared.domain.value_objects.aggregate import Aggregate
 
 
 class Account(Aggregate):
-    def __init__(self, id: str, email: str, password: str, status: str, created_at: datetime) -> None:
+    def __init__(self, id: str, username: str, email: str, password: str, status: str, created_at: datetime) -> None:
         self._id = AccountId(id)
+        self._username = username
         self._email = AccountEmail(email)
         self._password = AccountPasswordHash(password)
         self._status = AccountStatus(status)
         self._created_at = AccountCreatedAt(created_at)
 
     @classmethod
-    def signup(cls, id: str, email: str, password: str, clock: Clock) -> Self:
+    def signup(cls, id: str, username: str, email: str, password: str, clock: Clock) -> Self:
         return cls(
             id=id,
+            username=username,
             email=email,
             password=password,
             status=AccountStatus.default(),
