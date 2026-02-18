@@ -1,6 +1,6 @@
 import pytest
 
-from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
+from src.auth.account.application.signup.account_signup import AccountSignup
 from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_email_already_exists import AccountEmailAlreadyExists
 from tests.auth.account.domain.mothers.account_mother import AccountMother
@@ -13,15 +13,15 @@ from tests.shared.infra.mock_clock import MockClock
 
 @pytest.mark.unit
 @pytest.mark.asyncio
-class TestAccountWithUserSignup:
+class TestAccountSignup:
     def setup_method(self) -> None:
         self._account_repository = MockAccountRepository()
         self._clock = MockClock()
         self._password_manager = FakePasswordManager()
-        self._signup = AccountWithUserSignup(repository=self._account_repository, password_manager=self._password_manager,
-                                             clock=self._clock)
+        self._signup = AccountSignup(repository=self._account_repository, password_manager=self._password_manager,
+                                     clock=self._clock)
 
-    async def test_should_signup_account_and_user(self) -> None:
+    async def test_should_signup_a_new_account(self) -> None:
         account = AccountMother.any()
         account_primitives = account.to_primitives()
         user_primitives = UserMother.create(id=account_primitives["id"]).to_primitives()

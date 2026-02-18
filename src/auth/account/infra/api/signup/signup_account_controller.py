@@ -1,11 +1,11 @@
-from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
+from src.auth.account.application.signup.account_signup import AccountSignup
 from src.shared.domain.exceptions.domain_error import ConflictError
 from src.shared.infra.api.error_response import ConflictErrorResponse, ErrorResponse
 from src.shared.infra.api.success_response import AcceptedResponse, SuccessResponse
 
 
-class SignupController:
-    def __init__(self, use_case: AccountWithUserSignup) -> None:
+class SignupAccountController:
+    def __init__(self, use_case: AccountSignup) -> None:
         self._signup = use_case
 
     async def signup(self, account_id: str, username: str, email: str, password: str) -> SuccessResponse | ErrorResponse:

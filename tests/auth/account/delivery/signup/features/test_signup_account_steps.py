@@ -10,7 +10,6 @@ from tests.auth.account.domain.mothers.account_id_primitives_mother import Accou
 from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import (
     AccountPasswordHashPrimitivesMother,
 )
-from tests.backoffice.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
 from tests.backoffice.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
 
 pytestmark = [pytest.mark.acceptance]
@@ -23,7 +22,6 @@ _ROUTE_PATH = "/app/auth/account/"
 @given("I have filled in the signup form with valid information", target_fixture="signup_form")
 def filled_signup_form() -> dict:
     return {
-        "name": UserNamePrimitivesMother.any(),
         "username": UserUsernamePrimitivesMother.any(),
         "email": AccountEmailPrimitivesMother.any(),
         "password": AccountPasswordHashPrimitivesMother.any(),
@@ -33,7 +31,6 @@ def filled_signup_form() -> dict:
 @given("I have filled in the signup form with a username that is already registered", target_fixture="signup_form")
 def filled_signup_form_with_existing_username(existing_username: str) -> dict:
     return {
-        "name": UserNamePrimitivesMother.any(),
         "username": existing_username,
         "email": AccountEmailPrimitivesMother.any(),
         "password": AccountPasswordHashPrimitivesMother.any(),
@@ -43,7 +40,6 @@ def filled_signup_form_with_existing_username(existing_username: str) -> dict:
 @given("I have filled in the signup form with an email that is already registered", target_fixture="signup_form")
 def filled_signup_form_with_existing_email(existing_account_email: str) -> dict:
     return {
-        "name": UserNamePrimitivesMother.any(),
         "username": UserUsernamePrimitivesMother.any(),
         "email": existing_account_email,
         "password": AccountPasswordHashPrimitivesMother.any(),
@@ -57,7 +53,7 @@ def submit_signup_form(client: AsyncClient, signup_form: dict) -> Response:
     return loop.run_until_complete(client.post(f"{_ROUTE_PATH}{account_id}", json=signup_form))
 
 
-@then("I should have an account and a user profile created")
+@then("I should have an account created")
 def verify_signup_success(signup_response: Response) -> None:
     expect(signup_response.status_code).to(equal(202))
 

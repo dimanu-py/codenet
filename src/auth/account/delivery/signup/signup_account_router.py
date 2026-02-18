@@ -5,14 +5,14 @@ from dishka.integrations.fastapi import inject
 from fastapi import APIRouter, status
 from starlette.responses import JSONResponse
 
-from src.auth.account.delivery.signup.signup_request import SignupRequest
-from src.auth.account.infra.api.signup.signup_controller import SignupController
+from src.auth.account.delivery.signup.signup_account_request import SignupAccountRequest
+from src.auth.account.infra.api.signup.signup_account_controller import SignupAccountController
 from src.shared.delivery.api_parameter import ApiDocExample, PathParameter
 from src.shared.delivery.fastapi_response import FastAPIResponse
 from src.shared.infra.api.error_response import UnprocessableEntityError
 from src.shared.infra.api.success_response import AcceptedResponse
 
-signup_router = APIRouter()
+signup_account_router = APIRouter()
 
 AccountIdPathParameter = Annotated[
     str,
@@ -23,7 +23,7 @@ AccountIdPathParameter = Annotated[
 ]
 
 
-@signup_router.post(
+@signup_account_router.post(
     "/{account_id}",
     responses={
         status.HTTP_202_ACCEPTED: {"model": AcceptedResponse},
@@ -31,10 +31,10 @@ AccountIdPathParameter = Annotated[
     },
 )
 @inject
-async def signup_account_and_user(
-    request: SignupRequest,
+async def signup_account(
+    request: SignupAccountRequest,
     account_id: AccountIdPathParameter,
-    controller: FromDishka[SignupController],
+    controller: FromDishka[SignupAccountController],
 ) -> JSONResponse:
     result = await controller.signup(account_id=account_id, username=request.username, email=request.email, password=request.password)
     return FastAPIResponse.as_json(result)

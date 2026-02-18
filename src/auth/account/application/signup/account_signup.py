@@ -7,7 +7,7 @@ from src.shared.domain.clock import Clock
 from src.shared.domain.value_objects.optional import raise_error
 
 
-class AccountWithUserSignup:
+class AccountSignup:
     def __init__(self, repository: AccountRepository, password_manager: PasswordManager, clock: Clock) -> None:
         self._repository = repository
         self._clock = clock

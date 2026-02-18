@@ -3,10 +3,10 @@ from unittest.mock import AsyncMock
 import pytest
 from expects import equal, expect
 
-from src.auth.account.application.signup.account_with_user_signup import AccountWithUserSignup
-from src.auth.account.delivery.signup.signup_request import SignupRequest
+from src.auth.account.application.signup.account_signup import AccountSignup
+from src.auth.account.delivery.signup.signup_account_request import SignupAccountRequest
 from src.auth.account.domain.account_email_already_exists import AccountEmailAlreadyExists
-from src.auth.account.infra.api.signup.signup_controller import SignupController
+from src.auth.account.infra.api.signup.signup_account_controller import SignupAccountController
 from src.backoffice.user.application.signup.user_signup import UsernameAlreadyExists
 from src.shared.domain.exceptions.base_error import BaseError
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
@@ -21,7 +21,7 @@ from tests.backoffice.user.domain.mothers.user_username_primitives_mother import
 @pytest.mark.asyncio
 class TestSignupController:
     _response = None
-    _ANY_REQUEST_BODY = SignupRequest(
+    _ANY_REQUEST_BODY = SignupAccountRequest(
         username=UserUsernamePrimitivesMother.any(),
         email=AccountEmailPrimitivesMother.any(),
         password=AccountPasswordHashPrimitivesMother.any(),
@@ -29,8 +29,8 @@ class TestSignupController:
     _ANY_ACCOUNT_ID = AccountIdPrimitivesMother.any()
 
     def setup_method(self) -> None:
-        self._use_case = AsyncMock(spec=AccountWithUserSignup)
-        self._controller = SignupController(use_case=self._use_case)
+        self._use_case = AsyncMock(spec=AccountSignup)
+        self._controller = SignupAccountController(use_case=self._use_case)
 
     async def test_should_return_202_when_signing_up_an_account_and_a_user_successfully(self) -> None:
         self._should_signup_account_and_user()
