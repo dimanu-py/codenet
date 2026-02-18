@@ -42,12 +42,7 @@ class AccountDependencyProvider(Provider):
     def account_with_user_signup(
         self, repository: AccountRepository, user_signup: UserSignup, password_manager: PasswordManager, clock: Clock
     ) -> AccountWithUserSignup:
-        return AccountWithUserSignup(
-            repository=repository,
-            user_signup=user_signup,
-            password_manager=password_manager,
-            clock=clock,
-        )
+        return AccountWithUserSignup(repository=repository, password_manager=password_manager, clock=clock)
 
     @provide
     def signup_controller(self, use_case: AccountWithUserSignup) -> SignupController:

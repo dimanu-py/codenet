@@ -14,7 +14,6 @@ from tests.auth.account.domain.mothers.account_id_primitives_mother import Accou
 from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import (
     AccountPasswordHashPrimitivesMother,
 )
-from tests.backoffice.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
 from tests.backoffice.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
 
 
@@ -23,7 +22,6 @@ from tests.backoffice.user.domain.mothers.user_username_primitives_mother import
 class TestSignupController:
     _response = None
     _ANY_REQUEST_BODY = SignupRequest(
-        name=UserNamePrimitivesMother.any(),
         username=UserUsernamePrimitivesMother.any(),
         email=AccountEmailPrimitivesMother.any(),
         password=AccountPasswordHashPrimitivesMother.any(),
@@ -37,9 +35,7 @@ class TestSignupController:
     async def test_should_return_202_when_signing_up_an_account_and_a_user_successfully(self) -> None:
         self._should_signup_account_and_user()
 
-        self._response = await self._controller.signup(
-            account_id=self._ANY_ACCOUNT_ID, **self._ANY_REQUEST_BODY.model_dump()
-        )
+        self._response = await self._controller.signup(account_id=self._ANY_ACCOUNT_ID, **self._ANY_REQUEST_BODY.model_dump())
 
         self._assert_contract_is_met_on_success(202, {"accepted": True})
 
@@ -55,9 +51,7 @@ class TestSignupController:
     ) -> None:
         self._should_fail_validating_signup_data_with(expected_error)
 
-        self._response = await self._controller.signup(
-            account_id=self._ANY_ACCOUNT_ID, **self._ANY_REQUEST_BODY.model_dump()
-        )
+        self._response = await self._controller.signup(account_id=self._ANY_ACCOUNT_ID, **self._ANY_REQUEST_BODY.model_dump())
 
         self._assert_contract_is_met_on_error(409)
 

@@ -36,11 +36,5 @@ async def signup_account_and_user(
     account_id: AccountIdPathParameter,
     controller: FromDishka[SignupController],
 ) -> JSONResponse:
-    result = await controller.signup(
-        account_id=account_id,
-        name=request.name,
-        username=request.username,
-        email=request.email,
-        password=request.password,
-    )
+    result = await controller.signup(account_id=account_id, username=request.username, email=request.email, password=request.password)
     return FastAPIResponse.as_json(result)
