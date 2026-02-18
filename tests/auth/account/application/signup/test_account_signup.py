@@ -3,7 +3,7 @@ import pytest
 from src.auth.account.application.signup.account_signup import AccountSignup
 from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_email_already_exists import AccountEmailAlreadyExists
-from tests.auth.account.account_fixtures import existing_account
+from src.auth.account.domain.account_username_already_exists import AccountUsernameAlreadyExists
 from tests.auth.account.domain.mothers.account_mother import AccountMother
 from tests.auth.account.infra.fake_password_manager import FakePasswordManager
 from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
@@ -33,7 +33,7 @@ class TestAccountSignup:
 
         self._should_have_saved_account(account)
 
-    async def test_should_not_allow_to_signup_account_with_duplicated_email(self) -> None:
+    async def test_should_not_allow_to_signup_account_with_already_registered_email(self) -> None:
         existing_account = AccountMother.any()
         existing_account_primitives = existing_account.to_primitives()
         self._should_search_and_find(existing_account)
@@ -47,6 +47,25 @@ class TestAccountSignup:
         }
         await async_expect(lambda: self._signup.execute(**signup_information)).to(
             raise_error(AccountEmailAlreadyExists)
+        )
+
+        self._should_have_not_saved_account()
+
+    @pytest.mark.xfail
+    async def test_should_not_allow_to_signup_account_with_already_registered_username(self) -> None:
+        existing_account = AccountMother.any()
+        existing_account_primitives = existing_account.to_primitives()
+        self._should_search_and_find(existing_account)
+        new_account_primitives = AccountMother.with_username(existing_account_primitives['username']).to_primitives()
+
+        signup_information = {
+            "account_id": new_account_primitives["id"],
+            "username": existing_account_primitives["username"],
+            "email": new_account_primitives["email"],
+            "plain_password": new_account_primitives["password"],
+        }
+        await async_expect(lambda: self._signup.execute(**signup_information)).to(
+            raise_error(AccountUsernameAlreadyExists)
         )
 
         self._should_have_not_saved_account()
