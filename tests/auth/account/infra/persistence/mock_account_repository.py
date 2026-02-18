@@ -26,3 +26,6 @@ class MockAccountRepository(AccountRepository):
 
     def should_not_search_account(self) -> None:
         self._mock_search.return_value = Optional.empty()
+
+    def should_not_have_saved_account(self) -> None:
+        self._mock_save.assert_not_awaited()

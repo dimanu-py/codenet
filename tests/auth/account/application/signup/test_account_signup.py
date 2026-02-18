@@ -32,7 +32,7 @@ class TestAccountSignup:
 
         self._should_have_saved_account(account)
 
-    async def test_should_raise_error_when_account_email_is_already_signed_up(self) -> None:
+    async def test_should_not_allow_to_signup_account_with_duplicated_email(self) -> None:
         existing_account = AccountMother.any()
         existing_account_primitives = existing_account.to_primitives()
         self._should_search_and_find(existing_account)
@@ -47,6 +47,8 @@ class TestAccountSignup:
             raise_error(AccountEmailAlreadyExists)
         )
 
+        self._should_have_not_saved_account()
+
     def _should_have_saved_account(self, account: Account) -> None:
         self._account_repository.should_have_saved(account)
 
@@ -55,3 +57,7 @@ class TestAccountSignup:
 
     def _should_search_and_not_find_account(self) -> None:
         self._account_repository.should_not_search_account()
+
+    def _should_have_not_saved_account(self) -> None:
+        self._account_repository.should_not_have_saved_account()
+
