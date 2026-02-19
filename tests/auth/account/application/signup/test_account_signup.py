@@ -15,10 +15,10 @@ from tests.shared.infra.mock_clock import MockClock
 @pytest.mark.asyncio
 class TestAccountSignup:
     def setup_method(self) -> None:
-        self._account_repository = MockAccountRepository()
+        self._repository = MockAccountRepository()
         self._clock = MockClock()
         self._password_manager = FakePasswordManager()
-        self._signup = AccountSignup(repository=self._account_repository, password_manager=self._password_manager,
+        self._signup = AccountSignup(repository=self._repository, password_manager=self._password_manager,
                                      clock=self._clock)
 
     async def test_should_signup_a_new_account(self) -> None:
@@ -72,14 +72,14 @@ class TestAccountSignup:
         self._should_have_not_saved_account()
 
     def _should_have_saved_account(self, account: Account) -> None:
-        self._account_repository.should_have_saved(account)
+        self._repository.should_have_saved(account)
 
     def _should_have_not_saved_account(self) -> None:
-        self._account_repository.should_not_have_saved_account()
+        self._repository.should_not_have_saved_account()
 
     def _should_not_find_account_matching_criteria(self) -> None:
-        self._account_repository.should_not_match_criteria()
+        self._repository.should_not_match_criteria()
 
     def _should_match_criteria_with(self, *accounts: list[Account]) -> None:
-        self._account_repository.should_match_criteria_with_successive_calls(*accounts)
+        self._repository.should_match_criteria_with_successive_calls(*accounts)
 
