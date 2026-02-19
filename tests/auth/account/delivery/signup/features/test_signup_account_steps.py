@@ -29,9 +29,9 @@ def filled_signup_form() -> dict:
 
 
 @given("I have filled in the signup form with a username that is already registered", target_fixture="signup_form")
-def filled_signup_form_with_existing_username(existing_username: str) -> dict:
+def filled_signup_form_with_existing_username(existing_account_username: str) -> dict:
     return {
-        "username": existing_username,
+        "username": existing_account_username,
         "email": AccountEmailPrimitivesMother.any(),
         "password": AccountPasswordHashPrimitivesMother.any(),
     }
