@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_email_already_exists import AccountEmailAlreadyExists
 from src.auth.account.domain.account_id import AccountId
+from src.auth.account.domain.account_username_already_exists import AccountUsernameAlreadyExists
 from src.auth.account.domain.accounts import Accounts
 from src.auth.account.infra.persistence.account_model import AccountModel
 from src.auth.account.infra.persistence.postgres_account_repository import PostgresAccountRepository
@@ -52,6 +53,13 @@ class TestPostgresAccountRepository:
 
         await async_expect(lambda: self._repository.save(account_with_duplicated_email)).to(
             raise_error(AccountEmailAlreadyExists)
+        )
+
+    async def test_should_not_allow_to_store_account_with_duplicated_username(self, existing_account_username: str) -> None:
+        account_with_duplicated_username = AccountMother.with_username(existing_account_username)
+
+        await async_expect(lambda: self._repository.save(account_with_duplicated_username)).to(
+            raise_error(AccountUsernameAlreadyExists)
         )
 
     async def _get_saved_account(self, account_id: AccountId) -> Account | None:
