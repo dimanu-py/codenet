@@ -36,13 +36,14 @@ class TestAccountSignup:
     async def test_should_not_allow_to_signup_account_with_already_registered_email(self) -> None:
         existing_account = AccountMother.any()
         existing_account_primitives = existing_account.to_primitives()
-        self._should_match_criteria_with([existing_account])
         new_account_primitives = AccountMother.with_email(existing_account_primitives["email"]).to_primitives()
+
+        self._should_match_criteria_with([existing_account])
 
         signup_information = {
             "account_id": new_account_primitives["id"],
             "username": new_account_primitives["username"],
-            "email": new_account_primitives["email"],
+            "email": existing_account_primitives["email"],
             "plain_password": new_account_primitives["password"],
         }
         await async_expect(lambda: self._signup.execute(**signup_information)).to(
@@ -51,12 +52,12 @@ class TestAccountSignup:
 
         self._should_have_not_saved_account()
 
-    @pytest.mark.xfail
     async def test_should_not_allow_to_signup_account_with_already_registered_username(self) -> None:
         existing_account = AccountMother.any()
         existing_account_primitives = existing_account.to_primitives()
-        self._should_match_criteria_with([existing_account])
         new_account_primitives = AccountMother.with_username(existing_account_primitives['username']).to_primitives()
+
+        self._should_match_criteria_with([], [existing_account])
 
         signup_information = {
             "account_id": new_account_primitives["id"],
@@ -76,9 +77,9 @@ class TestAccountSignup:
     def _should_have_not_saved_account(self) -> None:
         self._account_repository.should_not_have_saved_account()
 
-    def _should_match_criteria_with(self, accounts: list[Account]) -> None:
-        self._account_repository.should_match_criteria_with(accounts)
-
     def _should_not_find_account_matching_criteria(self) -> None:
         self._account_repository.should_not_match_criteria()
+
+    def _should_match_criteria_with(self, *accounts: list[Account]) -> None:
+        self._account_repository.should_match_criteria_with_successive_calls(*accounts)
 

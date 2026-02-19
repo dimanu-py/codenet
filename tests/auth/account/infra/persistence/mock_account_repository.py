@@ -18,8 +18,7 @@ class MockAccountRepository(AccountRepository):
 
     @override
     async def matching(self, criteria: Criteria) -> Accounts:
-        await self._mock_match(criteria)
-        return self._mock_match.return_value
+        return await self._mock_match(criteria)
 
     def should_have_saved(self, account: Account) -> None:
         self._mock_save.assert_awaited_once_with(account)
@@ -27,8 +26,9 @@ class MockAccountRepository(AccountRepository):
     def should_not_have_saved_account(self) -> None:
         self._mock_save.assert_not_awaited()
 
-    def should_match_criteria_with(self, accounts: list[Account]) -> None:
-        self._mock_match.return_value = Accounts(accounts)
-
     def should_not_match_criteria(self) -> None:
         self._mock_match.return_value = Accounts([])
+
+    def should_match_criteria_with_successive_calls(self, *accounts_lists: list[Account]) -> None:
+        self._mock_match.side_effect = [Accounts(accounts) for accounts in accounts_lists]
+
