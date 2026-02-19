@@ -1,13 +1,16 @@
 import pytest
-from expects import be_none, equal, expect
+from expects import be_none, equal, expect, be_empty
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_email_already_exists import AccountEmailAlreadyExists
 from src.auth.account.domain.account_id import AccountId
+from src.auth.account.domain.accounts import Accounts
 from src.auth.account.infra.persistence.account_model import AccountModel
 from src.auth.account.infra.persistence.postgres_account_repository import PostgresAccountRepository
+from src.shared.domain.criteria.condition.operator import Operator
 from tests.auth.account.domain.mothers.account_mother import AccountMother
+from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
 from tests.shared.expects.matchers import async_expect, raise_error
 
 
@@ -32,6 +35,22 @@ class TestPostgresAccountRepository:
         searched_account = await self._repository.search_by_email(existing_account._email)
 
         expect(searched_account.unwrap()).to(equal(existing_account))
+
+    async def test_should_match_an_existing_account_based_on_criteria(self, existing_account: Account) -> None:
+        criteria = CriteriaMother.with_one_condition(
+                field="username", operator=Operator.EQUAL, value=existing_account._username
+            )
+
+        searched_accounts = await self._repository.matching(criteria)
+
+        expect(searched_accounts).to(equal(Accounts([existing_account])))
+
+    async def test_should_return_empty_list_if_no_accounts_match_criteria(self) -> None:
+        criteria = CriteriaMother.empty()
+
+        searched_accounts = await self._repository.matching(criteria)
+
+        expect(searched_accounts).to(be_empty)
 
     async def test_should_not_allow_to_store_account_with_duplicated_email(self, existing_account_email: str) -> None:
         account_with_duplicated_email = AccountMother.with_email(existing_account_email)
