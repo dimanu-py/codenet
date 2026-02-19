@@ -21,6 +21,9 @@ class TestAccountSignup:
         self._signup = AccountSignup(repository=self._repository, password_manager=self._password_manager,
                                      clock=self._clock)
 
+    def teardown_method(self) -> None:
+        self._repository.reset_mocks()
+
     async def test_should_signup_a_new_account(self) -> None:
         account = AccountMother.any()
         account_primitives = account.to_primitives()

@@ -32,3 +32,7 @@ class MockAccountRepository(AccountRepository):
     def should_match_criteria_with_successive_calls(self, *accounts_lists: list[Account]) -> None:
         self._mock_match.side_effect = [Accounts(accounts) for accounts in accounts_lists]
 
+    def reset_mocks(self) -> None:
+        self._mock_save.reset_mock(return_value=True, side_effect=True)
+        self._mock_match.reset_mock(return_value=True, side_effect=True)
+
