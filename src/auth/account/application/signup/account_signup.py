@@ -1,6 +1,7 @@
 from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_email_already_exists import AccountEmailAlreadyExists
 from src.auth.account.domain.account_repository import AccountRepository
+from src.auth.account.domain.account_username_already_exists import AccountUsernameAlreadyExists
 from src.auth.account.domain.password_manager import PasswordManager
 from src.shared.domain.clock import Clock
 from src.shared.domain.criteria.criteria import Criteria
@@ -14,6 +15,7 @@ class AccountSignup:
 
     async def execute(self, account_id: str, username: str, email: str, plain_password: str) -> None:
         await self._ensure_account_with_same_email_is_not_already_signed_up(email)
+        await self._ensure_account_with_same_username_is_not_already_signed_up(username)
         hashed_password = self._hash_account_password(plain_password)
         await self._signup_account_with(account_id=account_id, username=username, email=email, password=hashed_password)
 
@@ -28,3 +30,9 @@ class AccountSignup:
         signed_up_accounts = await self._repository.matching(criteria=Criteria.from_primitives(filter_expression={"field": "email", "equal": email}))
         if len(signed_up_accounts) > 0:
             raise AccountEmailAlreadyExists()
+
+    async def _ensure_account_with_same_username_is_not_already_signed_up(self, username: str) -> None:
+        signed_up_accounts = await self._repository.matching(criteria=Criteria.from_primitives(filter_expression={"field": "username", "equal": username}))
+        if len(signed_up_accounts) > 0:
+            raise AccountUsernameAlreadyExists()
+
