@@ -1,13 +1,12 @@
 import pytest
 from expects import equal, expect
+from sindripy.mothers import StringPrimitivesMother
 from sqlalchemy.sql.selectable import Select
 
 from src.shared.domain.criteria.condition.operator import Operator
 from src.shared.infra.criteria.criteria_to_sqlalchemy_converter import (
     CriteriaToSqlalchemyConverter,
 )
-from tests.backoffice.user.domain.mothers.user_name_primitives_mother import UserNamePrimitivesMother
-from tests.backoffice.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
 from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
 from tests.shared.infra.criteria.dummy_model import DummyModel
 
@@ -25,7 +24,7 @@ class TestCriteriaToSqlalchemyConverter:
         expect(query).to(equal("SELECT test_table.id, test_table.name, test_table.username \nFROM test_table"))
 
     def test_should_generate_select_query_with_one_filter(self) -> None:
-        user_name = UserNamePrimitivesMother.any()
+        user_name = StringPrimitivesMother.any()
 
         criteria = CriteriaMother.with_one_condition("name", Operator.EQUAL, user_name)
         query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
@@ -41,8 +40,8 @@ class TestCriteriaToSqlalchemyConverter:
     def test_should_generate_select_query_with_multiple_filters_with_and_logical_operator(
         self,
     ) -> None:
-        user_name = UserNamePrimitivesMother.any()
-        user_username = UserUsernamePrimitivesMother.any()
+        user_name = StringPrimitivesMother.any()
+        user_username = StringPrimitivesMother.any()
         criteria = CriteriaMother.with_conditions(
             {
                 "and": [
@@ -70,8 +69,8 @@ class TestCriteriaToSqlalchemyConverter:
     def test_should_generate_select_query_with_multiple_filters_with_or_logical_operator(
         self,
     ) -> None:
-        user_name = UserNamePrimitivesMother.any()
-        user_username = UserUsernamePrimitivesMother.any()
+        user_name = StringPrimitivesMother.any()
+        user_username = StringPrimitivesMother.any()
         criteria = CriteriaMother.with_conditions(
             {
                 "or": [
@@ -97,7 +96,7 @@ class TestCriteriaToSqlalchemyConverter:
         )
 
     def test_should_generate_negated_query(self) -> None:
-        user_name = UserNamePrimitivesMother.any()
+        user_name = StringPrimitivesMother.any()
         criteria = CriteriaMother.with_one_condition("name", Operator.NOT_EQUAL, user_name)
 
         query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
@@ -111,7 +110,7 @@ class TestCriteriaToSqlalchemyConverter:
         )
 
     def test_should_generate_query_with_contains(self) -> None:
-        user_name = UserNamePrimitivesMother.any()
+        user_name = StringPrimitivesMother.any()
         criteria = CriteriaMother.with_one_condition("name", Operator.CONTAINS, user_name)
 
         query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
@@ -125,9 +124,9 @@ class TestCriteriaToSqlalchemyConverter:
         )
 
     def test_should_generate_query_with_nested_filters(self) -> None:
-        user_name = UserNamePrimitivesMother.any()
-        first_username = UserUsernamePrimitivesMother.any()
-        second_username = UserUsernamePrimitivesMother.any()
+        user_name = StringPrimitivesMother.any()
+        first_username = StringPrimitivesMother.any()
+        second_username = StringPrimitivesMother.any()
 
         criteria = CriteriaMother.with_conditions(
             {
