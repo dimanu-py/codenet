@@ -12,6 +12,7 @@ from src.shared.domain.value_objects.optional import Optional
 class MockAccountRepository(AccountRepository):
     def __init__(self) -> None:
         self._mock_save = AsyncMock()
+        self._mock_match = AsyncMock()
         self._mock_search = AsyncMock()
 
     @override
@@ -20,7 +21,8 @@ class MockAccountRepository(AccountRepository):
 
     @override
     async def matching(self, criteria: Criteria) -> Accounts:
-        pass
+        await self._mock_match(criteria)
+        return self._mock_match.return_value
 
     @override
     async def search_by_email(self, email: AccountEmail) -> Optional[Account]:
@@ -38,3 +40,6 @@ class MockAccountRepository(AccountRepository):
 
     def should_not_have_saved_account(self) -> None:
         self._mock_save.assert_not_awaited()
+
+    def should_match_criteria_with(self, accounts: list[Account]) -> None:
+        self._mock_match.return_value = Accounts(accounts)

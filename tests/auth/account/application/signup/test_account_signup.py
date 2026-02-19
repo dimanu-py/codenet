@@ -37,6 +37,7 @@ class TestAccountSignup:
         existing_account = AccountMother.any()
         existing_account_primitives = existing_account.to_primitives()
         self._should_search_and_find(existing_account)
+        self._should_match_criteria_with([existing_account])
         new_account_primitives = AccountMother.with_email(existing_account_primitives["email"]).to_primitives()
 
         signup_information = {
@@ -81,4 +82,7 @@ class TestAccountSignup:
 
     def _should_have_not_saved_account(self) -> None:
         self._account_repository.should_not_have_saved_account()
+
+    def _should_match_criteria_with(self, accounts: list[Account]) -> None:
+        self._account_repository.should_match_criteria_with(accounts)
 
