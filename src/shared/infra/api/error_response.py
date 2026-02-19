@@ -29,3 +29,8 @@ class ConflictErrorResponse(ErrorResponse):
 class InternalServerError(ErrorResponse):
     status: int = Field(default=HTTPStatus.INTERNAL_SERVER_ERROR)
     error: dict = Field(default={"message": HTTPStatus.INTERNAL_SERVER_ERROR.phrase})
+
+
+class UnauthorizedError(ErrorResponse):
+    status: int = Field(default=HTTPStatus.UNAUTHORIZED)
+    error: dict = Field(default={"message": HTTPStatus.UNAUTHORIZED.phrase})
