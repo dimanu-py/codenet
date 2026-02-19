@@ -27,7 +27,6 @@ class TestAccountSignup:
 
         self._clock.should_generate(account_primitives["created_at"])
         self._should_not_find_account_matching_criteria()
-        self._should_search_and_not_find_account()
 
         await self._signup.execute(account_id=account_primitives["id"], username=account_primitives["username"],
                                    email=account_primitives["email"], plain_password=account_primitives["password"])
@@ -37,7 +36,6 @@ class TestAccountSignup:
     async def test_should_not_allow_to_signup_account_with_already_registered_email(self) -> None:
         existing_account = AccountMother.any()
         existing_account_primitives = existing_account.to_primitives()
-        self._should_search_and_find(existing_account)
         self._should_match_criteria_with([existing_account])
         new_account_primitives = AccountMother.with_email(existing_account_primitives["email"]).to_primitives()
 
@@ -57,7 +55,7 @@ class TestAccountSignup:
     async def test_should_not_allow_to_signup_account_with_already_registered_username(self) -> None:
         existing_account = AccountMother.any()
         existing_account_primitives = existing_account.to_primitives()
-        self._should_search_and_find(existing_account)
+        self._should_match_criteria_with([existing_account])
         new_account_primitives = AccountMother.with_username(existing_account_primitives['username']).to_primitives()
 
         signup_information = {
@@ -74,12 +72,6 @@ class TestAccountSignup:
 
     def _should_have_saved_account(self, account: Account) -> None:
         self._account_repository.should_have_saved(account)
-
-    def _should_search_and_find(self, account: Account) -> None:
-        self._account_repository.should_search(account)
-
-    def _should_search_and_not_find_account(self) -> None:
-        self._account_repository.should_not_search_account()
 
     def _should_have_not_saved_account(self) -> None:
         self._account_repository.should_not_have_saved_account()

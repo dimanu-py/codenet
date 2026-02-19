@@ -31,11 +31,6 @@ class TestPostgresAccountRepository:
         expect(saved_account).to_not(be_none)
         expect(account).to(equal(saved_account))
 
-    async def test_should_search_and_find_an_existing_account_based_on_email(self, existing_account: Account) -> None:
-        searched_account = await self._repository.search_by_email(existing_account._email)
-
-        expect(searched_account.unwrap()).to(equal(existing_account))
-
     async def test_should_match_an_existing_account_based_on_criteria(self, existing_account: Account) -> None:
         criteria = CriteriaMother.with_one_condition(
                 field="username", operator=Operator.EQUAL, value=existing_account._username

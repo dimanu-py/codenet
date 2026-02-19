@@ -1,11 +1,9 @@
 from src.auth.account.domain.account import Account
-from src.auth.account.domain.account_email import AccountEmail
 from src.auth.account.domain.account_email_already_exists import AccountEmailAlreadyExists
 from src.auth.account.domain.account_repository import AccountRepository
 from src.auth.account.domain.password_manager import PasswordManager
 from src.shared.domain.clock import Clock
 from src.shared.domain.criteria.criteria import Criteria
-from src.shared.domain.value_objects.optional import raise_error
 
 
 class AccountSignup:
@@ -30,8 +28,3 @@ class AccountSignup:
         signed_up_accounts = await self._repository.matching(criteria=Criteria.from_primitives(filter_expression={"field": "email", "equal": email}))
         if len(signed_up_accounts) > 0:
             raise AccountEmailAlreadyExists()
-        signed_up_account = await self._repository.search_by_email(AccountEmail(email))
-        signed_up_account.match(
-            of=lambda _: raise_error(AccountEmailAlreadyExists()),
-            empty=lambda: None,
-        )
