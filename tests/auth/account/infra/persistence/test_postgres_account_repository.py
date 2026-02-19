@@ -34,7 +34,7 @@ class TestPostgresAccountRepository:
 
     async def test_should_match_an_existing_account_based_on_criteria(self, existing_account: Account) -> None:
         criteria = CriteriaMother.with_one_condition(
-                field="username", operator=Operator.EQUAL, value=existing_account._username
+                field="username", operator=Operator.EQUAL, value=existing_account._username.value
             )
 
         searched_accounts = await self._repository.matching(criteria)

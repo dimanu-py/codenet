@@ -6,6 +6,7 @@ from src.auth.account.domain.account_email import AccountEmail
 from src.auth.account.domain.account_id import AccountId
 from src.auth.account.domain.account_password_hash import AccountPasswordHash
 from src.auth.account.domain.account_status import AccountStatus
+from src.auth.account.domain.account_username import AccountUsername
 from src.shared.domain.clock import Clock
 from src.shared.domain.value_objects.aggregate import Aggregate
 
@@ -13,7 +14,7 @@ from src.shared.domain.value_objects.aggregate import Aggregate
 class Account(Aggregate):
     def __init__(self, id: str, username: str, email: str, password: str, status: str, created_at: datetime) -> None:
         self._id = AccountId(id)
-        self._username = username
+        self._username = AccountUsername(username)
         self._email = AccountEmail(email)
         self._password = AccountPasswordHash(password)
         self._status = AccountStatus(status)
