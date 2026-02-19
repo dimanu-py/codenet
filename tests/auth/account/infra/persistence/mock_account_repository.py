@@ -43,3 +43,6 @@ class MockAccountRepository(AccountRepository):
 
     def should_match_criteria_with(self, accounts: list[Account]) -> None:
         self._mock_match.return_value = Accounts(accounts)
+
+    def should_not_match_criteria(self) -> None:
+        self._mock_match.return_value = Accounts([])

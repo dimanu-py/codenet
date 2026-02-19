@@ -26,6 +26,7 @@ class TestAccountSignup:
         account_primitives = account.to_primitives()
 
         self._clock.should_generate(account_primitives["created_at"])
+        self._should_not_find_account_matching_criteria()
         self._should_search_and_not_find_account()
 
         await self._signup.execute(account_id=account_primitives["id"], username=account_primitives["username"],
@@ -85,4 +86,7 @@ class TestAccountSignup:
 
     def _should_match_criteria_with(self, accounts: list[Account]) -> None:
         self._account_repository.should_match_criteria_with(accounts)
+
+    def _should_not_find_account_matching_criteria(self) -> None:
+        self._account_repository.should_not_match_criteria()
 
