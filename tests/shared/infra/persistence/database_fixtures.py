@@ -1,4 +1,5 @@
-from collections.abc import AsyncGenerator, Generator
+from collections.abc import AsyncGenerator, Generator, Callable, Coroutine
+from typing import Any
 
 import pytest
 from sqlalchemy.ext.asyncio.engine import AsyncConnection, AsyncEngine, create_async_engine
@@ -46,8 +47,17 @@ async def connection(
 
 @pytest.fixture
 async def session(connection: AsyncConnection) -> AsyncGenerator[AsyncSession]:
+    nested_transaction = await connection.begin_nested()
+
     async with AsyncSession(bind=connection) as session:
-        try:
-            yield session
-        finally:
-            await session.close()
+        yield session
+
+    await nested_transaction.rollback()
+
+
+@pytest.fixture
+async def add_to_database(session: AsyncSession) -> Callable[..., Coroutine[Any, Any, None]]:
+    async def _insert(values) -> None:
+        session.add(values)
+        await session.commit()
+    return _insert

@@ -1,5 +1,4 @@
 import pytest
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.account.domain.account import Account
 from src.auth.account.infra.persistence.account_model import AccountModel
@@ -10,24 +9,22 @@ from tests.auth.account.domain.mothers.account_username_primitives_mother import
 
 
 @pytest.fixture
-async def existing_account(session: AsyncSession) -> Account:
+async def existing_account(add_to_database) -> Account:
     account = AccountMother.any()
-    session.add(AccountModel.from_domain(account))
-    await session.commit()
+    await add_to_database(AccountModel.from_domain(account))
     return account
 
 
 @pytest.fixture
-async def existing_account_id(session: AsyncSession) -> str:
+async def existing_account_id(add_to_database) -> str:
     account_id = AccountIdPrimitivesMother.any()
     account = AccountMother.with_id(account_id)
-    session.add(AccountModel.from_domain(account))
-    await session.commit()
+    await add_to_database(AccountModel.from_domain(account))
     return account_id
 
 
 @pytest.fixture
-async def existing_account_ids(session: AsyncSession, request) -> list[str]:
+async def existing_account_ids(add_to_database, request) -> list[str]:
     """Create multiple accounts and return their IDs.
 
     Use with pytest.mark.parametrize on 'request' or by passing count directly.
@@ -38,25 +35,22 @@ async def existing_account_ids(session: AsyncSession, request) -> list[str]:
     for _ in range(count):
         account_id = AccountIdPrimitivesMother.any()
         account = AccountMother.with_id(account_id)
-        session.add(AccountModel.from_domain(account))
+        await add_to_database(AccountModel.from_domain(account))
         account_ids.append(account_id)
-    await session.commit()
     return account_ids
 
 
 @pytest.fixture
-async def existing_account_email(session: AsyncSession) -> str:
+async def existing_account_email(add_to_database) -> str:
     email = AccountEmailPrimitivesMother.any()
     account = AccountMother.create(email=email)
-    session.add(AccountModel.from_domain(account))
-    await session.commit()
+    await add_to_database(AccountModel.from_domain(account))
     return email
 
 
 @pytest.fixture
-async def existing_account_username(session: AsyncSession) -> str:
+async def existing_account_username(add_to_database) -> str:
     username = AccountUsernamePrimitivesMother.any()
     account = AccountMother.with_username(username)
-    session.add(AccountModel.from_domain(account))
-    await session.commit()
+    await add_to_database(AccountModel.from_domain(account))
     return username

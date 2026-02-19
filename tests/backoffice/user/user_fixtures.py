@@ -2,7 +2,6 @@ from collections.abc import Callable, Coroutine
 from typing import Any
 
 import pytest
-from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from src.backoffice.user.domain.user import User
 from src.backoffice.user.infra.persistence.user_model import UserModel
@@ -11,25 +10,23 @@ from tests.backoffice.user.domain.mothers.user_username_primitives_mother import
 
 
 @pytest.fixture
-async def existing_user(session: AsyncSession, existing_account_id: str) -> User:
+async def existing_user(existing_account_id: str, add_to_database) -> User:
     user = UserMother.with_id(existing_account_id)
-    session.add(UserModel.from_domain(user))
-    await session.commit()
+    await add_to_database(UserModel.from_domain(user))
     return user
 
 
 @pytest.fixture
-async def existing_username(session: AsyncSession, existing_account_id: str) -> str:
+async def existing_username(existing_account_id: str, add_to_database) -> str:
     username = UserUsernamePrimitivesMother.any()
     user = UserMother.create(id=existing_account_id, username=username)
-    session.add(UserModel.from_domain(user))
-    await session.commit()
+    await add_to_database(UserModel.from_domain(user))
     return username
 
 
 @pytest.fixture
 def create_users_with_usernames(
-    session: AsyncSession, existing_account_ids: list[str]
+    existing_account_ids: list[str], add_to_database
 ) -> Callable[[list[str]], Coroutine[Any, Any, list[str]]]:
     """Factory fixture to create users with specific usernames.
 
@@ -41,8 +38,7 @@ def create_users_with_usernames(
     async def _create(usernames: list[str]) -> list[str]:
         for account_id, username in zip(existing_account_ids, usernames, strict=True):
             user = UserMother.create(id=account_id, username=username)
-            session.add(UserModel.from_domain(user))
-        await session.commit()
+            await add_to_database(UserModel.from_domain(user))
         return usernames
 
     return _create
