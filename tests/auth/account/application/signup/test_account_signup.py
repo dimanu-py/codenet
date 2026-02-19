@@ -39,7 +39,7 @@ class TestAccountSignup:
     async def test_should_not_allow_to_signup_account_with_already_registered_email(self) -> None:
         existing_account = AccountMother.any()
         existing_account_primitives = existing_account.to_primitives()
-        new_account_primitives = AccountMother.with_email(existing_account_primitives["email"]).to_primitives()
+        new_account_primitives = AccountMother.create(email=existing_account_primitives["email"]).to_primitives()
 
         self._should_match_criteria_with([existing_account])
 
@@ -58,7 +58,7 @@ class TestAccountSignup:
     async def test_should_not_allow_to_signup_account_with_already_registered_username(self) -> None:
         existing_account = AccountMother.any()
         existing_account_primitives = existing_account.to_primitives()
-        new_account_primitives = AccountMother.with_username(existing_account_primitives['username']).to_primitives()
+        new_account_primitives = AccountMother.create(username=existing_account_primitives['username']).to_primitives()
 
         self._should_match_criteria_with([], [existing_account])
 

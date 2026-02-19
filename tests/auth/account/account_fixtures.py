@@ -18,7 +18,7 @@ async def existing_account(add_to_database) -> Account:
 @pytest.fixture
 async def existing_account_id(add_to_database) -> str:
     account_id = AccountIdPrimitivesMother.any()
-    account = AccountMother.with_id(account_id)
+    account = AccountMother.create(id=account_id)
     await add_to_database(AccountModel.from_domain(account))
     return account_id
 
@@ -34,7 +34,7 @@ async def existing_account_ids(add_to_database, request) -> list[str]:
     account_ids = []
     for _ in range(count):
         account_id = AccountIdPrimitivesMother.any()
-        account = AccountMother.with_id(account_id)
+        account = AccountMother.create(id=account_id)
         await add_to_database(AccountModel.from_domain(account))
         account_ids.append(account_id)
     return account_ids
@@ -51,6 +51,6 @@ async def existing_account_email(add_to_database) -> str:
 @pytest.fixture
 async def existing_account_username(add_to_database) -> str:
     username = AccountUsernamePrimitivesMother.any()
-    account = AccountMother.with_username(username)
+    account = AccountMother.create(username=username)
     await add_to_database(AccountModel.from_domain(account))
     return username

@@ -27,15 +27,3 @@ class AccountMother(ObjectMother):
     def create(cls, **overrides) -> Account:
         default = cls.any().to_primitives()
         return Account(**{**default, **overrides})
-
-    @classmethod
-    def with_id(cls, id: str) -> Account:
-        return cls.create(id=id)
-
-    @classmethod
-    def with_email(cls, email: str) -> Account:
-        return cls.create(email=email)
-
-    @classmethod
-    def with_username(cls, username: str) -> Account:
-        return cls.create(username=username)

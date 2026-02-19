@@ -49,14 +49,14 @@ class TestPostgresAccountRepository:
         expect(searched_accounts).to(be_empty)
 
     async def test_should_not_allow_to_store_account_with_duplicated_email(self, existing_account_email: str) -> None:
-        account_with_duplicated_email = AccountMother.with_email(existing_account_email)
+        account_with_duplicated_email = AccountMother.create(email=existing_account_email)
 
         await async_expect(lambda: self._repository.save(account_with_duplicated_email)).to(
             raise_error(AccountEmailAlreadyExists)
         )
 
     async def test_should_not_allow_to_store_account_with_duplicated_username(self, existing_account_username: str) -> None:
-        account_with_duplicated_username = AccountMother.with_username(existing_account_username)
+        account_with_duplicated_username = AccountMother.create(username=existing_account_username)
 
         await async_expect(lambda: self._repository.save(account_with_duplicated_username)).to(
             raise_error(AccountUsernameAlreadyExists)
