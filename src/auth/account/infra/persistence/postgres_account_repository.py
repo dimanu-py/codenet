@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_email_already_exists import AccountEmailAlreadyExists
 from src.auth.account.domain.account_repository import AccountRepository
+from src.auth.account.domain.account_username_already_exists import AccountUsernameAlreadyExists
 from src.auth.account.domain.accounts import Accounts
 from src.auth.account.infra.persistence.account_model import AccountModel
 from src.shared.domain.criteria.criteria import Criteria
@@ -25,6 +26,8 @@ class PostgresAccountRepository(AccountRepository):
         except IntegrityError as error:
             if self._is_email_unique_constraint_violation(error):
                 raise AccountEmailAlreadyExists() from error
+            if self._is_username_unique_constraint_violation(error):
+                raise AccountUsernameAlreadyExists() from error
             raise error
 
     @override
@@ -38,3 +41,8 @@ class PostgresAccountRepository(AccountRepository):
     def _is_email_unique_constraint_violation(error: IntegrityError) -> bool:
         error_message = str(error.orig)
         return "accounts_email_key" in error_message
+
+    @staticmethod
+    def _is_username_unique_constraint_violation(error: IntegrityError) -> bool:
+        error_message = str(error.orig)
+        return "accounts_username_key" in error_message
