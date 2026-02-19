@@ -12,6 +12,7 @@ from src.auth.account.domain.accounts import Accounts
 from src.auth.account.infra.persistence.account_model import AccountModel
 from src.shared.domain.criteria.criteria import Criteria
 from src.shared.domain.value_objects.optional import Optional
+from src.shared.infra.criteria.criteria_to_sqlalchemy_converter import CriteriaToSqlalchemyConverter
 
 
 class PostgresAccountRepository(AccountRepository):
@@ -31,7 +32,10 @@ class PostgresAccountRepository(AccountRepository):
 
     @override
     async def matching(self, criteria: Criteria) -> Accounts:
-        pass
+        converter = CriteriaToSqlalchemyConverter()
+        query = converter.convert(AccountModel, criteria)
+        accounts = await self._session.scalars(query)
+        return Accounts([account.to_domain() for account in accounts])
 
     async def search_by_email(self, email: AccountEmail) -> Optional[Account]:
         result = await self._session.execute(select(AccountModel).where(AccountModel.email == email.value))
