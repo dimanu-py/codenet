@@ -5,7 +5,7 @@ from src.auth.account.delivery.signup.signup_account_router import signup_accoun
 from src.shared.infra.api.error_response import InternalServerError
 
 account_routes = APIRouter(
-    prefix="/account",
+    prefix="/accounts",
     tags=["Auth / Account"],
     responses={
         status.HTTP_500_INTERNAL_SERVER_ERROR: {
