@@ -4,9 +4,9 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.account.domain.account import Account
-from src.auth.account.domain.account_email_already_exists import AccountEmailAlreadyExists
+from src.auth.account.domain.account_email import AccountEmailAlreadyExists
 from src.auth.account.domain.account_repository import AccountRepository
-from src.auth.account.domain.account_username_already_exists import AccountUsernameAlreadyExists
+from src.auth.account.domain.account_username import AccountUsernameAlreadyExists
 from src.auth.account.domain.accounts import Accounts
 from src.auth.account.infra.persistence.account_model import AccountModel
 from src.shared.domain.criteria.criteria import Criteria

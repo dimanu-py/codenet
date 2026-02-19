@@ -1,6 +1,6 @@
 import re
 
-from src.shared.domain.exceptions.domain_error import DomainValidationError
+from src.shared.domain.exceptions.domain_error import DomainValidationError, ConflictError
 from src.shared.domain.value_objects.string_value_object import (
     StringValueObject,
 )
@@ -21,4 +21,12 @@ class InvalidEmailFormat(DomainValidationError):
         super().__init__(
             message="Email cannot contain special characters and must contain '@' and '.'",
             error_type="account_validation_error",
+        )
+
+
+class AccountEmailAlreadyExists(ConflictError):
+    def __init__(self) -> None:
+        super().__init__(
+            message="Email is already signed up",
+            error_type="account_resource_conflict_error",
         )

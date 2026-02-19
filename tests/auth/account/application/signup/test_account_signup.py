@@ -2,8 +2,8 @@ import pytest
 
 from src.auth.account.application.signup.account_signup import AccountSignup
 from src.auth.account.domain.account import Account
-from src.auth.account.domain.account_email_already_exists import AccountEmailAlreadyExists
-from src.auth.account.domain.account_username_already_exists import AccountUsernameAlreadyExists
+from src.auth.account.domain.account_email import AccountEmailAlreadyExists
+from src.auth.account.domain.account_username import AccountUsernameAlreadyExists
 from tests.auth.account.domain.mothers.account_mother import AccountMother
 from tests.auth.account.infra.fake_password_manager import FakePasswordManager
 from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository

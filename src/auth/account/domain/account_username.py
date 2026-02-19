@@ -1,6 +1,6 @@
 import re
 
-from src.shared.domain.exceptions.domain_error import DomainValidationError
+from src.shared.domain.exceptions.domain_error import DomainValidationError, ConflictError
 from src.shared.domain.value_objects.string_value_object import (
     StringValueObject,
 )
@@ -21,4 +21,12 @@ class InvalidUsernameFormat(DomainValidationError):
         super().__init__(
             message="Username cannot contain special characters",
             error_type="account_validation_error",
+        )
+
+
+class AccountUsernameAlreadyExists(ConflictError):
+    def __init__(self) -> None:
+        super().__init__(
+            message="Username is already registered.",
+            error_type="account_resource_conflict_error",
         )
