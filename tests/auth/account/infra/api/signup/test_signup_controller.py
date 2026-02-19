@@ -6,8 +6,8 @@ from expects import equal, expect
 from src.auth.account.application.signup.account_signup import AccountSignup
 from src.auth.account.delivery.signup.signup_account_request import SignupAccountRequest
 from src.auth.account.domain.account_email_already_exists import AccountEmailAlreadyExists
+from src.auth.account.domain.account_username_already_exists import AccountUsernameAlreadyExists
 from src.auth.account.infra.api.signup.signup_account_controller import SignupAccountController
-from src.backoffice.user.application.signup.user_signup import UsernameAlreadyExists
 from src.shared.domain.exceptions.base_error import BaseError
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
 from tests.auth.account.domain.mothers.account_id_primitives_mother import AccountIdPrimitivesMother
@@ -42,7 +42,7 @@ class TestSignupController:
     @pytest.mark.parametrize(
         "expected_error",
         [
-            pytest.param(UsernameAlreadyExists, id="username"),
+            pytest.param(AccountUsernameAlreadyExists, id="username"),
             pytest.param(AccountEmailAlreadyExists, id="email"),
         ],
     )
