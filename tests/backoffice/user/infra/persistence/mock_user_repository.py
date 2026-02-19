@@ -1,3 +1,4 @@
+from typing import override
 from unittest.mock import AsyncMock
 
 from src.backoffice.user.domain.user import User
@@ -13,17 +14,19 @@ class MockUserRepository(UserRepository):
         self._mock_match = AsyncMock()
         self._mock_search = AsyncMock()
 
+    @override
     async def save(self, user: User) -> None:
         await self._mock_save(user)
 
+    @override
     async def search(self, username: UserUsername) -> User | None:
-        await self._mock_search(username)
-        return self._mock_search.return_value
+        return await self._mock_search(username)
 
+    @override
     async def matching(self, criteria: Criteria) -> list[User]:
-        await self._mock_match(criteria)
-        return self._mock_match.return_value
+        return await self._mock_match(criteria)
 
+    @override
     async def delete(self, username: UserUsername) -> None:
         await self._mock_save(username)
 
