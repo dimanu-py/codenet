@@ -24,6 +24,7 @@ class PostgresAccountRepository(AccountRepository):
         try:
             await self._session.flush()
         except IntegrityError as error:
+            await self._session.rollback()
             if self._is_email_unique_constraint_violation(error):
                 raise AccountEmailAlreadyExists() from error
             if self._is_username_unique_constraint_violation(error):
