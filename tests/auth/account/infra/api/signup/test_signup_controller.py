@@ -14,7 +14,7 @@ from tests.auth.account.domain.mothers.account_id_primitives_mother import Accou
 from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import (
     AccountPasswordHashPrimitivesMother,
 )
-from tests.backoffice.user.domain.mothers.user_username_primitives_mother import UserUsernamePrimitivesMother
+from tests.auth.account.domain.mothers.account_username_primitives_mother import AccountUsernamePrimitivesMother
 
 
 @pytest.mark.unit
@@ -22,7 +22,7 @@ from tests.backoffice.user.domain.mothers.user_username_primitives_mother import
 class TestSignupController:
     _response = None
     _ANY_REQUEST_BODY = SignupAccountRequest(
-        username=UserUsernamePrimitivesMother.any(),
+        username=AccountUsernamePrimitivesMother.any(),
         email=AccountEmailPrimitivesMother.any(),
         password=AccountPasswordHashPrimitivesMother.any(),
     )
