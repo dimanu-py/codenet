@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 
 from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_email import AccountEmail
+from src.auth.account.domain.accounts import Accounts
+from src.shared.domain.criteria.criteria import Criteria
 from src.shared.domain.value_objects.optional import Optional
 
 
@@ -12,4 +14,8 @@ class AccountRepository(ABC):
 
     @abstractmethod
     async def search_by_email(self, email: AccountEmail) -> Optional[Account]:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def matching(self, criteria: Criteria) -> Accounts:
         raise NotImplementedError

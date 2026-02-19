@@ -1,8 +1,11 @@
+from typing import override
 from unittest.mock import AsyncMock
 
 from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_email import AccountEmail
 from src.auth.account.domain.account_repository import AccountRepository
+from src.auth.account.domain.accounts import Accounts
+from src.shared.domain.criteria.criteria import Criteria
 from src.shared.domain.value_objects.optional import Optional
 
 
@@ -11,9 +14,15 @@ class MockAccountRepository(AccountRepository):
         self._mock_save = AsyncMock()
         self._mock_search = AsyncMock()
 
+    @override
     async def save(self, account: Account) -> None:
         await self._mock_save(account)
 
+    @override
+    async def matching(self, criteria: Criteria) -> Accounts:
+        pass
+
+    @override
     async def search_by_email(self, email: AccountEmail) -> Optional[Account]:
         await self._mock_search(email)
         return self._mock_search.return_value
