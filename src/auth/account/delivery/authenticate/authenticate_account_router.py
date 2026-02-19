@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 
 from src.auth.account.infra.api.authenticate.authenticate_account_controller import AuthenticateAccountController
+from src.shared.delivery.fastapi_response import FastAPIResponse
 from src.shared.infra.api.error_response import UnprocessableEntityError, UnauthorizedError
 from src.shared.infra.api.success_response import OkResponse
 
@@ -26,4 +27,8 @@ async def authenticate_account(
     login_form: Annotated[OAuth2PasswordRequestForm, Depends()],
     controller: FromDishka[AuthenticateAccountController],
 ) -> JSONResponse:
-    pass
+    result = await controller.authenticate(
+        identification=login_form.username,
+        password=login_form.password,
+    )
+    return FastAPIResponse.as_json(result)
