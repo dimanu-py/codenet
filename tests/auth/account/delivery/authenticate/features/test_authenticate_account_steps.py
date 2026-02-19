@@ -38,6 +38,7 @@ def authenticate_account_with_valid_credentials(client: AsyncClient, existing_ac
                 "username": existing_account["email"],
                 "password": existing_account["password"],
             },
+            headers={"Content-Type": "application/x-www-form-urlencoded"},
         )
     )
 
@@ -52,6 +53,7 @@ def authenticate_account_with_invalid_credentials(client: AsyncClient) -> Respon
                 "username": AccountEmailPrimitivesMother.any(),
                 "password": "invalid_password",
             },
+            headers={"Content-Type": "application/x-www-form-urlencoded"},
         )
     )
 
@@ -66,6 +68,7 @@ def authenticate_account_with_non_existing_account_credentials(client: AsyncClie
                 "username": non_existing_account["email"],
                 "password": non_existing_account["password"],
             },
+            headers={"Content-Type": "application/x-www-form-urlencoded"},
         )
     )
 
