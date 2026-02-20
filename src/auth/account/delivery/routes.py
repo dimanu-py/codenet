@@ -15,5 +15,5 @@ account_routes = APIRouter(
     },
 )
 
-account_routes.include_router(signup_account_router)
 account_routes.include_router(authenticate_account_router)
+account_routes.include_router(signup_account_router)
