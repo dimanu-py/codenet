@@ -19,7 +19,7 @@ from tests.auth.account.domain.mothers.account_username_primitives_mother import
 
 @pytest.mark.unit
 @pytest.mark.asyncio
-class TestSignupController:
+class TestSignupAccountController:
     _response = None
     _ANY_REQUEST_BODY = SignupAccountRequest(
         username=AccountUsernamePrimitivesMother.any(),
@@ -32,8 +32,8 @@ class TestSignupController:
         self._use_case = AsyncMock(spec=AccountSignup)
         self._controller = SignupAccountController(use_case=self._use_case)
 
-    async def test_should_return_202_when_signing_up_an_account_and_a_user_successfully(self) -> None:
-        self._should_signup_account_and_user()
+    async def test_should_return_202_when_signing_up_an_account_successfully(self) -> None:
+        self._should_signup_account()
 
         self._response = await self._controller.signup(account_id=self._ANY_ACCOUNT_ID, **self._ANY_REQUEST_BODY.model_dump())
 
@@ -55,7 +55,7 @@ class TestSignupController:
 
         self._assert_contract_is_met_on_error(409)
 
-    def _should_signup_account_and_user(self) -> None:
+    def _should_signup_account(self) -> None:
         self._use_case.execute.return_value = None
 
     def _assert_contract_is_met_on_success(self, expected_status_code: int, expected_body: dict[str, bool]) -> None:
