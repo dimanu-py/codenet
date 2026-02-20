@@ -3,6 +3,7 @@ from unittest.mock import ANY
 import pytest
 from expects import expect, equal
 
+from src.auth.account.application.authenticate.account_authenticator import AccountAuthenticator
 from src.auth.account.infra.api.authenticate.authenticate_account_controller import AuthenticateAccountController
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
 from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import (
@@ -18,7 +19,7 @@ class TestSignupAccountController:
     _ANY_PASSWORD = AccountPasswordHashPrimitivesMother.any()
 
     def setup_method(self) -> None:
-        self._controller = AuthenticateAccountController()
+        self._controller = AuthenticateAccountController(use_case=AccountAuthenticator())
 
     async def test_should_return_200_when_authenticating_account_successfully(self) -> None:
         self._should_authenticate_account()
