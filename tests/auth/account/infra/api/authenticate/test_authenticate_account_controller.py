@@ -32,9 +32,22 @@ class TestSignupAccountController:
             {"access_token": ANY, "token_type": "bearer", "expires_in": ANY},
         )
 
+    async def test_should_return_401_when_account_authenticates_with_invalid_credentials(self) -> None:
+        self._should_fail_authenticating_account_with_invalid_credentials()
+
+        self._response = await self._controller.authenticate(identification="wrong_email", password=self._ANY_PASSWORD)
+
+        self._assert_contract_is_met_on_error(401)
+
     def _should_authenticate_account(self) -> None:
+        pass
+
+    def _should_fail_authenticating_account_with_invalid_credentials(self) -> None:
         pass
 
     def _assert_contract_is_met_on_success(self, expected_status_code: int, expected_body: dict[str, str]) -> None:
         expect(self._response.status).to(equal(expected_status_code))
         expect(self._response.data).to(equal(expected_body))
+
+    def _assert_contract_is_met_on_error(self, expected_status_code: int) -> None:
+        expect(self._response.status).to(equal(expected_status_code))
