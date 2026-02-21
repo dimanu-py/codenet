@@ -1,4 +1,4 @@
-from unittest.mock import ANY
+from unittest.mock import ANY, AsyncMock
 
 import pytest
 from expects import expect, equal
@@ -19,7 +19,8 @@ class TestSignupAccountController:
     _ANY_PASSWORD = AccountPasswordHashPrimitivesMother.any()
 
     def setup_method(self) -> None:
-        self._controller = AuthenticateAccountController(use_case=AccountAuthenticator())
+        self._authenticator = AsyncMock(spect=AccountAuthenticator)
+        self._controller = AuthenticateAccountController(use_case=self._authenticator)
 
     async def test_should_return_200_when_authenticating_account_successfully(self) -> None:
         self._should_authenticate_account()
