@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock
 import pytest
 from expects import expect, equal
 
-from src.auth.account.application.authenticate.account_authenticator import AccountAuthenticator
+from src.auth.account.application.authenticate.account_authenticator import AccountAuthenticator, InvalidCredentials
 from src.auth.account.infra.api.authenticate.authenticate_account_controller import AuthenticateAccountController
 from src.auth.account.infra.authentication_token import AuthenticationToken
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
@@ -48,7 +48,7 @@ class TestSignupAccountController:
         return token
 
     def _should_fail_authenticating_account_with_invalid_credentials(self) -> None:
-        pass
+        self._authenticator.execute.side_effect = InvalidCredentials()
 
     def _assert_contract_is_met_on_success(self, expected_status_code: int, expected_body: dict[str, str]) -> None:
         expect(self._response.status).to(equal(expected_status_code))
