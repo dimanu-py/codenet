@@ -1,6 +1,7 @@
 from dishka import Provider, Scope, provide
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.auth.account.application.authenticate.account_authenticator import AccountAuthenticator
 from src.auth.account.application.signup.account_signup import AccountSignup
 from src.auth.account.domain.account_repository import AccountRepository
 from src.auth.account.infra.api.authenticate.authenticate_account_controller import AuthenticateAccountController
@@ -29,4 +30,4 @@ class AccountDependencyProvider(Provider):
 
     @provide
     def authenticate_controller(self) -> AuthenticateAccountController:
-        return AuthenticateAccountController()
+        return AuthenticateAccountController(use_case=AccountAuthenticator())
