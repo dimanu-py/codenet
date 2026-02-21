@@ -21,10 +21,11 @@ class AccountDependencyProvider(Provider):
 
     @provide
     def signup_controller(self, account_repository: AccountRepository) -> SignupAccountController:
-        password_manager = ArgonPasswordManager()
-        clock = DatetimeClock()
-        use_case = AccountSignup(repository=account_repository, password_manager=password_manager, clock=clock)
-        return SignupAccountController(use_case=use_case)
+        return SignupAccountController(
+            use_case=AccountSignup(
+                repository=account_repository, password_manager=ArgonPasswordManager(), clock=DatetimeClock()
+            )
+        )
 
     @provide
     def authenticate_controller(self) -> AuthenticateAccountController:
