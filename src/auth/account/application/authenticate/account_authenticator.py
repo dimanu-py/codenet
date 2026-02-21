@@ -1,2 +1,3 @@
 class AccountAuthenticator:
-    pass
+    async def execute(self, identification: str, password: str) -> str:
+        raise NotImplementedError

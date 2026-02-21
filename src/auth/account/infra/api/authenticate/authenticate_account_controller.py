@@ -9,6 +9,7 @@ class AuthenticateAccountController:
         self._authenticator = use_case
 
     async def authenticate(self, identification: str, password: str) -> SuccessResponse | ErrorResponse:
+        result = await self._authenticator.execute(identification=identification, password=password)
         try:
             if identification == "wrong_email":
                 raise DomainError(message="wrong_email", error_type="invalid_credentials")

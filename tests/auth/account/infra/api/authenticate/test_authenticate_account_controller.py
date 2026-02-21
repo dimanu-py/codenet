@@ -1,10 +1,11 @@
-from unittest.mock import ANY, AsyncMock
+from unittest.mock import AsyncMock
 
 import pytest
 from expects import expect, equal
 
 from src.auth.account.application.authenticate.account_authenticator import AccountAuthenticator
 from src.auth.account.infra.api.authenticate.authenticate_account_controller import AuthenticateAccountController
+from src.auth.account.infra.authentication_token import AuthenticationToken
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
 from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import (
     AccountPasswordHashPrimitivesMother,
@@ -23,7 +24,7 @@ class TestSignupAccountController:
         self._controller = AuthenticateAccountController(use_case=self._authenticator)
 
     async def test_should_return_200_when_authenticating_account_successfully(self) -> None:
-        self._should_authenticate_account()
+        token = self._should_authenticate_account()
 
         self._response = await self._controller.authenticate(
             identification=self._ANY_EMAIL, password=self._ANY_PASSWORD
@@ -31,7 +32,7 @@ class TestSignupAccountController:
 
         self._assert_contract_is_met_on_success(
             200,
-            {"access_token": ANY, "token_type": "bearer", "expires_in": ANY},
+            token,
         )
 
     async def test_should_return_401_when_account_authenticates_with_invalid_credentials(self) -> None:
@@ -41,8 +42,10 @@ class TestSignupAccountController:
 
         self._assert_contract_is_met_on_error(401)
 
-    def _should_authenticate_account(self) -> None:
-        pass
+    def _should_authenticate_account(self) -> AuthenticationToken:
+        token = AuthenticationToken(access_token="any", token_type="bearer", expires_in=3600, )
+        self._authenticator.execute.return_value = token
+        return token
 
     def _should_fail_authenticating_account_with_invalid_credentials(self) -> None:
         pass
