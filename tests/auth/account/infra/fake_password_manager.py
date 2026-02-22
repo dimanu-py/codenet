@@ -11,3 +11,6 @@ class FakePasswordManager(PasswordManager):
     @override
     async def verify_credentials(self, password: str) -> bool:
         return True
+
+    def should_verify(self, param):
+        pass
