@@ -9,4 +9,4 @@ class FakeTokenIssuer(TokenIssuer):
 
     @override
     async def generate_token(self, identification: str) -> dict:
-        raise NotImplementedError
+        return self._token

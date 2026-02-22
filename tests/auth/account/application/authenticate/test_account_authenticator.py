@@ -2,6 +2,7 @@ import pytest
 from expects import equal, expect
 
 from src.auth.account.application.authenticate.account_authenticator import AccountAuthenticator
+from src.auth.account.infra.authentication_token import AuthenticationToken
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
 from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import (
     AccountPasswordHashPrimitivesMother,
@@ -25,4 +26,4 @@ class TestAccountAuthenticator:
     async def test_should_authenticate_successfully_an_account_with_valid_credentials(self) -> None:
         issued_token = await self._authenticator.execute(identification=self._ANY_EMAIL, password=self._ANY_PASSWORD)
 
-        expect(issued_token).to(equal(self._ANY_TOKEN))
+        expect(issued_token).to(equal(AuthenticationToken(**self._ANY_TOKEN)))
