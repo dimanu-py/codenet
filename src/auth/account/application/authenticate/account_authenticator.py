@@ -1,5 +1,6 @@
 from src.auth.account.domain.password_manager import PasswordManager
 from src.auth.account.domain.token_issuer import TokenIssuer
+from src.auth.account.infra.authentication_token import AuthenticationToken
 from src.shared.domain.exceptions.domain_error import DomainError
 
 
@@ -8,8 +9,18 @@ class AccountAuthenticator:
         self._password_manager = password_manager
         self._token_issuer = token_issuer
 
-    async def execute(self, identification: str, password: str) -> str:
-        pass
+    async def execute(self, identification: str, password: str) -> AuthenticationToken:
+        await self._ensure_introduced_password_is_correct(password)
+        token = await self._issue_authentication_token_for(identification)
+        return token
+
+    async def _ensure_introduced_password_is_correct(self, password: str) -> None:
+        if await self._password_manager.verify_credentials(password):
+            return
+
+    async def _issue_authentication_token_for(self, identification: str) -> AuthenticationToken:
+        token = await self._token_issuer.generate_token(identification)
+        return AuthenticationToken(**token)
 
 
 class InvalidCredentials(DomainError):

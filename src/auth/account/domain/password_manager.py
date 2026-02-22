@@ -5,3 +5,7 @@ class PasswordManager(ABC):
     @abstractmethod
     async def hash(self, plain_password: str) -> str:
         raise NotImplementedError
+
+    @abstractmethod
+    async def verify_credentials(self, password: str) -> bool:
+        raise NotImplementedError
