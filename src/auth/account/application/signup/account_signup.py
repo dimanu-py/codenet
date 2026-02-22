@@ -16,11 +16,11 @@ class AccountSignup:
     async def execute(self, account_id: str, username: str, email: str, plain_password: str) -> None:
         await self._ensure_account_with_same_email_is_not_already_signed_up(email)
         await self._ensure_account_with_same_username_is_not_already_signed_up(username)
-        hashed_password = self._hash_account_password(plain_password)
+        hashed_password = await self._hash_account_password(plain_password)
         await self._signup_account_with(account_id=account_id, username=username, email=email, password=hashed_password)
 
-    def _hash_account_password(self, password: str) -> str:
-        return self._password_manager.hash(password)
+    async def _hash_account_password(self, password: str) -> str:
+        return await self._password_manager.hash(password)
 
     async def _signup_account_with(self, account_id: str, username: str, email: str, password: str) -> None:
         account = Account.signup(id=account_id, username=username, email=email, password=password, clock=self._clock)
