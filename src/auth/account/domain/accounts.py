@@ -11,6 +11,9 @@ class Accounts:
     def is_not_empty(self) -> bool:
         return len(self._accounts) > 0
 
+    def is_empty(self) -> bool:
+        return len(self._accounts) == 0
+
     def __iter__(self)-> Iterable[Account]:
         return iter(self._accounts)
 
