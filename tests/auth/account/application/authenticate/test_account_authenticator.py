@@ -51,9 +51,6 @@ class TestAccountAuthenticator:
             lambda: self._authenticator.execute(identification=self._ANY_EMAIL, password=self._ANY_PASSWORD)
         ).to(raise_error(InvalidCredentials))
 
-    def _should_resolve_password_validation_with(self, verification_result: bool) -> None:
-        self._password_manager.should_verify(verification_result)
-
     def _should_not_find_account_matching_criteria(self) -> None:
         self._repository.should_not_match_criteria()
 
