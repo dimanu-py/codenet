@@ -7,5 +7,5 @@ class PasswordManager(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def verify_credentials(self, password: str) -> bool:
+    async def verify_credentials(self, password: str, stored_password: str) -> bool:
         raise NotImplementedError

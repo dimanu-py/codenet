@@ -21,7 +21,7 @@ class AccountAuthenticator:
         return token
 
     async def _ensure_introduced_password_is_correct(self, password: str) -> None:
-        if not await self._password_manager.verify_credentials(password):
+        if not await self._password_manager.verify_credentials(password, ""):
             raise InvalidCredentials()
 
     async def _issue_authentication_token_for(self, identification: str) -> AuthenticationToken:
