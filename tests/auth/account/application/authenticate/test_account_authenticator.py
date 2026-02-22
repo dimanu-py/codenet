@@ -32,17 +32,16 @@ class TestAccountAuthenticator:
 
     async def test_should_authenticate_successfully_an_account_with_valid_credentials(self) -> None:
         self._should_find_signed_up_account_matching_criteria([AccountMother.create(password=self._ANY_PASSWORD)])
-        self._should_resolve_password_validation_with(True)
 
         issued_token = await self._authenticator.execute(identification=self._ANY_EMAIL, password=self._ANY_PASSWORD)
 
         expect(issued_token).to(equal(AuthenticationToken(**self._ANY_TOKEN)))
 
     async def test_should_not_allow_to_authenticate_when_password_is_not_correct(self) -> None:
-        self._should_resolve_password_validation_with(False)
+        self._should_find_signed_up_account_matching_criteria([AccountMother.create(password=self._ANY_PASSWORD)])
 
         await async_expect(
-            lambda: self._authenticator.execute(identification=self._ANY_EMAIL, password=self._ANY_PASSWORD)
+            lambda: self._authenticator.execute(identification=self._ANY_EMAIL, password="other_password")
         ).to(raise_error(InvalidCredentials))
 
     async def test_should_not_allow_to_authenticate_when_account_with_given_email_does_not_exist(self) -> None:
