@@ -1,0 +1,2 @@
+class TokenIssuer:
+    pass

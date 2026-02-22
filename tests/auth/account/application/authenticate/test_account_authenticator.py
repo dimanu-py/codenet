@@ -20,7 +20,7 @@ class TestAccountAuthenticator:
     def setup_method(self) -> None:
         self._password_manager = FakePasswordManager()
         self._token_issuer = FakeTokenIssuer()
-        self._authenticator = AccountAuthenticator()
+        self._authenticator = AccountAuthenticator(password_manager=self._password_manager, token_issuer=self._token_issuer)
 
     async def test_should_authenticate_successfully_an_account_with_valid_credentials(self) -> None:
         token = AuthenticationToken(
