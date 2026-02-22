@@ -31,7 +31,14 @@ class AccountAuthenticator:
 
     async def _ensure_account_exists_with(self, identification: str) -> Account:
         existing_accounts = await self._repository.matching(
-            criteria=Criteria.from_primitives(filter_expression={"field": "email", "equal": identification})
+            criteria=Criteria.from_primitives(
+                filter_expression={
+                    "or": [
+                        {"field": "email", "equal": identification},
+                        {"field": "username", "equal": identification},
+                    ]
+                }
+            )
         )
         if existing_accounts.is_empty():
             raise InvalidCredentials()
