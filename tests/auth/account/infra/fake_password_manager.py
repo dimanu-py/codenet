@@ -10,4 +10,4 @@ class FakePasswordManager(PasswordManager):
 
     @override
     async def verify_credentials(self, password: str) -> bool:
-        raise NotImplementedError
+        return True
