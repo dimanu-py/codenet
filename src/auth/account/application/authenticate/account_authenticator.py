@@ -3,7 +3,7 @@ from src.shared.domain.exceptions.domain_error import DomainError
 
 class AccountAuthenticator:
     async def execute(self, identification: str, password: str) -> str:
-        raise NotImplementedError
+        pass
 
 
 class InvalidCredentials(DomainError):
