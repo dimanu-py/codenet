@@ -31,7 +31,7 @@ class TestAccountAuthenticator:
         )
 
     async def test_should_authenticate_successfully_an_account_with_valid_credentials(self) -> None:
-        self._should_find_signed_up_account_matching_criteria([AccountMother.any()])
+        self._should_find_signed_up_account_matching_criteria([AccountMother.create(password=self._ANY_PASSWORD)])
         self._should_resolve_password_validation_with(True)
 
         issued_token = await self._authenticator.execute(identification=self._ANY_EMAIL, password=self._ANY_PASSWORD)
