@@ -39,3 +39,13 @@ class TestAccountAuthenticator:
         await async_expect(
             lambda: self._authenticator.execute(identification=self._ANY_EMAIL, password=self._ANY_PASSWORD)
         ).to(raise_error(InvalidCredentials))
+
+    async def test_should_not_allow_to_authenticate_when_account_with_given_email_does_not_exist(self) -> None:
+        self._should_not_find_account_matching_criteria()
+
+        await async_expect(
+            lambda: self._authenticator.execute(identification=self._ANY_EMAIL, password=self._ANY_PASSWORD)
+        ).to(raise_error(InvalidCredentials))
+
+    def _should_not_find_account_matching_criteria(self):
+        pass
