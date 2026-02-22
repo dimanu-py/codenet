@@ -9,6 +9,7 @@ from tests.auth.account.domain.mothers.account_password_hash_primitives_mother i
 )
 from tests.auth.account.infra.fake_password_manager import FakePasswordManager
 from tests.auth.account.infra.fake_token_issuer import FakeTokenIssuer
+from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
 from tests.shared.expects.matchers import async_expect, raise_error
 
 
@@ -20,10 +21,11 @@ class TestAccountAuthenticator:
     _ANY_TOKEN = {"access_token": "ee9c873b-3ec4-4ece-8fe7-4eb8734cacde", "token_type": "bearer", "expires_in": 3600}
 
     def setup_method(self) -> None:
+        self._repository = MockAccountRepository()
         self._password_manager = FakePasswordManager()
         self._token_issuer = FakeTokenIssuer(self._ANY_TOKEN)
         self._authenticator = AccountAuthenticator(
-            password_manager=self._password_manager, token_issuer=self._token_issuer
+            repository=self._repository, password_manager=self._password_manager, token_issuer=self._token_issuer
         )
 
     async def test_should_authenticate_successfully_an_account_with_valid_credentials(self) -> None:
@@ -41,6 +43,7 @@ class TestAccountAuthenticator:
         ).to(raise_error(InvalidCredentials))
 
     async def test_should_not_allow_to_authenticate_when_account_with_given_email_does_not_exist(self) -> None:
+        self._password_manager.should_verify(True)
         self._should_not_find_account_matching_criteria()
 
         await async_expect(
