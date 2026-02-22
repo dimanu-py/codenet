@@ -17,12 +17,12 @@ class AccountAuthenticator:
 
     async def execute(self, identification: str, password: str) -> AuthenticationToken:
         existing_account = await self._ensure_account_exists_with(identification)
-        await self._ensure_introduced_password_is_correct(password)
+        await self._ensure_introduced_password_is_correct(password, existing_account._password.value)
         token = await self._issue_authentication_token_for(identification)
         return token
 
-    async def _ensure_introduced_password_is_correct(self, password: str) -> None:
-        if not await self._password_manager.verify_credentials(password, ""):
+    async def _ensure_introduced_password_is_correct(self, password: str, account_password: str) -> None:
+        if not await self._password_manager.verify_credentials(password=password, stored_password=account_password):
             raise InvalidCredentials()
 
     async def _issue_authentication_token_for(self, identification: str) -> AuthenticationToken:
