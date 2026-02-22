@@ -13,7 +13,7 @@ class FakePasswordManager(PasswordManager):
 
     @override
     async def verify_credentials(self, password: str, stored_password: str) -> bool:
-        return self._verification_result
+        return password == stored_password
 
     def should_verify(self, verification_result: bool) -> None:
         self._verification_result = verification_result
