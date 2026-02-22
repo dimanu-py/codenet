@@ -2,8 +2,10 @@ import pytest
 from expects import equal, expect
 
 from src.auth.account.application.authenticate.account_authenticator import AccountAuthenticator, InvalidCredentials
+from src.auth.account.domain.account import Account
 from src.auth.account.infra.authentication_token import AuthenticationToken
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
+from tests.auth.account.domain.mothers.account_mother import AccountMother
 from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import (
     AccountPasswordHashPrimitivesMother,
 )
@@ -29,6 +31,7 @@ class TestAccountAuthenticator:
         )
 
     async def test_should_authenticate_successfully_an_account_with_valid_credentials(self) -> None:
+        self._should_find_signed_up_account_matching_criteria([AccountMother.any()])
         self._password_manager.should_verify(True)
 
         issued_token = await self._authenticator.execute(identification=self._ANY_EMAIL, password=self._ANY_PASSWORD)
@@ -51,3 +54,6 @@ class TestAccountAuthenticator:
 
     def _should_not_find_account_matching_criteria(self) -> None:
         self._repository.should_not_match_criteria()
+
+    def _should_find_signed_up_account_matching_criteria(self, *accounts: list[Account]) -> None:
+        self._repository.should_match_criteria_with_successive_calls(*accounts)
