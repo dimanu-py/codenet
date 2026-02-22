@@ -1,3 +1,4 @@
+from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_repository import AccountRepository
 from src.auth.account.domain.password_manager import PasswordManager
 from src.auth.account.domain.token_issuer import TokenIssuer
@@ -15,7 +16,7 @@ class AccountAuthenticator:
         self._token_issuer = token_issuer
 
     async def execute(self, identification: str, password: str) -> AuthenticationToken:
-        await self._ensure_account_exists_with(identification)
+        existing_account = await self._ensure_account_exists_with(identification)
         await self._ensure_introduced_password_is_correct(password)
         token = await self._issue_authentication_token_for(identification)
         return token
@@ -28,12 +29,13 @@ class AccountAuthenticator:
         token = await self._token_issuer.generate_token(identification)
         return AuthenticationToken(**token)
 
-    async def _ensure_account_exists_with(self, identification: str) -> None:
+    async def _ensure_account_exists_with(self, identification: str) -> Account:
         existing_accounts = await self._repository.matching(
             criteria=Criteria.from_primitives(filter_expression={"field": "email", "equal": identification})
         )
         if existing_accounts.is_empty():
             raise InvalidCredentials()
+        return existing_accounts.first()
 
 
 class InvalidCredentials(DomainError):
