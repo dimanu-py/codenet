@@ -27,6 +27,8 @@ class TestAccountAuthenticator:
         )
 
     async def test_should_authenticate_successfully_an_account_with_valid_credentials(self) -> None:
+        self._password_manager.should_verify(True)
+
         issued_token = await self._authenticator.execute(identification=self._ANY_EMAIL, password=self._ANY_PASSWORD)
 
         expect(issued_token).to(equal(AuthenticationToken(**self._ANY_TOKEN)))
