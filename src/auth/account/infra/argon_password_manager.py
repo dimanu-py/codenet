@@ -18,4 +18,4 @@ class ArgonPasswordManager(PasswordManager):
 
     @override
     async def verify_credentials(self, password: str, stored_password: str) -> bool:
-        raise NotImplementedError
+        return self._hasher.verify(stored_password, password)
