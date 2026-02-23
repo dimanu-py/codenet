@@ -24,3 +24,11 @@ class TestArgonPasswordManager:
         is_correct = await self._password_manager.verify_credentials(plain_password, hashed_password)
 
         expect(is_correct).to(be_true)
+
+    async def test_should_not_verify_password_if_is_not_hashed(self) -> None:
+        plain_password = "securePassword123!"
+        not_hashed_password = "notHashedPassword"
+
+        is_correct = await self._password_manager.verify_credentials(plain_password, not_hashed_password)
+
+        expect(is_correct).to_not(be_true)
