@@ -8,7 +8,9 @@ class SignupAccountController:
     def __init__(self, use_case: AccountSignup) -> None:
         self._signup = use_case
 
-    async def signup(self, account_id: str, username: str, email: str, password: str) -> SuccessResponse | ErrorResponse:
+    async def signup(
+        self, account_id: str, username: str, email: str, password: str
+    ) -> SuccessResponse | ErrorResponse:
         try:
             await self._signup.execute(account_id=account_id, username=username, email=email, plain_password=password)
         except ConflictError as error:

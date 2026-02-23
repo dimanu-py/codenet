@@ -27,12 +27,15 @@ class AccountSignup:
         await self._repository.save(account)
 
     async def _ensure_account_with_same_email_is_not_already_signed_up(self, email: str) -> None:
-        signed_up_accounts = await self._repository.matching(criteria=Criteria.from_primitives(filter_expression={"field": "email", "equal": email}))
+        signed_up_accounts = await self._repository.matching(
+            criteria=Criteria.from_primitives(filter_expression={"field": "email", "equal": email})
+        )
         if signed_up_accounts.is_not_empty():
             raise AccountEmailAlreadyExists()
 
     async def _ensure_account_with_same_username_is_not_already_signed_up(self, username: str) -> None:
-        signed_up_accounts = await self._repository.matching(criteria=Criteria.from_primitives(filter_expression={"field": "username", "equal": username}))
+        signed_up_accounts = await self._repository.matching(
+            criteria=Criteria.from_primitives(filter_expression={"field": "username", "equal": username})
+        )
         if signed_up_accounts.is_not_empty():
             raise AccountUsernameAlreadyExists()
-

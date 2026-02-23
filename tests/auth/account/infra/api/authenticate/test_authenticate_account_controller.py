@@ -1,7 +1,7 @@
 from unittest.mock import AsyncMock
 
 import pytest
-from expects import expect, equal
+from expects import equal, expect
 
 from src.auth.account.application.authenticate.account_authenticator import AccountAuthenticator, InvalidCredentials
 from src.auth.account.infra.api.authenticate.authenticate_account_controller import AuthenticateAccountController
@@ -43,7 +43,11 @@ class TestSignupAccountController:
         self._assert_contract_is_met_on_error(401)
 
     def _should_authenticate_account(self) -> AuthenticationToken:
-        token = AuthenticationToken(access_token="any", token_type="bearer", expires_in=3600, )
+        token = AuthenticationToken(
+            access_token="any",
+            token_type="bearer",
+            expires_in=3600,
+        )
         self._authenticator.execute.return_value = token
         return token
 

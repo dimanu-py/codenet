@@ -35,7 +35,9 @@ class TestAccountAuthenticator:
     async def test_should_authenticate_successfully_an_account_with_valid_credentials(self) -> None:
         self._should_find_signed_up_account_matching_criteria([self._SIGNED_UP_ACCOUNT])
 
-        issued_token = await self._authenticator.execute(identification=self._EXISTING_EMAIL, password=self._EXISTING_PASSWORD)
+        issued_token = await self._authenticator.execute(
+            identification=self._EXISTING_EMAIL, password=self._EXISTING_PASSWORD
+        )
 
         expect(issued_token).to(equal(AuthenticationToken(**self._ANY_TOKEN)))
 

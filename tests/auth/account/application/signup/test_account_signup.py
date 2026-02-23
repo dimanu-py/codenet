@@ -18,8 +18,9 @@ class TestAccountSignup:
         self._repository = MockAccountRepository()
         self._clock = MockClock()
         self._password_manager = FakePasswordManager()
-        self._signup = AccountSignup(repository=self._repository, password_manager=self._password_manager,
-                                     clock=self._clock)
+        self._signup = AccountSignup(
+            repository=self._repository, password_manager=self._password_manager, clock=self._clock
+        )
 
     def teardown_method(self) -> None:
         self._repository.reset_mocks()
@@ -31,8 +32,12 @@ class TestAccountSignup:
         self._clock.should_generate(account_primitives["created_at"])
         self._should_not_find_account_matching_criteria()
 
-        await self._signup.execute(account_id=account_primitives["id"], username=account_primitives["username"],
-                                   email=account_primitives["email"], plain_password=account_primitives["password"])
+        await self._signup.execute(
+            account_id=account_primitives["id"],
+            username=account_primitives["username"],
+            email=account_primitives["email"],
+            plain_password=account_primitives["password"],
+        )
 
         self._should_have_saved_account(account)
 
@@ -58,7 +63,7 @@ class TestAccountSignup:
     async def test_should_not_allow_to_signup_account_with_already_registered_username(self) -> None:
         existing_account = AccountMother.any()
         existing_account_primitives = existing_account.to_primitives()
-        new_account_primitives = AccountMother.create(username=existing_account_primitives['username']).to_primitives()
+        new_account_primitives = AccountMother.create(username=existing_account_primitives["username"]).to_primitives()
 
         self._should_match_criteria_with([], [existing_account])
 
@@ -85,4 +90,3 @@ class TestAccountSignup:
 
     def _should_match_criteria_with(self, *accounts: list[Account]) -> None:
         self._repository.should_match_criteria_with_successive_calls(*accounts)
-

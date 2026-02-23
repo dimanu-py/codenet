@@ -35,4 +35,3 @@ class MockAccountRepository(AccountRepository):
     def reset_mocks(self) -> None:
         self._mock_save.reset_mock(return_value=True, side_effect=True)
         self._mock_match.reset_mock(return_value=True, side_effect=True)
-

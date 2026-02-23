@@ -1,4 +1,4 @@
-from collections.abc import AsyncGenerator, Generator, Callable, Coroutine
+from collections.abc import AsyncGenerator, Callable, Coroutine, Generator
 from typing import Any
 
 import pytest
@@ -60,4 +60,5 @@ async def add_to_database(session: AsyncSession) -> Callable[..., Coroutine[Any,
     async def _insert(values) -> None:
         session.add(values)
         await session.commit()
+
     return _insert

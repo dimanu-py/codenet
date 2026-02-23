@@ -1,6 +1,6 @@
 from src.auth.account.application.authenticate.account_authenticator import AccountAuthenticator, InvalidCredentials
 from src.shared.infra.api.error_response import ErrorResponse, UnauthorizedError
-from src.shared.infra.api.success_response import SuccessResponse, OkResponse
+from src.shared.infra.api.success_response import OkResponse, SuccessResponse
 
 
 class AuthenticateAccountController:

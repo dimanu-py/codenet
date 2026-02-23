@@ -1,5 +1,5 @@
 import pytest
-from expects import be_none, equal, expect, be_empty
+from expects import be_empty, be_none, equal, expect
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.account.domain.account import Account
@@ -34,8 +34,8 @@ class TestPostgresAccountRepository:
 
     async def test_should_match_an_existing_account_based_on_criteria(self, existing_account: Account) -> None:
         criteria = CriteriaMother.with_one_condition(
-                field="username", operator=Operator.EQUAL, value=existing_account._username.value
-            )
+            field="username", operator=Operator.EQUAL, value=existing_account._username.value
+        )
 
         searched_accounts = await self._repository.matching(criteria)
 
@@ -55,7 +55,9 @@ class TestPostgresAccountRepository:
             raise_error(AccountEmailAlreadyExists)
         )
 
-    async def test_should_not_allow_to_store_account_with_duplicated_username(self, existing_account_username: str) -> None:
+    async def test_should_not_allow_to_store_account_with_duplicated_username(
+        self, existing_account_username: str
+    ) -> None:
         account_with_duplicated_username = AccountMother.create(username=existing_account_username)
 
         await async_expect(lambda: self._repository.save(account_with_duplicated_username)).to(

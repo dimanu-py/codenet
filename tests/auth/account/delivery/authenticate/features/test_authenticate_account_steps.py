@@ -1,10 +1,10 @@
 import asyncio
 
 import pytest
-from expects import expect, equal, have_keys
+from expects import equal, expect, have_keys
 from fastapi import Response
 from httpx import AsyncClient
-from pytest_bdd import scenarios, given, when, then
+from pytest_bdd import given, scenarios, then, when
 
 from src.auth.account.domain.account import Account
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
@@ -59,7 +59,9 @@ def authenticate_account_with_invalid_credentials(client: AsyncClient) -> Respon
 
 
 @when("I attempt to authenticate with non existing account credentials", target_fixture="authenticate_response")
-def authenticate_account_with_non_existing_account_credentials(client: AsyncClient, non_existing_account: dict) -> Response:
+def authenticate_account_with_non_existing_account_credentials(
+    client: AsyncClient, non_existing_account: dict
+) -> Response:
     loop = asyncio.get_event_loop()
     return loop.run_until_complete(
         client.post(

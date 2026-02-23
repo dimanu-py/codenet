@@ -1,6 +1,6 @@
 import re
 
-from src.shared.domain.exceptions.domain_error import DomainValidationError, ConflictError
+from src.shared.domain.exceptions.domain_error import ConflictError, DomainValidationError
 from src.shared.domain.value_objects.string_value_object import (
     StringValueObject,
 )
