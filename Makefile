@@ -115,6 +115,10 @@ up: ## Create and start containers.
 down: ## Stop and remove containers.
 	@docker-compose down -v --remove-orphans
 
+.PHONY: run
+run: ## Run the application.
+	@uv run uvicorn src.app.main:app --port 8000 --reload
+
 .PHONY: migration
 migration:  ## Generate a new migration with alembic.
 	@echo "\n⌛ Generating new migration...\n"
