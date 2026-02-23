@@ -1,7 +1,7 @@
 from typing import override
 
 from argon2 import PasswordHasher
-from argon2.exceptions import InvalidHashError
+from argon2.exceptions import InvalidHashError, VerifyMismatchError
 
 from src.auth.account.domain.password_manager import PasswordManager
 
@@ -21,5 +21,5 @@ class ArgonPasswordManager(PasswordManager):
     async def verify_credentials(self, password: str, stored_password: str) -> bool:
         try:
             return self._hasher.verify(stored_password, password)
-        except InvalidHashError:
+        except (InvalidHashError, VerifyMismatchError):
             return False
