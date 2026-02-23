@@ -1,5 +1,5 @@
 import pytest
-from expects import equal, expect
+from expects import equal, expect, be_true
 
 from src.auth.account.infra.argon_password_manager import ArgonPasswordManager
 
@@ -16,3 +16,11 @@ class TestArgonPasswordManager:
         hashed_password = await self._password_manager.hash(plain_password)
 
         expect(hashed_password).to_not(equal(plain_password))
+
+    async def test_should_verify_password_is_correct(self) -> None:
+        plain_password = "securePassword123!"
+        hashed_password = await self._password_manager.hash(plain_password)
+
+        is_correct = await self._password_manager.verify_credentials(plain_password, hashed_password)
+
+        expect(is_correct).to(be_true)
