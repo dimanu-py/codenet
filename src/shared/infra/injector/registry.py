@@ -10,9 +10,8 @@ class ProviderRegistry:
     def __init__(self) -> None:
         self._providers: dict[str, Provider] = {}
 
-    def register(self, provider_class: type) -> type:
+    def register(self, provider_class: type) -> None:
         self._providers[provider_class.__module__] = provider_class()
-        return provider_class
 
     def _find_potential_modules(self) -> list[str]:
         modules = []
@@ -39,8 +38,8 @@ class ProviderRegistry:
 _registry = ProviderRegistry()
 
 
-def register_provider(cls: type) -> type:
-    return _registry.register(cls)
+def register_provider(cls: type) -> None:
+    _registry.register(cls)
 
 
 def register_providers() -> None:
