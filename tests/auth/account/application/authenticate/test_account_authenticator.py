@@ -9,6 +9,7 @@ from tests.auth.account.domain.mothers.account_mother import AccountMother
 from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import (
     AccountPasswordHashPrimitivesMother,
 )
+from tests.auth.account.domain.mothers.account_username_primitives_mother import AccountUsernamePrimitivesMother
 from tests.auth.account.infra.fake_password_manager import FakePasswordManager
 from tests.auth.account.infra.fake_token_issuer import FakeTokenIssuer
 from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
@@ -48,7 +49,7 @@ class TestAccountAuthenticator:
             lambda: self._authenticator.execute(identification=self._EXISTING_EMAIL, password=self._ANY_PASSWORD)
         ).to(raise_error(InvalidCredentials))
 
-    async def test_should_not_allow_to_authenticate_when_account_with_given_email_does_not_exist(self) -> None:
+    async def test_should_not_allow_to_authenticate_when_account_with_given_email_is_not_signed_up(self) -> None:
         self._should_not_find_account_matching_criteria()
 
         await async_expect(
@@ -60,3 +61,16 @@ class TestAccountAuthenticator:
 
     def _should_find_signed_up_account_matching_criteria(self, *accounts: list[Account]) -> None:
         self._repository.should_match_criteria_with_successive_calls(*accounts)
+
+    async def test_should_authenticate_successfully_an_account_with_valid_username(self) -> None:
+        existing_username = AccountUsernamePrimitivesMother.any()
+        signed_up_account = AccountMother.create(
+            username=existing_username, email=self._EXISTING_EMAIL, password=self._EXISTING_PASSWORD
+        )
+        self._should_find_signed_up_account_matching_criteria([signed_up_account])
+
+        issued_token = await self._authenticator.execute(
+            identification=existing_username, password=self._EXISTING_PASSWORD
+        )
+
+        expect(issued_token).to(equal(AuthenticationToken(**self._ANY_TOKEN)))
