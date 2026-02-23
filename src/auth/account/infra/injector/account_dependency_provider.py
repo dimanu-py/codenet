@@ -10,6 +10,7 @@ from src.auth.account.infra.api.signup.signup_account_controller import SignupAc
 from src.auth.account.infra.argon_password_manager import ArgonPasswordManager
 from src.auth.account.infra.jwt_token_issuer import JwtTokenIssuer
 from src.auth.account.infra.persistence.postgres_account_repository import PostgresAccountRepository
+from src.shared.delivery.settings import Settings
 from src.shared.infra.datetime_clock import DatetimeClock
 from src.shared.infra.injector.registry import register_provider
 
@@ -38,10 +39,10 @@ class AccountDependencyProvider(Provider):
 
     @provide
     def authenticate_controller(
-        self, repository: AccountRepository, password_manager: PasswordManager
+        self, repository: AccountRepository, password_manager: PasswordManager, settings: Settings
     ) -> AuthenticateAccountController:
         return AuthenticateAccountController(
             use_case=AccountAuthenticator(
-                repository=repository, password_manager=password_manager, token_issuer=JwtTokenIssuer()
+                repository=repository, password_manager=password_manager, token_issuer=JwtTokenIssuer(settings=settings)
             )
         )
