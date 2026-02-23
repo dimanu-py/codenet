@@ -1,6 +1,8 @@
 from dishka import Provider, Scope, provide
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.shared.delivery.settings import Settings
+
 
 class TestDatabaseSessionProvider(Provider):
     scope = Scope.REQUEST
@@ -12,3 +14,7 @@ class TestDatabaseSessionProvider(Provider):
     @provide
     def session(self) -> AsyncSession:
         return self._session
+
+    @provide
+    def settings(self) -> Settings:
+        return Settings()
