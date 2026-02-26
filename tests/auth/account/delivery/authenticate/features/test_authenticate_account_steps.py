@@ -5,10 +5,14 @@ from expects import equal, expect, have_keys
 from fastapi import Response
 from httpx import AsyncClient
 from pytest_bdd import given, scenarios, then, when
+from sindripy.mothers import StringPrimitivesMother
 
-from src.auth.account.domain.account import Account
+from src.auth.account.infra.persistence.account_model import AccountModel
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
 from tests.auth.account.domain.mothers.account_mother import AccountMother
+from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import (
+    AccountPasswordHashPrimitivesMother,
+)
 
 pytestmark = [pytest.mark.acceptance]
 
@@ -18,9 +22,18 @@ scenarios("authenticate_account.feature")
 _ROUTE_PATH = "/app/auth/accounts/login"
 
 
+@pytest.fixture
+async def existing_account_for_authentication(add_to_database) -> dict[str, str]:
+    plain_password = StringPrimitivesMother.any()
+    hashed_password = AccountPasswordHashPrimitivesMother.from_plain_password(plain_password)
+    email = AccountEmailPrimitivesMother.any()
+    await add_to_database(AccountModel.from_domain(AccountMother.create(password=hashed_password, email=email)))
+    return {"email": email, "plain_password": plain_password}
+
+
 @given("I have a registered account with valid email and password", target_fixture="existing_account")
-def signed_up_account(existing_account: Account) -> dict:
-    return existing_account.to_primitives()
+def signed_up_account(existing_account_for_authentication: dict[str, str]) -> dict:
+    return existing_account_for_authentication
 
 
 @given("I haven't registered an account", target_fixture="non_existing_account")
@@ -36,7 +49,7 @@ def authenticate_account_with_valid_credentials(client: AsyncClient, existing_ac
             _ROUTE_PATH,
             data={
                 "username": existing_account["email"],
-                "password": existing_account["password"],
+                "password": existing_account["plain_password"],
             },
             headers={"Content-Type": "application/x-www-form-urlencoded"},
         )

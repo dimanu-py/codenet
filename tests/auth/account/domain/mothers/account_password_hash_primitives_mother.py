@@ -13,3 +13,7 @@ class AccountPasswordHashPrimitivesMother(ObjectMother):
     def any(cls) -> str:
         plain_password = cls._faker().password()
         return cls._HASHER.hash(plain_password)
+
+    @classmethod
+    def from_plain_password(cls, plain_password: str) -> str:
+        return cls._HASHER.hash(plain_password)
