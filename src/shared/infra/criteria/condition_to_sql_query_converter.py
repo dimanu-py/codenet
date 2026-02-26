@@ -4,13 +4,13 @@ from typing import Any
 from sqlalchemy import ColumnElement, and_, or_
 
 from src.shared.domain.criteria.condition.logical_operator import LogicalOperator
-from src.shared.infra.criteria.operator_to_sql_translate_strategy import (
-    OperatorToSqlTranslateStrategyFactory,
+from src.shared.infra.criteria.operator_to_sql_translator import (
+    OperatorToSqlTranslatorFactory,
 )
 from src.shared.infra.persistence.sqlalchemy.base import Base
 
 
-class ConditionToSqlQueryStrategy(ABC):
+class ConditionToSqlQueryConverter(ABC):
     @abstractmethod
     def convert(
         self,
@@ -20,33 +20,33 @@ class ConditionToSqlQueryStrategy(ABC):
         raise NotImplementedError
 
 
-class NestedLogicalConditionToSqlQueryAndStrategy(ConditionToSqlQueryStrategy):
+class NestedLogicalConditionToSqlQueryAndConverter(ConditionToSqlQueryConverter):
     def convert(
         self,
         model: type[Base],
         condition: dict[str, Any],
     ) -> ColumnElement[bool]:
         query_predicates = [
-            ConditionToSqlQueryStrategyFactory.get(condition).convert(model, condition)
+            ConditionToSqlQueryConverterFactory.get(condition).convert(model, condition)
             for condition in condition[LogicalOperator.AND]
         ]
         return and_(*query_predicates)
 
 
-class NestedLogicalConditionToSqlQueryOrStrategy(ConditionToSqlQueryStrategy):
+class NestedLogicalConditionToSqlQueryOrConverter(ConditionToSqlQueryConverter):
     def convert(
         self,
         model: type[Base],
         condition: dict[str, Any],
     ) -> ColumnElement[bool]:
         query_predicates = [
-            ConditionToSqlQueryStrategyFactory.get(condition).convert(model, condition)
+            ConditionToSqlQueryConverterFactory.get(condition).convert(model, condition)
             for condition in condition[LogicalOperator.OR]
         ]
         return or_(*query_predicates)
 
 
-class ComparatorConditionToSqlQueryStrategy(ConditionToSqlQueryStrategy):
+class ComparatorConditionToSqlQueryConverter(ConditionToSqlQueryConverter):
     def convert(
         self,
         model: type[Base],
@@ -56,15 +56,15 @@ class ComparatorConditionToSqlQueryStrategy(ConditionToSqlQueryStrategy):
         operator = next(key for key in condition.keys() if key != "field")
         value = condition[operator]
 
-        operator_to_sql_translator_strategy = OperatorToSqlTranslateStrategyFactory.get(operator)
+        operator_to_sql_translator_strategy = OperatorToSqlTranslatorFactory.get(operator)
         return operator_to_sql_translator_strategy.build(field, value)
 
 
-class ConditionToSqlQueryStrategyFactory:
+class ConditionToSqlQueryConverterFactory:
     @staticmethod
-    def get(condition: dict[str, Any]) -> ConditionToSqlQueryStrategy:
+    def get(condition: dict[str, Any]) -> ConditionToSqlQueryConverter:
         if LogicalOperator.AND in condition:
-            return NestedLogicalConditionToSqlQueryAndStrategy()
+            return NestedLogicalConditionToSqlQueryAndConverter()
         if LogicalOperator.OR in condition:
-            return NestedLogicalConditionToSqlQueryOrStrategy()
-        return ComparatorConditionToSqlQueryStrategy()
+            return NestedLogicalConditionToSqlQueryOrConverter()
+        return ComparatorConditionToSqlQueryConverter()

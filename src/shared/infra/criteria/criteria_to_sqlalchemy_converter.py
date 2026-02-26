@@ -2,8 +2,8 @@ from sqlalchemy.sql import Select, select
 from sqlalchemy.sql.elements import ColumnElement
 
 from src.shared.domain.criteria.criteria import Criteria
-from src.shared.infra.criteria.condition_to_sql_query_strategy import (
-    ConditionToSqlQueryStrategyFactory,
+from src.shared.infra.criteria.condition_to_sql_query_converter import (
+    ConditionToSqlQueryConverterFactory,
 )
 from src.shared.infra.persistence.sqlalchemy.base import Base
 
@@ -26,6 +26,6 @@ class CriteriaToSqlalchemyConverter:
         model: type[Base],
     ) -> ColumnElement[bool] | None:
         condition = criteria.to_primitives()
-        condition_to_sql_query_strategy = ConditionToSqlQueryStrategyFactory.get(condition)
-        where_predicate = condition_to_sql_query_strategy.convert(model, condition)
+        condition_to_sql_query_converter = ConditionToSqlQueryConverterFactory.get(condition)
+        where_predicate = condition_to_sql_query_converter.convert(model, condition)
         return where_predicate
