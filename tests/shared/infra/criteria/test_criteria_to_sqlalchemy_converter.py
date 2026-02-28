@@ -26,7 +26,7 @@ class TestCriteriaToSqlalchemyConverter:
     def test_should_generate_select_query_with_one_filter(self) -> None:
         user_name = StringPrimitivesMother.any()
 
-        criteria = CriteriaMother.with_one_condition("name", Operator.EQUAL, user_name)
+        criteria = CriteriaMother.with_one_condition("name", Operator.EQUALS, user_name)
         query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
 
         expect(query).to(
@@ -47,11 +47,11 @@ class TestCriteriaToSqlalchemyConverter:
                 "and": [
                     {
                         "field": "name",
-                        Operator.EQUAL: user_name,
+                        Operator.EQUALS: user_name,
                     },
                     {
                         "field": "username",
-                        Operator.EQUAL: user_username,
+                        Operator.EQUALS: user_username,
                     },
                 ]
             }
@@ -76,11 +76,11 @@ class TestCriteriaToSqlalchemyConverter:
                 "or": [
                     {
                         "field": "name",
-                        Operator.EQUAL: user_name,
+                        Operator.EQUALS: user_name,
                     },
                     {
                         "field": "username",
-                        Operator.EQUAL: user_username,
+                        Operator.EQUALS: user_username,
                     },
                 ]
             }
@@ -97,7 +97,7 @@ class TestCriteriaToSqlalchemyConverter:
 
     def test_should_generate_negated_query(self) -> None:
         user_name = StringPrimitivesMother.any()
-        criteria = CriteriaMother.with_one_condition("name", Operator.NOT_EQUAL, user_name)
+        criteria = CriteriaMother.with_one_condition("name", Operator.NOT_EQUALS, user_name)
 
         query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
 
@@ -133,17 +133,17 @@ class TestCriteriaToSqlalchemyConverter:
                 "and": [
                     {
                         "field": "name",
-                        Operator.EQUAL: user_name,
+                        Operator.EQUALS: user_name,
                     },
                     {
                         "or": [
                             {
                                 "field": "username",
-                                Operator.EQUAL: first_username,
+                                Operator.EQUALS: first_username,
                             },
                             {
                                 "field": "username",
-                                Operator.EQUAL: second_username,
+                                Operator.EQUALS: second_username,
                             },
                         ]
                     },

@@ -56,8 +56,8 @@ class OperatorToSqlTranslatorFactory:
     @staticmethod
     def get(operator: str) -> OperatorToSqlTranslator:
         translators = {
-            Operator.EQUAL: EqualOperatorToSqlTranslator(),
-            Operator.NOT_EQUAL: NotEqualOperatorToSqlTranslator(),
+            Operator.EQUALS: EqualOperatorToSqlTranslator(),
+            Operator.NOT_EQUALS: NotEqualOperatorToSqlTranslator(),
             Operator.GREATER_THAN: GreaterThanOperatorToSqlTranslator(),
             Operator.GREATER_THAN_OR_EQUAL_TO: GreaterThanOrEqualOperatorToSqlTranslator(),
             Operator.LESS_THAN: LessThanOperatorToSqlTranslator(),

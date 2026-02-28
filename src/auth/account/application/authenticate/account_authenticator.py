@@ -35,8 +35,8 @@ class AccountAuthenticator:
             criteria=Criteria.from_primitives(
                 filter_expression={
                     "or": [
-                        {"field": "email", Operator.EQUAL: identification},
-                        {"field": "username", Operator.EQUAL: identification},
+                        {"field": "email", Operator.EQUALS: identification},
+                        {"field": "username", Operator.EQUALS: identification},
                     ]
                 }
             )

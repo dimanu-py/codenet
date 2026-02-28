@@ -32,7 +32,7 @@ class TestPostgresUserRepository:
 
     async def test_should_match_an_existing_user_based_on_criteria(self, existing_user: User) -> None:
         criteria = CriteriaMother.with_one_condition(
-            field="username", operator=Operator.EQUAL, value=existing_user.username.value
+            field="username", operator=Operator.EQUALS, value=existing_user.username.value
         )
 
         searched_users = await self._repository.matching(criteria)
