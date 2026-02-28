@@ -18,14 +18,14 @@ class Comparison(Expression):
 
     @classmethod
     @override
-    def from_primitives(cls, condition: dict[str, str | list]) -> Self:
-        raw_operator = next(key for key in condition.keys() if key in Operator)
+    def from_primitives(cls, expression: dict[str, str | list]) -> Self:
+        raw_operator = next(key for key in expression.keys() if key in Operator)
         operator = Operator(raw_operator)
 
         return cls(
-            field=condition["field"],  # type: ignore
+            field=expression["field"],  # type: ignore
             operator=operator,
-            value=condition[operator],  # type: ignore
+            value=expression[operator],  # type: ignore
         )
 
     @override

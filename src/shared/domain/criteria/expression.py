@@ -4,7 +4,7 @@ from typing import Self
 
 class Expression(ABC):
     @abstractmethod
-    def from_primitives(self, condition: dict[str, list | str]) -> Self:
+    def from_primitives(self, expression: dict[str, list | str]) -> Self:
         raise NotImplementedError
 
     @abstractmethod

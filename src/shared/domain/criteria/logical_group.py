@@ -21,14 +21,14 @@ class LogicalGroup(Expression):
 
     @classmethod
     @override
-    def from_primitives(cls, data: dict[str, str | list]) -> Expression:
-        if LogicalOperator.AND in data:
-            conditions = [cls.from_primitives(item) for item in data[LogicalOperator.AND]]  # type: ignore
+    def from_primitives(cls, expression: dict[str, str | list]) -> Expression:
+        if LogicalOperator.AND in expression:
+            conditions = [cls.from_primitives(item) for item in expression[LogicalOperator.AND]]  # type: ignore
             return cls(operator=LogicalOperator.AND, conditions=conditions)
-        if LogicalOperator.OR in data:
-            conditions = [cls.from_primitives(item) for item in data[LogicalOperator.OR]]  # type: ignore
+        if LogicalOperator.OR in expression:
+            conditions = [cls.from_primitives(item) for item in expression[LogicalOperator.OR]]  # type: ignore
             return cls(operator=LogicalOperator.OR, conditions=conditions)
-        return Comparison.from_primitives(data)
+        return Comparison.from_primitives(expression)
 
     @classmethod
     def empty(cls) -> Self:
