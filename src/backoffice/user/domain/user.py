@@ -1,7 +1,8 @@
+from sindripy.value_objects import Aggregate
+
 from src.backoffice.user.domain.user_id import UserId
 from src.backoffice.user.domain.user_name import UserName
 from src.backoffice.user.domain.user_username import UserUsername
-from src.shared.domain.value_objects.aggregate import Aggregate
 
 
 class User(Aggregate):

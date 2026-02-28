@@ -1,8 +1,6 @@
 from datetime import datetime, timedelta
 
-from sindripy.value_objects import SindriValidationError, ValueObject
-
-from src.shared.domain.value_objects.validation import validate
+from sindripy.value_objects import SindriValidationError, ValueObject, validate
 
 
 class AccountCreatedAt(ValueObject[datetime]):

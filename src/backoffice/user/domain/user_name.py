@@ -1,13 +1,11 @@
 import re
 
+from sindripy.value_objects import String, validate
+
 from src.shared.domain.exceptions.domain_error import DomainValidationError
-from src.shared.domain.value_objects.string_value_object import (
-    StringValueObject,
-)
-from src.shared.domain.value_objects.validation import validate
 
 
-class UserName(StringValueObject):
+class UserName(String):
     CORRECT_CHARACTERS = r"^[a-zA-Z.\- áéíóúÁÉÍÓÚñÑüÜäÄöÖëËïÏç'\s]+$"
 
     @validate

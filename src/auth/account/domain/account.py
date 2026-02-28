@@ -1,6 +1,8 @@
 from datetime import datetime
 from typing import Self
 
+from sindripy.value_objects import Aggregate
+
 from src.auth.account.domain.account_created_at import AccountCreatedAt
 from src.auth.account.domain.account_email import AccountEmail
 from src.auth.account.domain.account_id import AccountId
@@ -9,7 +11,6 @@ from src.auth.account.domain.account_status import AccountStatus
 from src.auth.account.domain.account_username import AccountUsername
 from src.auth.account.domain.password_manager import PasswordManager
 from src.shared.domain.clock import Clock
-from src.shared.domain.value_objects.aggregate import Aggregate
 
 
 class Account(Aggregate):

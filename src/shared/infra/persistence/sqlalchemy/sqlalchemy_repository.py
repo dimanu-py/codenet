@@ -1,6 +1,7 @@
 from typing import TypeVar
 
-from src.shared.domain.value_objects.uuid import Uuid
+from sindripy.value_objects import StringUuid
+
 from src.shared.infra.persistence.sqlalchemy.base import Base
 from src.shared.infra.persistence.sqlalchemy.session_maker import (
     SessionMaker,
@@ -23,7 +24,7 @@ class SqlAlchemyRepository[Model: Base]:
             session.add(entity_model)
             session.commit()
 
-    def search_by_id(self, entity_id: Uuid) -> Entity | None:
+    def search_by_id(self, entity_id: StringUuid) -> Entity | None:
         with self._session_maker.get_session() as session:
             entity_model = session.query(self._model_class).filter(self._model_class.id == entity_id.value).first()
             return entity_model.to_domain() if entity_model else None

@@ -1,6 +1,4 @@
-from src.shared.domain.value_objects.string_value_object import (
-    StringValueObject,
-)
+from sindripy.value_objects import String
 
 
-class Value(StringValueObject): ...
+class Value(String): ...

@@ -1,4 +1,4 @@
-from src.shared.domain.value_objects.uuid import Uuid
+from sindripy.value_objects import StringUuid
 
 
-class AccountId(Uuid): ...
+class AccountId(StringUuid): ...

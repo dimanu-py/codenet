@@ -1,14 +1,14 @@
 import pytest
 from expects import be_true, equal, expect, raise_error
+from sindripy.value_objects import String
 
 from src.shared.domain.value_objects.optional import Optional
-from src.shared.domain.value_objects.string_value_object import StringValueObject
 
 
 @pytest.mark.unit
 class TestOptional:
     def test_should_be_able_to_create_optional_with_valid_value(self) -> None:
-        value = StringValueObject("test")
+        value = String("test")
 
         optional = Optional.of(value)
 
