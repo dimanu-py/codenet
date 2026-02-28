@@ -59,9 +59,9 @@ class OperatorToSqlTranslatorFactory:
             Operator.EQUAL: EqualOperatorToSqlTranslator(),
             Operator.NOT_EQUAL: NotEqualOperatorToSqlTranslator(),
             Operator.GREATER_THAN: GreaterThanOperatorToSqlTranslator(),
-            Operator.GREATER_THAN_OR_EQUAL: GreaterThanOrEqualOperatorToSqlTranslator(),
+            Operator.GREATER_THAN_OR_EQUAL_TO: GreaterThanOrEqualOperatorToSqlTranslator(),
             Operator.LESS_THAN: LessThanOperatorToSqlTranslator(),
-            Operator.LESS_THAN_OR_EQUAL: LessThanOrEqualOperatorToSqlTranslator(),
+            Operator.LESS_THAN_OR_EQUAL_TO: LessThanOrEqualOperatorToSqlTranslator(),
             Operator.CONTAINS: ContainsOperatorToSqlTranslator(),
             Operator.NOT_CONTAINS: NotContainsOperatorToSqlTranslator(),
         }
