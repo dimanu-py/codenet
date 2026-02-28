@@ -3,7 +3,7 @@ from typing import Any
 
 from sqlalchemy import ColumnElement, and_, or_
 
-from src.shared.domain.criteria.condition.logical_operator import LogicalOperator
+from src.shared.domain.criteria.logical_operator import LogicalOperator
 from src.shared.infra.criteria.operator_to_sql_translator import (
     OperatorToSqlTranslatorFactory,
 )

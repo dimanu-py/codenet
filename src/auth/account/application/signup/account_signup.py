@@ -4,8 +4,8 @@ from src.auth.account.domain.account_repository import AccountRepository
 from src.auth.account.domain.account_username import AccountUsernameAlreadyExists
 from src.auth.account.domain.password_manager import PasswordManager
 from src.shared.domain.clock import Clock
-from src.shared.domain.criteria.condition.operator import Operator
 from src.shared.domain.criteria.criteria import Criteria
+from src.shared.domain.criteria.operator import Operator
 
 
 class AccountSignup:

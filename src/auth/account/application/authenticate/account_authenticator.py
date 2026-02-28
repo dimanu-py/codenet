@@ -3,8 +3,8 @@ from src.auth.account.domain.account_repository import AccountRepository
 from src.auth.account.domain.password_manager import PasswordManager
 from src.auth.account.domain.token_issuer import TokenIssuer
 from src.auth.account.infra.authentication_token import AuthenticationToken
-from src.shared.domain.criteria.condition.operator import Operator
 from src.shared.domain.criteria.criteria import Criteria
+from src.shared.domain.criteria.operator import Operator
 from src.shared.domain.exceptions.domain_error import DomainError
 
 

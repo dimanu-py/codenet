@@ -1,10 +1,10 @@
 from typing import Self, override
 
-from src.shared.domain.criteria.condition.comparator_condition import (
+from src.shared.domain.criteria.comparator_condition import (
     ComparatorCondition,
 )
-from src.shared.domain.criteria.condition.condition import Condition
-from src.shared.domain.criteria.condition.logical_operator import LogicalOperator
+from src.shared.domain.criteria.condition import Condition
+from src.shared.domain.criteria.logical_operator import LogicalOperator
 
 
 class NestedLogicalCondition(Condition):

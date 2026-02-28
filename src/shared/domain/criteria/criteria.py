@@ -1,7 +1,7 @@
 from typing import Any, Self, override
 
-from src.shared.domain.criteria.condition.condition import Condition
-from src.shared.domain.criteria.condition.nested_logical_condition import (
+from src.shared.domain.criteria.condition import Condition
+from src.shared.domain.criteria.nested_logical_condition import (
     NestedLogicalCondition,
 )
 

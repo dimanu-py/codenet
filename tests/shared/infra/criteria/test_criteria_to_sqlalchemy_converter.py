@@ -3,7 +3,7 @@ from expects import equal, expect
 from sindripy.mothers import StringPrimitivesMother
 from sqlalchemy.sql.selectable import Select
 
-from src.shared.domain.criteria.condition.operator import Operator
+from src.shared.domain.criteria.operator import Operator
 from src.shared.infra.criteria.criteria_to_sqlalchemy_converter import (
     CriteriaToSqlalchemyConverter,
 )

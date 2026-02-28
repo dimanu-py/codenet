@@ -1,6 +1,6 @@
 from sindripy.mothers import ObjectMother
 
-from src.shared.domain.criteria.condition.field import Field
+from src.shared.domain.criteria.field import Field
 
 
 class FieldMother(ObjectMother):

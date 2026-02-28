@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from sqlalchemy import ColumnElement
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 
-from src.shared.domain.criteria.condition.operator import Operator
+from src.shared.domain.criteria.operator import Operator
 
 
 class OperatorToSqlTranslator(ABC):

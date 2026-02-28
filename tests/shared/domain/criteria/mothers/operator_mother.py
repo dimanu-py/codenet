@@ -1,6 +1,6 @@
 import random
 
-from src.shared.domain.criteria.condition.operator import Operator
+from src.shared.domain.criteria.operator import Operator
 
 
 class OperatorMother:

@@ -1,6 +1,6 @@
 from sindripy.mothers import ObjectMother
 
-from src.shared.domain.criteria.condition.value import Value
+from src.shared.domain.criteria.value import Value
 
 
 class ValueMother(ObjectMother):

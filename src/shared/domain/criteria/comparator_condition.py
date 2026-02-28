@@ -1,9 +1,9 @@
 from typing import Self, override
 
-from src.shared.domain.criteria.condition.condition import Condition
-from src.shared.domain.criteria.condition.field import Field
-from src.shared.domain.criteria.condition.operator import Operator
-from src.shared.domain.criteria.condition.value import Value
+from src.shared.domain.criteria.condition import Condition
+from src.shared.domain.criteria.field import Field
+from src.shared.domain.criteria.operator import Operator
+from src.shared.domain.criteria.value import Value
 
 
 class ComparatorCondition(Condition):

@@ -8,7 +8,7 @@ from src.backoffice.user.domain.user import User
 from src.backoffice.user.infra.persistence.postgres_user_repository import (
     PostgresUserRepository,
 )
-from src.shared.domain.criteria.condition.operator import Operator
+from src.shared.domain.criteria.operator import Operator
 from src.shared.domain.value_objects.optional import Optional
 from tests.backoffice.user.domain.mothers.user_mother import UserMother
 from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
