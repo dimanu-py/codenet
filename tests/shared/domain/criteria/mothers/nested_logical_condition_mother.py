@@ -1,5 +1,5 @@
-from src.shared.domain.criteria.nested_logical_condition import (
-    NestedLogicalCondition,
+from src.shared.domain.criteria.logical_group import (
+    LogicalGroup,
 )
 from tests.shared.domain.criteria.mothers.comparator_condition_mother import (
     ComparatorConditionMother,
@@ -11,12 +11,12 @@ from tests.shared.domain.criteria.mothers.logical_operator_mother import (
 
 class NestedLogicalConditionMother:
     @staticmethod
-    def any() -> NestedLogicalCondition:
-        return NestedLogicalCondition(
+    def any() -> LogicalGroup:
+        return LogicalGroup(
             operator=LogicalOperatorMother.any(),
             conditions=[ComparatorConditionMother.any()],
         )
 
     @staticmethod
-    def empty() -> NestedLogicalCondition:
-        return NestedLogicalCondition(operator=LogicalOperatorMother.any(), conditions=[])
+    def empty() -> LogicalGroup:
+        return LogicalGroup(operator=LogicalOperatorMother.any(), conditions=[])

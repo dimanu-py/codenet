@@ -1,13 +1,13 @@
 from typing import Self, override
 
-from src.shared.domain.criteria.comparator_condition import (
-    ComparatorCondition,
+from src.shared.domain.criteria.comparison import (
+    Comparison,
 )
 from src.shared.domain.criteria.expression import Expression
 from src.shared.domain.criteria.logical_operator import LogicalOperator
 
 
-class NestedLogicalCondition(Expression):
+class LogicalGroup(Expression):
     _logical_operator: LogicalOperator
     _conditions: list[Expression]
 
@@ -28,7 +28,7 @@ class NestedLogicalCondition(Expression):
         if LogicalOperator.OR in data:
             conditions = [cls.from_primitives(item) for item in data[LogicalOperator.OR]]  # type: ignore
             return cls(operator=LogicalOperator.OR, conditions=conditions)
-        return ComparatorCondition.from_primitives(data)
+        return Comparison.from_primitives(data)
 
     @classmethod
     def empty(cls) -> Self:
