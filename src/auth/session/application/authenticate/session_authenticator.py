@@ -1,8 +1,8 @@
 from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_repository import AccountRepository
-from src.auth.account.domain.password_manager import PasswordManager
 from src.auth.session.domain.token_issuer import TokenIssuer
 from src.auth.session.infra.authentication_token import AuthenticationToken
+from src.auth.shared.domain.password_manager import PasswordManager
 from src.shared.domain.criteria.criteria import Criteria
 from src.shared.domain.criteria.operator import Operator
 from src.shared.domain.exceptions.domain_error import DomainError
@@ -10,10 +10,10 @@ from src.shared.domain.exceptions.domain_error import DomainError
 
 class SessionAuthenticator:
     def __init__(
-        self, repository: AccountRepository, password_manager: PasswordManager, token_issuer: TokenIssuer
+        self, repository: AccountRepository, password_verifier: PasswordManager, token_issuer: TokenIssuer
     ) -> None:
         self._repository = repository
-        self._password_manager = password_manager
+        self._password_verifier = password_verifier
         self._token_issuer = token_issuer
 
     async def execute(self, identification: str, password: str) -> AuthenticationToken:
@@ -23,7 +23,7 @@ class SessionAuthenticator:
         return token
 
     async def _ensure_introduced_password_is_correct(self, password: str, account: Account) -> None:
-        if not await account.verify_password(password, self._password_manager):
+        if not await account.verify_password(password, self._password_verifier):
             raise InvalidCredentials()
 
     async def _issue_authentication_token_for(self, identification: str) -> AuthenticationToken:

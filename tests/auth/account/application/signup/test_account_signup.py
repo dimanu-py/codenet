@@ -5,8 +5,8 @@ from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_email import AccountEmailAlreadyExists
 from src.auth.account.domain.account_username import AccountUsernameAlreadyExists
 from tests.auth.account.domain.mothers.account_mother import AccountMother
-from tests.auth.account.infra.fake_password_manager import FakePasswordManager
 from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
+from tests.auth.shared.infra.fake_password_manager import FakePasswordManager
 from tests.shared.expects.matchers import async_expect, raise_error
 from tests.shared.infra.mock_clock import MockClock
 
@@ -17,9 +17,9 @@ class TestAccountSignup:
     def setup_method(self) -> None:
         self._repository = MockAccountRepository()
         self._clock = MockClock()
-        self._password_manager = FakePasswordManager()
+        self._password_hasher = FakePasswordManager()
         self._signup = AccountSignup(
-            repository=self._repository, password_manager=self._password_manager, clock=self._clock
+            repository=self._repository, password_hasher=self._password_hasher, clock=self._clock
         )
 
     def teardown_method(self) -> None:

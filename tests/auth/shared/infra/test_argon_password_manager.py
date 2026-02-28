@@ -1,7 +1,7 @@
 import pytest
 from expects import be_true, equal, expect
 
-from src.auth.account.infra.argon_password_manager import ArgonPasswordManager
+from src.auth.shared.infra.argon_password_manager import ArgonPasswordManager
 
 
 @pytest.mark.integration

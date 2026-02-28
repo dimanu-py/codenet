@@ -3,7 +3,7 @@ from typing import override
 from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerifyMismatchError
 
-from src.auth.account.domain.password_manager import PasswordManager
+from src.auth.shared.domain.password_manager import PasswordManager
 
 
 class ArgonPasswordManager(PasswordManager):

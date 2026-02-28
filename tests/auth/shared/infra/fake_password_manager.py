@@ -1,6 +1,6 @@
 from typing import override
 
-from src.auth.account.domain.password_manager import PasswordManager
+from src.auth.shared.domain.password_manager import PasswordManager
 
 
 class FakePasswordManager(PasswordManager):

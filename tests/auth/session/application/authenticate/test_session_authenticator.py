@@ -9,9 +9,9 @@ from tests.auth.account.domain.mothers.account_password_hash_primitives_mother i
     AccountPasswordHashPrimitivesMother,
 )
 from tests.auth.account.domain.mothers.account_username_primitives_mother import AccountUsernamePrimitivesMother
-from tests.auth.account.infra.fake_password_manager import FakePasswordManager
 from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
 from tests.auth.session.infra.fake_token_issuer import FakeTokenIssuer
+from tests.auth.shared.infra.fake_password_manager import FakePasswordManager
 from tests.shared.expects.matchers import async_expect, raise_error
 
 
@@ -29,7 +29,7 @@ class TestSessionAuthenticator:
         self._password_manager = FakePasswordManager()
         self._token_issuer = FakeTokenIssuer(self._ANY_TOKEN)
         self._authenticator = SessionAuthenticator(
-            repository=self._repository, password_manager=self._password_manager, token_issuer=self._token_issuer
+            repository=self._repository, password_verifier=self._password_manager, token_issuer=self._token_issuer
         )
 
     async def test_should_authenticate_successfully_an_account_with_valid_credentials(self) -> None:

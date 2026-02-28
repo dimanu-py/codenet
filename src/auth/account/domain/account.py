@@ -9,7 +9,7 @@ from src.auth.account.domain.account_id import AccountId
 from src.auth.account.domain.account_password_hash import AccountPasswordHash
 from src.auth.account.domain.account_status import AccountStatus
 from src.auth.account.domain.account_username import AccountUsername
-from src.auth.account.domain.password_manager import PasswordManager
+from src.auth.shared.domain.password_manager import PasswordManager
 from src.shared.domain.clock import Clock
 
 
