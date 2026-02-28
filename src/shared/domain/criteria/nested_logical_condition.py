@@ -3,25 +3,25 @@ from typing import Self, override
 from src.shared.domain.criteria.comparator_condition import (
     ComparatorCondition,
 )
-from src.shared.domain.criteria.condition import Condition
+from src.shared.domain.criteria.expression import Expression
 from src.shared.domain.criteria.logical_operator import LogicalOperator
 
 
-class NestedLogicalCondition(Condition):
+class NestedLogicalCondition(Expression):
     _logical_operator: LogicalOperator
-    _conditions: list[Condition]
+    _conditions: list[Expression]
 
     def __init__(
         self,
         operator: LogicalOperator,
-        conditions: list[Condition],
+        conditions: list[Expression],
     ) -> None:
         self._logical_operator = operator
         self._conditions = conditions
 
     @classmethod
     @override
-    def from_primitives(cls, data: dict[str, str | list]) -> Condition:
+    def from_primitives(cls, data: dict[str, str | list]) -> Expression:
         if LogicalOperator.AND in data:
             conditions = [cls.from_primitives(item) for item in data[LogicalOperator.AND]]  # type: ignore
             return cls(operator=LogicalOperator.AND, conditions=conditions)
