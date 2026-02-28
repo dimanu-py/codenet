@@ -1,9 +1,6 @@
 from typing import Any, Self, override
 
-from src.shared.domain.criteria.expression import Expression
-from src.shared.domain.criteria.logical_group import (
-    LogicalGroup,
-)
+from src.shared.domain.criteria.expression import Expression, ExpressionFactory, EmptyExpression
 
 
 class Criteria:
@@ -11,14 +8,14 @@ class Criteria:
         self._expression = expression
 
     def is_empty(self) -> bool:
-        return isinstance(self._expression, LogicalGroup) and self._expression.is_empty()
+        return isinstance(self._expression, EmptyExpression)
 
     @classmethod
     def from_primitives(cls, filter_expression: dict[str, Any]) -> Self:
         return cls(
-            expression=LogicalGroup.from_primitives(filter_expression)
+            expression=ExpressionFactory.from_primitives(filter_expression)
             if filter_expression
-            else LogicalGroup.empty()
+            else ExpressionFactory.empty()
         )
 
     def to_primitives(self) -> dict[str, Any]:

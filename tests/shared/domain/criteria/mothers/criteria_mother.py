@@ -1,15 +1,13 @@
 from typing import Any
 
 from src.shared.domain.criteria.criteria import Criteria
-from tests.shared.domain.criteria.mothers.nested_logical_condition_mother import (
-    NestedLogicalConditionMother,
-)
+from tests.shared.domain.criteria.mothers.expression_mother import LogicalGroupMother
 
 
 class CriteriaMother:
     @staticmethod
     def any() -> Criteria:
-        return Criteria(expression=NestedLogicalConditionMother.any())
+        return Criteria(expression=LogicalGroupMother.any())
 
     @staticmethod
     def empty() -> Criteria:
