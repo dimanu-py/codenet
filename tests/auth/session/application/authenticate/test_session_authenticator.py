@@ -1,9 +1,8 @@
 import pytest
 from expects import equal, expect
 
-from src.auth.account.application.authenticate.account_authenticator import AccountAuthenticator, InvalidCredentials
-from src.auth.account.domain.account import Account
-from src.auth.account.infra.authentication_token import AuthenticationToken
+from src.auth.session.application.authenticate.session_authenticator import InvalidCredentials, SessionAuthenticator
+from src.auth.session.infra.authentication_token import AuthenticationToken
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
 from tests.auth.account.domain.mothers.account_mother import AccountMother
 from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import (
@@ -11,14 +10,14 @@ from tests.auth.account.domain.mothers.account_password_hash_primitives_mother i
 )
 from tests.auth.account.domain.mothers.account_username_primitives_mother import AccountUsernamePrimitivesMother
 from tests.auth.account.infra.fake_password_manager import FakePasswordManager
-from tests.auth.account.infra.fake_token_issuer import FakeTokenIssuer
 from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
+from tests.auth.session.infra.fake_token_issuer import FakeTokenIssuer
 from tests.shared.expects.matchers import async_expect, raise_error
 
 
 @pytest.mark.unit
 @pytest.mark.asyncio
-class TestAccountAuthenticator:
+class TestSessionAuthenticator:
     _EXISTING_EMAIL = AccountEmailPrimitivesMother.any()
     _EXISTING_PASSWORD = AccountPasswordHashPrimitivesMother.any()
     _SIGNED_UP_ACCOUNT = AccountMother.create(email=_EXISTING_EMAIL, password=_EXISTING_PASSWORD)
@@ -29,7 +28,7 @@ class TestAccountAuthenticator:
         self._repository = MockAccountRepository()
         self._password_manager = FakePasswordManager()
         self._token_issuer = FakeTokenIssuer(self._ANY_TOKEN)
-        self._authenticator = AccountAuthenticator(
+        self._authenticator = SessionAuthenticator(
             repository=self._repository, password_manager=self._password_manager, token_issuer=self._token_issuer
         )
 
@@ -59,7 +58,7 @@ class TestAccountAuthenticator:
     def _should_not_find_account_matching_criteria(self) -> None:
         self._repository.should_not_match_criteria()
 
-    def _should_find_signed_up_account_matching_criteria(self, *accounts: list[Account]) -> None:
+    def _should_find_signed_up_account_matching_criteria(self, *accounts: list) -> None:
         self._repository.should_match_criteria_with_successive_calls(*accounts)
 
     async def test_should_authenticate_successfully_an_account_with_valid_username(self) -> None:

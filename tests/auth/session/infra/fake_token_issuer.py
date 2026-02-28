@@ -1,6 +1,6 @@
 from typing import override
 
-from src.auth.account.domain.token_issuer import TokenIssuer
+from src.auth.session.domain.token_issuer import TokenIssuer
 
 
 class FakeTokenIssuer(TokenIssuer):

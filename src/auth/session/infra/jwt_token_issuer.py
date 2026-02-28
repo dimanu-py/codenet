@@ -3,7 +3,7 @@ from typing import Any, override
 
 import jwt
 
-from src.auth.account.domain.token_issuer import TokenIssuer
+from src.auth.session.domain.token_issuer import TokenIssuer
 from src.shared.delivery.settings import Settings
 
 

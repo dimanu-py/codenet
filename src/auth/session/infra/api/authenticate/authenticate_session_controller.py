@@ -1,10 +1,10 @@
-from src.auth.account.application.authenticate.account_authenticator import AccountAuthenticator, InvalidCredentials
+from src.auth.session.application.authenticate.session_authenticator import InvalidCredentials, SessionAuthenticator
 from src.shared.infra.api.error_response import ErrorResponse, UnauthorizedError
 from src.shared.infra.api.success_response import OkResponse, SuccessResponse
 
 
-class AuthenticateAccountController:
-    def __init__(self, use_case: AccountAuthenticator) -> None:
+class AuthenticateSessionController:
+    def __init__(self, use_case: SessionAuthenticator) -> None:
         self._authenticator = use_case
 
     async def authenticate(self, identification: str, password: str) -> SuccessResponse | ErrorResponse:

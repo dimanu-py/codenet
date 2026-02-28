@@ -6,15 +6,15 @@ from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 
-from src.auth.account.infra.api.authenticate.authenticate_account_controller import AuthenticateAccountController
+from src.auth.session.infra.api.authenticate.authenticate_session_controller import AuthenticateSessionController
 from src.shared.delivery.fastapi_response import FastAPIResponse
 from src.shared.infra.api.error_response import UnauthorizedError, UnprocessableEntityError
 from src.shared.infra.api.success_response import OkResponse
 
-authenticate_account_router = APIRouter()
+authenticate_session_router = APIRouter()
 
 
-@authenticate_account_router.post(
+@authenticate_session_router.post(
     "/login",
     responses={
         status.HTTP_200_OK: {"model": OkResponse},
@@ -23,9 +23,9 @@ authenticate_account_router = APIRouter()
     },
 )
 @inject
-async def authenticate_account(
+async def authenticate_session(
     login_form: Annotated[OAuth2PasswordRequestForm, Depends()],
-    controller: FromDishka[AuthenticateAccountController],
+    controller: FromDishka[AuthenticateSessionController],
 ) -> JSONResponse:
     result = await controller.authenticate(
         identification=login_form.username,

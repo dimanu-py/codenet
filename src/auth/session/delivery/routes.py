@@ -1,11 +1,11 @@
 from fastapi import APIRouter, status
 
-from src.auth.account.delivery.routes import account_routes
-from src.auth.session.delivery.routes import session_routes
+from src.auth.session.delivery.authenticate.authenticate_session_router import authenticate_session_router
 from src.shared.infra.api.error_response import InternalServerError
 
-auth_routes = APIRouter(
-    prefix="/app/auth",
+session_routes = APIRouter(
+    prefix="/sessions",
+    tags=["Auth / Session"],
     responses={
         status.HTTP_500_INTERNAL_SERVER_ERROR: {
             "model": InternalServerError,
@@ -14,5 +14,4 @@ auth_routes = APIRouter(
     },
 )
 
-auth_routes.include_router(account_routes)
-auth_routes.include_router(session_routes)
+session_routes.include_router(authenticate_session_router)

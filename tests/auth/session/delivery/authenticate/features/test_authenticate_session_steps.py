@@ -17,9 +17,7 @@ from tests.auth.account.domain.mothers.account_password_hash_primitives_mother i
 pytestmark = [pytest.mark.acceptance]
 
 
-scenarios("authenticate_account.feature")
-
-_ROUTE_PATH = "/app/auth/accounts/login"
+scenarios("authenticate_session.feature")
 
 
 @pytest.fixture
@@ -42,11 +40,11 @@ def non_existing_account() -> dict:
 
 
 @when("I attempt to authenticate with valid credentials", target_fixture="authenticate_response")
-def authenticate_account_with_valid_credentials(client: AsyncClient, existing_account: dict) -> Response:
+def authenticate_session_with_valid_credentials(client: AsyncClient, existing_account: dict) -> Response:
     loop = asyncio.get_event_loop()
     return loop.run_until_complete(
         client.post(
-            _ROUTE_PATH,
+            "/app/auth/sessions/login",
             data={
                 "username": existing_account["email"],
                 "password": existing_account["plain_password"],
@@ -57,11 +55,11 @@ def authenticate_account_with_valid_credentials(client: AsyncClient, existing_ac
 
 
 @when("I attempt to authenticate with wrong credentials", target_fixture="authenticate_response")
-def authenticate_account_with_invalid_credentials(client: AsyncClient) -> Response:
+def authenticate_session_with_invalid_credentials(client: AsyncClient) -> Response:
     loop = asyncio.get_event_loop()
     return loop.run_until_complete(
         client.post(
-            _ROUTE_PATH,
+            "/app/auth/sessions/login",
             data={
                 "username": AccountEmailPrimitivesMother.any(),
                 "password": "invalid_password",
@@ -72,13 +70,13 @@ def authenticate_account_with_invalid_credentials(client: AsyncClient) -> Respon
 
 
 @when("I attempt to authenticate with non existing account credentials", target_fixture="authenticate_response")
-def authenticate_account_with_non_existing_account_credentials(
+def authenticate_session_with_non_existing_account_credentials(
     client: AsyncClient, non_existing_account: dict
 ) -> Response:
     loop = asyncio.get_event_loop()
     return loop.run_until_complete(
         client.post(
-            _ROUTE_PATH,
+            "/app/auth/sessions/login",
             data={
                 "username": non_existing_account["email"],
                 "password": non_existing_account["password"],

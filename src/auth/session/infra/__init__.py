@@ -1,0 +1,1 @@
+from src.auth.session.infra.authentication_token import AuthenticationToken as AuthenticationToken

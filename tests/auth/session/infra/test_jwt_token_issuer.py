@@ -2,7 +2,7 @@ import jwt
 import pytest
 from expects import equal, expect, have_keys
 
-from src.auth.account.infra.jwt_token_issuer import JwtTokenIssuer
+from src.auth.session.infra.jwt_token_issuer import JwtTokenIssuer
 from src.shared.delivery.settings import Settings
 
 

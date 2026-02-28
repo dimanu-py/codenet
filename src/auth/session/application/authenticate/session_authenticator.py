@@ -1,14 +1,14 @@
 from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_repository import AccountRepository
 from src.auth.account.domain.password_manager import PasswordManager
-from src.auth.account.domain.token_issuer import TokenIssuer
-from src.auth.account.infra.authentication_token import AuthenticationToken
+from src.auth.session.domain.token_issuer import TokenIssuer
+from src.auth.session.infra.authentication_token import AuthenticationToken
 from src.shared.domain.criteria.criteria import Criteria
 from src.shared.domain.criteria.operator import Operator
 from src.shared.domain.exceptions.domain_error import DomainError
 
 
-class AccountAuthenticator:
+class SessionAuthenticator:
     def __init__(
         self, repository: AccountRepository, password_manager: PasswordManager, token_issuer: TokenIssuer
     ) -> None:
