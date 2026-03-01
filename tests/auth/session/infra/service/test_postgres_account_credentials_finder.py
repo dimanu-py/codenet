@@ -31,3 +31,22 @@ class TestPostgresAccountCredentialsFinder:
                 )
             )
         )
+
+    async def test_should_return_account_credentials_of_an_existing_account_using_username(
+        self, existing_account
+    ) -> None:
+        account_primitives = existing_account.to_primitives()
+        login_identifier = LoginIdentifier(account_primitives["username"])
+
+        account_auth_credentials = await self._credentials_finder.find_by_login_identifier(login_identifier)
+
+        expect(account_auth_credentials).to_not(be_none)
+        expect(account_auth_credentials).to(
+            equal(
+                AccountAuthCredentials(
+                    account_id=account_primitives["id"],
+                    password=account_primitives["password"],
+                    status=account_primitives["status"],
+                )
+            )
+        )
