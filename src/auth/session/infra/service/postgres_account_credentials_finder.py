@@ -27,4 +27,4 @@ class PostgresAccountCredentialsFinder(AccountCredentialsFinder):
             account_id=account.id,
             password=account.password,
             status=account.status,
-        )
+        ) if account else None
