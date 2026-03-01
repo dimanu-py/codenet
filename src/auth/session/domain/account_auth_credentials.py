@@ -1,2 +1,8 @@
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
 class AccountAuthCredentials:
-    pass
+    account_id: str
+    password: str
+    status: str
