@@ -1,6 +1,8 @@
 from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_repository import AccountRepository
+from src.auth.session.domain.account_auth_credentials import AccountAuthCredentials
 from src.auth.session.domain.account_credentials_finder import AccountCredentialsFinder
+from src.auth.session.domain.login_identifier import LoginIdentifier
 from src.auth.session.domain.token_issuer import TokenIssuer
 from src.auth.session.infra.authentication_token import AuthenticationToken
 from src.auth.shared.domain.password_manager import PasswordManager
@@ -36,7 +38,11 @@ class SessionAuthenticator:
         token = await self._token_issuer.generate_token(identification)
         return AuthenticationToken(**token)
 
-    async def _ensure_account_exists_with(self, identification: str) -> Account:
+    async def _ensure_account_exists_with(self, identification: str) -> Account | AccountAuthCredentials:
+        if self._credentials_finder is not None:
+            account_auth_credentials = await self._credentials_finder.find_by_login_identifier(login=LoginIdentifier(identification))
+            return account_auth_credentials.unwrap_or_raise(InvalidCredentials)
+
         existing_accounts = await self._repository.matching(
             criteria=Criteria.from_primitives(
                 filter_expression={
