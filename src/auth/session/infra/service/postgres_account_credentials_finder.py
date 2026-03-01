@@ -7,6 +7,7 @@ from src.auth.session.domain.account_auth_credentials import AccountAuthCredenti
 from src.auth.session.domain.account_credentials_finder import AccountCredentialsFinder
 from src.auth.session.domain.login_identifier import LoginIdentifier
 from src.shared.domain.criteria.criteria import Criteria
+from src.shared.domain.criteria.logical_operator import LogicalOperator
 from src.shared.domain.criteria.operator import Operator
 from src.shared.infra.criteria.criteria_to_sqlalchemy_converter import CriteriaToSqlalchemyConverter
 
@@ -22,8 +23,16 @@ class PostgresAccountCredentialsFinder(AccountCredentialsFinder):
             model=AccountModel,
             criteria=Criteria.from_primitives(
                 filter_expression={
-                    "field": "email",
-                    Operator.EQUALS: login.value,
+                    LogicalOperator.OR: [
+                        {
+                            "field": "email",
+                            Operator.EQUALS: login.value,
+                        },
+                        {
+                            "field": "username",
+                            Operator.EQUALS: login.value,
+                        }
+                    ]
                 }
             ),
         ).limit(1)
