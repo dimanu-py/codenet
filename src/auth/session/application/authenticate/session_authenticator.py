@@ -6,8 +6,6 @@ from src.auth.session.domain.login_identifier import LoginIdentifier
 from src.auth.session.domain.token_issuer import TokenIssuer
 from src.auth.session.infra.authentication_token import AuthenticationToken
 from src.auth.shared.domain.password_manager import PasswordManager
-from src.shared.domain.criteria.criteria import Criteria
-from src.shared.domain.criteria.operator import Operator
 from src.shared.domain.exceptions.domain_error import DomainError
 
 
@@ -38,24 +36,11 @@ class SessionAuthenticator:
         token = await self._token_issuer.generate_token(identification)
         return AuthenticationToken(**token)
 
-    async def _ensure_account_exists_with(self, identification: str) -> Account | AccountAuthCredentials:
-        if self._credentials_finder is not None:
-            account_auth_credentials = await self._credentials_finder.find_by_login_identifier(login=LoginIdentifier(identification))
-            return account_auth_credentials.unwrap_or_raise(InvalidCredentials)
-
-        existing_accounts = await self._repository.matching(
-            criteria=Criteria.from_primitives(
-                filter_expression={
-                    "or": [
-                        {"field": "email", Operator.EQUALS: identification},
-                        {"field": "username", Operator.EQUALS: identification},
-                    ]
-                }
-            )
+    async def _ensure_account_exists_with(self, identification: str) -> AccountAuthCredentials:
+        account_auth_credentials = await self._credentials_finder.find_by_login_identifier(
+            login=LoginIdentifier(identification)
         )
-        if existing_accounts.is_empty():
-            raise InvalidCredentials()
-        return existing_accounts.first()
+        return account_auth_credentials.unwrap_or_raise(InvalidCredentials)
 
 
 class InvalidCredentials(DomainError):
