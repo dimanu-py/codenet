@@ -15,5 +15,8 @@ class MockAccountCredentialsFinder(AccountCredentialsFinder):
     async def find_by_login_identifier(self, login: LoginIdentifier) -> Optional[AccountAuthCredentials]:
         return await self._mock_find(login)
 
-    def should_search_and_find_account_auth_credentials(self, account_auth_credentials: AccountAuthCredentials) -> None:
+    def should_search_and_find(self, account_auth_credentials: AccountAuthCredentials) -> None:
         self._mock_find.return_value = Optional.of(account_auth_credentials)
+
+    def should_search_and_not_find_account_auth_credentials(self) -> None:
+        self._mock_find.return_value = Optional.empty()
