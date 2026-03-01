@@ -50,3 +50,17 @@ class TestPostgresAccountCredentialsFinder:
                 )
             )
         )
+
+    @pytest.mark.parametrize(
+        "login_identifier",
+        [
+            pytest.param(LoginIdentifier("non-existing-email"), id="using_email"),
+            pytest.param(LoginIdentifier("non-existing-username"), id="using_username"),
+        ],
+    )
+    async def test_should_return_none_when_account_with_given_login_identifier_is_not_signed_up(
+        self, login_identifier: LoginIdentifier
+    ) -> None:
+        account_auth_credentials = await self._credentials_finder.find_by_login_identifier(login_identifier)
+
+        expect(account_auth_credentials).to(be_none)
