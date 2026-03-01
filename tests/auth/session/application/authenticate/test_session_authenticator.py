@@ -32,12 +32,8 @@ class TestSessionAuthenticator:
         self._credentials_finder = MockAccountCredentialsFinder()
         self._password_manager = FakePasswordManager()
         self._token_issuer = FakeTokenIssuer(self._ANY_TOKEN)
-        self._authenticator = SessionAuthenticator(
-            repository=self._repository,
-            credentials_finder=self._credentials_finder,
-            password_verifier=self._password_manager,
-            token_issuer=self._token_issuer,
-        )
+        self._authenticator = SessionAuthenticator(credentials_finder=self._credentials_finder, password_verifier=self._password_manager,
+                                                   token_issuer=self._token_issuer)
 
     async def test_should_authenticate_successfully_an_account_with_valid_credentials(self) -> None:
         self._should_find_signed_up_account_auth_credentials(self._SIGNED_UP_ACCOUNT_AUTH_CREDENTIALS)
