@@ -1,5 +1,5 @@
 import pytest
-from expects import expect, be_none, equal
+from expects import expect, equal, be_true
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.session.domain.account_auth_credentials import AccountAuthCredentials
@@ -21,8 +21,8 @@ class TestPostgresAccountCredentialsFinder:
 
         account_auth_credentials = await self._credentials_finder.find_by_login_identifier(login_identifier)
 
-        expect(account_auth_credentials).to_not(be_none)
-        expect(account_auth_credentials).to(
+        expect(account_auth_credentials.is_present()).to(be_true)
+        expect(account_auth_credentials.unwrap()).to(
             equal(
                 AccountAuthCredentials(
                     account_id=account_primitives["id"],
@@ -40,8 +40,8 @@ class TestPostgresAccountCredentialsFinder:
 
         account_auth_credentials = await self._credentials_finder.find_by_login_identifier(login_identifier)
 
-        expect(account_auth_credentials).to_not(be_none)
-        expect(account_auth_credentials).to(
+        expect(account_auth_credentials.is_present()).to(be_true)
+        expect(account_auth_credentials.unwrap()).to(
             equal(
                 AccountAuthCredentials(
                     account_id=account_primitives["id"],
@@ -63,4 +63,4 @@ class TestPostgresAccountCredentialsFinder:
     ) -> None:
         account_auth_credentials = await self._credentials_finder.find_by_login_identifier(login_identifier)
 
-        expect(account_auth_credentials).to(be_none)
+        expect(account_auth_credentials.is_empty()).to(be_true)

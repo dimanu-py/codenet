@@ -7,6 +7,7 @@ from src.auth.session.domain.account_auth_credentials import AccountAuthCredenti
 from src.auth.session.domain.account_by_login_identifier_criteria import AccountByLoginIdentifierCriteria
 from src.auth.session.domain.account_credentials_finder import AccountCredentialsFinder
 from src.auth.session.domain.login_identifier import LoginIdentifier
+from src.shared.domain.value_objects.optional import Optional
 from src.shared.infra.criteria.criteria_to_sqlalchemy_converter import CriteriaToSqlalchemyConverter
 
 
@@ -15,7 +16,7 @@ class PostgresAccountCredentialsFinder(AccountCredentialsFinder):
         self._session = session
 
     @override
-    async def find_by_login_identifier(self, login: LoginIdentifier) -> AccountAuthCredentials | None:
+    async def find_by_login_identifier(self, login: LoginIdentifier) -> Optional[AccountAuthCredentials]:
         converter = CriteriaToSqlalchemyConverter()
         query = converter.convert(
             model=AccountModel,
@@ -23,8 +24,11 @@ class PostgresAccountCredentialsFinder(AccountCredentialsFinder):
         ).limit(1)
         account = await self._session.scalar(query)
 
-        return AccountAuthCredentials(
-            account_id=account.id,
-            password=account.password,
-            status=account.status,
-        ) if account else None
+        return Optional.lift(
+            account,
+            lambda acc: AccountAuthCredentials(
+                account_id=acc.id,
+                password=acc.password,
+                status=acc.status,
+            ),
+        )
