@@ -1,2 +1,4 @@
-class LoginIdentifier:
-    pass
+from sindripy.value_objects import String
+
+
+class LoginIdentifier(String): ...
