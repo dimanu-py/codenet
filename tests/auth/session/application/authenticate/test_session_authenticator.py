@@ -10,6 +10,7 @@ from tests.auth.account.domain.mothers.account_password_hash_primitives_mother i
 )
 from tests.auth.account.domain.mothers.account_username_primitives_mother import AccountUsernamePrimitivesMother
 from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
+from tests.auth.session.domain.mothers.account_auth_credentials_mother import AccountAuthCredentialsMother
 from tests.auth.session.infra.fake_token_issuer import FakeTokenIssuer
 from tests.auth.session.infra.service.mock_account_credentials_finder import MockAccountCredentialsFinder
 from tests.auth.shared.infra.fake_password_manager import FakePasswordManager
@@ -22,6 +23,7 @@ class TestSessionAuthenticator:
     _EXISTING_EMAIL = AccountEmailPrimitivesMother.any()
     _EXISTING_PASSWORD = AccountPasswordHashPrimitivesMother.any()
     _SIGNED_UP_ACCOUNT = AccountMother.create(email=_EXISTING_EMAIL, password=_EXISTING_PASSWORD)
+    _SIGNED_UP_ACCOUNT_AUTH_CREDENTIALS = AccountAuthCredentialsMother.with_password(_EXISTING_PASSWORD)
     _ANY_PASSWORD = AccountPasswordHashPrimitivesMother.any()
     _ANY_TOKEN = {"access_token": "ee9c873b-3ec4-4ece-8fe7-4eb8734cacde", "token_type": "bearer", "expires_in": 3600}
 
