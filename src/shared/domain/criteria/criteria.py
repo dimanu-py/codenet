@@ -1,6 +1,6 @@
 from typing import Any, Self, override
 
-from src.shared.domain.criteria.expression import Expression, ExpressionFactory, EmptyExpression
+from src.shared.domain.criteria.expression import EmptyExpression, Expression, ExpressionFactory
 
 
 class Criteria:

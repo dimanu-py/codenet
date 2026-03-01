@@ -1,5 +1,5 @@
 import pytest
-from expects import expect, equal, be_true
+from expects import be_true, equal, expect
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.session.domain.account_auth_credentials import AccountAuthCredentials
