@@ -9,7 +9,6 @@ from src.auth.account.domain.account_id import AccountId
 from src.auth.account.domain.account_password_hash import AccountPasswordHash
 from src.auth.account.domain.account_status import AccountStatus
 from src.auth.account.domain.account_username import AccountUsername
-from src.auth.shared.domain.password_manager import PasswordManager
 from src.shared.domain.clock import Clock
 
 
@@ -36,6 +35,3 @@ class Account(Aggregate):
     @property
     def id(self) -> AccountId:
         return self._id
-
-    async def verify_password(self, password: str, password_manager: PasswordManager) -> bool:
-        return await password_manager.verify_credentials(password, self._password.value)

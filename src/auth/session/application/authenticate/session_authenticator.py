@@ -1,4 +1,3 @@
-from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_repository import AccountRepository
 from src.auth.session.domain.account_auth_credentials import AccountAuthCredentials
 from src.auth.session.domain.account_credentials_finder import AccountCredentialsFinder
@@ -23,20 +22,22 @@ class SessionAuthenticator:
         self._credentials_finder = credentials_finder
 
     async def execute(self, identification: str, password: str) -> AuthenticationToken:
-        signed_up_account = await self._ensure_account_exists_with(identification)
-        await self._ensure_introduced_password_is_correct(password, signed_up_account)
+        account_auth_credentials = await self._ensure_account_exists_with_identification(identification)
+        await self._ensure_introduced_password_is_correct(password, account_auth_credentials)
         token = await self._issue_authentication_token_for(identification)
         return token
 
-    async def _ensure_introduced_password_is_correct(self, password: str, account: Account) -> None:
-        if not await account.verify_password(password, self._password_verifier):
+    async def _ensure_introduced_password_is_correct(
+        self, password: str, account_auth_credentials: AccountAuthCredentials
+    ) -> None:
+        if not await account_auth_credentials.verify_password(password, self._password_verifier):
             raise InvalidCredentials()
 
     async def _issue_authentication_token_for(self, identification: str) -> AuthenticationToken:
         token = await self._token_issuer.generate_token(identification)
         return AuthenticationToken(**token)
 
-    async def _ensure_account_exists_with(self, identification: str) -> AccountAuthCredentials:
+    async def _ensure_account_exists_with_identification(self, identification: str) -> AccountAuthCredentials:
         account_auth_credentials = await self._credentials_finder.find_by_login_identifier(
             login=LoginIdentifier(identification)
         )
