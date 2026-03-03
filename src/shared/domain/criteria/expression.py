@@ -18,7 +18,7 @@ class Expression(ABC):
         raise NotImplementedError
 
 
-class Comparison(Expression):
+class ComparisonExpression(Expression):
     _value: Value
     _operator: Operator
     _field: Field
@@ -48,7 +48,7 @@ class Comparison(Expression):
         }
 
 
-class LogicalGroup(Expression):
+class CompositeExpression(Expression):
     _logical_operator: LogicalOperator
     _conditions: list[Expression]
 
@@ -103,9 +103,9 @@ class ExpressionFactory:
     def from_primitives(cls, expression: dict[str, list | str]) -> Expression:
         cls._ensure_expression_has_valid_structure(expression)
         if cls._is_logical_group(expression):
-            return LogicalGroup.from_primitives(expression)
+            return CompositeExpression.from_primitives(expression)
         if cls._is_simple_comparison(expression):
-            return Comparison.from_primitives(expression)
+            return ComparisonExpression.from_primitives(expression)
         raise InvalidCriteriaStructure("Criteria filter expression must contain 'field' or a logical operator 'and/or'")
 
     @classmethod

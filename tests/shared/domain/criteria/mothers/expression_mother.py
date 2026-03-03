@@ -1,24 +1,24 @@
-from src.shared.domain.criteria.expression import Comparison, LogicalGroup
+from src.shared.domain.criteria.expression import ComparisonExpression, CompositeExpression
 from tests.shared.domain.criteria.mothers.field_mother import FieldMother
 from tests.shared.domain.criteria.mothers.logical_operator_mother import LogicalOperatorMother
 from tests.shared.domain.criteria.mothers.operator_mother import OperatorMother
 from tests.shared.domain.criteria.mothers.value_mother import ValueMother
 
 
-class ComparisonMother:
+class ComparisonExpressionMother:
     @staticmethod
-    def any() -> Comparison:
-        return Comparison(
+    def any() -> ComparisonExpression:
+        return ComparisonExpression(
             field=FieldMother.any().value,
             operator=OperatorMother.any(),
             value=ValueMother.any().value,
         )
 
 
-class LogicalGroupMother:
+class CompositeExpressionMother:
     @staticmethod
-    def any() -> LogicalGroup:
-        return LogicalGroup(
+    def any() -> CompositeExpression:
+        return CompositeExpression(
             operator=LogicalOperatorMother.any(),
-            conditions=[ComparisonMother.any()],
+            conditions=[ComparisonExpressionMother.any()],
         )

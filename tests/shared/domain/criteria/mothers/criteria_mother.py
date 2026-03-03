@@ -1,13 +1,13 @@
 from typing import Any
 
 from src.shared.domain.criteria.criteria import Criteria
-from tests.shared.domain.criteria.mothers.expression_mother import LogicalGroupMother
+from tests.shared.domain.criteria.mothers.expression_mother import CompositeExpressionMother
 
 
 class CriteriaMother:
     @staticmethod
     def any() -> Criteria:
-        return Criteria(expression=LogicalGroupMother.any())
+        return Criteria(expression=CompositeExpressionMother.any())
 
     @staticmethod
     def empty() -> Criteria:
