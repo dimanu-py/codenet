@@ -1,0 +1,29 @@
+# Gitleaks configuration file
+title = "CodeNet Gitleaks Config"
+
+[extend]
+# Use default gitleaks rules
+useDefault = true
+
+[allowlist]
+description = "Allowlist for false positives"
+
+# Ignore common cache and build directories
+paths = [
+    '''\.mypy_cache/''',
+    '''__pycache__/''',
+    '''\.pytest_cache/''',
+    '''\.idea/''',
+    '''node_modules/''',
+    '''\.venv/''',
+    '''venv/''',
+    '''dist/''',
+    '''build/''',
+    '''\.egg-info/''',
+]
+
+# Ignore test files and fixtures
+regexes = [
+    '''(test_|_test\.py|tests/|fixtures/).*''',
+]
+
