@@ -2,9 +2,7 @@ from sqlalchemy.sql import Select, select
 from sqlalchemy.sql.elements import ColumnElement
 
 from src.shared.domain.criteria.criteria import Criteria
-from src.shared.infra.criteria.condition_to_sql_query_converter import (
-    ConditionToSqlQueryConverterFactory,
-)
+from src.shared.infra.criteria.expression_to_sql_converter import ExpressionToSqlConverterFactory
 from src.shared.infra.persistence.sqlalchemy.base import Base
 
 
@@ -25,7 +23,6 @@ class CriteriaToSqlalchemyConverter:
         criteria: Criteria,
         model: type[Base],
     ) -> ColumnElement[bool] | None:
-        condition = criteria.to_primitives()
-        condition_to_sql_query_converter = ConditionToSqlQueryConverterFactory.get(condition)
-        where_predicate = condition_to_sql_query_converter.convert(model, condition)
-        return where_predicate
+        expression = criteria.to_primitives()
+        expression_to_sql_converter = ExpressionToSqlConverterFactory.get(expression)
+        return expression_to_sql_converter.convert(model, expression)
