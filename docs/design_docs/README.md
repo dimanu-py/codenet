@@ -45,7 +45,7 @@ Design docs capture ideas, requirements, and implementation plans for future fea
 
 | Number | Title | Created | Link |
 |--------|-------|---------|------|
-| - | - | - | - |
+| 0002 | Typed Value Support in Criteria Pattern | 2026-03-04 | [0002-typed-value-support-criteria.md](0002-typed-value-support-criteria.md) |
 
 ### In Progress
 
