@@ -16,15 +16,9 @@ class AccountUsername(String):
 
 class InvalidUsernameFormat(DomainValidationError):
     def __init__(self) -> None:
-        super().__init__(
-            message="Username cannot contain special characters",
-            error_type="account_validation_error",
-        )
+        super().__init__(message="Username cannot contain special characters")
 
 
 class AccountUsernameAlreadyExists(ConflictError):
     def __init__(self) -> None:
-        super().__init__(
-            message="Username is already registered.",
-            error_type="account_resource_conflict_error",
-        )
+        super().__init__(message="Username is already registered.")

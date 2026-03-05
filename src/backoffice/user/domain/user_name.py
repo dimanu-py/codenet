@@ -16,7 +16,4 @@ class UserName(String):
 
 class InvalidNameFormat(DomainValidationError):
     def __init__(self) -> None:
-        super().__init__(
-            message="Name cannot contain special characters or numbers.",
-            error_type="user_validation_error",
-        )
+        super().__init__(message="Name cannot contain special characters or numbers.")

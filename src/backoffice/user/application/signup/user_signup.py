@@ -35,7 +35,4 @@ class UserSignup:
 
 class UsernameAlreadyExists(ConflictError):
     def __init__(self) -> None:
-        super().__init__(
-            message="Username is already registered.",
-            error_type="user_resource_conflict_error",
-        )
+        super().__init__(message="Username is already registered.")

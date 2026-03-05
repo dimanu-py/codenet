@@ -16,15 +16,9 @@ class AccountEmail(String):
 
 class InvalidEmailFormat(DomainValidationError):
     def __init__(self) -> None:
-        super().__init__(
-            message="Email cannot contain special characters and must contain '@' and '.'",
-            error_type="account_validation_error",
-        )
+        super().__init__(message="Email cannot contain special characters and must contain '@' and '.'")
 
 
 class AccountEmailAlreadyExists(ConflictError):
     def __init__(self) -> None:
-        super().__init__(
-            message="Email is already signed up",
-            error_type="account_resource_conflict_error",
-        )
+        super().__init__(message="Email is already signed up")

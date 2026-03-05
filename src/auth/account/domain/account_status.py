@@ -19,7 +19,4 @@ class AccountStatus(StrEnum):
 
 class AccountStatusDoesNotExists(DomainValidationError):
     def __init__(self, status: str) -> None:
-        super().__init__(
-            message=f"Account status '{status}' does not exist.",
-            error_type="account_validation_error",
-        )
+        super().__init__(message=f"Account status '{status}' does not exist.")
