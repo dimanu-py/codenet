@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import Self, override
 
-from src.shared.domain.criteria.criteria_error import InvalidCriteriaStructure
 from src.shared.domain.criteria.field import Field
+from src.shared.domain.criteria.invalid_criteria import InvalidCriteriaStructure, InvalidCompositeExpressionStructure, \
+    InvalidExpressionStructure
 from src.shared.domain.criteria.logical_operator import LogicalOperator
 from src.shared.domain.criteria.operator import Operator
 from src.shared.domain.criteria.value import Value
@@ -69,7 +70,7 @@ class CompositeExpression(Expression):
         if LogicalOperator.OR in expression:
             conditions = [ExpressionFactory.from_primitives(item) for item in expression[LogicalOperator.OR]]  # type: ignore
             return cls(operator=LogicalOperator.OR, conditions=conditions)
-        raise InvalidCriteriaStructure("Logical group filter must contain either 'AND' or 'OR'")
+        raise InvalidCompositeExpressionStructure()
 
     @classmethod
     def empty(cls) -> Self:
@@ -106,7 +107,7 @@ class ExpressionFactory:
             return CompositeExpression.from_primitives(expression)
         if cls._is_simple_comparison(expression):
             return ComparisonExpression.from_primitives(expression)
-        raise InvalidCriteriaStructure("Criteria filter expression must contain 'field' or a logical operator 'and/or'")
+        raise InvalidExpressionStructure()
 
     @classmethod
     def empty(cls) -> Expression:
@@ -119,7 +120,7 @@ class ExpressionFactory:
     @classmethod
     def _ensure_expression_has_valid_structure(cls, expression: dict[str, list | str]) -> None:
         if not isinstance(expression, dict):
-            raise InvalidCriteriaStructure("Criteria must be a dictionary")
+            raise InvalidCriteriaStructure()
 
     @classmethod
     def _is_simple_comparison(cls, expression: dict[str, list | str]) -> bool:
