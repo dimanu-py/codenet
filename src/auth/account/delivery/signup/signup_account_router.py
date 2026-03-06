@@ -7,7 +7,7 @@ from starlette.responses import JSONResponse
 
 from src.auth.account.delivery.signup.signup_account_request import SignupAccountRequest
 from src.auth.account.infra.api.signup.signup_account_controller import SignupAccountController
-from src.shared.delivery.api_parameter import ApiDocExample, PathParameter
+from src.shared.delivery.fastapi_parameter import ApiDocExample, PathParameter
 from src.shared.delivery.fastapi_response import FastAPIResponse
 from src.shared.infra.api.error_response import UnprocessableEntityError
 from src.shared.infra.api.success_response import AcceptedResponse
