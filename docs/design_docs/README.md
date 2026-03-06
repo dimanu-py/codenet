@@ -47,6 +47,7 @@ Design docs capture ideas, requirements, and implementation plans for future fea
 |--------|-------|---------|------|
 | 0002 | Typed Value Support in Criteria Pattern | 2026-03-04 | [0002-typed-value-support-criteria.md](0002-typed-value-support-criteria.md) |
 | 0003 | Criteria Sorting Support | 2026-03-05 | [0003-criteria-sorting-support.md](0003-criteria-sorting-support.md) |
+| 0004 | Criteria Pagination Support | 2026-03-06 | [0004-criteria-pagination-support.md](0004-criteria-pagination-support.md) |
 
 ### In Progress
 
