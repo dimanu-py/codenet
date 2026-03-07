@@ -6,14 +6,14 @@ from src.shared.domain.criteria.sorts import Sorts
 
 class Criteria:
     def __init__(self, expression: Expression, sorts: Sorts) -> None:
-        self._expression = expression
-        self._sorts = sorts
+        self.expression = expression
+        self.sorts = sorts
 
     def is_empty(self) -> bool:
-        return isinstance(self._expression, EmptyExpression)
+        return isinstance(self.expression, EmptyExpression)
 
     def has_sorting(self) -> bool:
-        return self._sorts.is_not_empty()
+        return self.sorts.is_not_empty()
 
     @classmethod
     def from_primitives(cls, expression: dict[str, Any], sorts: list[dict[str, str]] | None = None) -> Self:
@@ -24,8 +24,8 @@ class Criteria:
 
     def to_primitives(self) -> dict[str, Any]:
         return {
-            "expression": self._expression.to_primitives(),
-            "sorts": self._sorts.to_primitives(),
+            "expression": self.expression.to_primitives(),
+            "sorts": self.sorts.to_primitives(),
         }
 
     @override

@@ -1,8 +1,8 @@
+from sqlalchemy import UnaryExpression
 from sqlalchemy.sql import Select, select
 from sqlalchemy.sql.elements import ColumnElement
 
 from src.shared.domain.criteria.criteria import Criteria
-from src.shared.domain.criteria.sort_direction import SortDirection
 from src.shared.infra.criteria.expression_to_sql_converter import ExpressionToSqlConverterFactory
 from src.shared.infra.persistence.sqlalchemy.base import Base
 
@@ -31,14 +31,12 @@ class CriteriaToSqlalchemyConverter:
         return expression_to_sql_converter.convert(model, expression)
 
     @staticmethod
-    def _build_order_by_clause(criteria: Criteria, model: type[Base]) -> tuple:
-        sorts = criteria.to_primitives()["sorts"]
+    def _build_order_by_clause(criteria: Criteria, model: type[Base]) -> tuple[UnaryExpression, ...]:
         order_by_clauses = []
 
-        for sort_condition in sorts:
-            field = getattr(model, sort_condition["field"])
-
-            if sort_condition["direction"] == SortDirection.ASCENDING:
+        for sort_condition in criteria.sorts:
+            field = getattr(model, sort_condition.field_name())
+            if sort_condition.is_ascending():
                 order_by_clauses.append(field.asc())
             else:
                 order_by_clauses.append(field.desc())

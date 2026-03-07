@@ -16,6 +16,12 @@ class SortCondition:
         self._field = field
         self._direction = direction
 
+    def is_ascending(self) -> bool:
+        return self._direction == SortDirection.ASCENDING
+
+    def field_name(self) -> str:
+        return self._field.value
+
     @classmethod
     def from_primitives(cls, condition: dict[str, str]) -> Self:
         cls._ensure_condition_has_field_and_direction(condition)
