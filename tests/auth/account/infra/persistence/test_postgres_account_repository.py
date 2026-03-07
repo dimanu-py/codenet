@@ -33,7 +33,7 @@ class TestPostgresAccountRepository:
         expect(account).to(equal(saved_account))
 
     async def test_should_match_an_existing_account_based_on_criteria(self, existing_account: Account) -> None:
-        criteria = CriteriaMother.with_one_condition(
+        criteria = CriteriaMother.with_comparison_expression(
             field="username", operator=Operator.EQUALS, value=existing_account._username.value
         )
 

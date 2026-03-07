@@ -31,7 +31,7 @@ class TestPostgresUserRepository:
         expect(user).to(equal(saved_user.unwrap()))
 
     async def test_should_match_an_existing_user_based_on_criteria(self, existing_user: User) -> None:
-        criteria = CriteriaMother.with_one_condition(
+        criteria = CriteriaMother.with_comparison_expression(
             field="username", operator=Operator.EQUALS, value=existing_user.username.value
         )
 

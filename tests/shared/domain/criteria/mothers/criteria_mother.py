@@ -14,9 +14,9 @@ class CriteriaMother:
         return Criteria.from_primitives(expression={})
 
     @staticmethod
-    def with_conditions(conditions: dict[str, Any]) -> Criteria:
-        return Criteria.from_primitives(conditions)
+    def with_composite_expression(expression: dict[str, Any]) -> Criteria:
+        return Criteria.from_primitives(expression)
 
     @staticmethod
-    def with_one_condition(field: str, operator: str, value: str) -> Criteria:
+    def with_comparison_expression(field: str, operator: str, value: str) -> Criteria:
         return Criteria.from_primitives({"field": field, f"{operator}": value})

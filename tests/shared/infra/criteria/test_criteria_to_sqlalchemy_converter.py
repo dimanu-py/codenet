@@ -26,7 +26,7 @@ class TestCriteriaToSqlalchemyConverter:
     def test_should_generate_select_query_with_one_filter(self) -> None:
         user_name = StringPrimitivesMother.any()
 
-        criteria = CriteriaMother.with_one_condition("name", Operator.EQUALS, user_name)
+        criteria = CriteriaMother.with_comparison_expression("name", Operator.EQUALS, user_name)
         query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
 
         expect(query).to(
@@ -42,7 +42,7 @@ class TestCriteriaToSqlalchemyConverter:
     ) -> None:
         user_name = StringPrimitivesMother.any()
         user_username = StringPrimitivesMother.any()
-        criteria = CriteriaMother.with_conditions(
+        criteria = CriteriaMother.with_composite_expression(
             {
                 "and": [
                     {
@@ -71,7 +71,7 @@ class TestCriteriaToSqlalchemyConverter:
     ) -> None:
         user_name = StringPrimitivesMother.any()
         user_username = StringPrimitivesMother.any()
-        criteria = CriteriaMother.with_conditions(
+        criteria = CriteriaMother.with_composite_expression(
             {
                 "or": [
                     {
@@ -97,7 +97,7 @@ class TestCriteriaToSqlalchemyConverter:
 
     def test_should_generate_negated_query(self) -> None:
         user_name = StringPrimitivesMother.any()
-        criteria = CriteriaMother.with_one_condition("name", Operator.NOT_EQUALS, user_name)
+        criteria = CriteriaMother.with_comparison_expression("name", Operator.NOT_EQUALS, user_name)
 
         query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
 
@@ -111,7 +111,7 @@ class TestCriteriaToSqlalchemyConverter:
 
     def test_should_generate_query_with_contains(self) -> None:
         user_name = StringPrimitivesMother.any()
-        criteria = CriteriaMother.with_one_condition("name", Operator.CONTAINS, user_name)
+        criteria = CriteriaMother.with_comparison_expression("name", Operator.CONTAINS, user_name)
 
         query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
 
@@ -128,7 +128,7 @@ class TestCriteriaToSqlalchemyConverter:
         first_username = StringPrimitivesMother.any()
         second_username = StringPrimitivesMother.any()
 
-        criteria = CriteriaMother.with_conditions(
+        criteria = CriteriaMother.with_composite_expression(
             {
                 "and": [
                     {
