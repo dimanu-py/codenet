@@ -19,3 +19,18 @@ class InvalidCompositeExpressionStructure(InvalidCriteria):
 class InvalidExpressionStructure(InvalidCriteria):
     def __init__(self) -> None:
         super().__init__(message="Criteria filter expression must contain 'field' or a logical operator 'and/or'")
+
+
+class MissingFieldInSortCondition(InvalidCriteria):
+    def __init__(self) -> None:
+        super().__init__(message="Missing 'field' in sort condition.")
+
+
+class MissingDirectionInSortCondition(InvalidCriteria):
+    def __init__(self) -> None:
+        super().__init__(message="Missing 'direction' in sort condition.")
+
+
+class SortConditionInvalidStructure(InvalidCriteria):
+    def __init__(self) -> None:
+        super().__init__(message="Sort condition has invalid structure. Only 'field' and 'direction' keys are allowed.")
