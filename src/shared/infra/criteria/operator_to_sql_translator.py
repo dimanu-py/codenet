@@ -54,7 +54,7 @@ class NotContainsOperatorToSqlTranslator(OperatorToSqlTranslator):
 
 class OperatorToSqlTranslatorFactory:
     @staticmethod
-    def get(operator: str) -> OperatorToSqlTranslator:
+    def get(operator: Operator) -> OperatorToSqlTranslator:
         translators = {
             Operator.EQUALS: EqualOperatorToSqlTranslator(),
             Operator.NOT_EQUALS: NotEqualOperatorToSqlTranslator(),
@@ -65,7 +65,7 @@ class OperatorToSqlTranslatorFactory:
             Operator.CONTAINS: ContainsOperatorToSqlTranslator(),
             Operator.NOT_CONTAINS: NotContainsOperatorToSqlTranslator(),
         }
-        operator_translator = translators.get(Operator(operator))
+        operator_translator = translators.get(operator)
         if not operator_translator:
             raise NotImplementedError(f"Condition strategy for {operator} is not implemented.")
         return operator_translator

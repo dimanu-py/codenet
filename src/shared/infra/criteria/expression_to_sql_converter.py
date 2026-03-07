@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
-from typing import Any
 
 from sqlalchemy import ColumnElement, and_, or_
 
-from src.shared.domain.criteria.logical_operator import LogicalOperator
+from src.shared.domain.criteria.expression import CompositeExpression, ComparisonExpression
 from src.shared.infra.criteria.operator_to_sql_translator import (
     OperatorToSqlTranslatorFactory,
 )
@@ -15,7 +14,7 @@ class ExpressionToSqlConverter(ABC):
     def convert(
         self,
         model: type[Base],
-        expression: dict[str, Any],
+        expression: ComparisonExpression | CompositeExpression,
     ) -> ColumnElement[bool]:
         raise NotImplementedError
 
@@ -24,11 +23,11 @@ class AndCompositeExpressionToSqlConverter(ExpressionToSqlConverter):
     def convert(
         self,
         model: type[Base],
-        expression: dict[str, Any],
+        expression: CompositeExpression,
     ) -> ColumnElement[bool]:
         query_predicates = [
             ExpressionToSqlConverterFactory.get(condition).convert(model, condition)
-            for condition in expression[LogicalOperator.AND]
+            for condition in expression.conditions
         ]
         return and_(*query_predicates)
 
@@ -37,11 +36,11 @@ class OrCompositeExpressionToSqlConverter(ExpressionToSqlConverter):
     def convert(
         self,
         model: type[Base],
-        expression: dict[str, Any],
+        expression: CompositeExpression,
     ) -> ColumnElement[bool]:
         query_predicates = [
             ExpressionToSqlConverterFactory.get(condition).convert(model, condition)
-            for condition in expression[LogicalOperator.OR]
+            for condition in expression.conditions
         ]
         return or_(*query_predicates)
 
@@ -50,21 +49,19 @@ class ComparatorExpressionToSqlConverter(ExpressionToSqlConverter):
     def convert(
         self,
         model: type[Base],
-        expression: dict[str, Any],
+        expression: ComparisonExpression,
     ) -> ColumnElement[bool]:
-        field = getattr(model, expression["field"])
-        operator = next(key for key in expression.keys() if key != "field")
-        value = expression[operator]
-
-        operator_to_sql_translator_strategy = OperatorToSqlTranslatorFactory.get(operator)
-        return operator_to_sql_translator_strategy.build(field, value)
+        field = getattr(model, expression.field_name())
+        operator_to_sql_translator_strategy = OperatorToSqlTranslatorFactory.get(expression.operator)
+        return operator_to_sql_translator_strategy.build(field, expression.value.value)
 
 
 class ExpressionToSqlConverterFactory:
     @staticmethod
-    def get(expression: dict[str, Any]) -> ExpressionToSqlConverter:
-        if LogicalOperator.AND in expression:
+    def get(expression: ComparisonExpression | CompositeExpression) -> ExpressionToSqlConverter:
+        if isinstance(expression, ComparisonExpression):
+            return ComparatorExpressionToSqlConverter()
+        if expression.is_and():
             return AndCompositeExpressionToSqlConverter()
-        if LogicalOperator.OR in expression:
+        else:
             return OrCompositeExpressionToSqlConverter()
-        return ComparatorExpressionToSqlConverter()

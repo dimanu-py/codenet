@@ -26,9 +26,8 @@ class CriteriaToSqlalchemyConverter:
         criteria: Criteria,
         model: type[Base],
     ) -> ColumnElement[bool] | None:
-        expression = criteria.to_primitives()["expression"]
-        expression_to_sql_converter = ExpressionToSqlConverterFactory.get(expression)
-        return expression_to_sql_converter.convert(model, expression)
+        expression_to_sql_converter = ExpressionToSqlConverterFactory.get(criteria.expression)
+        return expression_to_sql_converter.convert(model, criteria.expression)
 
     @staticmethod
     def _build_order_by_clause(criteria: Criteria, model: type[Base]) -> tuple[UnaryExpression, ...]:

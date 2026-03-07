@@ -2,8 +2,11 @@ from abc import ABC, abstractmethod
 from typing import Self, override
 
 from src.shared.domain.criteria.field import Field
-from src.shared.domain.criteria.invalid_criteria import InvalidCriteriaStructure, InvalidCompositeExpressionStructure, \
-    InvalidExpressionStructure
+from src.shared.domain.criteria.invalid_criteria import (
+    InvalidCriteriaStructure,
+    InvalidCompositeExpressionStructure,
+    InvalidExpressionStructure,
+)
 from src.shared.domain.criteria.logical_operator import LogicalOperator
 from src.shared.domain.criteria.operator import Operator, ComparisonOperatorDoesNotExist
 from src.shared.domain.criteria.value import Value
@@ -21,14 +24,10 @@ class Expression(ABC):
 
 
 class ComparisonExpression(Expression):
-    _value: Value
-    _operator: Operator
-    _field: Field
-
     def __init__(self, field: Field, operator: Operator, value: Value) -> None:
-        self._field = field
-        self._operator = operator
-        self._value = value
+        self.field = field
+        self.operator = operator
+        self.value = value
 
     @classmethod
     @override
@@ -43,25 +42,25 @@ class ComparisonExpression(Expression):
             value=Value(expression[Operator(raw_operator)]),
         )
 
+    def field_name(self) -> str:
+        return self.field.value
+
     @override
     def to_primitives(self) -> dict[str, str | list]:
         return {
-            "field": self._field.value,
-            f"{self._operator.value}": self._value.value,
+            "field": self.field.value,
+            f"{self.operator.value}": self.value.value,
         }
 
 
 class CompositeExpression(Expression):
-    _logical_operator: LogicalOperator
-    _conditions: list[Expression]
-
     def __init__(
         self,
         operator: LogicalOperator,
         conditions: list[Expression],
     ) -> None:
-        self._logical_operator = operator
-        self._conditions = conditions
+        self.logical_operator = operator
+        self.conditions = conditions
 
     @classmethod
     @override
@@ -74,10 +73,13 @@ class CompositeExpression(Expression):
             return cls(operator=LogicalOperator.OR, conditions=conditions)
         raise InvalidCompositeExpressionStructure()
 
+    def is_and(self) -> bool:
+        return self.logical_operator == LogicalOperator.AND
+
     @override
     def to_primitives(self) -> dict[str, str | list]:
-        key = LogicalOperator.AND if self._logical_operator is LogicalOperator.AND else LogicalOperator.OR
-        return {key: [item.to_primitives() for item in self._conditions]}
+        key = LogicalOperator.AND if self.logical_operator is LogicalOperator.AND else LogicalOperator.OR
+        return {key: [item.to_primitives() for item in self.conditions]}
 
 
 class EmptyExpression(Expression):
