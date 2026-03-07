@@ -103,9 +103,9 @@ class ExpressionFactory:
     @classmethod
     def from_primitives(cls, expression: dict[str, list | str]) -> Expression:
         cls._ensure_expression_has_valid_structure(expression)
-        if cls._is_logical_group(expression):
+        if cls._is_composite_expression(expression):
             return CompositeExpression.from_primitives(expression)
-        if cls._is_simple_comparison(expression):
+        if cls._is_comparison_expression(expression):
             return ComparisonExpression.from_primitives(expression)
         raise InvalidExpressionStructure()
 
@@ -114,7 +114,7 @@ class ExpressionFactory:
         return EmptyExpression()
 
     @classmethod
-    def _is_logical_group(cls, expression: dict[str, list | str]) -> bool:
+    def _is_composite_expression(cls, expression: dict[str, list | str]) -> bool:
         return LogicalOperator.AND in expression or LogicalOperator.OR in expression
 
     @classmethod
@@ -123,5 +123,5 @@ class ExpressionFactory:
             raise InvalidCriteriaStructure()
 
     @classmethod
-    def _is_simple_comparison(cls, expression: dict[str, list | str]) -> bool:
+    def _is_comparison_expression(cls, expression: dict[str, list | str]) -> bool:
         return "field" in expression
