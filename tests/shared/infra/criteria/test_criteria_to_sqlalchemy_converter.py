@@ -3,7 +3,9 @@ from expects import equal, expect
 from sindripy.mothers import StringPrimitivesMother
 from sqlalchemy.sql.selectable import Select
 
+from src.shared.domain.criteria.criteria import Criteria
 from src.shared.domain.criteria.operator import Operator
+from src.shared.domain.criteria.sort_direction import SortDirection
 from src.shared.infra.criteria.criteria_to_sqlalchemy_converter import (
     CriteriaToSqlalchemyConverter,
 )
@@ -25,8 +27,8 @@ class TestCriteriaToSqlalchemyConverter:
 
     def test_should_generate_select_query_with_one_filter(self) -> None:
         user_name = StringPrimitivesMother.any()
-
         criteria = CriteriaMother.with_comparison_expression("name", Operator.EQUALS, user_name)
+
         query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
 
         expect(query).to(
@@ -56,6 +58,7 @@ class TestCriteriaToSqlalchemyConverter:
                 ]
             }
         )
+
         query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
 
         expect(query).to(
@@ -85,6 +88,7 @@ class TestCriteriaToSqlalchemyConverter:
                 ]
             }
         )
+
         query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
 
         expect(query).to(
@@ -158,6 +162,59 @@ class TestCriteriaToSqlalchemyConverter:
                 f"SELECT test_table.id, test_table.name, test_table.username \n"
                 f"FROM test_table \n"
                 f"WHERE test_table.name = '{user_name}' AND (test_table.username = '{first_username}' OR test_table.username = '{second_username}')"  # noqa: E501
+            )
+        )
+
+    def test_should_generate_query_with_one_sorting_condition_and_no_filters(self) -> None:
+        criteria = CriteriaMother.with_sorting(sorts=[{"field": "name", "direction": SortDirection.ASCENDING}])
+
+        query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
+
+        expect(query).to(
+            equal(
+                f"SELECT test_table.id, test_table.name, test_table.username \n"
+                f"FROM test_table "
+                f"ORDER BY test_table.name ASC"
+            )
+        )
+
+    def test_should_generate_query_with_multiple_sorting_conditions_and_no_filters(self) -> None:
+        criteria = CriteriaMother.with_sorting(
+            sorts=[
+                {"field": "name", "direction": SortDirection.ASCENDING},
+                {"field": "username", "direction": SortDirection.DESCENDING},
+            ]
+        )
+
+        query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
+
+        expect(query).to(
+            equal(
+                f"SELECT test_table.id, test_table.name, test_table.username \n"
+                f"FROM test_table "
+                f"ORDER BY test_table.name ASC, test_table.username DESC"
+            )
+        )
+
+    def test_should_generate_query_with_filters_and_sorting(self) -> None:
+        criteria = Criteria.from_primitives(
+            expression={
+                "field": "name",
+                Operator.EQUALS: "John Doe",
+            },
+            sorts=[
+                {"field": "username", "direction": SortDirection.DESCENDING},
+            ],
+        )
+
+        query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
+
+        expect(query).to(
+            equal(
+                f"SELECT test_table.id, test_table.name, test_table.username \n"
+                f"FROM test_table \n"
+                f"WHERE test_table.name = 'John Doe' "
+                f"ORDER BY test_table.username DESC"
             )
         )
 

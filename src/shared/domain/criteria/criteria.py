@@ -23,7 +23,10 @@ class Criteria:
         )
 
     def to_primitives(self) -> dict[str, Any]:
-        return self._expression.to_primitives()
+        return {
+            "expression": self._expression.to_primitives(),
+            "sorts": self._sorts.to_primitives(),
+        }
 
     @override
     def __eq__(self, other: Self) -> bool:
