@@ -5,7 +5,7 @@ from src.shared.domain.criteria.field import Field
 from src.shared.domain.criteria.invalid_criteria import InvalidCriteriaStructure, InvalidCompositeExpressionStructure, \
     InvalidExpressionStructure
 from src.shared.domain.criteria.logical_operator import LogicalOperator
-from src.shared.domain.criteria.operator import Operator
+from src.shared.domain.criteria.operator import Operator, ComparisonOperatorDoesNotExist
 from src.shared.domain.criteria.value import Value
 
 
@@ -33,13 +33,14 @@ class ComparisonExpression(Expression):
     @classmethod
     @override
     def from_primitives(cls, expression: dict[str, str | list]) -> Self:
-        raw_operator = next(key for key in expression.keys() if key in Operator)
-        operator = Operator(raw_operator)
+        raw_operator = next((key for key in expression.keys() if key in Operator), None)
+        if raw_operator is None:
+            raise ComparisonOperatorDoesNotExist()
 
         return cls(
             field=Field(expression["field"]),
-            operator=operator,
-            value=Value(expression[operator]),
+            operator=Operator(raw_operator),
+            value=Value(expression[Operator(raw_operator)]),
         )
 
     @override

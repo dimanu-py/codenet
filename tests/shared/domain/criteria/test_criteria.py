@@ -3,7 +3,7 @@ from expects import expect, be_true, raise_error, be_false
 
 from src.shared.domain.criteria.criteria import Criteria
 from src.shared.domain.criteria.invalid_criteria import InvalidCriteriaStructure, InvalidExpressionStructure
-from src.shared.domain.criteria.operator import Operator
+from src.shared.domain.criteria.operator import Operator, ComparisonOperatorDoesNotExist
 
 
 @pytest.mark.unit
@@ -51,3 +51,11 @@ class TestCriteria:
         }
 
         expect(lambda: Criteria.from_primitives(expression=invalid_composite_expression)).to(raise_error(InvalidExpressionStructure))
+
+    def test_should_fail_when_passing_non_existing_operator(self) -> None:
+        expression_with_non_existing_operator = {
+            "field": "age",
+            "multiplication": "30"
+        }
+
+        expect(lambda: Criteria.from_primitives(expression=expression_with_non_existing_operator)).to(raise_error(ComparisonOperatorDoesNotExist))

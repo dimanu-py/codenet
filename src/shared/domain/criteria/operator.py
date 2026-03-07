@@ -1,5 +1,7 @@
 from enum import StrEnum
 
+from src.shared.domain.criteria.invalid_criteria import InvalidCriteria
+
 
 class Operator(StrEnum):
     EQUALS = "equals"
@@ -10,3 +12,8 @@ class Operator(StrEnum):
     LESS_THAN_OR_EQUAL_TO = "less_or_equal_to"
     CONTAINS = "contains"
     NOT_CONTAINS = "not_contains"
+
+
+class ComparisonOperatorDoesNotExist(InvalidCriteria):
+    def __init__(self) -> None:
+        super().__init__("Comparison operator does not exist.")
