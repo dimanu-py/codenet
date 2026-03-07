@@ -1,6 +1,5 @@
 from sqlalchemy import UnaryExpression
 from sqlalchemy.sql import Select, select
-from sqlalchemy.sql.elements import ColumnElement
 
 from src.shared.domain.criteria.criteria import Criteria
 from src.shared.infra.criteria.expression_to_sql_converter import ExpressionToSqlConverterFactory
@@ -8,28 +7,33 @@ from src.shared.infra.persistence.sqlalchemy.base import Base
 
 
 class CriteriaToSqlalchemyConverter:
+    def __init__(self) -> None:
+        self._query = None
+
     def convert(self, model: type[Base], criteria: Criteria) -> Select:
-        query = select(model)
+        self._build_basic_query_selecting_all_columns(model)
 
         if criteria.has_sorting():
-            query = query.order_by(*self._build_order_by_clause(criteria, model))
+            self._build_order_by_clauses(criteria, model)
 
         if criteria.is_empty():
-            return query
+            return self._query
 
-        query = query.where(self._build_where_predicate(criteria, model))
+        self._build_where_conditions(criteria, model)
 
-        return query
+        return self._query
+
+    def _build_basic_query_selecting_all_columns(self, model: type[Base]) -> None:
+        self._query = select(model)
+
+    def _build_order_by_clauses(self, criteria: Criteria, model: type[Base]) -> None:
+        self._query = self._query.order_by(*self._translate_sorts_to_sql_order_by(criteria, model))
+
+    def _build_where_conditions(self, criteria: Criteria, model: type[Base]) -> None:
+        self._query = self._query.where(ExpressionToSqlConverterFactory.convert(model, criteria.expression))
 
     @staticmethod
-    def _build_where_predicate(
-        criteria: Criteria,
-        model: type[Base],
-    ) -> ColumnElement[bool] | None:
-        return ExpressionToSqlConverterFactory.convert(model, criteria.expression)
-
-    @staticmethod
-    def _build_order_by_clause(criteria: Criteria, model: type[Base]) -> tuple[UnaryExpression, ...]:
+    def _translate_sorts_to_sql_order_by(criteria: Criteria, model: type[Base]) -> tuple[UnaryExpression, ...]:
         order_by_clauses = []
 
         for sort_condition in criteria.sorts:
