@@ -43,7 +43,7 @@ Extend the Criteria pattern to support ordering results via a `sorts` query para
 
 ```python
 criteria = Criteria.from_primitives(
-    filter_expression={"field": "status", "equals": "active"},
+    expression={"field": "status", "equals": "active"},
     sorts=[{"field": "created_at", "direction": "descending"}]
 )
 ```
@@ -52,7 +52,7 @@ criteria = Criteria.from_primitives(
 
 ```python
 criteria = Criteria.from_primitives(
-    filter_expression={},
+    expression={},
     sorts=[
         {"field": "last_name", "direction": "ascending"},
         {"field": "first_name", "direction": "ascending"}
@@ -64,8 +64,8 @@ criteria = Criteria.from_primitives(
 
 ```python
 # Both are equivalent - no sorting applied
-criteria = Criteria.from_primitives(filter_expression={"field": "name", "equals": "John"})
-criteria = Criteria.from_primitives(filter_expression={"field": "name", "equals": "John"}, sorts=[])
+criteria = Criteria.from_primitives(expression={"field": "name", "equals": "John"})
+criteria = Criteria.from_primitives(expression={"field": "name", "equals": "John"}, sorts=[])
 ```
 
 ### Example 4: Generated SQLAlchemy Query
@@ -73,7 +73,7 @@ criteria = Criteria.from_primitives(filter_expression={"field": "name", "equals"
 ```python
 # Input
 criteria = Criteria.from_primitives(
-    filter_expression={"field": "status", "equals": "active"},
+    expression={"field": "status", "equals": "active"},
     sorts=[{"field": "name", "direction": "ascending"}]
 )
 

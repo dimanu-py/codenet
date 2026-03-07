@@ -366,7 +366,7 @@ criteria = Criteria.from_primitives({
 
 ```python
 criteria = Criteria.from_primitives(
-    filter_expression={...},
+    expression={...},
     sort={"field": "created_at", "direction": "desc"}
 )
 ```
@@ -377,7 +377,7 @@ Add `Sort` class alongside `Expression`. Criteria becomes a container for both f
 
 ```python
 criteria = Criteria.from_primitives(
-    filter_expression={...},
+    expression={...},
     pagination={"limit": 20, "offset": 40}
 )
 ```

@@ -57,7 +57,7 @@ Extend the Criteria pattern to support two pagination strategies: page-based (us
 # URL: /users?filter={}&page=2&page_size=20
 
 criteria = Criteria.from_primitives(
-    filter_expression={},
+    expression={},
     sorts=[{"field": "created_at", "direction": "descending"}],
     pagination=PageBasedPagination(page=2, page_size=20)
 )
@@ -94,7 +94,7 @@ PagedOkResponse(
 # Next page:  /users?filter={}&page_size=20&start_cursor=eyJmaWVsZCI6...
 
 criteria = Criteria.from_primitives(
-    filter_expression={},
+    expression={},
     sorts=[{"field": "created_at", "direction": "descending"}],
     pagination=CursorBasedPagination(start_cursor="eyJmaWVsZCI6...", page_size=20)
 )

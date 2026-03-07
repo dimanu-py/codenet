@@ -11,10 +11,10 @@ class Criteria:
         return isinstance(self._expression, EmptyExpression)
 
     @classmethod
-    def from_primitives(cls, filter_expression: dict[str, Any]) -> Self:
+    def from_primitives(cls, expression: dict[str, Any]) -> Self:
         return cls(
-            expression=ExpressionFactory.from_primitives(filter_expression)
-            if filter_expression
+            expression=ExpressionFactory.from_primitives(expression)
+            if expression
             else ExpressionFactory.empty()
         )
 

@@ -11,7 +11,7 @@ class CriteriaMother:
 
     @staticmethod
     def empty() -> Criteria:
-        return Criteria.from_primitives(filter_expression={})
+        return Criteria.from_primitives(expression={})
 
     @staticmethod
     def with_conditions(conditions: dict[str, Any]) -> Criteria:

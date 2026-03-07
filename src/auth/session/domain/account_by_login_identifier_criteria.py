@@ -9,7 +9,7 @@ class AccountByLoginIdentifierCriteria(Criteria):
     @classmethod
     def for_login_identifier(cls, login: str) -> Self:
         return cls.from_primitives(
-            filter_expression={
+            expression={
                 LogicalOperator.OR: [
                     {
                         "field": "email",
