@@ -25,10 +25,10 @@ class ComparisonExpression(Expression):
     _operator: Operator
     _field: Field
 
-    def __init__(self, field: str, operator: str, value: str) -> None:
-        self._field = Field(field)
-        self._operator = Operator(operator)
-        self._value = Value(value)
+    def __init__(self, field: Field, operator: Operator, value: Value) -> None:
+        self._field = field
+        self._operator = operator
+        self._value = value
 
     @classmethod
     @override
@@ -37,9 +37,9 @@ class ComparisonExpression(Expression):
         operator = Operator(raw_operator)
 
         return cls(
-            field=expression["field"],  # type: ignore
+            field=Field(expression["field"]),
             operator=operator,
-            value=expression[operator],  # type: ignore
+            value=Value(expression[operator]),
         )
 
     @override

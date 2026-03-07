@@ -9,9 +9,9 @@ class ComparisonExpressionMother:
     @staticmethod
     def any() -> ComparisonExpression:
         return ComparisonExpression(
-            field=FieldMother.any().value,
+            field=FieldMother.any(),
             operator=OperatorMother.any(),
-            value=ValueMother.any().value,
+            value=ValueMother.any(),
         )
 
 
