@@ -2,7 +2,7 @@ from sqlalchemy import ColumnElement, and_, or_
 
 from src.shared.domain.criteria.expression import CompositeExpression, ComparisonExpression, Expression
 from src.shared.infra.criteria.operator_to_sql_translator import (
-    OperatorToSqlTranslatorFactory,
+    OperatorToSqlConverterFactory,
 )
 from src.shared.infra.persistence.sqlalchemy.base import Base
 
@@ -38,8 +38,8 @@ class ComparisonExpressionToSqlConverter:
         expression: ComparisonExpression,
     ) -> ColumnElement[bool]:
         field = getattr(model, expression.field_name())
-        operator_to_sql_translator_strategy = OperatorToSqlTranslatorFactory.get(expression.operator)
-        return operator_to_sql_translator_strategy.build(field, expression.value.value)
+        operator_to_sql_translator_strategy = OperatorToSqlConverterFactory.get(expression.operator)
+        return operator_to_sql_translator_strategy.convert(field, expression.value.value)
 
 
 class ExpressionToSqlConverterFactory:

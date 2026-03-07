@@ -6,64 +6,64 @@ from sqlalchemy.orm.attributes import InstrumentedAttribute
 from src.shared.domain.criteria.operator import Operator
 
 
-class OperatorToSqlTranslator(ABC):
+class OperatorToSqlConverter(ABC):
     @abstractmethod
-    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
+    def convert(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         raise NotImplementedError
 
 
-class EqualOperatorToSqlTranslator(OperatorToSqlTranslator):
-    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
+class EqualOperatorToSqlConverter(OperatorToSqlConverter):
+    def convert(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         return column == value
 
 
-class NotEqualOperatorToSqlTranslator(OperatorToSqlTranslator):
-    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
+class NotEqualOperatorToSqlConverter(OperatorToSqlConverter):
+    def convert(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         return column != value
 
 
-class ContainsOperatorToSqlTranslator(OperatorToSqlTranslator):
-    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
+class ContainsOperatorToSqlConverter(OperatorToSqlConverter):
+    def convert(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         return column.ilike(f"%{value}%")
 
 
-class GreaterThanOperatorToSqlTranslator(OperatorToSqlTranslator):
-    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
+class GreaterThanOperatorToSqlConverter(OperatorToSqlConverter):
+    def convert(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         return column > value
 
 
-class GreaterThanOrEqualOperatorToSqlTranslator(OperatorToSqlTranslator):
-    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
+class GreaterThanOrEqualOperatorToSqlConverter(OperatorToSqlConverter):
+    def convert(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         return column >= value
 
 
-class LessThanOperatorToSqlTranslator(OperatorToSqlTranslator):
-    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
+class LessThanOperatorToSqlConverter(OperatorToSqlConverter):
+    def convert(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         return column < value
 
 
-class LessThanOrEqualOperatorToSqlTranslator(OperatorToSqlTranslator):
-    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
+class LessThanOrEqualOperatorToSqlConverter(OperatorToSqlConverter):
+    def convert(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         return column <= value
 
 
-class NotContainsOperatorToSqlTranslator(OperatorToSqlTranslator):
-    def build(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
+class NotContainsOperatorToSqlConverter(OperatorToSqlConverter):
+    def convert(self, column: InstrumentedAttribute, value: str) -> ColumnElement[bool]:
         return ~column.ilike(f"%{value}%")
 
 
-class OperatorToSqlTranslatorFactory:
+class OperatorToSqlConverterFactory:
     @staticmethod
-    def get(operator: Operator) -> OperatorToSqlTranslator:
+    def get(operator: Operator) -> OperatorToSqlConverter:
         translators = {
-            Operator.EQUALS: EqualOperatorToSqlTranslator(),
-            Operator.NOT_EQUALS: NotEqualOperatorToSqlTranslator(),
-            Operator.GREATER_THAN: GreaterThanOperatorToSqlTranslator(),
-            Operator.GREATER_THAN_OR_EQUAL_TO: GreaterThanOrEqualOperatorToSqlTranslator(),
-            Operator.LESS_THAN: LessThanOperatorToSqlTranslator(),
-            Operator.LESS_THAN_OR_EQUAL_TO: LessThanOrEqualOperatorToSqlTranslator(),
-            Operator.CONTAINS: ContainsOperatorToSqlTranslator(),
-            Operator.NOT_CONTAINS: NotContainsOperatorToSqlTranslator(),
+            Operator.EQUALS: EqualOperatorToSqlConverter(),
+            Operator.NOT_EQUALS: NotEqualOperatorToSqlConverter(),
+            Operator.GREATER_THAN: GreaterThanOperatorToSqlConverter(),
+            Operator.GREATER_THAN_OR_EQUAL_TO: GreaterThanOrEqualOperatorToSqlConverter(),
+            Operator.LESS_THAN: LessThanOperatorToSqlConverter(),
+            Operator.LESS_THAN_OR_EQUAL_TO: LessThanOrEqualOperatorToSqlConverter(),
+            Operator.CONTAINS: ContainsOperatorToSqlConverter(),
+            Operator.NOT_CONTAINS: NotContainsOperatorToSqlConverter(),
         }
         operator_translator = translators.get(operator)
         if not operator_translator:
