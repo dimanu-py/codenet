@@ -34,3 +34,8 @@ class InternalServerError(ErrorResponse):
 class UnauthorizedError(ErrorResponse):
     status: int = Field(default=HTTPStatus.UNAUTHORIZED)
     error: dict = Field(default={"message": HTTPStatus.UNAUTHORIZED.phrase})
+
+
+class BadRequestError(ErrorResponse):
+    status: int = Field(default=HTTPStatus.BAD_REQUEST)
+    error: dict = Field(default={"message": HTTPStatus.BAD_REQUEST.phrase})
