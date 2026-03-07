@@ -10,8 +10,9 @@ from src.shared.domain.criteria.value import Value
 
 
 class Expression(ABC):
+    @classmethod
     @abstractmethod
-    def from_primitives(self, expression: dict[str, list | str]) -> Self:
+    def from_primitives(cls, expression: dict[str, list | str]) -> Self:
         raise NotImplementedError
 
     @abstractmethod
@@ -72,20 +73,10 @@ class CompositeExpression(Expression):
             return cls(operator=LogicalOperator.OR, conditions=conditions)
         raise InvalidCompositeExpressionStructure()
 
-    @classmethod
-    def empty(cls) -> Self:
-        return cls(operator=LogicalOperator.AND, conditions=[])
-
-    def has_and_logical_operator(self) -> bool:
-        return self._logical_operator == LogicalOperator.AND
-
     @override
     def to_primitives(self) -> dict[str, str | list]:
         key = LogicalOperator.AND if self._logical_operator is LogicalOperator.AND else LogicalOperator.OR
         return {key: [item.to_primitives() for item in self._conditions]}
-
-    def is_empty(self) -> bool:
-        return len(self._conditions) == 0
 
 
 class EmptyExpression(Expression):
