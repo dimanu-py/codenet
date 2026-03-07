@@ -1,53 +1,39 @@
-from abc import ABC, abstractmethod
-
 from sqlalchemy import ColumnElement, and_, or_
 
-from src.shared.domain.criteria.expression import CompositeExpression, ComparisonExpression
+from src.shared.domain.criteria.expression import CompositeExpression, ComparisonExpression, Expression
 from src.shared.infra.criteria.operator_to_sql_translator import (
     OperatorToSqlTranslatorFactory,
 )
 from src.shared.infra.persistence.sqlalchemy.base import Base
 
 
-class ExpressionToSqlConverter(ABC):
-    @abstractmethod
+class AndCompositeExpressionToSqlConverter:
+    @staticmethod
     def convert(
-        self,
-        model: type[Base],
-        expression: ComparisonExpression | CompositeExpression,
-    ) -> ColumnElement[bool]:
-        raise NotImplementedError
-
-
-class AndCompositeExpressionToSqlConverter(ExpressionToSqlConverter):
-    def convert(
-        self,
         model: type[Base],
         expression: CompositeExpression,
     ) -> ColumnElement[bool]:
         query_predicates = [
-            ExpressionToSqlConverterFactory.get(condition).convert(model, condition)
-            for condition in expression.conditions
+            ExpressionToSqlConverterFactory.convert(model, condition) for condition in expression.conditions
         ]
         return and_(*query_predicates)
 
 
-class OrCompositeExpressionToSqlConverter(ExpressionToSqlConverter):
+class OrCompositeExpressionToSqlConverter:
+    @staticmethod
     def convert(
-        self,
         model: type[Base],
         expression: CompositeExpression,
     ) -> ColumnElement[bool]:
         query_predicates = [
-            ExpressionToSqlConverterFactory.get(condition).convert(model, condition)
-            for condition in expression.conditions
+            ExpressionToSqlConverterFactory.convert(model, condition) for condition in expression.conditions
         ]
         return or_(*query_predicates)
 
 
-class ComparatorExpressionToSqlConverter(ExpressionToSqlConverter):
+class ComparisonExpressionToSqlConverter:
+    @staticmethod
     def convert(
-        self,
         model: type[Base],
         expression: ComparisonExpression,
     ) -> ColumnElement[bool]:
@@ -58,10 +44,12 @@ class ComparatorExpressionToSqlConverter(ExpressionToSqlConverter):
 
 class ExpressionToSqlConverterFactory:
     @staticmethod
-    def get(expression: ComparisonExpression | CompositeExpression) -> ExpressionToSqlConverter:
+    def convert(model: type[Base], expression: Expression) -> ColumnElement[bool]:
         if isinstance(expression, ComparisonExpression):
-            return ComparatorExpressionToSqlConverter()
-        if expression.is_and():
-            return AndCompositeExpressionToSqlConverter()
-        else:
-            return OrCompositeExpressionToSqlConverter()
+            return ComparisonExpressionToSqlConverter.convert(model, expression)
+        if isinstance(expression, CompositeExpression):
+            if expression.is_and():
+                return AndCompositeExpressionToSqlConverter.convert(model, expression)
+            else:
+                return OrCompositeExpressionToSqlConverter.convert(model, expression)
+        raise ValueError(f"Unsupported expression type: {type(expression)}")
