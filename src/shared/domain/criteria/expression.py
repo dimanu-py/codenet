@@ -78,8 +78,7 @@ class CompositeExpression(Expression):
 
     @override
     def to_primitives(self) -> dict[str, str | list]:
-        key = LogicalOperator.AND if self.logical_operator is LogicalOperator.AND else LogicalOperator.OR
-        return {key: [item.to_primitives() for item in self.conditions]}
+        return {self.logical_operator: [item.to_primitives() for item in self.conditions]}
 
 
 class EmptyExpression(Expression):
