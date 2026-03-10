@@ -1,15 +1,15 @@
 import pytest
-from expects import expect, be_true, raise_error, be_false
+from expects import be_false, be_true, expect, raise_error
 
 from src.shared.domain.criteria.criteria import Criteria
 from src.shared.domain.criteria.invalid_criteria import (
     InvalidCriteriaStructure,
     InvalidExpressionStructure,
-    MissingFieldInSortCondition,
     MissingDirectionInSortCondition,
+    MissingFieldInSortCondition,
     SortConditionInvalidStructure,
 )
-from src.shared.domain.criteria.operator import Operator, ComparisonOperatorDoesNotExist
+from src.shared.domain.criteria.operator import ComparisonOperatorDoesNotExist, Operator
 from src.shared.domain.criteria.sort_direction import SortDirectionDoesNotExist
 
 

@@ -4,8 +4,8 @@ from sindripy.value_objects import List
 
 from src.shared.domain.criteria.field import Field
 from src.shared.domain.criteria.invalid_criteria import (
-    MissingFieldInSortCondition,
     MissingDirectionInSortCondition,
+    MissingFieldInSortCondition,
     SortConditionInvalidStructure,
 )
 from src.shared.domain.criteria.sort_direction import SortDirection

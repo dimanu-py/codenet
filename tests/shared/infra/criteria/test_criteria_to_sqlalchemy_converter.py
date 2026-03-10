@@ -172,9 +172,9 @@ class TestCriteriaToSqlalchemyConverter:
 
         expect(query).to(
             equal(
-                f"SELECT test_table.id, test_table.name, test_table.username \n"
-                f"FROM test_table "
-                f"ORDER BY test_table.name ASC"
+                "SELECT test_table.id, test_table.name, test_table.username \n"
+                "FROM test_table "
+                "ORDER BY test_table.name ASC"
             )
         )
 
@@ -190,9 +190,9 @@ class TestCriteriaToSqlalchemyConverter:
 
         expect(query).to(
             equal(
-                f"SELECT test_table.id, test_table.name, test_table.username \n"
-                f"FROM test_table "
-                f"ORDER BY test_table.name ASC, test_table.username DESC"
+                "SELECT test_table.id, test_table.name, test_table.username \n"
+                "FROM test_table "
+                "ORDER BY test_table.name ASC, test_table.username DESC"
             )
         )
 
@@ -211,10 +211,10 @@ class TestCriteriaToSqlalchemyConverter:
 
         expect(query).to(
             equal(
-                f"SELECT test_table.id, test_table.name, test_table.username \n"
-                f"FROM test_table \n"
-                f"WHERE test_table.name = 'John Doe' "
-                f"ORDER BY test_table.username DESC"
+                "SELECT test_table.id, test_table.name, test_table.username \n"
+                "FROM test_table \n"
+                "WHERE test_table.name = 'John Doe' "
+                "ORDER BY test_table.username DESC"
             )
         )
 

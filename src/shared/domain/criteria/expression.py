@@ -3,12 +3,12 @@ from typing import Self, override
 
 from src.shared.domain.criteria.field import Field
 from src.shared.domain.criteria.invalid_criteria import (
-    InvalidCriteriaStructure,
     InvalidCompositeExpressionStructure,
+    InvalidCriteriaStructure,
     InvalidExpressionStructure,
 )
 from src.shared.domain.criteria.logical_operator import LogicalOperator
-from src.shared.domain.criteria.operator import Operator, ComparisonOperatorDoesNotExist
+from src.shared.domain.criteria.operator import ComparisonOperatorDoesNotExist, Operator
 from src.shared.domain.criteria.value import Value
 
 

@@ -1,6 +1,6 @@
 from sqlalchemy import ColumnElement, and_, or_
 
-from src.shared.domain.criteria.expression import CompositeExpression, ComparisonExpression, Expression
+from src.shared.domain.criteria.expression import ComparisonExpression, CompositeExpression, Expression
 from src.shared.infra.criteria.operator_to_sql_translator import (
     OperatorToSqlConverterFactory,
 )

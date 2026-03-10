@@ -1,6 +1,6 @@
 from src.backoffice.user.application.search.user_searcher import UserSearcher
 from src.shared.domain.criteria.invalid_criteria import InvalidCriteria
-from src.shared.infra.api.error_response import ErrorResponse, BadRequestError
+from src.shared.infra.api.error_response import BadRequestError, ErrorResponse
 from src.shared.infra.api.success_response import OkResponse, SuccessResponse
 
 
