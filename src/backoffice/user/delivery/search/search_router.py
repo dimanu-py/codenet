@@ -19,7 +19,18 @@ UserFilterQueryParameter = Annotated[
         description="Filter in JSON format",
         examples=[
             ApiDocExample(name="empty_filter", value="{}"),
-            ApiDocExample(name="simple_filter", value='{"field": "username", "equal": "johndoe"}'),
+            ApiDocExample(name="simple_filter", value='{"field": "username", "equals": "johndoe"}'),
+        ],
+    ),
+]
+
+UserSortsQueryParameter = Annotated[
+    str | None,
+    QueryParameter(
+        description="Sorts in JSON format",
+        examples=[
+            ApiDocExample(name="empty_sorts", value="[]"),
+            ApiDocExample(name="simple_sorts", value='[{"field": "username", "direction": "ascending"}]'),
         ],
     ),
 ]
@@ -33,8 +44,9 @@ UserFilterQueryParameter = Annotated[
 )
 @inject
 async def get_user_by_criteria(
-    filter: UserFilterQueryParameter,
     controller: FromDishka[UserSearchController],
+    filter: UserFilterQueryParameter,
+    sorts: UserSortsQueryParameter = None,
 ) -> JSONResponse:
-    result = await controller.search(filters=json.loads(filter))
+    result = await controller.search(filters=json.loads(filter), sorts=json.loads(sorts) if sorts else [])
     return FastAPIResponse.as_json(result)

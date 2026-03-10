@@ -24,7 +24,7 @@ class Criteria:
 
     def to_primitives(self) -> dict[str, Any]:
         return {
-            "expression": self.expression.to_primitives(),
+            "filters": self.expression.to_primitives(),
             "sorts": self.sorts.to_primitives(),
         }
 

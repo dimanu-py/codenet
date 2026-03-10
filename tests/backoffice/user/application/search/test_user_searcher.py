@@ -17,7 +17,7 @@ class TestUserSearcher(UserModuleUnitTestConfig):
         users = [UserMother.any()]
         self._should_match_criteria_with(users)
 
-        found_users = await self._user_searcher.execute(criteria.to_primitives())
+        found_users = await self._user_searcher.execute(**criteria.to_primitives())
 
         expect(found_users).to(equal(users))
 
@@ -25,6 +25,6 @@ class TestUserSearcher(UserModuleUnitTestConfig):
         criteria = CriteriaMother.any()
         self._should_not_match_criteria()
 
-        found_users = await self._user_searcher.execute(criteria.to_primitives())
+        found_users = await self._user_searcher.execute(**criteria.to_primitives())
 
         expect(found_users).to(be_empty)

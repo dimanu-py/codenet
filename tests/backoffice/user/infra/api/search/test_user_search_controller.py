@@ -14,19 +14,19 @@ class TestUserSearchController(UserModuleRoutersTestConfig):
         self._controller = UserSearchController(use_case=self._use_case)
 
     async def test_should_return_200_when_users_are_found_and_response_contains_list_of_users(self) -> None:
-        filters = CriteriaMother.any().to_primitives()
+        criteria = CriteriaMother.any().to_primitives()
         user = UserMother.any()
         self._should_find_user(user)
 
-        self._response = await self._controller.search(filters=filters)
+        self._response = await self._controller.search(**criteria)
 
         self._assert_contract_is_met_on_success(200, [user.to_primitives()])
 
     async def test_should_return_200_when_users_are_not_found_and_response_is_an_empty_list(self) -> None:
-        filters = CriteriaMother.any().to_primitives()
+        criteria = CriteriaMother.any().to_primitives()
         self._should_not_find_user()
 
-        self._response = await self._controller.search(filters=filters)
+        self._response = await self._controller.search(**criteria)
 
         self._assert_contract_is_met_on_success(200, [])
 
