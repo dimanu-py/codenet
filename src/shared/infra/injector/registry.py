@@ -38,7 +38,7 @@ class ProviderRegistry:
 _registry = ProviderRegistry()
 
 
-def register_provider(cls: type) -> None:
+def dependency_provider(cls: type) -> None:
     _registry.register(cls)
 
 

@@ -8,10 +8,10 @@ from src.auth.account.infra.persistence.postgres_account_repository import Postg
 from src.auth.shared.domain.password_manager import PasswordManager
 from src.auth.shared.infra.argon_password_manager import ArgonPasswordManager
 from src.shared.infra.datetime_clock import DatetimeClock
-from src.shared.infra.injector.registry import register_provider
+from src.shared.infra.injector.registry import dependency_provider
 
 
-@register_provider
+@dependency_provider
 class AccountDependencyProvider(Provider):
     scope = Scope.REQUEST
 
