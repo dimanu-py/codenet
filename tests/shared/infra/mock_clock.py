@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import override
 from unittest.mock import Mock
 
 from src.shared.domain.clock import Clock
@@ -8,6 +9,7 @@ class MockClock(Clock):
     def __init__(self) -> None:
         self._mock_now = Mock()
 
+    @override
     def now(self) -> datetime:
         self._mock_now.assert_called_with()
         return self._mock_now.return_value
