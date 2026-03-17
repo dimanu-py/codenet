@@ -19,7 +19,7 @@ class CriteriaToSqlalchemyConverter:
         if criteria.is_empty():
             return self._query
 
-        self._convert_expression_dls_to_sql_where_predicate(criteria, model)
+        self._convert_expression_dsl_to_sql_where_predicate(criteria, model)
 
         return self._query
 
@@ -29,5 +29,5 @@ class CriteriaToSqlalchemyConverter:
     def _convert_sorts_dsl_to_sql_ordering(self, criteria: Criteria, model: type[Base]) -> None:
         self._query = self._query.order_by(*SortsToSqlConverter.convert(criteria, model))
 
-    def _convert_expression_dls_to_sql_where_predicate(self, criteria: Criteria, model: type[Base]) -> None:
+    def _convert_expression_dsl_to_sql_where_predicate(self, criteria: Criteria, model: type[Base]) -> None:
         self._query = self._query.where(ExpressionToSqlConverterFactory.convert(model, criteria.expression))
