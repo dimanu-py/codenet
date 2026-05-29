@@ -136,3 +136,10 @@ autostyle:  ## Apply all code style fixes.
 	@make format
 	@make lint
 	@git add . && git commit -m "style: apply code style fixes"
+
+.PHONY: claude
+claude:  ## Create symlinks for Claude Code compatibility (CLAUDE.md → AGENTS.md, .claude → .agents).
+	@echo "\n⌛ Creating Claude Code symlinks...\n"
+	@ln -sf AGENTS.md CLAUDE.md
+	@ln -sfn .agents .claude
+	@ls -la CLAUDE.md .claude
