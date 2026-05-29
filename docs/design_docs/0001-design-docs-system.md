@@ -23,7 +23,7 @@ Implement a structured system for documenting feature ideas, requirements, and i
 
 - Template must include YAML frontmatter with `created` date and `status` field
 - Files named using sequential numbering: `NNNN-kebab-case-title.md`
-- Index README tracks all docs grouped by status
+- Guidelines doc tracks all docs grouped by status in index tables
 - Template sections: Overview, Objectives, Requirements, Usage Examples, Implementation Steps, Open Questions
 - Content should be concise: bullet points, code blocks, clear structure
 
@@ -39,8 +39,8 @@ Implement a structured system for documenting feature ideas, requirements, and i
 ### Example 1: Creating New Design Doc
 
 ```bash
-# Copy template
-cp docs/templates/design_docs/feature_template.md docs/design_docs/0002-my-feature.md
+# Create a new file using the template from the "Template" section in design-doc-guidelines.md
+touch docs/design_docs/0002-my-feature.md
 
 # Edit metadata
 # ---
@@ -48,7 +48,7 @@ cp docs/templates/design_docs/feature_template.md docs/design_docs/0002-my-featu
 # status: Proposed
 # ---
 
-# Fill in sections with concise content
+# Fill in sections with concise content following the template structure
 ```
 
 ### Example 2: Updating Design Doc Status
@@ -64,17 +64,17 @@ status: In Progress
 ### Example 3: Maintaining Index
 
 ```markdown
-# Add entry to README.md in appropriate status table
+# Add entry to design-doc-guidelines.md in appropriate status table
 | 0002 | My Feature | 2026-03-04 | [0002-my-feature.md](0002-my-feature.md) |
 ```
 
 ## Implementation Steps
 
-1. Create template at `docs/templates/design_docs/feature_template.md` with YAML frontmatter and standard sections
-2. Create index README at `docs/design_docs/README.md` with contribution guide and status-grouped tables
-3. Create this meta design doc as example (0001)
-4. Add entry for 0001 to index README under Implemented status
-5. Commit all files to repository
+1. Create `design-doc-guidelines.md` with the convention, template, and index tables for tracking all design docs
+2. Create this meta design doc (0001) documenting the system itself
+3. Add entry for 0001 to the Implemented table in `design-doc-guidelines.md`
+4. Create the first feature design docs (0002, 0003, 0004) as real-world validation of the template
+5. Add entries for each new doc to the index tables in `design-doc-guidelines.md`
 
 ## Open Questions
 
@@ -84,6 +84,7 @@ None - implementation complete.
 
 - YAML frontmatter is the standard format for metadata in markdown documentation systems (Jekyll, Hugo, etc.)
 - Sequential numbering provides stable references even as documents change status
+- The guidelines doc doubles as the index, keeping everything in one place
 - Flat structure keeps things simple; can revisit if number of docs grows significantly
 - No links to PRs/commits in design docs to avoid stale references
 
