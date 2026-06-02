@@ -143,3 +143,12 @@ claude:  ## Create symlinks for Claude Code compatibility (CLAUDE.md → AGENTS.
 	@ln -sf AGENTS.md CLAUDE.md
 	@ln -sfn .agents .claude
 	@ls -la CLAUDE.md .claude
+
+.PHONY: opencode
+opencode:  ## Create symlinks for OpenCode compatibility.
+		@echo "\n⌛ Creating OpenCode symlinks...\n"
+		@mkdir -p .opencode
+		@rm -rf .opencode/commands
+		@ln -s ../.agents/commands .opencode/commands
+		@ln -s ../.agents/agents .opencode/agents
+		@ls -la .opencode
