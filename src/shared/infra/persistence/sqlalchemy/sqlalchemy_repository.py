@@ -1,6 +1,6 @@
 from typing import TypeVar
 
-from sindripy.value_objects import StringUuid
+from value_object import StringUuid
 
 from src.shared.infra.persistence.sqlalchemy.base import Base
 from src.shared.infra.persistence.sqlalchemy.session_maker import (

@@ -1,4 +1,4 @@
-from sindripy.mothers import ObjectMother
+from object_mother import ObjectMother
 
 from src.auth.account.domain.account import Account
 from tests.auth.account.domain.mothers.account_created_at_primitives_mother import AccountCreatedAtPrimitivesMother

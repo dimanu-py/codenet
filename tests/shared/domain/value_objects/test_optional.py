@@ -1,6 +1,6 @@
 import pytest
 from expects import be_true, equal, expect, raise_error
-from sindripy.value_objects import String
+from value_object import String
 
 from src.shared.domain.value_objects.optional import Optional
 

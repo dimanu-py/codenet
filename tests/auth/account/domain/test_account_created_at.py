@@ -1,7 +1,7 @@
 from datetime import UTC, datetime
 
 from expects import equal, expect, raise_error
-from sindripy.value_objects import SindriValidationError
+from value_object import SindriValidationError
 
 from src.auth.account.domain.account_created_at import AccountCreatedAt
 

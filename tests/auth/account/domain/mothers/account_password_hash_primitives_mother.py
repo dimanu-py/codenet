@@ -1,5 +1,5 @@
 from argon2 import PasswordHasher
-from sindripy.mothers import ObjectMother
+from object_mother import ObjectMother
 
 
 class AccountPasswordHashPrimitivesMother(ObjectMother):

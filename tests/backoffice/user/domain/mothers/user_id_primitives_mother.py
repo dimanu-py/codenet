@@ -1,4 +1,4 @@
-from sindripy.mothers import StringUuidPrimitivesMother
+from object_mother import StringUuidPrimitivesMother
 
 
 class UserIdPrimitivesMother:

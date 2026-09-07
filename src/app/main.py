@@ -5,7 +5,7 @@ from asgi_correlation_id import CorrelationIdMiddleware
 from dishka import make_async_container
 from dishka.integrations.fastapi import setup_dishka
 from fastapi import FastAPI
-from sindripy.value_objects import SindriValidationError
+from value_object import SindriValidationError
 
 from src.app.alembic_migrator import AlembicMigrator
 from src.app.error_handlers import (

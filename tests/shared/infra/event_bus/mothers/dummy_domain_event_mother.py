@@ -1,6 +1,6 @@
 from datetime import UTC
 
-from sindripy.mothers import ObjectMother
+from object_mother import ObjectMother
 
 from tests.shared.infra.event_bus.dummy_domain_event import DummyDomainEvent, DummyDomainEventAttributes
 

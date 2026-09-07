@@ -1,6 +1,6 @@
 import re
 
-from sindripy.value_objects import String, validate
+from value_object import String, validate
 
 from src.shared.domain.exceptions.domain_error import ConflictError, DomainValidationError
 

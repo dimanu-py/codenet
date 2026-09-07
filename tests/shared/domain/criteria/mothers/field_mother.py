@@ -1,4 +1,4 @@
-from sindripy.mothers import ObjectMother
+from object_mother import ObjectMother
 
 from src.shared.domain.criteria.field import Field
 

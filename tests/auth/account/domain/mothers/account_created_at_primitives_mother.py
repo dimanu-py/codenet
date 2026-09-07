@@ -1,6 +1,6 @@
 from datetime import UTC, datetime
 
-from sindripy.mothers import ObjectMother
+from object_mother import ObjectMother
 
 
 class AccountCreatedAtPrimitivesMother(ObjectMother):

@@ -1,6 +1,6 @@
 from typing import Self
 
-from sindripy.value_objects import List
+from value_object import List
 
 from src.shared.domain.criteria.field import Field
 from src.shared.domain.criteria.invalid_criteria import (

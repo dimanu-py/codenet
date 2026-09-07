@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Self
 
-from sindripy.value_objects import Aggregate
+from value_object import Aggregate
 
 from src.auth.account.domain.account_created_at import AccountCreatedAt
 from src.auth.account.domain.account_email import AccountEmail

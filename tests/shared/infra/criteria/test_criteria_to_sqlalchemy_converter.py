@@ -1,6 +1,6 @@
 import pytest
 from expects import equal, expect
-from sindripy.mothers import StringPrimitivesMother
+from object_mother import StringPrimitivesMother
 from sqlalchemy.sql.selectable import Select
 
 from src.shared.domain.criteria.criteria import Criteria

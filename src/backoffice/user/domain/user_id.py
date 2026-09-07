@@ -1,4 +1,4 @@
-from sindripy.value_objects import StringUuid
+from value_object import StringUuid
 
 
 class UserId(StringUuid): ...

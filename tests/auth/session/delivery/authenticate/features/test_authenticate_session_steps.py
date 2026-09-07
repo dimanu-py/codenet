@@ -4,8 +4,8 @@ import pytest
 from expects import equal, expect, have_keys
 from fastapi import Response
 from httpx import AsyncClient
+from object_mother import StringPrimitivesMother
 from pytest_bdd import given, scenarios, then, when
-from sindripy.mothers import StringPrimitivesMother
 
 from src.auth.account.infra.persistence.account_model import AccountModel
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
