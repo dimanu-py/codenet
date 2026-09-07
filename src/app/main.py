@@ -8,11 +8,11 @@ from fastapi import FastAPI
 from sindripy.value_objects import SindriValidationError
 
 from src.app.alembic_migrator import AlembicMigrator
-from src.app.handlers.error_handlers import (
+from src.app.error_handlers import (
     sindri_validation_error_handler,
     unexpected_exception_handler,
 )
-from src.app.middleware.fast_api_log_middleware import FastapiLogMiddleware
+from src.app.fast_api_log_middleware import FastapiLogMiddleware
 from src.auth.routes import auth_routes
 from src.backoffice.routes import social_routes
 from src.shared.infra.injector.database_session_provider import DatabaseSessionProvider
