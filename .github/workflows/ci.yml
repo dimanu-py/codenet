@@ -5,6 +5,8 @@ on:
     branches:
       - main
   pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -15,65 +17,46 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🛡️ Harden runner
-        uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
         with:
           egress-policy: audit
 
       - name: 📥 Checkout the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
           persist-credentials: false
 
       - name: 🛠️ Setup environment
-        uses: ./.github/actions/python_setup
+        uses: ./.github/actions/setup_environment
 
       - name: 🧐 Check linting
-        run: make check-lint
-
-  format:
-    name: format
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🛡️ Harden runner
-        uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
-        with:
-          egress-policy: audit
-
-      - name: 📥 Checkout the repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: 🛠️ Setup environment
-        uses: ./.github/actions/python_setup
+        run: task lint
 
       - name: 🧐 Check code format
-        run: make check-format
+        run: task format
 
   typing:
     runs-on: ubuntu-latest
     steps:
       - name: 🛡️ Harden runner
-        uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
         with:
           egress-policy: audit
 
       - name: 📥 Checkout the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
           persist-credentials: false
 
       - name: 🛠️ Setup environment
-        uses: ./.github/actions/python_setup
+        uses: ./.github/actions/setup_environment
 
       - name: 🧐 Check static types
-        run: make check-typing
+        run: task type-check
 
   analyze-code-quality:
     name: analyze-code-quality
@@ -84,12 +67,12 @@ jobs:
 
     steps:
       - name: 🛡️ Harden runner
-        uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
         with:
           egress-policy: audit
 
       - name: 📥 Checkout the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
@@ -118,21 +101,21 @@ jobs:
 
     steps:
       - name: 🛡️ Harden runner
-        uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
         with:
           egress-policy: audit
 
       - name: 📥 Checkout the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
 
       - name: 🛠️ Setup environment
-        uses: ./.github/actions/python_setup
+        uses: ./.github/actions/setup_environment
 
       - name: 🏃 Run secrets scanner
-        run: make secrets
+        run: task secrets
 
   audit:
     name: audit-dependencies
@@ -142,39 +125,39 @@ jobs:
 
     steps:
       - name: 🛡️ Harden runner
-        uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
         with:
           egress-policy: audit
 
       - name: 📥 Checkout the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
 
       - name: 🛠️ Setup environment
-        uses: ./.github/actions/python_setup
+        uses: ./.github/actions/setup_environment
 
       - name: 🏃 Run audit
-        run: make audit
+        run: task audit
 
   test:
     name: test
     runs-on: ubuntu-latest
     steps:
       - name: 🛡️ Harden runner
-        uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
         with:
           egress-policy: audit
 
       - name: 📥 Checkout the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
 
       - name: 🛠️ Setup environment
-        uses: ./.github/actions/python_setup
+        uses: ./.github/actions/setup_environment
 
       - name: 🐳 Install docker compose
         run: sudo apt-get install -y docker-compose
@@ -187,17 +170,11 @@ jobs:
           echo "POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}" >> .env
           echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> .env
 
-      - name: 📦 Install test dependencies
-        run: uv pip install pytest pytest-cov
+      - name: 🏃 Run unit tests
+        run: task test:unit
 
-      - name: 🏃 Run tests
-        run: uv run pytest --cov --cov-report=xml --cov-branch tests -ra -s
+      - name: 🏃 Run integration tests
+        run: task test:integration
 
-      - name: 📥 Upload coverage report to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          files: coverage.xml
-          flags: unittests
-          name: codecov-coverage
-          token: ${{ secrets.CODECOV_TOKEN }}
-          slug: dimanu-py/codenet
+      - name: 🏃 Run E2E tests
+        run: task test:acceptance
