@@ -1,0 +1,17 @@
+version: '3'
+
+tasks:
+  migration:
+    desc: Generate a new migration with alembic
+    interactive: true
+    cmds:
+      - printf "\n⌛ Generating new migration...\n"
+      - |
+        read -p "Enter message (required): " MESSAGE
+        alembic revision --autogenerate -m "$MESSAGE"
+
+  migrate:
+    desc: Apply migrations with alembic
+    cmds:
+      - printf "\n⌛ Applying migrations...\n"
+      - alembic upgrade head

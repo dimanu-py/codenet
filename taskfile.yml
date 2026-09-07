@@ -1,0 +1,64 @@
+version: '3'
+
+silent: true
+
+includes:
+  deps:
+    taskfile: task/deps.yml
+    aliases: [dep]
+  test:
+    taskfile: task/test.yml
+    aliases: [tests]
+  docker:
+    taskfile: task/docker.yml
+    aliases: [dc]
+  db:
+    taskfile: task/db.yml
+    aliases: [database]
+  dev:
+    taskfile: task/dev.yml
+    aliases: [development, run]
+
+tasks:
+  # ── Default ──────────────────────────────────────────────────────────────────
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
+
+  help:
+    desc: Show this help
+    cmds:
+      - task --list
+
+  # ── Code Quality ─────────────────────────────────────────────────────────────
+  type-check:
+    desc: Run mypy type checking
+    cmds:
+      - printf "\n⌛ Running type checking with mypy...\n"
+      - uv run mypy
+
+  lint:
+    desc: Apply ruff linting fix
+    cmds:
+      - printf "\n⌛ Applying linting fixes...\n"
+      - uvx ruff check --fix src tests
+
+  format:
+    desc: Apply ruff format fix
+    cmds:
+      - printf "\n⌛ Formatting project code...\n"
+      - uvx ruff format src tests
+
+  # ── Security ─────────────────────────────────────────────────────────────────
+  audit:
+    desc: Audit dependencies and source code
+    cmds:
+      - printf "\n⌛ Running security audit...\n"
+      - uv run -m pip_audit --progress-spinner off
+
+  secrets:
+    desc: Check for secrets in the source code
+    cmds:
+      - printf "\n⌛ Checking secrets...\n"
+      - uv run -m pre_commit run gitleaks --all-files

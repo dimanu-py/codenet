@@ -16,13 +16,13 @@
 
 ## 2. Code Quality & Coverage
 
-- **MANDATORY Validation**: Before EVERY commit, run `make lint` and `make format`. Zero tolerance.
+- **MANDATORY Validation**: Before EVERY commit, run `task lint` and `task format`. Zero tolerance.
 - **Quality Requirements**: The project has strict requirements for code quality and maintainability.
 - **High Coverage**: All code must have very high test coverage; strive for 100% where practical.
 - **Pre-commit Checks**: All code must pass the following before any commit:
-    - `make check-typing`
-    - `make check-format`
-    - `make check-lint`
+    - `task type-check`
+    - `task format` (check mode)
+    - `task lint`
 - **TDD Workflow**: Test-Driven Development (TDD) is the default workflow: always write tests first.
 - **OOP Design**: Use Object-Oriented Programming (OOP) for all components and features.
 
@@ -143,7 +143,7 @@ docs/adrs/
 - **Self-Contained Tests**: Each test should be self-contained and not depend on the order of execution.
 - **Clarify Requirements**: If in doubt about requirements, ask for clarification before writing the test.
 - **Verify Failure**: After writing a test, run it to ensure it fails before implementing the feature.
-- **Automatic Test Running**: After every code or test change, always run the relevant tests using the appropriate Makefile target. Do not ask for permission to run tests—just do it.
+- **Automatic Test Running**: After every code or test change, always run the relevant tests using the appropriate task target. Do not ask for permission to run tests—just do it.
 
 ### Test Naming & Coverage
 - **Descriptive Names**: Test function names should clearly describe the scenario and expected outcome.
@@ -156,56 +156,74 @@ docs/adrs/
 
 These guides are the canonical resources for writing and maintaining tests in this project.
 
-## 11. Makefile Targets Usage
+## 11. Taskfile Targets Usage
 
 ### Core Rule
-**NEVER** call tools like `pytest`, `black`, `mypy`, or similar directly. Always use the corresponding `make` target.
+**NEVER** call tools like `pytest`, `black`, `mypy`, or similar directly. Always use the corresponding task target.
 
-### Available Make Targets
-- `make help` — Show this help.
-- `make local-setup` — Setup git hooks and install dependencies.
-- `make install` — Install dependencies.
-- `make update` — Update dependencies.
-- `make add-dep dep="pkg --group X"` — Add a new dependency.
-- `make remove-dep dep="pkg --group X"` — Remove a dependency.
-- `make test` — Run all tests.
-- `make unit` — Run unit tests.
-- `make integration` — Run integration tests.
-- `make acceptance` — Run acceptance tests.
-- `make coverage` — Run tests with coverage report.
-- `make check-typing` — Run mypy type checking.
-- `make check-lint` — Run ruff linting check.
-- `make lint` — Apply ruff linting fixes.
-- `make check-format` — Run ruff format check.
-- `make format` — Apply ruff format fixes.
-- `make watch` — Run tests on every change (watch mode).
-- `make up` — Create and start Docker containers.
-- `make down` — Stop and remove Docker containers.
-- `make run` — Run the application with uvicorn.
-- `make migration` — Generate a new alembic migration.
-- `make migrate` — Apply alembic migrations.
-- `make autostyle` — Apply all code style fixes (format + lint).
-- `make show` — Show installed dependencies tree.
-- `make search` — Search package details.
-- `make audit` — Run security audit on dependencies.
-- `make secrets` — Check for secrets in source code.
+### Structure
+
+Tasks are split between the root `taskfile.yml` (code quality, security) and `task/*.yml` files
+(namespaced via `includes`). The root `silent: true` suppresses command echo for all tasks.
+
+**Namespaces:** `deps` / `test` / `docker` / `db` / `dev`
+
+### Flat Tasks (root taskfile.yml)
+- `task` — Show all available tasks.
+- `task lint` — Apply ruff linting fixes.
+- `task format` — Apply ruff format fixes.
+- `task type-check` — Run mypy type checking.
+- `task audit` — Audit dependencies for security vulnerabilities.
+- `task secrets` — Check for secrets in source code.
+
+### Namespaced Tasks
+**Dependencies** (`task deps:*`)
+- `task deps:sync-all` — Install all dependencies.
+- `task deps:update` — Update dependencies.
+- `task deps:add dep="pkg"` — Add a new dependency.
+- `task deps:remove dep="pkg"` — Remove a dependency.
+- `task deps:show` — Show installed dependencies tree.
+- `task deps:search` — Search package details.
+
+**Testing** (`task test:*`)
+- `task test:all` — Run all tests.
+- `task test:unit` — Run unit tests.
+- `task test:integration` — Run integration tests.
+- `task test:acceptance` — Run acceptance tests.
+- `task test:coverage` — Run tests with coverage report.
+- `task test:watch` — Run tests on every change (watch mode).
+
+**Docker** (`task docker:*`)
+- `task docker:up` — Create and start containers.
+- `task docker:down` — Stop and remove containers.
+
+**Database** (`task db:*`)
+- `task db:migration` — Generate a new alembic migration.
+- `task db:migrate` — Apply migrations with alembic.
+
+**Development** (`task dev:*`)
+- `task dev:run` — Run the application with uvicorn.
+- `task dev:local-setup` — Setup git hooks and install dependencies.
+- `task dev:claude` — Create symlinks for Claude Code compatibility.
+- `task dev:opencode` — Create symlinks for OpenCode compatibility.
 
 ### Usage Rules
-1. **Testing**: When running tests, use `make test-unit` or `make test-e2e` as appropriate.
-2. **Formatting**: For formatting, use `make format` or `make check-format`.
-3. **Type Checking**: For type checking, use `make check-typing`.
-4. **Lint Checks**: For lint checks, use `make check-lint`.
-5. **Building**: For building or updating the app, use `make build` or `make update`.
-6. **Help**: If you are unsure which target to use, run `make help` to see all available options.
-7. **New Operations**: If a new operation is needed, prefer adding a new Makefile target rather than running a tool directly.
+1. **Testing**: Use `task test:unit` or `task test:integration` as appropriate.
+2. **Formatting**: Use `task format`.
+3. **Type Checking**: Use `task type-check`.
+4. **Lint Checks**: Use `task lint`.
+5. **Help**: Run `task` to see all available options.
+6. **New Operations**: Add flat tasks in `taskfile.yml`, or namespaced tasks in the appropriate `task/*.yml`.
 
 ### Good vs Bad Examples
 ```sh
-# Good: Use make target for unit tests
-make unit
+# Good: Use task targets
+task test:unit
+task lint
 
-# Bad: Call pytest directly
+# Bad: Call tools directly
 pytest tests
+ruff check src
 ```
 
 ## 12. Quick Reference for All AI Agents
@@ -215,7 +233,7 @@ When working on this project:
 1. **Start every response with contemplation** 🌲
 2. **Take baby steps** - one test, one file, one change at a time 👣
 3. **Always write the failing test first** (TDD) ❌➡️✅
-4. **Use make targets** - never call tools directly 🔧
+4. **Use task targets** - never call tools directly 🔧
 5. **Keep code small and typed** - max 20 lines per method 📏
 6. **Show your thinking process** - be conversational and progressive 💭
 7. **Question everything** - assumptions, requirements, design choices ❓

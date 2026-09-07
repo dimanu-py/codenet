@@ -1,0 +1,12 @@
+version: '3'
+
+tasks:
+  up:
+    desc: Create and start containers
+    cmds:
+      - docker-compose up -d
+
+  down:
+    desc: Stop and remove containers
+    cmds:
+      - docker-compose down -v --remove-orphans

@@ -1,0 +1,32 @@
+version: '3'
+
+tasks:
+  run:
+    desc: Run the application
+    cmds:
+      - uv run uvicorn src.app.main:app --port 8000 --reload
+
+  local-setup:
+    desc: Setup git hooks and install dependencies
+    cmds:
+      - printf "\n⌛ Setting up the project...\n"
+      - task deps:sync-all
+      - uv run -m pre_commit install --hook-type pre-commit --hook-type commit-msg --hook-type pre-push
+
+  claude:
+    desc: Create symlinks for Claude Code compatibility
+    cmds:
+      - printf "\n⌛ Creating Claude Code symlinks...\n"
+      - ln -sf AGENTS.md CLAUDE.md
+      - ln -sfn .agents .claude
+      - ls -la CLAUDE.md .claude
+
+  opencode:
+    desc: Create symlinks for OpenCode compatibility
+    cmds:
+      - printf "\n⌛ Creating OpenCode symlinks...\n"
+      - mkdir -p .opencode
+      - rm -rf .opencode/commands
+      - ln -s ../.agents/commands .opencode/commands
+      - ln -s ../.agents/agents .opencode/agents
+      - ls -la .opencode

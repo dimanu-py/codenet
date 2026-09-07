@@ -1,0 +1,42 @@
+version: '3'
+
+tasks:
+  all:
+    desc: Run all tests
+    cmds:
+      - printf "\n⌛ Running tests...\n"
+      - uv run pytest tests -ra
+
+  unit:
+    desc: Run all unit tests
+    cmds:
+      - printf "\n⌛ Running unit tests...\n"
+      - uv run pytest -m "unit" -ra
+
+  integration:
+    desc: Run all integration tests
+    cmds:
+      - printf "\n⌛ Running integration tests...\n"
+      - uv run pytest -m "integration" -ra
+
+  acceptance:
+    desc: Run all acceptance tests
+    cmds:
+      - printf "\n⌛ Running acceptance tests...\n"
+      - uv run pytest -m "acceptance" -ra
+
+  coverage:
+    desc: Run all tests with coverage
+    cmds:
+      - printf "\n⌛ Running tests with coverage...\n"
+      - task docker:up
+      - uv run coverage run --branch -m pytest tests
+      - uv run coverage html
+      - task docker:down
+      - open htmlcov/index.html
+
+  watch:
+    desc: Run all tests with every change
+    cmds:
+      - printf "\n⌛ Running tests in watch mode...\n"
+      - uv run ptw --runner "pytest -n auto test -ra"
