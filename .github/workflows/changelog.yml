@@ -8,14 +8,21 @@ jobs:
   semantic_release:
     if: "!startsWith(github.event.head_commit.message, 'bump:')"
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Check out
-        uses: actions/checkout@v4
+      - name: 🛡️ Harden runner
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
         with:
-          token: ${{ secrets.CODENET_TOKEN }}
+          egress-policy: audit
+
+      - name: 📥 Checkout the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
           fetch-depth: 0
+          persist-credentials: false
       - name: Bump version and update changelog
-        uses: python-semantic-release/python-semantic-release@master
+        uses: python-semantic-release/python-semantic-release@39dd2052f2ce8282a5d932c31d58a2ca06d2550e # v10.0.2
         with:
           build: false
           push: true
@@ -24,4 +31,8 @@ jobs:
           tag: true
           vcs_release: false
           config_file: pyproject.toml
-          github_token: ${{ secrets.CODENET_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          git_committer_email: ${{ vars.GIT_COMMITTER_EMAIL }}
+          git_committer_name: ${{ vars.GIT_COMMITTER_NAME }}
+          ssh_public_signing_key: ${{ vars.SSH_PUBLIC_SIGNING_KEY }}
+          ssh_private_signing_key: ${{ secrets.SSH_PRIVATE_SIGNING_KEY }}
