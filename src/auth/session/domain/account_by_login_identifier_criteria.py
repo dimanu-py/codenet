@@ -1,24 +1,11 @@
-from typing import Self
-
 from src.shared.domain.criteria.criteria import Criteria
-from src.shared.domain.criteria.logical_operator import LogicalOperator
+from src.shared.domain.criteria.filter import Filter, Filters
 from src.shared.domain.criteria.operator import Operator
 
 
-class AccountByLoginIdentifierCriteria(Criteria):
+class AccountByLoginIdentifierCriteria:
     @classmethod
-    def for_login_identifier(cls, login: str) -> Self:
-        return cls.from_primitives(
-            expression={
-                LogicalOperator.OR: [
-                    {
-                        "field": "email",
-                        Operator.EQUALS: login,
-                    },
-                    {
-                        "field": "username",
-                        Operator.EQUALS: login,
-                    },
-                ]
-            }
-        )
+    def for_login_identifier(cls, login: str) -> Criteria:
+        is_email = Criteria(filters=Filters([Filter(field="email", operator=Operator.EQUALS, value=login)]))
+        is_username = Criteria(filters=Filters([Filter(field="username", operator=Operator.EQUALS, value=login)]))
+        return is_email | is_username
