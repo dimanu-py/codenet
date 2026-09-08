@@ -5,6 +5,7 @@ from src.auth.account.domain.account_username import AccountUsernameAlreadyExist
 from src.auth.shared.domain.password_manager import PasswordManager
 from src.shared.domain.clock import Clock
 from src.shared.domain.criteria.criteria import Criteria
+from src.shared.domain.criteria.filter import Filter, Filters
 from src.shared.domain.criteria.operator import Operator
 
 
@@ -29,14 +30,14 @@ class AccountSignup:
 
     async def _ensure_account_with_same_email_is_not_already_signed_up(self, email: str) -> None:
         signed_up_accounts = await self._repository.matching(
-            criteria=Criteria.from_primitives(expression={"field": "email", Operator.EQUALS: email})
+            criteria=Criteria(filters=Filters([Filter(field="email", operator=Operator.EQUALS, value=email)]))
         )
         if signed_up_accounts.is_not_empty():
             raise AccountEmailAlreadyExists()
 
     async def _ensure_account_with_same_username_is_not_already_signed_up(self, username: str) -> None:
         signed_up_accounts = await self._repository.matching(
-            criteria=Criteria.from_primitives(expression={"field": "username", Operator.EQUALS: username})
+            criteria=Criteria(filters=Filters([Filter(field="username", operator=Operator.EQUALS, value=username)]))
         )
         if signed_up_accounts.is_not_empty():
             raise AccountUsernameAlreadyExists()
