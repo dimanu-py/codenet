@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from dishka import FromDishka
-from dishka.integrations.fastapi import inject
+from dishka.integrations.fastapi import DishkaRoute
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
@@ -11,7 +11,7 @@ from src.shared.delivery.fastapi_response import FastAPIResponse
 from src.shared.infra.api.error_response import ResourceNotFoundError, UnprocessableEntityError
 from src.shared.infra.api.success_response import AcceptedResponse
 
-router = APIRouter()
+router = APIRouter(route_class=DishkaRoute)
 
 UsernamePathParameter = Annotated[
     str,
@@ -27,7 +27,6 @@ UsernamePathParameter = Annotated[
         status.HTTP_422_UNPROCESSABLE_CONTENT: {"model": UnprocessableEntityError},
     },
 )
-@inject
 async def remove_user(
     user_username: UsernamePathParameter,
     controller: FromDishka[UserRemovalController],

@@ -2,7 +2,7 @@ import json
 from typing import Annotated
 
 from dishka import FromDishka
-from dishka.integrations.fastapi import inject
+from dishka.integrations.fastapi import DishkaRoute
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
@@ -11,7 +11,7 @@ from src.shared.delivery.fastapi_parameter import ApiDocExample, QueryParameter
 from src.shared.delivery.fastapi_response import FastAPIResponse
 from src.shared.infra.api.success_response import OkResponse
 
-router = APIRouter()
+router = APIRouter(route_class=DishkaRoute)
 
 UserFilterQueryParameter = Annotated[
     str,
@@ -42,7 +42,6 @@ UserSortsQueryParameter = Annotated[
         status.HTTP_200_OK: {"model": OkResponse},
     },
 )
-@inject
 async def get_user_by_criteria(
     controller: FromDishka[UserSearchController],
     filter: UserFilterQueryParameter,
