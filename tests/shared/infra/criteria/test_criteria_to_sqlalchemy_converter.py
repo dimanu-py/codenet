@@ -3,7 +3,7 @@ from expects import equal, expect
 from object_mother import StringPrimitivesMother
 from sqlalchemy.sql.selectable import Select
 
-from src.shared.domain.criteria.criteria import Criteria
+from src.shared.domain.criteria.filters_to_criteria_converter import FiltersToCriteriaConverter
 from src.shared.domain.criteria.operator import Operator
 from src.shared.domain.criteria.sort_direction import SortDirection
 from src.shared.infra.criteria.criteria_to_sqlalchemy_converter import (
@@ -27,7 +27,7 @@ class TestCriteriaToSqlalchemyConverter:
 
     def test_should_generate_select_query_with_one_filter(self) -> None:
         user_name = StringPrimitivesMother.any()
-        criteria = CriteriaMother.with_comparison_expression("name", Operator.EQUALS, user_name)
+        criteria = CriteriaMother.with_single_filter("name", Operator.EQUALS, user_name)
 
         query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
 
@@ -44,7 +44,7 @@ class TestCriteriaToSqlalchemyConverter:
     ) -> None:
         user_name = StringPrimitivesMother.any()
         user_username = StringPrimitivesMother.any()
-        criteria = CriteriaMother.with_composite_expression(
+        criteria = CriteriaMother.with_multiple_filters(
             {
                 "and": [
                     {
@@ -74,7 +74,7 @@ class TestCriteriaToSqlalchemyConverter:
     ) -> None:
         user_name = StringPrimitivesMother.any()
         user_username = StringPrimitivesMother.any()
-        criteria = CriteriaMother.with_composite_expression(
+        criteria = CriteriaMother.with_multiple_filters(
             {
                 "or": [
                     {
@@ -101,7 +101,7 @@ class TestCriteriaToSqlalchemyConverter:
 
     def test_should_generate_negated_query(self) -> None:
         user_name = StringPrimitivesMother.any()
-        criteria = CriteriaMother.with_comparison_expression("name", Operator.NOT_EQUALS, user_name)
+        criteria = CriteriaMother.with_single_filter("name", Operator.NOT_EQUALS, user_name)
 
         query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
 
@@ -115,7 +115,7 @@ class TestCriteriaToSqlalchemyConverter:
 
     def test_should_generate_query_with_contains(self) -> None:
         user_name = StringPrimitivesMother.any()
-        criteria = CriteriaMother.with_comparison_expression("name", Operator.CONTAINS, user_name)
+        criteria = CriteriaMother.with_single_filter("name", Operator.CONTAINS, user_name)
 
         query = self.stringify(self._converter.convert(model=DummyModel, criteria=criteria))
 
@@ -132,7 +132,7 @@ class TestCriteriaToSqlalchemyConverter:
         first_username = StringPrimitivesMother.any()
         second_username = StringPrimitivesMother.any()
 
-        criteria = CriteriaMother.with_composite_expression(
+        criteria = CriteriaMother.with_multiple_filters(
             {
                 "and": [
                     {
@@ -197,8 +197,8 @@ class TestCriteriaToSqlalchemyConverter:
         )
 
     def test_should_generate_query_with_filters_and_sorting(self) -> None:
-        criteria = Criteria.from_primitives(
-            expression={
+        criteria = FiltersToCriteriaConverter.convert(
+            filters={
                 "field": "name",
                 Operator.EQUALS: "John Doe",
             },
@@ -215,6 +215,42 @@ class TestCriteriaToSqlalchemyConverter:
                 "FROM test_table \n"
                 "WHERE test_table.name = 'John Doe' "
                 "ORDER BY test_table.username DESC"
+            )
+        )
+
+    def test_should_generate_query_composing_criteria_with_and_operator(self) -> None:
+        user_name = StringPrimitivesMother.any()
+        user_username = StringPrimitivesMother.any()
+        matches_name = CriteriaMother.with_single_filter("name", Operator.EQUALS, user_name)
+        matches_username = CriteriaMother.with_single_filter("username", Operator.EQUALS, user_username)
+
+        query = self.stringify(self._converter.convert(model=DummyModel, criteria=matches_name & matches_username))
+
+        expect(query).to(
+            equal(
+                f"SELECT test_table.id, test_table.name, test_table.username \n"
+                f"FROM test_table \n"
+                f"WHERE test_table.name = '{user_name}' AND test_table.username = '{user_username}'"
+            )
+        )
+
+    def test_should_generate_query_composing_criteria_with_or_operator(self) -> None:
+        first_username = StringPrimitivesMother.any()
+        second_username = StringPrimitivesMother.any()
+        matches_first_username = CriteriaMother.with_single_filter("username", Operator.EQUALS, first_username)
+        matches_second_username = CriteriaMother.with_single_filter(
+            "username", Operator.EQUALS, second_username
+        )
+
+        query = self.stringify(
+            self._converter.convert(model=DummyModel, criteria=matches_first_username | matches_second_username)
+        )
+
+        expect(query).to(
+            equal(
+                f"SELECT test_table.id, test_table.name, test_table.username \n"
+                f"FROM test_table \n"
+                f"WHERE test_table.username = '{first_username}' OR test_table.username = '{second_username}'"
             )
         )
 
