@@ -1,7 +1,7 @@
 from src.backoffice.user.domain.user import User
 from src.backoffice.user.domain.user_repository import UserRepository
 from src.shared.domain.criteria.criteria import Criteria
-from src.shared.domain.criteria.criteria_converter import FiltersToCriteriaConverter
+from src.shared.domain.criteria.filters_to_criteria_converter import FiltersToCriteriaConverter
 
 
 class UserSearcher:
