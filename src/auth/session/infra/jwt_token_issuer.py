@@ -16,10 +16,10 @@ class JwtTokenIssuer(TokenIssuer):
         self._expires_in = settings.jwt_expires_in
 
     @override
-    async def generate_token(self, identification: str) -> dict[str, Any]:
+    async def generate_token(self, account_id: str) -> dict[str, Any]:
         now = int(time.time())
         payload = {
-            "sub": identification,
+            "sub": account_id,
             "iat": now,
             "exp": now + self._expires_in,
         }

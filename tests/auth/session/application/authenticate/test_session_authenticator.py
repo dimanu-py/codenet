@@ -47,6 +47,13 @@ class TestSessionAuthenticator:
 
         expect(issued_token).to(equal(AuthenticationToken(**self._ANY_TOKEN)))
 
+    async def test_should_issue_token_using_account_id_instead_of_login_identification(self) -> None:
+        self._should_find_signed_up_account_auth_credentials(self._SIGNED_UP_ACCOUNT_AUTH_CREDENTIALS)
+
+        await self._authenticator.execute(identification=self._EXISTING_EMAIL, password=self._EXISTING_PASSWORD)
+
+        expect(self._token_issuer.received_account_id).to(equal(self._SIGNED_UP_ACCOUNT_AUTH_CREDENTIALS.account_id))
+
     async def test_should_not_allow_to_authenticate_when_password_is_not_correct(self) -> None:
         self._should_find_signed_up_account_auth_credentials(self._SIGNED_UP_ACCOUNT_AUTH_CREDENTIALS)
 

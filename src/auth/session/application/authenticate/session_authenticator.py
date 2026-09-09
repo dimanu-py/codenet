@@ -21,7 +21,7 @@ class SessionAuthenticator:
     async def execute(self, identification: str, password: str) -> AuthenticationToken:
         account_auth_credentials = await self._ensure_account_exists_with_identification(identification)
         await self._ensure_introduced_password_is_correct(password, account_auth_credentials)
-        token = await self._issue_authentication_token_for(identification)
+        token = await self._issue_authentication_token_for(account_auth_credentials)
         return token
 
     async def _ensure_introduced_password_is_correct(
@@ -30,8 +30,10 @@ class SessionAuthenticator:
         if not await account_auth_credentials.verify_password(password, self._password_verifier):
             raise InvalidCredentials()
 
-    async def _issue_authentication_token_for(self, identification: str) -> AuthenticationToken:
-        token = await self._token_issuer.generate_token(identification)
+    async def _issue_authentication_token_for(
+        self, account_auth_credentials: AccountAuthCredentials
+    ) -> AuthenticationToken:
+        token = await self._token_issuer.generate_token(account_auth_credentials.account_id)
         return AuthenticationToken(**token)
 
     async def _ensure_account_exists_with_identification(self, identification: str) -> AccountAuthCredentials:

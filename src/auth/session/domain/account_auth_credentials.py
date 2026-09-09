@@ -9,6 +9,10 @@ class AccountAuthCredentials:
         self._password = password
         self._status = status
 
+    @property
+    def account_id(self) -> str:
+        return self._account_id
+
     async def verify_password(self, password: str, password_manager: PasswordManager) -> bool:
         return await password_manager.verify_credentials(password, self._password)
 
