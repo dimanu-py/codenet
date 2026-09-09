@@ -56,8 +56,8 @@ class Sorts(List[SortCondition]):
     def __init__(self, conditions: list[SortCondition]) -> None:
         super().__init__(value=conditions)
 
-    def is_not_empty(self) -> bool:
-        return not len(self._value) == 0
+    def has_sorting(self) -> bool:
+        return len(self._value) > 0
 
     @classmethod
     def empty(cls) -> Self:

@@ -1,27 +1,28 @@
 from typing import Any
 
 from src.shared.domain.criteria.criteria import Criteria
-from tests.shared.domain.criteria.mothers.expression_mother import CompositeExpressionMother
-from tests.shared.domain.criteria.mothers.sorts_mother import SortsMother
+from src.shared.domain.criteria.filters_to_criteria_converter import FiltersToCriteriaConverter
+from src.shared.domain.criteria.filter import Filters
+from tests.shared.domain.criteria.mothers.filter_mother import FilterMother
 
 
 class CriteriaMother:
     @staticmethod
     def any() -> Criteria:
-        return Criteria(expression=CompositeExpressionMother.any(), sorts=SortsMother.empty())
+        return Criteria(filters=Filters([FilterMother.any()]))
 
     @staticmethod
     def empty() -> Criteria:
-        return Criteria.from_primitives(expression={})
+        return Criteria.empty()
 
     @staticmethod
-    def with_composite_expression(expression: dict[str, Any]) -> Criteria:
-        return Criteria.from_primitives(expression)
+    def with_multiple_filters(expression: dict[str, Any]) -> Criteria:
+        return FiltersToCriteriaConverter.convert(filters=expression)
 
     @staticmethod
-    def with_comparison_expression(field: str, operator: str, value: str) -> Criteria:
-        return Criteria.from_primitives({"field": field, f"{operator}": value})
+    def with_single_filter(field: str, operator: str, value: str) -> Criteria:
+        return FiltersToCriteriaConverter.convert(filters={"field": field, f"{operator}": value})
 
     @staticmethod
     def with_sorting(sorts: list[dict[str, str]]) -> Criteria:
-        return Criteria.from_primitives(expression={}, sorts=sorts)
+        return FiltersToCriteriaConverter.convert(filters={}, sorts=sorts)

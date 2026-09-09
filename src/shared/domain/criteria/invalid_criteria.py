@@ -11,11 +11,6 @@ class InvalidCriteriaStructure(InvalidCriteria):
         super().__init__(message="Criteria must be a dictionary")
 
 
-class InvalidCompositeExpressionStructure(InvalidCriteria):
-    def __init__(self) -> None:
-        super().__init__(message="Logical group filter must contain either 'AND' or 'OR'")
-
-
 class InvalidExpressionStructure(InvalidCriteria):
     def __init__(self) -> None:
         super().__init__(message="Criteria filter expression must contain 'field' or a logical operator 'and/or'")
