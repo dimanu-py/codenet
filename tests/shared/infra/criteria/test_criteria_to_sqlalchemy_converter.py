@@ -238,9 +238,7 @@ class TestCriteriaToSqlalchemyConverter:
         first_username = StringPrimitivesMother.any()
         second_username = StringPrimitivesMother.any()
         matches_first_username = CriteriaMother.with_single_filter("username", Operator.EQUALS, first_username)
-        matches_second_username = CriteriaMother.with_single_filter(
-            "username", Operator.EQUALS, second_username
-        )
+        matches_second_username = CriteriaMother.with_single_filter("username", Operator.EQUALS, second_username)
 
         query = self.stringify(
             self._converter.convert(model=DummyModel, criteria=matches_first_username | matches_second_username)

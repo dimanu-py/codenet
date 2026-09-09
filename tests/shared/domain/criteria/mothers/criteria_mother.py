@@ -1,8 +1,8 @@
 from typing import Any
 
 from src.shared.domain.criteria.criteria import Criteria
-from src.shared.domain.criteria.filters_to_criteria_converter import FiltersToCriteriaConverter
 from src.shared.domain.criteria.filter import Filters
+from src.shared.domain.criteria.filters_to_criteria_converter import FiltersToCriteriaConverter
 from tests.shared.domain.criteria.mothers.filter_mother import FilterMother
 
 
