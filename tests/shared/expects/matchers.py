@@ -35,9 +35,4 @@ class raise_error:
             )
 
     def _failure_message(self, subject, reasons):
-        message = f"\nexpected: {subject!r} to {self!r}"
-
-        if reasons:
-            message += f"\n     but: {'\n'.join(reasons)}"
-
-        return message
+        return f"\n{'\n'.join(reasons)}"

@@ -32,6 +32,12 @@ class Account(Aggregate):
             created_at=clock.now(),
         )
 
+    def has_email(self, email: AccountEmail) -> bool:
+        return self._email == email
+
+    def has_username(self, username: AccountUsername) -> bool:
+        return self._username == username
+
     @property
     def id(self) -> AccountId:
         return self._id

@@ -2,7 +2,7 @@ import re
 
 from value_object import String, validate
 
-from src.shared.domain.exceptions.domain_error import ConflictError, DomainValidationError
+from src.shared.domain.exceptions.domain_error import DomainValidationError
 
 
 class AccountEmail(String):
@@ -17,8 +17,3 @@ class AccountEmail(String):
 class InvalidEmailFormat(DomainValidationError):
     def __init__(self) -> None:
         super().__init__(message="Email cannot contain special characters and must contain '@' and '.'")
-
-
-class AccountEmailAlreadyExists(ConflictError):
-    def __init__(self) -> None:
-        super().__init__(message="Email is already signed up")

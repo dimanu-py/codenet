@@ -2,7 +2,7 @@ import re
 
 from value_object import String, validate
 
-from src.shared.domain.exceptions.domain_error import ConflictError, DomainValidationError
+from src.shared.domain.exceptions.domain_error import DomainValidationError
 
 
 class AccountUsername(String):
@@ -17,8 +17,3 @@ class AccountUsername(String):
 class InvalidUsernameFormat(DomainValidationError):
     def __init__(self) -> None:
         super().__init__(message="Username cannot contain special characters")
-
-
-class AccountUsernameAlreadyExists(ConflictError):
-    def __init__(self) -> None:
-        super().__init__(message="Username is already registered.")

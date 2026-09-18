@@ -1,9 +1,11 @@
 import pytest
 
-from src.auth.account.application.signup.account_signup import AccountSignup
+from src.auth.account.application.signup.account_signup import (
+    AccountEmailAlreadyExists,
+    AccountSignup,
+    AccountUsernameAlreadyExists,
+)
 from src.auth.account.domain.account import Account
-from src.auth.account.domain.account_email import AccountEmailAlreadyExists
-from src.auth.account.domain.account_username import AccountUsernameAlreadyExists
 from tests.auth.account.domain.mothers.account_mother import AccountMother
 from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
 from tests.auth.shared.infra.fake_password_manager import FakePasswordManager
@@ -65,7 +67,7 @@ class TestAccountSignup:
         existing_account_primitives = existing_account.to_primitives()
         new_account_primitives = AccountMother.create(username=existing_account_primitives["username"]).to_primitives()
 
-        self._should_match_criteria_with([], [existing_account])
+        self._should_match_criteria_with([existing_account])
 
         signup_information = {
             "account_id": new_account_primitives["id"],
