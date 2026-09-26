@@ -4,6 +4,8 @@ tasks:
   run:
     desc: Run the application
     cmds:
+      - task: :docker:up
+      - task: :db:migrate
       - uv run uvicorn src.app.main:app --port 8000 --reload
 
   local-setup:

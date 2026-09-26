@@ -7,7 +7,6 @@ from dishka.integrations.fastapi import setup_dishka
 from fastapi import FastAPI
 from value_object import SindriValidationError
 
-from src.app.alembic_migrator import AlembicMigrator
 from src.app.error_handlers import (
     sindri_validation_error_handler,
     unexpected_exception_handler,
@@ -24,8 +23,6 @@ from src.shared.infra.logger.fastapi_file_logger import (
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
-    migrator = AlembicMigrator()
-    await migrator.migrate()
     yield
     await app.state.dishka_container.close()
 
