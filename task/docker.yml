@@ -4,7 +4,7 @@ tasks:
   up:
     desc: Create and start containers
     cmds:
-      - docker-compose up -d
+      - docker-compose up -d --wait
 
   down:
     desc: Stop and remove containers
