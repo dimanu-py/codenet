@@ -1,7 +1,7 @@
 from collections.abc import AsyncGenerator
 
 from dishka import Provider, Scope, provide
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from src.shared.delivery.settings import Settings
 
@@ -14,11 +14,8 @@ class DatabaseSessionProvider(Provider):
         return Settings()  # type: ignore[call-arg]
 
     @provide
-    def engine(self, settings: Settings) -> AsyncEngine:
-        return create_async_engine(str(settings.postgres_url), echo=False)
-
-    @provide
-    def session_factory(self, engine: AsyncEngine) -> async_sessionmaker[AsyncSession]:
+    def session_factory(self, settings: Settings) -> async_sessionmaker[AsyncSession]:
+        engine = create_async_engine(str(settings.postgres_url), echo=False)
         return async_sessionmaker(bind=engine, expire_on_commit=False, autoflush=False)
 
     @provide(scope=Scope.REQUEST)
