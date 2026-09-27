@@ -1,4 +1,4 @@
-from collections.abc import Generator
+from collections.abc import AsyncGenerator
 
 import pytest
 from dishka import AsyncContainer, make_async_container
@@ -9,8 +9,8 @@ from tests.shared.infra.injector.test_database_session_provider import TestDatab
 
 
 @pytest.fixture
-def container(session: AsyncSession) -> Generator[AsyncContainer]:
+async def container(session: AsyncSession) -> AsyncGenerator[AsyncContainer]:
     register_providers()
     container = make_async_container(*get_registered_providers(), TestDatabaseSessionProvider(session))
     yield container
-    container.close()
+    await container.close()
