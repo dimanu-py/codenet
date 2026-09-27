@@ -1,7 +1,6 @@
-import uuid
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
-from datetime import UTC, datetime
+from dataclasses import dataclass
+from datetime import datetime
 from typing import TypedDict
 
 
@@ -14,8 +13,8 @@ class DomainEventPrimitives(TypedDict):
 
 @dataclass(frozen=True, kw_only=True)
 class DomainEvent(ABC):
-    id: str = field(default_factory=lambda: str(uuid.uuid4()))
-    occurred_at: datetime = field(default_factory=lambda: datetime.now(UTC))
+    id: str
+    occurred_at: datetime
     attributes: dict
 
     @property
