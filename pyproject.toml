@@ -73,6 +73,7 @@ markers = [
     "integration: mark a test as an integration test",
     "acceptance: mark a test as an acceptance test"
 ]
+filterwarnings = ["ignore::pytest.PytestRemovedIn10Warning"]
 
 [tool.ruff]
 line-length = 120
