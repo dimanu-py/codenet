@@ -27,7 +27,7 @@ class TestPostgresEventBus:
         expect(inserted_event).to(equal(events))
 
     async def test_should_publish_multiple_events(self) -> None:
-        events = [DummyDomainEventMother.any() for _ in range(3)]
+        events = DummyDomainEventMother.many(3)
 
         await self._event_bus.publish(events)
 

@@ -16,3 +16,7 @@ class DummyDomainEventMother(ObjectMother):
                 name=cls._faker().name(),
             ),
         )
+
+    @classmethod
+    def many(cls, amount: int) -> list[DummyDomainEvent]:
+        return [cls.any() for _ in range(amount)]
