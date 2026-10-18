@@ -23,7 +23,6 @@ class PostgresEventBus(EventBus):
     async def _store_events(self, events: list[DomainEvent]) -> None:
         events_to_publish = [DomainEventToConsumeModel.from_domain(event) for event in events]
         self._session.add_all(events_to_publish)
-        await self._session.commit()
 
     async def _retry(
         self, func: Callable[[], Awaitable], max_attempts: int = 3, delay: float = 30, _attempt: int = 1
@@ -36,3 +35,4 @@ class PostgresEventBus(EventBus):
 
             await asyncio.sleep(delay * _attempt)
             return await self._retry(func, max_attempts, delay, _attempt + 1)
+        await self._session.flush()
