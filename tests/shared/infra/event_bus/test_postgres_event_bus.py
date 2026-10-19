@@ -1,6 +1,6 @@
 import pytest
 from expects import equal, expect
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.shared.domain.event_bus.domain_event import DomainEvent
@@ -13,6 +13,8 @@ from tests.shared.infra.event_bus.mothers.dummy_domain_event_mother import Dummy
 @pytest.mark.integration
 @pytest.mark.asyncio
 class TestPostgresEventBus:
+    _NUMBER_OF_EVENTS_TO_CONSUME = 3
+
     @pytest.fixture(autouse=True)
     def setup_method(self, session: AsyncSession) -> None:
         self._session = session
@@ -41,6 +43,15 @@ class TestPostgresEventBus:
 
         inserted_events = await self._get_events_to_consume(events)
         expect(inserted_events).to(equal(events))
+
+    async def test_should_not_consume_anything_when_there_are_no_events(self) -> None:
+        query = select(func.count()).select_from(DomainEventToConsumeModel)
+        events_to_consume_before = (await self._session.execute(query)).scalar_one()
+
+        await self._event_bus.consume(amount=self._NUMBER_OF_EVENTS_TO_CONSUME)
+
+        events_to_consume_after = (await self._session.execute(query)).scalar_one()
+        expect(events_to_consume_before).to(equal(events_to_consume_after))
 
     async def _get_events_to_consume(self, events: list[DomainEvent]) -> list[DomainEvent]:
         event_ids = [event.id for event in events]
