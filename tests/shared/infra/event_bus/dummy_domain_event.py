@@ -1,10 +1,9 @@
 from dataclasses import dataclass
-from typing import TypedDict
 
-from src.shared.domain.event_bus.domain_event import DomainEvent
+from src.shared.domain.event_bus.domain_event import DomainEvent, DomainEventAttributes
 
 
-class DummyDomainEventAttributes(TypedDict):
+class DummyDomainEventAttributes(DomainEventAttributes):
     id: str
     name: str
 

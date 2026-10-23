@@ -1,14 +1,17 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from dataclasses import dataclass
 from datetime import datetime
 from typing import TypedDict, ClassVar
+
+
+class DomainEventAttributes(TypedDict): ...
 
 
 class DomainEventPrimitives(TypedDict):
     id: str
     occurred_at: datetime
     name: str
-    attributes: dict
+    attributes: DomainEventAttributes
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -17,7 +20,7 @@ class DomainEvent(ABC):
 
     id: str
     occurred_at: datetime
-    attributes: dict
+    attributes: DomainEventAttributes
 
     def __init_subclass__(cls, **kwargs) -> None:
         super().__init_subclass__(**kwargs)
