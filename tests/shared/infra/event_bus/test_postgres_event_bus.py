@@ -10,9 +10,13 @@ from src.shared.infra.event_bus.domain_event_to_consume_model import DomainEvent
 from src.shared.infra.event_bus.postgres_event_bus import (
     PostgresEventBus,
 )
-from tests.shared.infra.event_bus.dummy_domain_event import DummyDomainEvent, DummyDomainEventAttributes, DummyUnknownEvent
+from tests.shared.infra.event_bus.dummy_domain_event import (
+    DummyDomainEvent,
+    DummyDomainEventAttributes,
+    DummyUnknownEvent,
+)
 from tests.shared.infra.event_bus.mothers.dummy_domain_event_mother import DummyDomainEventMother
-from tests.shared.infra.event_bus.dummy_event_subscriber import DummyEventSubscriber
+from tests.shared.infra.event_bus.dummy_event_subscriber import DummyEventSubscriber, FailingEventSubscriber
 
 
 @pytest.mark.integration
@@ -80,6 +84,17 @@ class TestPostgresEventBus:
 
         events_to_consume = await self._get_stored_events(events=events)
         expect(events_to_consume).to(equal([event_unknown]))
+
+    async def test_should_increase_number_of_attempts_after_error_consuming(self) -> None:
+        event_bus = PostgresEventBus(session=self._session, subscribers=[FailingEventSubscriber()])
+        event = DummyDomainEventMother.any()
+        await event_bus.publish([event])
+
+        await event_bus.consume(amount=self._NUMBER_OF_EVENTS_TO_CONSUME)
+
+        query = select(DomainEventToConsumeModel).where(DomainEventToConsumeModel.id == event.id)
+        events_to_consume = (await self._session.execute(query)).scalar_one()
+        expect(events_to_consume.attempts).to(equal(1))
 
     async def _get_stored_events(self, events: list[DomainEvent]) -> list[DomainEvent]:
         event_ids = [event.id for event in events]

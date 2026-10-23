@@ -17,6 +17,18 @@ class DummyEventSubscriber(DomainEventSubscriber[DummyDomainEvent]):
         return DummyDomainEvent
 
 
+class FailingEventSubscriber(DomainEventSubscriber[DummyDomainEvent]):
+    def __init__(self) -> None:
+        self.executed_events = []
+
+    async def on(self, event: DummyDomainEvent) -> None:
+        self.executed_events.append(event)
+        raise RuntimeError("Failed while consuming event")
+
+    def subscribed_to(self) -> type[DummyDomainEvent]:
+        return DummyDomainEvent
+
+
 @pytest.mark.unit
 class TestDomainEventSubscriber:
     async def test_should_execute_on_event_received(self) -> None:

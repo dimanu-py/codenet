@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Self
 
-from sqlalchemy import UUID, DateTime
+from sqlalchemy import UUID, DateTime, Integer
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -18,6 +18,7 @@ class DomainEventToConsumeModel(Base):
     inserted_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.now)
     name: Mapped[str] = mapped_column()
     attributes: Mapped[dict] = mapped_column(JSONB)
+    attempts: Mapped[int] = mapped_column(Integer, default=0)
 
     @classmethod
     def from_domain(cls, event: DomainEvent) -> Self:

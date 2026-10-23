@@ -1,7 +1,7 @@
 from collections import defaultdict
 from typing import override
 
-from sqlalchemy import select, delete
+from sqlalchemy import select, delete, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.shared.domain.event_bus.domain_event_subscriber import DomainEventSubscriber
@@ -53,11 +53,25 @@ class PostgresEventBus(EventBus):
 
     async def _execute_subscribers_for(self, event: DomainEvent) -> None:
         subscribed_to_event = self._subscribers_by_event[type(event)]
-        for subscriber in subscribed_to_event:
-            await subscriber.on(event)
-        await self._delete_consumed_event(event)
+        try:
+            for subscriber in subscribed_to_event:
+                await subscriber.on(event)
+            await self._delete_consumed_event(event)
+        except Exception:
+            await self._increase_attempts(event)
 
     async def _delete_consumed_event(self, event: DomainEvent) -> None:
         query = delete(DomainEventToConsumeModel).where(DomainEventToConsumeModel.id == event.id)
+        await self._session.execute(query)
+        await self._session.flush()
+
+    async def _increase_attempts(self, event: DomainEvent) -> None:
+        query = (
+            update(DomainEventToConsumeModel)
+            .where(
+                DomainEventToConsumeModel.id == event.id,
+            )
+            .values(attempts=DomainEventToConsumeModel.attempts + 1)
+        )
         await self._session.execute(query)
         await self._session.flush()
