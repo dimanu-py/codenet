@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
-from typing import TypedDict
+from typing import TypedDict, ClassVar
 
 
 class DomainEventPrimitives(TypedDict):
@@ -13,14 +13,16 @@ class DomainEventPrimitives(TypedDict):
 
 @dataclass(frozen=True, kw_only=True)
 class DomainEvent(ABC):
+    name: ClassVar[str]
+
     id: str
     occurred_at: datetime
     attributes: dict
 
-    @property
-    @abstractmethod
-    def name(self) -> str:
-        raise NotImplementedError
+    def __init_subclass__(cls, **kwargs) -> None:
+        super().__init_subclass__(**kwargs)
+        if not isinstance(getattr(cls, "name", None), str):
+            raise TypeError(f"{cls.__name__} must define a class attribute 'name'")
 
     def to_primitives(self) -> DomainEventPrimitives:
         return DomainEventPrimitives(

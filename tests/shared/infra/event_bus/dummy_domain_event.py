@@ -11,8 +11,5 @@ class DummyDomainEventAttributes(TypedDict):
 
 @dataclass(frozen=True)
 class DummyDomainEvent(DomainEvent):
+    name = "dummy_event"
     attributes: DummyDomainEventAttributes
-
-    @property
-    def name(self) -> str:
-        return "dummy_event"
