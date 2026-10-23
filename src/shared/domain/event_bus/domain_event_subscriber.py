@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from shared.domain.event_bus.domain_event import DomainEvent
+from src.shared.domain.event_bus.domain_event import DomainEvent
 
 
 class DomainEventSubscriber[T: DomainEvent](ABC):

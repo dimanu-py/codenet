@@ -4,7 +4,7 @@ from typing import override
 from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from shared.domain.event_bus.domain_event_subscriber import DomainEventSubscriber
+from src.shared.domain.event_bus.domain_event_subscriber import DomainEventSubscriber
 from src.shared.domain.event_bus.domain_event import DomainEvent
 from src.shared.domain.event_bus.event_bus import EventBus
 from src.shared.infra.event_bus.domain_event_to_consume_model import DomainEventToConsumeModel
@@ -48,6 +48,7 @@ class PostgresEventBus(EventBus):
         return [
             event_class_by_name[event.name](id=event.id, occurred_at=event.occurred_at, attributes=event.attributes)
             for event in events_to_consume
+            if event.name in event_class_by_name
         ]
 
     async def _execute_subscribers_for(self, event: DomainEvent) -> None:

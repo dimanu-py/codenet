@@ -1,7 +1,7 @@
 import pytest
 from expects import equal, expect, be
 
-from shared.domain.event_bus.domain_event_subscriber import DomainEventSubscriber
+from src.shared.domain.event_bus.domain_event_subscriber import DomainEventSubscriber
 from tests.shared.infra.event_bus.dummy_domain_event import DummyDomainEvent
 from tests.shared.infra.event_bus.mothers.dummy_domain_event_mother import DummyDomainEventMother
 

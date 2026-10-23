@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 from expects import equal, expect
 from sqlalchemy import select, func
@@ -8,15 +10,19 @@ from src.shared.infra.event_bus.domain_event_to_consume_model import DomainEvent
 from src.shared.infra.event_bus.postgres_event_bus import (
     PostgresEventBus,
 )
-from tests.shared.infra.event_bus.dummy_domain_event import DummyDomainEvent, DummyDomainEventAttributes
+from tests.shared.infra.event_bus.dummy_domain_event import DummyDomainEvent, DummyDomainEventAttributes, DummyUnknownEvent
 from tests.shared.infra.event_bus.mothers.dummy_domain_event_mother import DummyDomainEventMother
-from tests.shared.infra.event_bus.test_domain_event_subscriber import DummyEventSubscriber
+from tests.shared.infra.event_bus.dummy_event_subscriber import DummyEventSubscriber
 
 
 @pytest.mark.integration
 @pytest.mark.asyncio
 class TestPostgresEventBus:
     _NUMBER_OF_EVENTS_TO_CONSUME = 3
+    _EVENT_CLASSES_BY_NAME = {
+        DummyDomainEvent.name: DummyDomainEvent,
+        DummyUnknownEvent.name: DummyUnknownEvent,
+    }
 
     @pytest.fixture(autouse=True)
     def setup_method(self, session: AsyncSession) -> None:
@@ -65,6 +71,16 @@ class TestPostgresEventBus:
         events_to_consume = await self._get_stored_events(events=events)
         expect(events_to_consume).to(equal([]))
 
+    async def test_should_not_consume_unknown_event(self) -> None:
+        event_unknown = DummyDomainEventMother.unknown()
+        events = [event_unknown, DummyDomainEventMother.any()]
+        await self._event_bus.publish(events)
+
+        await self._event_bus.consume(amount=self._NUMBER_OF_EVENTS_TO_CONSUME)
+
+        events_to_consume = await self._get_stored_events(events=events)
+        expect(events_to_consume).to(equal([event_unknown]))
+
     async def _get_stored_events(self, events: list[DomainEvent]) -> list[DomainEvent]:
         event_ids = [event.id for event in events]
         result = await self._session.execute(
@@ -72,7 +88,7 @@ class TestPostgresEventBus:
         )
         events_to_consume = result.scalars().all()
         return [
-            DummyDomainEvent(
+            self._EVENT_CLASSES_BY_NAME[event.name](
                 id=event.id, occurred_at=event.occurred_at, attributes=DummyDomainEventAttributes(**event.attributes)
             )
             for event in events_to_consume

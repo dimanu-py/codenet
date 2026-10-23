@@ -12,3 +12,8 @@ class DummyDomainEventAttributes(DomainEventAttributes):
 class DummyDomainEvent(DomainEvent):
     name = "dummy_event"
     attributes: DummyDomainEventAttributes
+
+
+@dataclass(frozen=True)
+class DummyUnknownEvent(DummyDomainEvent):
+    name = "dummy_unknown_event"
