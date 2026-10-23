@@ -18,7 +18,7 @@ class TestPostgresEventBus:
     @pytest.fixture(autouse=True)
     def setup_method(self, session: AsyncSession) -> None:
         self._session = session
-        self._event_bus = PostgresEventBus(session=session)
+        self._event_bus = PostgresEventBus(session=session, subscribers=[])
 
     async def test_should_publish_a_single_event(self) -> None:
         events = [DummyDomainEventMother.any()]

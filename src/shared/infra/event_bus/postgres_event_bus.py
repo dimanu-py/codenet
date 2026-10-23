@@ -3,14 +3,16 @@ from typing import override
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from shared.domain.event_bus.domain_event_subscriber import DomainEventSubscriber
 from src.shared.domain.event_bus.domain_event import DomainEvent
 from src.shared.domain.event_bus.event_bus import EventBus
 from src.shared.infra.event_bus.domain_event_to_consume_model import DomainEventToConsumeModel
 
 
 class PostgresEventBus(EventBus):
-    def __init__(self, session: AsyncSession) -> None:
+    def __init__(self, session: AsyncSession, subscribers: list[DomainEventSubscriber]) -> None:
         self._session = session
+        self._subscribers = subscribers
 
     @override
     async def publish(self, events: list[DomainEvent]) -> None:
