@@ -1,12 +1,12 @@
-from typing import override, NamedTuple
+from typing import NamedTuple, override
 
-from sqlalchemy import select, delete, update
+from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.shared.infra.event_bus.domain_event_dead_letter_model import DomainEventDeadLetterModel
-from src.shared.domain.event_bus.domain_event_subscriber import DomainEventSubscriber
 from src.shared.domain.event_bus.domain_event import DomainEvent
+from src.shared.domain.event_bus.domain_event_subscriber import DomainEventSubscriber
 from src.shared.domain.event_bus.event_bus import EventBus
+from src.shared.infra.event_bus.domain_event_dead_letter_model import DomainEventDeadLetterModel
 from src.shared.infra.event_bus.domain_event_to_consume_model import DomainEventToConsumeModel
 
 

@@ -1,7 +1,7 @@
 from abc import ABC
 from dataclasses import dataclass
 from datetime import datetime
-from typing import TypedDict, ClassVar
+from typing import ClassVar, TypedDict
 
 
 class DomainEventAttributes(TypedDict): ...
