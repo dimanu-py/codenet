@@ -3,6 +3,7 @@ from typing import override, NamedTuple
 from sqlalchemy import select, delete, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.shared.infra.event_bus.domain_event_dead_letter_model import DomainEventDeadLetterModel
 from src.shared.domain.event_bus.domain_event_subscriber import DomainEventSubscriber
 from src.shared.domain.event_bus.domain_event import DomainEvent
 from src.shared.domain.event_bus.event_bus import EventBus
@@ -15,6 +16,8 @@ class _SubscriptionEntry(NamedTuple):
 
 
 class PostgresEventBus(EventBus):
+    _MAX_ATTEMPTS_TO_CONSUME: int = 3
+
     def __init__(self, session: AsyncSession, subscribers: list[DomainEventSubscriber]) -> None:
         self._session = session
         self._entries_by_event_name: dict[str, _SubscriptionEntry] = {}
@@ -38,8 +41,8 @@ class PostgresEventBus(EventBus):
         events_to_publish = [DomainEventToConsumeModel.from_domain(event) for event in events]
         await self._store_events(events_to_publish)
 
-    async def _store_events(self, events_to_publish: list[DomainEventToConsumeModel]) -> None:
-        self._session.add_all(events_to_publish)
+    async def _store_events(self, events: list[DomainEventToConsumeModel | DomainEventDeadLetterModel]) -> None:
+        self._session.add_all(events)
         await self._session.flush()
 
     async def _get_events_to_consume(self, amount: int) -> list[DomainEventToConsumeModel]:
@@ -61,7 +64,10 @@ class PostgresEventBus(EventBus):
                 await subscriber.on(event)
             await self._delete_consumed_event(db_event)
         except Exception:
-            await self._increase_attempts(db_event)
+            if db_event.has_reached_max_attempts(self._MAX_ATTEMPTS_TO_CONSUME):
+                await self._send_event_to_dead_letter(db_event)
+            else:
+                await self._increase_attempts(db_event)
 
     async def _delete_consumed_event(self, event: DomainEventToConsumeModel) -> None:
         query = delete(DomainEventToConsumeModel).where(DomainEventToConsumeModel.id == event.id)
@@ -78,3 +84,7 @@ class PostgresEventBus(EventBus):
         )
         await self._session.execute(query)
         await self._session.flush()
+
+    async def _send_event_to_dead_letter(self, event: DomainEventToConsumeModel) -> None:
+        await self._store_events([DomainEventDeadLetterModel.from_published_event(event)])
+        await self._delete_consumed_event(event)
