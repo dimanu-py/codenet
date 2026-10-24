@@ -7,9 +7,13 @@ needed models.
 """
 from src.auth.account.infra.persistence.account_model import AccountModel
 from src.backoffice.user.infra.persistence.user_model import UserModel
+from src.shared.infra.event_bus.domain_event_dead_letter_model import DomainEventDeadLetterModel
+from src.shared.infra.event_bus.domain_event_to_consume_model import DomainEventToConsumeModel
 from src.shared.infra.persistence.sqlalchemy.base import Base
 
 base = Base
 
 _ = UserModel
 _ = AccountModel
+_ = DomainEventToConsumeModel
+_ = DomainEventDeadLetterModel
