@@ -43,18 +43,20 @@ class PostgresEventBus(EventBus):
         )
         return query.scalars().all()
 
-    def _get_event_class_from_name(self, event_to_consume: DomainEventToConsumeModel) -> DomainEvent | None:
-        event_class = self._event_class_by_name.get(event_to_consume.name)
-        if not event_class:
-            return None
+    @staticmethod
+    def _instantiate_event(event_to_consume: DomainEventToConsumeModel, event_class: type[DomainEvent]) -> DomainEvent:
         return event_class(
             id=event_to_consume.id, occurred_at=event_to_consume.occurred_at, attributes=event_to_consume.attributes
         )
 
+    def _find_event_class(self, event_name: str) -> type[DomainEvent] | None:
+        return self._event_class_by_name.get(event_name)
+
     async def _execute_subscribers_for(self, db_event: DomainEventToConsumeModel) -> None:
-        event = self._get_event_class_from_name(db_event)
-        if not event:
+        event_class = self._find_event_class(db_event.name)
+        if not event_class:
             return
+        event = self._instantiate_event(db_event, event_class)
         subscribed_to_event = self._subscribers_by_event[type(event)]
         try:
             for subscriber in subscribed_to_event:
