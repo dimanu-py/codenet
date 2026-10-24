@@ -3,15 +3,40 @@ version: '3'
 tasks:
   migration:
     desc: Generate a new migration with alembic
-    interactive: true
+    deps:
+      - task: :docker:up
     cmds:
       - printf "\n⌛ Generating new migration...\n"
-      - |
-        read -p "Enter message (required): " MESSAGE
-        alembic revision --autogenerate -m "$MESSAGE"
+      - uv run alembic revision --autogenerate -m "{{.message}}"
+    preconditions:
+      - sh: '[ -n "{{.message}}" ]'
+        msg: 'Please provide a message: task db-create-migration message="describe_your_migration_here"'
 
   migrate:
     desc: Apply migrations with alembic
+    deps:
+      - task: :docker:up
     cmds:
       - printf "\n⌛ Applying migrations...\n"
       - alembic upgrade head
+
+  rollback:
+    desc: Rollback all the applied migrations
+    deps:
+      - task: :docker:up
+    cmds:
+      - uv run alembic downgrade base
+
+  history:
+    desc: Show history of all migrations
+    deps:
+      - task: :docker:up
+    cmds:
+      - uv run alembic history
+
+  version:
+    desc: Show current revision for the database
+    deps:
+      - task: :docker:up
+    cmds:
+      - uv run alembic current
