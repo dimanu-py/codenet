@@ -27,15 +27,18 @@ class PostgresEventBus(EventBus):
     async def publish(self, events: list[DomainEvent]) -> None:
         if not events:
             return
-        await self._store_events(events)
+        await self._store_events_to_publish(events)
 
     async def consume(self, amount: int) -> None:
         events_to_consume = await self._get_events_to_consume(amount=amount)
         for event in events_to_consume:
             await self._execute_subscribers_for(event)
 
-    async def _store_events(self, events: list[DomainEvent]) -> None:
+    async def _store_events_to_publish(self, events: list[DomainEvent]) -> None:
         events_to_publish = [DomainEventToConsumeModel.from_domain(event) for event in events]
+        await self._store_events(events_to_publish)
+
+    async def _store_events(self, events_to_publish: list[DomainEventToConsumeModel]) -> None:
         self._session.add_all(events_to_publish)
         await self._session.flush()
 
