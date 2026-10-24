@@ -1,5 +1,4 @@
-from collections import defaultdict
-from typing import override
+from typing import override, NamedTuple
 
 from sqlalchemy import select, delete, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -10,13 +9,19 @@ from src.shared.domain.event_bus.event_bus import EventBus
 from src.shared.infra.event_bus.domain_event_to_consume_model import DomainEventToConsumeModel
 
 
+class _SubscriptionEntry(NamedTuple):
+    event_class: type[DomainEvent]
+    subscribers: list[DomainEventSubscriber]
+
+
 class PostgresEventBus(EventBus):
     def __init__(self, session: AsyncSession, subscribers: list[DomainEventSubscriber]) -> None:
         self._session = session
-        self._subscribers_by_event: defaultdict[type[DomainEvent], list[DomainEventSubscriber]] = defaultdict(list)
+        self._entries_by_event_name: dict[str, _SubscriptionEntry] = {}
         for subscriber in subscribers:
-            self._subscribers_by_event[subscriber.subscribed_to()].append(subscriber)
-        self._event_class_by_name = {event_class.name: event_class for event_class in self._subscribers_by_event}
+            event_class = subscriber.subscribed_to()
+            entry = self._entries_by_event_name.setdefault(event_class.name, _SubscriptionEntry(event_class, []))
+            entry.subscribers.append(subscriber)
 
     @override
     async def publish(self, events: list[DomainEvent]) -> None:
@@ -43,23 +48,13 @@ class PostgresEventBus(EventBus):
         )
         return query.scalars().all()
 
-    @staticmethod
-    def _instantiate_event(event_to_consume: DomainEventToConsumeModel, event_class: type[DomainEvent]) -> DomainEvent:
-        return event_class(
-            id=event_to_consume.id, occurred_at=event_to_consume.occurred_at, attributes=event_to_consume.attributes
-        )
-
-    def _find_event_class(self, event_name: str) -> type[DomainEvent] | None:
-        return self._event_class_by_name.get(event_name)
-
     async def _execute_subscribers_for(self, db_event: DomainEventToConsumeModel) -> None:
-        event_class = self._find_event_class(db_event.name)
-        if not event_class:
+        entry = self._entries_by_event_name.get(db_event.name)
+        if not entry:
             return
-        event = self._instantiate_event(db_event, event_class)
-        subscribed_to_event = self._subscribers_by_event[type(event)]
+        event = entry.event_class(id=db_event.id, occurred_at=db_event.occurred_at, attributes=db_event.attributes)
         try:
-            for subscriber in subscribed_to_event:
+            for subscriber in entry.subscribers:
                 await subscriber.on(event)
             await self._delete_consumed_event(db_event)
         except Exception:
