@@ -1,11 +1,11 @@
-from value_object import Aggregate
+from value_object import AggregateRoot
 
 from src.backoffice.user.domain.user_id import UserId
 from src.backoffice.user.domain.user_name import UserName
 from src.backoffice.user.domain.user_username import UserUsername
 
 
-class User(Aggregate):
+class User(AggregateRoot):
     _id: UserId
     _name: UserName
     _username: UserUsername

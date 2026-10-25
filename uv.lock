@@ -2102,11 +2102,11 @@ wheels = [
 
 [[package]]
 name = "value-object-sindri"
-version = "0.2.0"
+version = "0.3.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/2b/9a/0570163b0b8d540eea751a537a1229309c9b62651ff81603c3e76c11ea9b/value_object_sindri-0.2.0.tar.gz", hash = "sha256:865752f39d930140b975fe8c2712665ef6dca93aadfb0644c0a6f81b3d6c784e", size = 19338, upload-time = "2026-06-02T13:44:31.424Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b7/1d/be6f5a9d168564201ae95a8aa93b79fe8c1541857ab4170b4e1431f67958/value_object_sindri-0.3.0.tar.gz", hash = "sha256:9d787ded66a77c00d1acf4ae8298af376ab7755cd93fd0cd0121cbf6c2f44e29", size = 21546, upload-time = "2026-10-25T22:54:12.694Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/74/9d/24b43c101f7ee4269421f53a0ad40e4066ab3ce1f7605af3de5b306257e3/value_object_sindri-0.2.0-py3-none-any.whl", hash = "sha256:5264e595fa1fca662b2212bbaaa2afb397638942ececb19a084c267c5cf6de67", size = 22633, upload-time = "2026-06-02T13:44:30.294Z" },
+    { url = "https://files.pythonhosted.org/packages/d2/38/1e2957f6a96ea767cad39048afe005cc92eac479f36c982d472823a0b6d8/value_object_sindri-0.3.0-py3-none-any.whl", hash = "sha256:3df51eb9c2ec1b4fdb56e1136bb6cb16d20703b25f91aba7e69a387113909856", size = 23064, upload-time = "2026-10-25T22:54:11.482Z" },
 ]
 
 [[package]]

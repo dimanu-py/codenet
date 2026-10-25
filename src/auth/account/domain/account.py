@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Self
 
-from value_object import Aggregate
+from value_object import AggregateRoot
 
 from src.auth.account.domain.account_created_at import AccountCreatedAt
 from src.auth.account.domain.account_email import AccountEmail
@@ -12,7 +12,7 @@ from src.auth.account.domain.account_username import AccountUsername
 from src.shared.domain.clock import Clock
 
 
-class Account(Aggregate):
+class Account(AggregateRoot):
     def __init__(self, id: str, username: str, email: str, password: str, status: str, created_at: datetime) -> None:
         self._id = AccountId(id)
         self._username = AccountUsername(username)
