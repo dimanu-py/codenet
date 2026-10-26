@@ -2,8 +2,8 @@ from datetime import UTC, datetime
 
 from expects import equal, expect, raise_error
 
-from shared.domain.exceptions.domain_error import DomainValidationError
 from src.auth.account.domain.account_created_at import AccountCreatedAt
+from src.shared.domain.exceptions.domain_error import DomainValidationError
 
 
 class TestAccountCreatedAt:

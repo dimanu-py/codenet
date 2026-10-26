@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from value_object import ValueObject, validate
 
-from shared.domain.exceptions.domain_error import DomainValidationError
+from src.shared.domain.exceptions.domain_error import DomainValidationError
 
 
 class AccountCreatedAt(ValueObject[datetime]):
