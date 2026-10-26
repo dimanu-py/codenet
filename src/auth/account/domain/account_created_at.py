@@ -1,24 +1,26 @@
 from datetime import datetime, timedelta
 
-from value_object import SindriValidationError, ValueObject, validate
+from value_object import ValueObject, validate
+
+from shared.domain.exceptions.domain_error import DomainValidationError
 
 
 class AccountCreatedAt(ValueObject[datetime]):
     @validate
     def _ensure_has_value(self) -> None:
         if self._value is None:
-            raise SindriValidationError(message="Value is required, can't be None")
+            raise DomainValidationError(message="Value is required, can't be None")
 
     @validate
     def _ensure_is_datetime(self) -> None:
         if not isinstance(self._value, datetime):
-            raise SindriValidationError(
+            raise DomainValidationError(
                 message=f"Value '{self._value}' is not of type {datetime.__name__}",
             )
 
     @validate
     def _ensure_has_utc_timezone(self) -> None:
         if self._value.tzinfo is None or self._value.tzinfo.utcoffset(self._value) != timedelta(0):
-            raise SindriValidationError(
+            raise DomainValidationError(
                 message=f"Value '{self._value}' must have UTC timezone",
             )
