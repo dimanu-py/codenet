@@ -4,13 +4,12 @@ import pytest
 from dishka import AsyncContainer
 from dishka.integrations.fastapi import setup_dishka
 from httpx import ASGITransport, AsyncClient
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.app.main import create_app
 
 
 @pytest.fixture
-async def client(container: AsyncContainer, session: AsyncSession) -> AsyncGenerator[AsyncClient]:
+async def client(container: AsyncContainer) -> AsyncGenerator[AsyncClient]:
     app = create_app()
     setup_dishka(container, app)
 
