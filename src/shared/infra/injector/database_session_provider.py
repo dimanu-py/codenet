@@ -1,3 +1,4 @@
+import json
 from collections.abc import AsyncGenerator
 
 from dishka import Provider, Scope, provide
@@ -15,7 +16,11 @@ class DatabaseSessionProvider(Provider):
 
     @provide
     def session_factory(self, settings: Settings) -> async_sessionmaker[AsyncSession]:
-        engine = create_async_engine(str(settings.postgres_url), echo=False)
+        engine = create_async_engine(
+            str(settings.postgres_url),
+            echo=False,
+            json_serializer=lambda obj: json.dumps(obj, default=str),
+        )
         return async_sessionmaker(bind=engine, expire_on_commit=False, autoflush=False)
 
     @provide(scope=Scope.REQUEST)

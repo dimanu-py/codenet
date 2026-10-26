@@ -1,3 +1,4 @@
+import json
 from collections.abc import AsyncGenerator, Callable, Coroutine, Generator
 from typing import Any
 
@@ -22,6 +23,7 @@ def async_engine(postgres_container: PostgresTestContainer) -> AsyncEngine:
     return create_async_engine(
         postgres_container.get_base_url(),
         echo=False,
+        json_serializer=lambda obj: json.dumps(obj, default=str),
     )
 
 
