@@ -15,12 +15,10 @@ class ProviderRegistry:
 
     def _find_potential_modules(self) -> list[str]:
         modules = []
-        for injector_dir in self._SRC_DIR.rglob("injector"):
-            provider_file = next(injector_dir.glob("*_provider.py"), None)
-            if provider_file:
-                relative = provider_file.relative_to(self._SRC_DIR.parent)
-                module = ".".join(relative.with_suffix("").parts)
-                modules.append(module)
+        for provider_file in self._SRC_DIR.rglob("injector/*_provider.py"):
+            relative = provider_file.relative_to(self._SRC_DIR.parent)
+            module = ".".join(relative.with_suffix("").parts)
+            modules.append(module)
         return modules
 
     def register_providers(self) -> None:
