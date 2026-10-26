@@ -9,7 +9,7 @@ from src.auth.account.delivery.signup.signup_account_request import SignupAccoun
 from src.auth.account.infra.api.signup.signup_account_controller import SignupAccountController
 from src.shared.delivery.fastapi_parameter import ApiDocExample, PathParameter
 from src.shared.delivery.fastapi_response import FastAPIResponse
-from src.shared.infra.api.error_response import UnprocessableEntityError
+from src.shared.infra.api.error_response import ConflictErrorResponse, UnprocessableEntityError
 from src.shared.infra.api.success_response import AcceptedResponse
 
 signup_account_router = APIRouter(route_class=DishkaRoute)
@@ -28,6 +28,7 @@ AccountIdPathParameter = Annotated[
     responses={
         status.HTTP_202_ACCEPTED: {"model": AcceptedResponse},
         status.HTTP_422_UNPROCESSABLE_CONTENT: {"model": UnprocessableEntityError},
+        status.HTTP_409_CONFLICT: {"model": ConflictErrorResponse},
     },
 )
 async def signup_account(
