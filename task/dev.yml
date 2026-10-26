@@ -6,7 +6,7 @@ tasks:
     cmds:
       - task: :docker:up
       - task: :db:migrate
-      - uv run uvicorn src.app.main:app --port 8000 --reload
+      - uv run uvicorn src.app.main:create_production_app --factory --port 8000 --reload
 
   local-setup:
     desc: Setup git hooks and install dependencies

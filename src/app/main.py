@@ -48,6 +48,3 @@ def create_production_app() -> FastAPI:
     production_app.add_middleware(CorrelationIdMiddleware)  # type: ignore
 
     return production_app
-
-
-app = create_production_app()
