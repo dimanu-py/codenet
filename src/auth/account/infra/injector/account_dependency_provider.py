@@ -7,6 +7,7 @@ from src.auth.account.infra.api.signup.signup_account_controller import SignupAc
 from src.auth.account.infra.persistence.postgres_account_repository import PostgresAccountRepository
 from src.auth.shared.domain.password_manager import PasswordManager
 from src.auth.shared.infra.argon_password_manager import ArgonPasswordManager
+from src.shared.domain.event_bus.event_bus import EventBus
 from src.shared.infra.datetime_clock import DatetimeClock
 from src.shared.infra.injector.registry import dependency_provider
 
@@ -25,10 +26,13 @@ class AccountDependencyProvider(Provider):
 
     @provide
     def signup_controller(
-        self, account_repository: AccountRepository, password_hasher: PasswordManager
+        self, account_repository: AccountRepository, password_hasher: PasswordManager, event_bus: EventBus
     ) -> SignupAccountController:
         return SignupAccountController(
             use_case=AccountSignup(
-                repository=account_repository, password_hasher=password_hasher, clock=DatetimeClock()
+                repository=account_repository,
+                password_hasher=password_hasher,
+                clock=DatetimeClock(),
+                event_bus=event_bus,
             )
         )
