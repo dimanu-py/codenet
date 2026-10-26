@@ -6,10 +6,13 @@ from src.auth.account.application.signup.account_signup import (
     AccountUsernameAlreadyExists,
 )
 from src.auth.account.domain.account import Account
+from src.auth.account.domain.account_signed_up import AccountSignedUp
 from tests.auth.account.domain.mothers.account_mother import AccountMother
+from tests.auth.account.domain.mothers.account_signed_up_mother import AccountSignedUpMother
 from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
 from tests.auth.shared.infra.fake_password_manager import FakePasswordManager
 from tests.shared.expects.matchers import async_expect, raise_error
+from tests.shared.infra.event_bus.fake_event_bus import FakeEventBus
 from tests.shared.infra.mock_clock import MockClock
 
 
@@ -20,8 +23,12 @@ class TestAccountSignup:
         self._repository = MockAccountRepository()
         self._clock = MockClock()
         self._password_hasher = FakePasswordManager()
+        self._event_bus = FakeEventBus()
         self._signup = AccountSignup(
-            repository=self._repository, password_hasher=self._password_hasher, clock=self._clock
+            repository=self._repository,
+            password_hasher=self._password_hasher,
+            clock=self._clock,
+            event_bus=self._event_bus,
         )
 
     def teardown_method(self) -> None:
@@ -42,6 +49,7 @@ class TestAccountSignup:
         )
 
         self._should_have_saved_account(account)
+        self._should_have_published_event(AccountSignedUpMother.from_account(account))
 
     async def test_should_not_allow_to_signup_account_with_already_registered_email(self) -> None:
         existing_account = AccountMother.any()
@@ -61,6 +69,7 @@ class TestAccountSignup:
         )
 
         self._should_have_not_saved_account()
+        self._should_have_not_published_event()
 
     async def test_should_not_allow_to_signup_account_with_already_registered_username(self) -> None:
         existing_account = AccountMother.any()
@@ -80,6 +89,7 @@ class TestAccountSignup:
         )
 
         self._should_have_not_saved_account()
+        self._should_have_not_published_event()
 
     def _should_have_saved_account(self, account: Account) -> None:
         self._repository.should_have_saved(account)
@@ -92,3 +102,9 @@ class TestAccountSignup:
 
     def _should_match_criteria_with(self, *accounts: list[Account]) -> None:
         self._repository.should_match_criteria_with_successive_calls(*accounts)
+
+    def _should_have_published_event(self, event: AccountSignedUp) -> None:
+        self._event_bus.should_have_published([event])
+
+    def _should_have_not_published_event(self) -> None:
+        self._event_bus.should_have_no_events()

@@ -5,14 +5,18 @@ from src.shared.domain.clock import Clock
 from src.shared.domain.criteria.criteria import Criteria
 from src.shared.domain.criteria.filter import Filter, Filters
 from src.shared.domain.criteria.operator import Operator
+from src.shared.domain.event_bus.event_bus import EventBus
 from src.shared.domain.exceptions.domain_error import ConflictError
 
 
 class AccountSignup:
-    def __init__(self, repository: AccountRepository, password_hasher: PasswordManager, clock: Clock) -> None:
+    def __init__(
+        self, repository: AccountRepository, password_hasher: PasswordManager, clock: Clock, event_bus: EventBus
+    ) -> None:
         self._repository = repository
         self._clock = clock
         self._password_hasher = password_hasher
+        self._event_bus = event_bus
 
     async def execute(self, account_id: str, username: str, email: str, plain_password: str) -> None:
         await self._ensure_account_with_same_email_or_username_is_not_already_signed_up(email, username)
@@ -25,6 +29,7 @@ class AccountSignup:
     async def _signup_account_with(self, account_id: str, username: str, email: str, password: str) -> None:
         account = Account.signup(id=account_id, username=username, email=email, password=password, clock=self._clock)
         await self._repository.save(account)
+        await self._event_bus.publish(account.pull_domain_events())
 
     async def _ensure_account_with_same_email_or_username_is_not_already_signed_up(
         self, email: str, username: str
