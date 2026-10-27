@@ -11,3 +11,8 @@ class DomainEventSubscriber[T: DomainEvent](ABC):
     @abstractmethod
     def subscribed_to(self) -> type[T]:
         raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def name(self) -> str:
+        raise NotImplementedError

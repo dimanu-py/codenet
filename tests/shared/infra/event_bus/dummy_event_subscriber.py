@@ -16,6 +16,10 @@ class DummyEventSubscriber(DomainEventSubscriber[DummyDomainEvent]):
     def subscribed_to(self) -> type[DummyDomainEvent]:
         return DummyDomainEvent
 
+    @property
+    def name(self) -> str:
+        return "dummy_event_subscriber"
+
 
 class FailingEventSubscriber(DomainEventSubscriber[DummyDomainEvent]):
     def __init__(self) -> None:
@@ -27,6 +31,10 @@ class FailingEventSubscriber(DomainEventSubscriber[DummyDomainEvent]):
 
     def subscribed_to(self) -> type[DummyDomainEvent]:
         return DummyDomainEvent
+
+    @property
+    def name(self) -> str:
+        return "failing_event_subscriber"
 
 
 @pytest.mark.unit
