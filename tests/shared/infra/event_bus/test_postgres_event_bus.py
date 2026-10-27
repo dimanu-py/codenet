@@ -40,7 +40,7 @@ class TestPostgresEventBusPublish:
     @pytest.fixture(autouse=True)
     def setup_method(self, session: AsyncSession) -> None:
         self._session = session
-        self._event_bus = PostgresEventBus(session=session, subscribers=[])
+        self._event_bus = PostgresEventBus(session=session, subscribers=[DummyEventSubscriber()])
 
     async def test_should_publish_a_single_event(self) -> None:
         events = [DummyDomainEventMother.any()]
@@ -65,6 +65,24 @@ class TestPostgresEventBusPublish:
 
         events_to_consume = await _get_all_events_to_consume(session=self._session)
         expect(events_to_consume).to(equal(events))
+
+    async def test_should_publish_one_event_per_subscriber(self) -> None:
+        events = [DummyDomainEventMother.any()]
+        event_bus = PostgresEventBus(
+            session=self._session, subscribers=[DummyEventSubscriber(), FailingEventSubscriber()]
+        )
+
+        await event_bus.publish(events)
+
+        stored_events = await _get_all_events_to_consume(session=self._session)
+        expect(stored_events).to(equal(events * 2))
+
+    async def test_should_skip_event_when_there_is_no_subscriber(self) -> None:
+        subscribed_to = DummyDomainEventMother.any()
+        await self._event_bus.publish([DummyDomainEventMother.unknown(), subscribed_to])
+
+        events_to_consume = await _get_all_events_to_consume(session=self._session)
+        expect(events_to_consume).to(equal([subscribed_to]))
 
 
 @pytest.mark.integration

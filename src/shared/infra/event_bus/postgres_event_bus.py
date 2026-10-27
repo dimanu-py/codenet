@@ -46,7 +46,11 @@ class PostgresEventBus(EventBus):
             await self._execute_subscribers_for(event)
 
     async def _store_events_to_publish(self, events: list[DomainEvent]) -> None:
-        events_to_publish = [DomainEventToConsumeModel.from_domain(event) for event in events]
+        events_to_publish = []
+        for event in events:
+            subscribers = self._subscription_mapper.subscribers_for(event.name)
+            for subscriber in subscribers:
+                events_to_publish.append(DomainEventToConsumeModel.from_domain(event, subscriber.name))
         await self._store_events(events_to_publish)
 
     async def _store_events(self, events: list[DomainEventToConsumeModel | DomainEventDeadLetterModel]) -> None:
