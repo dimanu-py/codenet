@@ -1,4 +1,5 @@
-from typing import NamedTuple, override
+from collections import defaultdict
+from typing import override
 
 from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -10,9 +11,20 @@ from src.shared.infra.event_bus.domain_event_dead_letter_model import DomainEven
 from src.shared.infra.event_bus.domain_event_to_consume_model import DomainEventToConsumeModel
 
 
-class _SubscriptionEntry(NamedTuple):
-    event_class: type[DomainEvent]
-    subscribers: list[DomainEventSubscriber]
+class _SubscriptionMapper:
+    def __init__(self, subscribers: list[DomainEventSubscriber]) -> None:
+        self._event_class_by_name: dict[str, type[DomainEvent]] = {}
+        self._subscribers_by_event_name: defaultdict[str, list[DomainEventSubscriber]] = defaultdict(list)
+        for subscriber in subscribers:
+            event_class = subscriber.subscribed_to()
+            self._event_class_by_name[event_class.name] = event_class
+            self._subscribers_by_event_name[event_class.name].append(subscriber)
+
+    def event_class_for(self, event_name: str) -> type[DomainEvent] | None:
+        return self._event_class_by_name.get(event_name)
+
+    def subscribers_for(self, event_name: str) -> list[DomainEventSubscriber]:
+        return self._subscribers_by_event_name.get(event_name, [])
 
 
 class PostgresEventBus(EventBus):
@@ -20,11 +32,7 @@ class PostgresEventBus(EventBus):
 
     def __init__(self, session: AsyncSession, subscribers: list[DomainEventSubscriber]) -> None:
         self._session = session
-        self._entries_by_event_name: dict[str, _SubscriptionEntry] = {}
-        for subscriber in subscribers:
-            event_class = subscriber.subscribed_to()
-            entry = self._entries_by_event_name.setdefault(event_class.name, _SubscriptionEntry(event_class, []))
-            entry.subscribers.append(subscriber)
+        self._subscription_mapper = _SubscriptionMapper(subscribers)
 
     @override
     async def publish(self, events: list[DomainEvent]) -> None:
@@ -55,12 +63,13 @@ class PostgresEventBus(EventBus):
         return query.scalars().all()
 
     async def _execute_subscribers_for(self, db_event: DomainEventToConsumeModel) -> None:
-        entry = self._entries_by_event_name.get(db_event.name)
-        if not entry:
+        event_class = self._subscription_mapper.event_class_for(db_event.name)
+        subscribers_to_event = self._subscription_mapper.subscribers_for(db_event.name)
+        if not event_class or not subscribers_to_event:
             return
-        event = entry.event_class(id=db_event.id, occurred_at=db_event.occurred_at, attributes=db_event.attributes)
+        event = event_class(id=db_event.id, occurred_at=db_event.occurred_at, attributes=db_event.attributes)
         try:
-            for subscriber in entry.subscribers:
+            for subscriber in subscribers_to_event:
                 await subscriber.on(event)
             await self._delete_consumed_event(db_event)
         except Exception:
