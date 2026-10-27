@@ -26,10 +26,11 @@ def upgrade() -> None:
         sa.Column("id", sa.UUID(as_uuid=False), nullable=False),
         sa.Column("occurred_at", sa.DateTime(timezone=True), nullable=False),
         sa.Column("inserted_at", sa.DateTime(timezone=True), nullable=False),
+        sa.Column("subscriber_name", sa.String(), nullable=False),
         sa.Column("attempts", sa.Integer(), nullable=False),
         sa.Column("name", sa.String(), nullable=False),
         sa.Column("attributes", postgresql.JSONB(astext_type=sa.Text()), nullable=False),
-        sa.PrimaryKeyConstraint("id"),
+        sa.PrimaryKeyConstraint("id", "subscriber_name"),
         schema="public",
     )
     # ### end Alembic commands ###

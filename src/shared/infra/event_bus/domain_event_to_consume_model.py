@@ -17,12 +17,13 @@ class DomainEventToConsumeModel(Base):
     occurred_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     inserted_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.now)
     name: Mapped[str] = mapped_column()
+    subscriber_name: Mapped[str] = mapped_column(primary_key=True)
     attributes: Mapped[dict] = mapped_column(JSONB)
     attempts: Mapped[int] = mapped_column(Integer, default=1)
 
     @classmethod
-    def from_domain(cls, event: DomainEvent) -> Self:
-        return cls(**event.to_primitives())
+    def from_domain(cls, event: DomainEvent, subscriber_name: str) -> Self:
+        return cls(**event.to_primitives(), subscriber_name=subscriber_name)
 
     def has_reached_max_attempts(self, max_attempts: int) -> bool:
         return self.attempts >= max_attempts
