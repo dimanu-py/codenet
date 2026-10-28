@@ -14,6 +14,7 @@ class DomainEventDeadLetterModel(Base):
     __table_args__ = {"schema": "public"}
 
     id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True)
+    subscriber_name: Mapped[str] = mapped_column(primary_key=True)
     occurred_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     inserted_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.now)
     name: Mapped[str] = mapped_column()
@@ -24,6 +25,7 @@ class DomainEventDeadLetterModel(Base):
     def from_published_event(cls, event: DomainEventToConsumeModel) -> Self:
         return cls(
             id=event.id,
+            subscriber_name=event.subscriber_name,
             occurred_at=event.occurred_at,
             name=event.name,
             attributes=event.attributes,
