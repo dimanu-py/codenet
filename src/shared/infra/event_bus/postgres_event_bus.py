@@ -1,7 +1,7 @@
 from collections import defaultdict
 from typing import override
 
-from sqlalchemy import delete, select, update
+from sqlalchemy import delete, select, tuple_, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.shared.domain.event_bus.domain_event import DomainEvent
@@ -49,6 +49,31 @@ class PostgresEventBus(EventBus):
         for event in events_to_consume:
             await self._execute_subscribers_for(event)
 
+    async def consume_from_dead_letter(self, subscribers: list[str]) -> None:
+        events_from_dead_letter = await self._get_events_from_dead_letter(subscribers=subscribers)
+        await self._delete_events_from_dead_letter(events_from_dead_letter)
+        events_to_republish = self._build_domain_events_from_dead_letter(events_from_dead_letter)
+        await self.publish(events_to_republish)
+
+    def _build_domain_events_from_dead_letter(
+        self, events_from_dead_letter: list[DomainEventDeadLetterModel]
+    ) -> list[DomainEvent]:
+        events = []
+        for event in events_from_dead_letter:
+            event_class = self._subscription_mapper.event_class_for(event.name)
+            events.append(event_class(id=event.id, occurred_at=event.occurred_at, attributes=event.attributes))
+        return events
+
+    async def _delete_events_from_dead_letter(self, events: list[DomainEventDeadLetterModel]) -> None:
+        query = delete(DomainEventDeadLetterModel).where(
+            tuple_(
+                DomainEventDeadLetterModel.id,
+                DomainEventDeadLetterModel.subscriber_name,
+            ).in_((event.id, event.subscriber_name) for event in events)
+        )
+        await self._session.execute(query)
+        await self._session.flush()
+
     async def _store_events_to_publish(self, events: list[DomainEvent]) -> None:
         events_to_publish = []
         for event in events:
@@ -68,6 +93,16 @@ class PostgresEventBus(EventBus):
             .where(*for_subscribers)
             .order_by(DomainEventToConsumeModel.inserted_at.asc())
             .limit(amount)
+            .with_for_update(skip_locked=True)
+        )
+        return query.scalars().all()
+
+    async def _get_events_from_dead_letter(self, subscribers: list[str]) -> list[DomainEventDeadLetterModel]:
+        for_subscribers = [DomainEventDeadLetterModel.subscriber_name.in_(subscribers)]
+        query = await self._session.execute(
+            select(DomainEventDeadLetterModel)
+            .where(*for_subscribers)
+            .order_by(DomainEventDeadLetterModel.inserted_at.asc())
             .with_for_update(skip_locked=True)
         )
         return query.scalars().all()

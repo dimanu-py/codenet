@@ -156,6 +156,18 @@ class TestPostgresEventBusConsumeOnFailure:
         events_to_consume = await _get_all_events_to_consume(session=self._session)
         expect(events_to_consume).to(equal([]))
 
+    async def test_should_consume_all_events_from_dead_letter(self) -> None:
+        events = await self._given_there_are_events_in_the_dead_letter()
+        subscriber = DummyEventSubscriber()
+        event_bus = PostgresEventBus(session=self._session, subscribers=[subscriber])
+
+        await event_bus.consume_from_dead_letter(subscribers=[subscriber.name])
+
+        events_in_dead_letter = await self._get_events_in_dead_letter()
+        expect(events_in_dead_letter).to(equal([]))
+        events_to_consume = await _get_all_events_to_consume(session=self._session)
+        expect(events_to_consume).to(equal(events))
+
     async def _get_events_in_dead_letter(self) -> list[DomainEvent]:
         result = await self._session.execute(select(DomainEventDeadLetterModel))
         events = result.scalars().all()
@@ -165,3 +177,17 @@ class TestPostgresEventBusConsumeOnFailure:
             )
             for event in events
         ]
+
+    async def _given_there_are_events_in_the_dead_letter(self) -> list[DummyDomainEvent]:
+        domain_event = DummyDomainEventMother.any()
+        event = DomainEventDeadLetterModel(
+            id=domain_event.id,
+            subscriber_name="dummy_event_subscriber",
+            occurred_at=domain_event.occurred_at,
+            name=domain_event.name,
+            attributes=domain_event.attributes,
+            attempts=3,
+        )
+        self._session.add(event)
+        await self._session.commit()
+        return [domain_event]
