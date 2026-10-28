@@ -23,8 +23,12 @@ class _SubscriptionMapper:
     def event_class_for(self, event_name: str) -> type[DomainEvent] | None:
         return self._event_class_by_name.get(event_name)
 
-    def subscribers_for(self, event_name: str) -> list[DomainEventSubscriber]:
+    def subscribers_for_publishing(self, event_name: str) -> list[DomainEventSubscriber]:
         return self._subscribers_by_event_name.get(event_name, [])
+
+    def subscribers_for_consuming(self, event_name: str, subscriber_name: str) -> list[DomainEventSubscriber]:
+        subscribers_for_event = self._subscribers_by_event_name.get(event_name, [])
+        return [subscriber for subscriber in subscribers_for_event if subscriber.name == subscriber_name]
 
 
 class PostgresEventBus(EventBus):
@@ -40,15 +44,15 @@ class PostgresEventBus(EventBus):
             return
         await self._store_events_to_publish(events)
 
-    async def consume(self, amount: int) -> None:
-        events_to_consume = await self._get_events_to_consume(amount=amount)
+    async def consume(self, subscribers: list[str], amount: int) -> None:
+        events_to_consume = await self._get_events_to_consume(subscribers=subscribers, amount=amount)
         for event in events_to_consume:
             await self._execute_subscribers_for(event)
 
     async def _store_events_to_publish(self, events: list[DomainEvent]) -> None:
         events_to_publish = []
         for event in events:
-            subscribers = self._subscription_mapper.subscribers_for(event.name)
+            subscribers = self._subscription_mapper.subscribers_for_publishing(event.name)
             for subscriber in subscribers:
                 events_to_publish.append(DomainEventToConsumeModel.from_domain(event, subscriber.name))
         await self._store_events(events_to_publish)
@@ -57,9 +61,11 @@ class PostgresEventBus(EventBus):
         self._session.add_all(events)
         await self._session.flush()
 
-    async def _get_events_to_consume(self, amount: int) -> list[DomainEventToConsumeModel]:
+    async def _get_events_to_consume(self, subscribers: list[str], amount: int) -> list[DomainEventToConsumeModel]:
+        for_subscribers = [DomainEventToConsumeModel.subscriber_name.in_(subscribers)] if subscribers else []
         query = await self._session.execute(
             select(DomainEventToConsumeModel)
+            .where(*for_subscribers)
             .order_by(DomainEventToConsumeModel.inserted_at.asc())
             .limit(amount)
             .with_for_update(skip_locked=True)
@@ -68,7 +74,9 @@ class PostgresEventBus(EventBus):
 
     async def _execute_subscribers_for(self, db_event: DomainEventToConsumeModel) -> None:
         event_class = self._subscription_mapper.event_class_for(db_event.name)
-        subscribers_to_event = self._subscription_mapper.subscribers_for(db_event.name)
+        subscribers_to_event = self._subscription_mapper.subscribers_for_consuming(
+            db_event.name, db_event.subscriber_name
+        )
         if not event_class or not subscribers_to_event:
             return
         event = event_class(id=db_event.id, occurred_at=db_event.occurred_at, attributes=db_event.attributes)
@@ -83,7 +91,10 @@ class PostgresEventBus(EventBus):
                 await self._increase_attempts(db_event)
 
     async def _delete_consumed_event(self, event: DomainEventToConsumeModel) -> None:
-        query = delete(DomainEventToConsumeModel).where(DomainEventToConsumeModel.id == event.id)
+        query = delete(DomainEventToConsumeModel).where(
+            DomainEventToConsumeModel.id == event.id,
+            DomainEventToConsumeModel.subscriber_name == event.subscriber_name,
+        )
         await self._session.execute(query)
         await self._session.flush()
 
@@ -92,6 +103,7 @@ class PostgresEventBus(EventBus):
             update(DomainEventToConsumeModel)
             .where(
                 DomainEventToConsumeModel.id == event.id,
+                DomainEventToConsumeModel.subscriber_name == event.subscriber_name,
             )
             .values(attempts=DomainEventToConsumeModel.attempts + 1)
         )

@@ -93,12 +93,13 @@ class TestPostgresEventBusConsumeOnSuccess:
     @pytest.fixture(autouse=True)
     def setup_method(self, session: AsyncSession) -> None:
         self._session = session
-        self._event_bus = PostgresEventBus(session=session, subscribers=[DummyEventSubscriber()])
+        self._subscriber = DummyEventSubscriber()
+        self._event_bus = PostgresEventBus(session=session, subscribers=[self._subscriber])
 
     async def test_should_not_consume_anything_when_there_are_no_events(self) -> None:
         events_to_consume_before = await _get_all_events_to_consume(session=self._session)
 
-        await self._event_bus.consume(amount=self._NUMBER_OF_EVENTS_TO_CONSUME)
+        await self._event_bus.consume(subscribers=[self._subscriber.name], amount=self._NUMBER_OF_EVENTS_TO_CONSUME)
 
         events_to_consume_after = await _get_all_events_to_consume(session=self._session)
         expect(events_to_consume_before).to(equal(events_to_consume_after))
@@ -106,19 +107,20 @@ class TestPostgresEventBusConsumeOnSuccess:
     async def test_should_consume_event_when_is_subscribed_to_it(self) -> None:
         await self._event_bus.publish([DummyDomainEventMother.any()])
 
-        await self._event_bus.consume(amount=self._NUMBER_OF_EVENTS_TO_CONSUME)
+        await self._event_bus.consume(subscribers=[self._subscriber.name], amount=self._NUMBER_OF_EVENTS_TO_CONSUME)
 
         events_to_consume = await _get_all_events_to_consume(session=self._session)
         expect(events_to_consume).to(equal([]))
 
-    async def test_should_not_consume_unknown_event(self) -> None:
-        event_unknown = DummyDomainEventMother.unknown()
-        await self._event_bus.publish([event_unknown, DummyDomainEventMother.any()])
+    async def test_should_not_consume_for_another_subscriber(self) -> None:
+        event_bus = PostgresEventBus(session=self._session, subscribers=[self._subscriber, FailingEventSubscriber()])
+        events = [DummyDomainEventMother.any()]
+        await event_bus.publish(events)
 
-        await self._event_bus.consume(amount=self._NUMBER_OF_EVENTS_TO_CONSUME)
+        await event_bus.consume(subscribers=[self._subscriber.name], amount=self._NUMBER_OF_EVENTS_TO_CONSUME)
 
         events_to_consume = await _get_all_events_to_consume(session=self._session)
-        expect(events_to_consume).to(equal([event_unknown]))
+        expect(events_to_consume).to(equal(events))
 
 
 @pytest.mark.integration
@@ -130,12 +132,13 @@ class TestPostgresEventBusConsumeOnFailure:
     @pytest.fixture(autouse=True)
     def setup_method(self, session: AsyncSession) -> None:
         self._session = session
-        self._event_bus = PostgresEventBus(session=self._session, subscribers=[FailingEventSubscriber()])
+        self._subscriber = FailingEventSubscriber()
+        self._event_bus = PostgresEventBus(session=self._session, subscribers=[self._subscriber])
 
     async def test_should_increase_number_of_attempts_after_error_consuming(self) -> None:
         await self._event_bus.publish([DummyDomainEventMother.any()])
 
-        await self._event_bus.consume(amount=self._NUMBER_OF_EVENTS_TO_CONSUME)
+        await self._event_bus.consume(subscribers=[self._subscriber.name], amount=self._NUMBER_OF_EVENTS_TO_CONSUME)
 
         query = select(DomainEventToConsumeModel)
         events_to_consume = (await self._session.execute(query)).scalar_one()
@@ -146,7 +149,7 @@ class TestPostgresEventBusConsumeOnFailure:
         await self._event_bus.publish([event])
 
         for _ in range(self._MAX_ATTEMPTS_TO_CONSUME):
-            await self._event_bus.consume(amount=self._NUMBER_OF_EVENTS_TO_CONSUME)
+            await self._event_bus.consume(subscribers=[self._subscriber.name], amount=self._NUMBER_OF_EVENTS_TO_CONSUME)
 
         events_in_dead_letter = await self._get_events_in_dead_letter()
         expect(events_in_dead_letter).to(equal([event]))
