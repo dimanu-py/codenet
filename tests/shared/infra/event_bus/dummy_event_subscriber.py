@@ -7,6 +7,8 @@ from tests.shared.infra.event_bus.mothers.dummy_domain_event_mother import Dummy
 
 
 class DummyEventSubscriber(DomainEventSubscriber[DummyDomainEvent]):
+    name = "dummy_event_subscriber"
+
     def __init__(self) -> None:
         self.executed_events = []
 
@@ -16,12 +18,11 @@ class DummyEventSubscriber(DomainEventSubscriber[DummyDomainEvent]):
     def subscribed_to(self) -> type[DummyDomainEvent]:
         return DummyDomainEvent
 
-    @property
-    def name(self) -> str:
-        return "dummy_event_subscriber"
 
 
 class FailingEventSubscriber(DomainEventSubscriber[DummyDomainEvent]):
+    name = "failing_event_subscriber"
+
     def __init__(self) -> None:
         self.executed_events = []
 
@@ -31,10 +32,6 @@ class FailingEventSubscriber(DomainEventSubscriber[DummyDomainEvent]):
 
     def subscribed_to(self) -> type[DummyDomainEvent]:
         return DummyDomainEvent
-
-    @property
-    def name(self) -> str:
-        return "failing_event_subscriber"
 
 
 @pytest.mark.unit
