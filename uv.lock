@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = "==3.13.*"
 
 [[package]]
@@ -1350,7 +1350,7 @@ wheels = [
 
 [[package]]
 name = "pydantic-settings"
-version = "2.16.1"
+version = "2.16.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pydantic" },
@@ -1358,9 +1358,9 @@ dependencies = [
     { name = "typing-extensions" },
     { name = "typing-inspection" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/05/ca/7817b4bf0c4b15c6a6ab8cdf4cb96c268335a8ca2f525de93b6ebe4c7d28/pydantic_settings-2.16.1.tar.gz", hash = "sha256:aff602a1886338c2df3d1e958e2193a8dc33cec75b91f202e83fd98484b4b0da", size = 303436, upload-time = "2026-10-20T11:37:19.024Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d0/31/21d21e0e38a8f5f7a7f0cde22820117b6d17d6bc36f348129527f915d7f4/pydantic_settings-2.16.2.tar.gz", hash = "sha256:3dc08ffabed2bbd5dc2dd55ead7b78b4e4c5cd776aecd04310db5f1224caaf46", size = 309225, upload-time = "2026-10-28T11:14:28.066Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3c/74/fdf926afe145d8629c4b2ff57f4ea1d64ed7abc4d84d97463b2517a2547e/pydantic_settings-2.16.1-py3-none-any.whl", hash = "sha256:30f5313340da4e8f1b440d1910b92a5bc3ccbb6b4ba70ec2b8395bc921f418f5", size = 80771, upload-time = "2026-10-20T11:37:17.298Z" },
+    { url = "https://files.pythonhosted.org/packages/39/88/4131c51ff87b7cd7f82a1194d0c0a2b7ca68c72d9da04c3b7e69ab91a79f/pydantic_settings-2.16.2-py3-none-any.whl", hash = "sha256:8d523e5c129b097686bde019bd6109bff53f4c8c3f63f1ddf9933ffa42e5ab4f", size = 81994, upload-time = "2026-10-28T11:14:26.716Z" },
 ]
 
 [[package]]
@@ -2102,11 +2102,11 @@ wheels = [
 
 [[package]]
 name = "value-object-sindri"
-version = "0.3.0"
+version = "0.3.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/b7/1d/be6f5a9d168564201ae95a8aa93b79fe8c1541857ab4170b4e1431f67958/value_object_sindri-0.3.0.tar.gz", hash = "sha256:9d787ded66a77c00d1acf4ae8298af376ab7755cd93fd0cd0121cbf6c2f44e29", size = 21546, upload-time = "2026-10-25T22:54:12.694Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/0c/99/dd84d6b81ec167f5480549a6b7f08d0fac9f2ed4b0f69a843d9ba568cbc7/value_object_sindri-0.3.1.tar.gz", hash = "sha256:a76af3c980a657be427101a5479adf2784453a089a7b7b43915671b07c16dddf", size = 21607, upload-time = "2026-10-27T20:42:17.727Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d2/38/1e2957f6a96ea767cad39048afe005cc92eac479f36c982d472823a0b6d8/value_object_sindri-0.3.0-py3-none-any.whl", hash = "sha256:3df51eb9c2ec1b4fdb56e1136bb6cb16d20703b25f91aba7e69a387113909856", size = 23064, upload-time = "2026-10-25T22:54:11.482Z" },
+    { url = "https://files.pythonhosted.org/packages/bb/76/37755c9a1984e71f34cb374d5ccf88b937601f57cb0e7baf869d07a955df/value_object_sindri-0.3.1-py3-none-any.whl", hash = "sha256:bd3dcd6c9087a071a70fdd34068aa394d913a3f6670641734d35945336f12998", size = 23052, upload-time = "2026-10-27T20:42:16.577Z" },
 ]
 
 [[package]]
