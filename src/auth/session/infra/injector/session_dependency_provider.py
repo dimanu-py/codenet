@@ -7,7 +7,7 @@ from src.auth.session.infra.jwt_token_issuer import JwtTokenIssuer
 from src.auth.session.infra.service.postgres_account_credentials_finder import PostgresAccountCredentialsFinder
 from src.auth.shared.infra.argon_password_manager import ArgonPasswordManager
 from src.shared.delivery.settings import Settings
-from src.shared.infra.injector.registry import dependency_provider
+from src.shared.infra.injector.provider_registry import dependency_provider
 
 
 @dependency_provider

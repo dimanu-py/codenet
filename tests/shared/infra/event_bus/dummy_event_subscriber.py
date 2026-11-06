@@ -19,7 +19,6 @@ class DummyEventSubscriber(DomainEventSubscriber[DummyDomainEvent]):
         return DummyDomainEvent
 
 
-
 class FailingEventSubscriber(DomainEventSubscriber[DummyDomainEvent]):
     name = "failing_event_subscriber"
 

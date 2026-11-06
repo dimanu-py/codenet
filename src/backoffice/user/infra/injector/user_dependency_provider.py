@@ -7,7 +7,7 @@ from src.backoffice.user.domain.user_repository import UserRepository
 from src.backoffice.user.infra.api.removal.user_removal_controller import UserRemovalController
 from src.backoffice.user.infra.api.search.user_search_controller import UserSearchController
 from src.backoffice.user.infra.persistence.postgres_user_repository import PostgresUserRepository
-from src.shared.infra.injector.registry import dependency_provider
+from src.shared.infra.injector.provider_registry import dependency_provider
 
 
 @dependency_provider

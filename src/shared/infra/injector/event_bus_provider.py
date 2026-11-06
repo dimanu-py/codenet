@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.shared.domain.event_bus.event_bus import EventBus
 from src.shared.infra.event_bus.postgres_event_bus import PostgresEventBus
-from src.shared.infra.injector.registry import dependency_provider
+from src.shared.infra.injector.provider_registry import dependency_provider
 
 
 @dependency_provider

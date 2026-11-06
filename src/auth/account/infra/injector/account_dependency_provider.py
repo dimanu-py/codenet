@@ -9,7 +9,7 @@ from src.auth.shared.domain.password_manager import PasswordManager
 from src.auth.shared.infra.argon_password_manager import ArgonPasswordManager
 from src.shared.domain.event_bus.event_bus import EventBus
 from src.shared.infra.datetime_clock import DatetimeClock
-from src.shared.infra.injector.registry import dependency_provider
+from src.shared.infra.injector.provider_registry import dependency_provider
 
 
 @dependency_provider

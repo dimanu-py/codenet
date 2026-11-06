@@ -4,7 +4,7 @@ import pytest
 from dishka import AsyncContainer, make_async_container
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.shared.infra.injector.registry import get_registered_providers, register_providers
+from src.shared.infra.injector.provider_registry import get_registered_providers, register_providers
 from tests.shared.infra.injector.database_session_provider_fixture import DatabaseSessionProviderFixture
 
 
