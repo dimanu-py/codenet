@@ -49,6 +49,21 @@ class TestAccountSignup:
         )
 
         self._should_have_saved_account(account)
+
+    async def test_should_publish_event_when_a_new_account_is_signed_up(self) -> None:
+        account = AccountMother.any()
+        account_primitives = account.to_primitives()
+
+        self._clock.should_generate(account_primitives["created_at"])
+        self._should_not_find_account_matching_criteria()
+
+        await self._signup.execute(
+            account_id=account_primitives["id"],
+            username=account_primitives["username"],
+            email=account_primitives["email"],
+            plain_password=account_primitives["password"],
+        )
+
         self._should_have_published_event(AccountSignedUpMother.from_account(account))
 
     async def test_should_not_allow_to_signup_account_with_already_registered_email(self) -> None:
