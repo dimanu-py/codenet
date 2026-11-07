@@ -17,3 +17,7 @@ class AccountPasswordHashPrimitivesMother(ObjectMother):
     @classmethod
     def from_plain_password(cls, plain_password: str) -> str:
         return cls._HASHER.hash(plain_password)
+
+    @classmethod
+    def dummy(cls) -> str:
+        return cls._HASHER.hash("dummy.supersecure.password")

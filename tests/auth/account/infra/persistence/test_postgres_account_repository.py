@@ -23,7 +23,7 @@ class TestPostgresAccountRepository:
         self._repository = PostgresAccountRepository(session)
 
     async def test_should_save_and_find_stored_account(self) -> None:
-        account = AccountMother.any()
+        account = AccountMother.dummy()
 
         await self._repository.save(account)
         saved_account = await self._get_saved_account(account.id)

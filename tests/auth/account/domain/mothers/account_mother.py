@@ -23,6 +23,17 @@ class AccountMother(ObjectMother):
             created_at=AccountCreatedAtPrimitivesMother.any(),
         )
 
+    @staticmethod
+    def dummy() -> Account:
+        return Account(
+            id=AccountIdPrimitivesMother.dummy(),
+            username=AccountUsernamePrimitivesMother.dummy(),
+            email=AccountEmailPrimitivesMother.dummy(),
+            password=AccountPasswordHashPrimitivesMother.dummy(),
+            status=AccountStatusPrimitivesMother.active(),
+            created_at=AccountCreatedAtPrimitivesMother.dummy(),
+        )
+
     @classmethod
     def create(cls, **overrides) -> Account:
         default = cls.any().to_primitives()

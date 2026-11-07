@@ -35,7 +35,7 @@ class TestAccountSignup:
         self._repository.reset_mocks()
 
     async def test_should_signup_a_new_account(self) -> None:
-        account = AccountMother.any()
+        account = AccountMother.dummy()
         account_primitives = account.to_primitives()
 
         self._clock.should_generate(account_primitives["created_at"])
@@ -51,7 +51,7 @@ class TestAccountSignup:
         self._should_have_saved_account(account)
 
     async def test_should_publish_event_when_a_new_account_is_signed_up(self) -> None:
-        account = AccountMother.any()
+        account = AccountMother.dummy()
         account_primitives = account.to_primitives()
 
         self._clock.should_generate(account_primitives["created_at"])
@@ -67,7 +67,7 @@ class TestAccountSignup:
         self._should_have_published_event(AccountSignedUpMother.from_account(account))
 
     async def test_should_not_allow_to_signup_account_with_already_registered_email(self) -> None:
-        existing_account = AccountMother.any()
+        existing_account = AccountMother.dummy()
         existing_account_primitives = existing_account.to_primitives()
         new_account_primitives = AccountMother.create(email=existing_account_primitives["email"]).to_primitives()
 
@@ -87,7 +87,7 @@ class TestAccountSignup:
         self._should_have_not_published_event()
 
     async def test_should_not_allow_to_signup_account_with_already_registered_username(self) -> None:
-        existing_account = AccountMother.any()
+        existing_account = AccountMother.dummy()
         existing_account_primitives = existing_account.to_primitives()
         new_account_primitives = AccountMother.create(username=existing_account_primitives["username"]).to_primitives()
 

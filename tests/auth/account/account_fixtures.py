@@ -10,7 +10,7 @@ from tests.auth.account.domain.mothers.account_username_primitives_mother import
 
 @pytest.fixture
 async def existing_account(add_to_database) -> Account:
-    account = AccountMother.any()
+    account = AccountMother.dummy()
     await add_to_database(AccountModel.from_domain(account))
     return account
 

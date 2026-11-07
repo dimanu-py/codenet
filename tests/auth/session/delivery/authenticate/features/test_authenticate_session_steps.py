@@ -36,7 +36,7 @@ def signed_up_account(existing_account_for_authentication: dict[str, str]) -> di
 
 @given("I haven't registered an account", target_fixture="non_existing_account")
 def non_existing_account() -> dict:
-    return AccountMother.any().to_primitives()
+    return AccountMother.dummy().to_primitives()
 
 
 @when("I attempt to authenticate with valid credentials", target_fixture="authenticate_response")
