@@ -10,7 +10,6 @@ from src.auth.account.domain.account_password_hash import AccountPasswordHash
 from src.auth.account.domain.account_signed_up import AccountSignedUp, AccountSignedUpAttributes
 from src.auth.account.domain.account_status import AccountStatus
 from src.auth.account.domain.account_username import AccountUsername
-from src.shared.domain.clock import Clock
 from src.shared.domain.event_bus.domain_event import DomainEvent
 
 
@@ -25,19 +24,19 @@ class Account(AggregateRoot):
         self.__domain_events = []
 
     @classmethod
-    def signup(cls, id: str, username: str, email: str, password: str, clock: Clock) -> Self:
+    def signup(cls, id: str, username: str, email: str, password: str, created_at: datetime) -> Self:
         account = cls(
             id=id,
             username=username,
             email=email,
             password=password,
             status=AccountStatus.default(),
-            created_at=clock.now(),
+            created_at=created_at,
         )
         account._record(
             event=AccountSignedUp(
                 id=id,
-                occurred_at=clock.now(),
+                occurred_at=created_at,
                 attributes=AccountSignedUpAttributes(**account.to_primitives(exclude="password")),
             )
         )

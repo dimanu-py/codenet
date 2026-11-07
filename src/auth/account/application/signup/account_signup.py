@@ -27,7 +27,9 @@ class AccountSignup:
         return await self._password_hasher.hash(password)
 
     async def _signup_account_with(self, account_id: str, username: str, email: str, password: str) -> None:
-        account = Account.signup(id=account_id, username=username, email=email, password=password, clock=self._clock)
+        account = Account.signup(
+            id=account_id, username=username, email=email, password=password, created_at=self._clock.now()
+        )
         await self._repository.save(account)
         await self._event_bus.publish(account.pull_domain_events())
 
