@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Self
+from typing import Self, TypedDict
 
 from value_object import AggregateRoot
 
@@ -11,6 +11,15 @@ from src.auth.account.domain.account_signed_up import AccountSignedUp, AccountSi
 from src.auth.account.domain.account_status import AccountStatus
 from src.auth.account.domain.account_username import AccountUsername
 from src.shared.domain.event_bus.domain_event import DomainEvent
+
+
+class AccountPrimitives(TypedDict):
+    id: str
+    username: str
+    email: str
+    password: str
+    status: str
+    created_at: datetime
 
 
 class Account(AggregateRoot):
