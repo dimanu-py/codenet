@@ -24,11 +24,11 @@ from tests.auth.account.domain.mothers.account_username_primitives_mother import
 class TestSignupAccountController:
     _response = None
     _ANY_REQUEST_BODY = SignupAccountRequest(
-        username=AccountUsernamePrimitivesMother.any(),
-        email=AccountEmailPrimitivesMother.any(),
-        password=AccountPasswordHashPrimitivesMother.any(),
+        username=AccountUsernamePrimitivesMother.dummy(),
+        email=AccountEmailPrimitivesMother.dummy(),
+        password=AccountPasswordHashPrimitivesMother.plain_password(),
     )
-    _ANY_ACCOUNT_ID = AccountIdPrimitivesMother.any()
+    _ANY_ACCOUNT_ID = AccountIdPrimitivesMother.dummy()
 
     def setup_method(self) -> None:
         self._use_case = AsyncMock(spec=AccountSignup)

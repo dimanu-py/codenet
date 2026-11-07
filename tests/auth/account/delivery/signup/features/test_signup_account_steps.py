@@ -5,6 +5,7 @@ from expects import equal, expect
 from httpx import AsyncClient, Response
 from pytest_bdd import given, scenarios, then, when
 
+from src.auth.account.domain.account import AccountPrimitives
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
 from tests.auth.account.domain.mothers.account_id_primitives_mother import AccountIdPrimitivesMother
 from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import (
@@ -22,27 +23,27 @@ _ROUTE_PATH = "/app/auth/accounts/"
 @given("I have filled in the signup form with valid information", target_fixture="signup_form")
 def filled_signup_form() -> dict:
     return {
-        "username": AccountUsernamePrimitivesMother.any(),
-        "email": AccountEmailPrimitivesMother.any(),
-        "password": AccountPasswordHashPrimitivesMother.any(),
+        "username": AccountUsernamePrimitivesMother.dummy(),
+        "email": AccountEmailPrimitivesMother.dummy(),
+        "password": AccountPasswordHashPrimitivesMother.plain_password(),
     }
 
 
 @given("I have filled in the signup form with a username that is already registered", target_fixture="signup_form")
-def filled_signup_form_with_existing_username(existing_account_username: str) -> dict:
+def filled_signup_form_with_existing_username(existing_account: AccountPrimitives) -> dict:
     return {
-        "username": existing_account_username,
-        "email": AccountEmailPrimitivesMother.any(),
-        "password": AccountPasswordHashPrimitivesMother.any(),
+        "username": existing_account["username"],
+        "email": "different.email@gmail.com",
+        "password": AccountPasswordHashPrimitivesMother.plain_password(),
     }
 
 
 @given("I have filled in the signup form with an email that is already registered", target_fixture="signup_form")
-def filled_signup_form_with_existing_email(existing_account_email: str) -> dict:
+def filled_signup_form_with_existing_email(existing_account: AccountPrimitives) -> dict:
     return {
-        "username": AccountUsernamePrimitivesMother.any(),
-        "email": existing_account_email,
-        "password": AccountPasswordHashPrimitivesMother.any(),
+        "username": "mario.dev",
+        "email": existing_account["email"],
+        "password": AccountPasswordHashPrimitivesMother.plain_password(),
     }
 
 

@@ -2,6 +2,7 @@ import pytest
 from expects import be_true, equal, expect
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.auth.account.domain.account import AccountPrimitives
 from src.auth.session.domain.account_auth_credentials import AccountAuthCredentials
 from src.auth.session.domain.login_identifier import LoginIdentifier
 from src.auth.session.infra.service.postgres_account_credentials_finder import PostgresAccountCredentialsFinder
@@ -15,9 +16,10 @@ class TestPostgresAccountCredentialsFinder:
         self._session = session
         self._credentials_finder = PostgresAccountCredentialsFinder(session)
 
-    async def test_should_return_account_credentials_of_an_existing_account_using_email(self, existing_account) -> None:
-        account_primitives = existing_account.to_primitives()
-        login_identifier = LoginIdentifier(account_primitives["email"])
+    async def test_should_return_account_credentials_of_an_existing_account_using_email(
+        self, existing_account: AccountPrimitives
+    ) -> None:
+        login_identifier = LoginIdentifier(existing_account["email"])
 
         account_auth_credentials = await self._credentials_finder.find_by_login_identifier(login_identifier)
 
@@ -25,18 +27,17 @@ class TestPostgresAccountCredentialsFinder:
         expect(account_auth_credentials.unwrap()).to(
             equal(
                 AccountAuthCredentials(
-                    account_id=account_primitives["id"],
-                    password=account_primitives["password"],
-                    status=account_primitives["status"],
+                    account_id=existing_account["id"],
+                    password=existing_account["password"],
+                    status=existing_account["status"],
                 )
             )
         )
 
     async def test_should_return_account_credentials_of_an_existing_account_using_username(
-        self, existing_account
+        self, existing_account: AccountPrimitives
     ) -> None:
-        account_primitives = existing_account.to_primitives()
-        login_identifier = LoginIdentifier(account_primitives["username"])
+        login_identifier = LoginIdentifier(existing_account["username"])
 
         account_auth_credentials = await self._credentials_finder.find_by_login_identifier(login_identifier)
 
@@ -44,9 +45,9 @@ class TestPostgresAccountCredentialsFinder:
         expect(account_auth_credentials.unwrap()).to(
             equal(
                 AccountAuthCredentials(
-                    account_id=account_primitives["id"],
-                    password=account_primitives["password"],
-                    status=account_primitives["status"],
+                    account_id=existing_account["id"],
+                    password=existing_account["password"],
+                    status=existing_account["status"],
                 )
             )
         )

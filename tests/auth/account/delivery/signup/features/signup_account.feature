@@ -1,6 +1,6 @@
 Feature: Account Signup
     As a new user
-    I want to create an account and a user profile
+    I want to create an account
     So that I can access the codenet's features
 
     Scenario: Successful account signup

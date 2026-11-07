@@ -21,7 +21,7 @@ class MockAccountRepository(AccountRepository):
         return await self._mock_match(criteria)
 
     def should_have_saved(self, account: AccountPrimitives) -> None:
-        self._mock_save.assert_awaited_once_with(Account.from_primitives(account))
+        self._mock_save.assert_awaited_once_with(Account(**account))
 
     def should_not_have_saved_account(self) -> None:
         self._mock_save.assert_not_awaited()
@@ -30,7 +30,7 @@ class MockAccountRepository(AccountRepository):
         self._mock_match.return_value = Accounts([])
 
     def should_match_criteria_with_successive_calls(self, *accounts: AccountPrimitives) -> None:
-        self._mock_match.side_effect = [Accounts([Account.from_primitives(account)]) for account in accounts]
+        self._mock_match.side_effect = [Accounts([Account(**account)]) for account in accounts]
 
     def reset_mocks(self) -> None:
         self._mock_save.reset_mock(return_value=True, side_effect=True)

@@ -4,15 +4,11 @@ import pytest
 from expects import equal, expect, have_keys
 from fastapi import Response
 from httpx import AsyncClient
-from object_mother import StringPrimitivesMother
 from pytest_bdd import given, scenarios, then, when
 
-from src.auth.account.infra.persistence.account_model import AccountModel
+from src.auth.account.domain.account import AccountPrimitives
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
-from tests.auth.account.domain.mothers.account_mother import AccountMother
-from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import (
-    AccountPasswordHashPrimitivesMother,
-)
+from tests.auth.account.domain.mothers.account_mother import AccountPrimitivesMother
 
 pytestmark = [pytest.mark.acceptance]
 
@@ -21,12 +17,8 @@ scenarios("authenticate_session.feature")
 
 
 @pytest.fixture
-async def existing_account_for_authentication(add_to_database) -> dict[str, str]:
-    plain_password = StringPrimitivesMother.any()
-    hashed_password = AccountPasswordHashPrimitivesMother.from_plain_password(plain_password)
-    email = AccountEmailPrimitivesMother.any()
-    await add_to_database(AccountModel.from_domain(AccountMother.create(password=hashed_password, email=email)))
-    return {"email": email, "plain_password": plain_password}
+async def existing_account_for_authentication(add_to_database, existing_account: AccountPrimitives) -> dict[str, str]:
+    return {"email": existing_account["email"], "plain_password": existing_account["password"]}
 
 
 @given("I have a registered account with valid email and password", target_fixture="existing_account")
@@ -35,12 +27,12 @@ def signed_up_account(existing_account_for_authentication: dict[str, str]) -> di
 
 
 @given("I haven't registered an account", target_fixture="non_existing_account")
-def non_existing_account() -> dict:
-    return AccountMother.dummy().to_primitives()
+def non_existing_account() -> AccountPrimitives:
+    return AccountPrimitivesMother.dummy()
 
 
 @when("I attempt to authenticate with valid credentials", target_fixture="authenticate_response")
-def authenticate_session_with_valid_credentials(client: AsyncClient, existing_account: dict) -> Response:
+def authenticate_session_with_valid_credentials(client: AsyncClient, existing_account: AccountPrimitives) -> Response:
     loop = asyncio.get_event_loop()
     return loop.run_until_complete(
         client.post(
