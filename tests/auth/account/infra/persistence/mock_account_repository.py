@@ -1,7 +1,7 @@
 from typing import override
 from unittest.mock import AsyncMock
 
-from src.auth.account.domain.account import Account
+from src.auth.account.domain.account import Account, AccountPrimitives
 from src.auth.account.domain.account_repository import AccountRepository
 from src.auth.account.domain.accounts import Accounts
 from src.shared.domain.criteria.criteria import Criteria
@@ -20,8 +20,8 @@ class MockAccountRepository(AccountRepository):
     async def matching(self, criteria: Criteria) -> Accounts:
         return await self._mock_match(criteria)
 
-    def should_have_saved(self, account: Account) -> None:
-        self._mock_save.assert_awaited_once_with(account)
+    def should_have_saved(self, account: AccountPrimitives) -> None:
+        self._mock_save.assert_awaited_once_with(Account.from_primitives(account))
 
     def should_not_have_saved_account(self) -> None:
         self._mock_save.assert_not_awaited()
@@ -29,8 +29,8 @@ class MockAccountRepository(AccountRepository):
     def should_not_match_criteria(self) -> None:
         self._mock_match.return_value = Accounts([])
 
-    def should_match_criteria_with_successive_calls(self, *accounts_lists: list[Account]) -> None:
-        self._mock_match.side_effect = [Accounts(accounts) for accounts in accounts_lists]
+    def should_match_criteria_with_successive_calls(self, *accounts: AccountPrimitives) -> None:
+        self._mock_match.side_effect = [Accounts([Account.from_primitives(account)]) for account in accounts]
 
     def reset_mocks(self) -> None:
         self._mock_save.reset_mock(return_value=True, side_effect=True)

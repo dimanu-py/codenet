@@ -5,9 +5,9 @@ from src.auth.account.application.signup.account_signup import (
     AccountSignup,
     AccountUsernameAlreadyExists,
 )
-from src.auth.account.domain.account import Account
+from src.auth.account.domain.account import AccountPrimitives
 from src.auth.account.domain.account_signed_up import AccountSignedUp
-from tests.auth.account.domain.mothers.account_mother import AccountMother
+from tests.auth.account.domain.mothers.account_mother import AccountPrimitivesMother
 from tests.auth.account.domain.mothers.account_signed_up_mother import AccountSignedUpMother
 from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
 from tests.auth.shared.infra.fake_password_manager import FakePasswordManager
@@ -35,8 +35,7 @@ class TestAccountSignup:
         self._repository.reset_mocks()
 
     async def test_should_signup_a_new_account(self) -> None:
-        account = AccountMother.dummy()
-        account_primitives = account.to_primitives()
+        account_primitives = AccountPrimitivesMother.dummy()
 
         self._clock.should_generate(account_primitives["created_at"])
         self._should_not_find_account_matching_criteria()
@@ -48,11 +47,10 @@ class TestAccountSignup:
             plain_password=account_primitives["password"],
         )
 
-        self._should_have_saved_account(account)
+        self._should_have_saved_account(account_primitives)
 
     async def test_should_publish_event_when_a_new_account_is_signed_up(self) -> None:
-        account = AccountMother.dummy()
-        account_primitives = account.to_primitives()
+        account_primitives = AccountPrimitivesMother.dummy()
 
         self._clock.should_generate(account_primitives["created_at"])
         self._should_not_find_account_matching_criteria()
@@ -64,14 +62,13 @@ class TestAccountSignup:
             plain_password=account_primitives["password"],
         )
 
-        self._should_have_published_event(AccountSignedUpMother.from_account(account))
+        self._should_have_published_event(AccountSignedUpMother.from_account(account_primitives))
 
     async def test_should_not_allow_to_signup_account_with_already_registered_email(self) -> None:
-        existing_account = AccountMother.dummy()
-        existing_account_primitives = existing_account.to_primitives()
-        new_account_primitives = AccountMother.create(email=existing_account_primitives["email"]).to_primitives()
+        existing_account_primitives = AccountPrimitivesMother.dummy()
+        new_account_primitives = AccountPrimitivesMother.sharing_email_with(existing_account_primitives)
 
-        self._should_match_criteria_with([existing_account])
+        self._should_match_criteria_with(existing_account_primitives)
 
         signup_information = {
             "account_id": new_account_primitives["id"],
@@ -87,11 +84,10 @@ class TestAccountSignup:
         self._should_have_not_published_event()
 
     async def test_should_not_allow_to_signup_account_with_already_registered_username(self) -> None:
-        existing_account = AccountMother.dummy()
-        existing_account_primitives = existing_account.to_primitives()
-        new_account_primitives = AccountMother.create(username=existing_account_primitives["username"]).to_primitives()
+        existing_account_primitives = AccountPrimitivesMother.dummy()
+        new_account_primitives = AccountPrimitivesMother.sharing_username_with(existing_account_primitives)
 
-        self._should_match_criteria_with([existing_account])
+        self._should_match_criteria_with(existing_account_primitives)
 
         signup_information = {
             "account_id": new_account_primitives["id"],
@@ -106,7 +102,7 @@ class TestAccountSignup:
         self._should_have_not_saved_account()
         self._should_have_not_published_event()
 
-    def _should_have_saved_account(self, account: Account) -> None:
+    def _should_have_saved_account(self, account: AccountPrimitives) -> None:
         self._repository.should_have_saved(account)
 
     def _should_have_not_saved_account(self) -> None:
@@ -115,7 +111,7 @@ class TestAccountSignup:
     def _should_not_find_account_matching_criteria(self) -> None:
         self._repository.should_not_match_criteria()
 
-    def _should_match_criteria_with(self, *accounts: list[Account]) -> None:
+    def _should_match_criteria_with(self, *accounts: AccountPrimitives) -> None:
         self._repository.should_match_criteria_with_successive_calls(*accounts)
 
     def _should_have_published_event(self, event: AccountSignedUp) -> None:
