@@ -3,8 +3,8 @@ from unittest.mock import AsyncMock
 import pytest
 from expects import equal, expect
 
-from src.auth.session.application.authenticate.session_authenticator import InvalidCredentials, SessionAuthenticator
-from src.auth.session.infra.api.authenticate.authenticate_session_controller import AuthenticateSessionController
+from src.auth.session.application.session_authenticator import InvalidCredentials, SessionAuthenticator
+from src.auth.session.infra.api.authenticate_session_controller import AuthenticateSessionController
 from src.auth.session.infra.authentication_token import AuthenticationToken
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
 from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import (

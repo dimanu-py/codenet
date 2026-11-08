@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 
-from src.auth.session.infra.api.authenticate.authenticate_session_controller import AuthenticateSessionController
+from src.auth.session.infra.api.authenticate_session_controller import AuthenticateSessionController
 from src.shared.delivery.fastapi_response import FastAPIResponse
 from src.shared.infra.api.error_response import UnauthorizedError, UnprocessableEntityError
 from src.shared.infra.api.success_response import OkResponse

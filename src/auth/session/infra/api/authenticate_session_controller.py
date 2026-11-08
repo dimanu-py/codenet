@@ -1,4 +1,4 @@
-from src.auth.session.application.authenticate.session_authenticator import InvalidCredentials, SessionAuthenticator
+from src.auth.session.application.session_authenticator import InvalidCredentials, SessionAuthenticator
 from src.shared.infra.api.error_response import ErrorResponse, UnauthorizedError
 from src.shared.infra.api.success_response import OkResponse, SuccessResponse
 
