@@ -29,6 +29,5 @@ class PostgresAccountCredentialsFinder(AccountCredentialsFinder):
             lambda acc: AccountAuthCredentials(
                 account_id=acc.id,
                 password=acc.password,
-                status=acc.status,
             ),
         )

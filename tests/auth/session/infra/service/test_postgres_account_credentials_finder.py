@@ -29,7 +29,6 @@ class TestPostgresAccountCredentialsFinder:
                 AccountAuthCredentials(
                     account_id=existing_account["id"],
                     password=existing_account["password"],
-                    status=existing_account["status"],
                 )
             )
         )
@@ -47,7 +46,6 @@ class TestPostgresAccountCredentialsFinder:
                 AccountAuthCredentials(
                     account_id=existing_account["id"],
                     password=existing_account["password"],
-                    status=existing_account["status"],
                 )
             )
         )
