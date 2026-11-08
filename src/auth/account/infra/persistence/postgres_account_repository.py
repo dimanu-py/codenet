@@ -3,7 +3,7 @@ from typing import override
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.auth.account.application.signup.account_signup import AccountEmailAlreadyExists, AccountUsernameAlreadyExists
+from src.auth.account.application.account_signup import AccountEmailAlreadyExists, AccountUsernameAlreadyExists
 from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_repository import AccountRepository
 from src.auth.account.domain.accounts import Accounts

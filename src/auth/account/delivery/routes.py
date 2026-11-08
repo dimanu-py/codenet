@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status
 
-from src.auth.account.delivery.signup.signup_account_router import signup_account_router
+from src.auth.account.delivery.signup_account_router import signup_account_router
 from src.shared.infra.api.error_response import InternalServerError
 
 account_routes = APIRouter(

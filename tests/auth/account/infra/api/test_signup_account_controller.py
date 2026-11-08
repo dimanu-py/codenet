@@ -3,13 +3,13 @@ from unittest.mock import AsyncMock
 import pytest
 from expects import equal, expect
 
-from src.auth.account.application.signup.account_signup import (
+from src.auth.account.application.account_signup import (
     AccountEmailAlreadyExists,
     AccountSignup,
     AccountUsernameAlreadyExists,
 )
-from src.auth.account.delivery.signup.signup_account_request import SignupAccountRequest
-from src.auth.account.infra.api.signup.signup_account_controller import SignupAccountController
+from src.auth.account.delivery.signup_account_router import SignupAccountRequest
+from src.auth.account.infra.api.signup_account_controller import SignupAccountController
 from src.shared.domain.exceptions.base_error import BaseError
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
 from tests.auth.account.domain.mothers.account_id_primitives_mother import AccountIdPrimitivesMother

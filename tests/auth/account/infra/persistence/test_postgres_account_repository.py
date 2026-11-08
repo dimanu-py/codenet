@@ -2,7 +2,7 @@ import pytest
 from expects import be_empty, be_none, equal, expect
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.auth.account.application.signup.account_signup import AccountEmailAlreadyExists, AccountUsernameAlreadyExists
+from src.auth.account.application.account_signup import AccountEmailAlreadyExists, AccountUsernameAlreadyExists
 from src.auth.account.domain.account import Account, AccountPrimitives
 from src.auth.account.domain.account_id import AccountId
 from src.auth.account.domain.accounts import Accounts

@@ -3,10 +3,10 @@ from typing import Annotated
 from dishka import FromDishka
 from dishka.integrations.fastapi import DishkaRoute
 from fastapi import APIRouter, status
+from pydantic import BaseModel, Field
 from starlette.responses import JSONResponse
 
-from src.auth.account.delivery.signup.signup_account_request import SignupAccountRequest
-from src.auth.account.infra.api.signup.signup_account_controller import SignupAccountController
+from src.auth.account.infra.api.signup_account_controller import SignupAccountController
 from src.shared.delivery.fastapi_parameter import ApiDocExample, PathParameter
 from src.shared.delivery.fastapi_response import FastAPIResponse
 from src.shared.infra.api.error_response import ConflictErrorResponse, UnprocessableEntityError
@@ -21,6 +21,12 @@ AccountIdPathParameter = Annotated[
         examples=[ApiDocExample(name="valid_id", value="123e4567-e89b-12d3-a456-426614174000")],
     ),
 ]
+
+
+class SignupAccountRequest(BaseModel):
+    username: str = Field(examples=["johndoe"])
+    email: str = Field(examples=["johndoe@hotmail.com"])
+    password: str = Field(examples=["strongpassword123"])
 
 
 @signup_account_router.post(

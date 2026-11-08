@@ -1,6 +1,6 @@
 import pytest
 
-from src.auth.account.application.signup.account_signup import (
+from src.auth.account.application.account_signup import (
     AccountEmailAlreadyExists,
     AccountSignup,
     AccountUsernameAlreadyExists,

@@ -1,9 +1,9 @@
 from dishka import Provider, Scope, provide
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.auth.account.application.signup.account_signup import AccountSignup
+from src.auth.account.application.account_signup import AccountSignup
 from src.auth.account.domain.account_repository import AccountRepository
-from src.auth.account.infra.api.signup.signup_account_controller import SignupAccountController
+from src.auth.account.infra.api.signup_account_controller import SignupAccountController
 from src.auth.account.infra.persistence.postgres_account_repository import PostgresAccountRepository
 from src.auth.shared.domain.password_manager import PasswordManager
 from src.auth.shared.infra.argon_password_manager import ArgonPasswordManager
