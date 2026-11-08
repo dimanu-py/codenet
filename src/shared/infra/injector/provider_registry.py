@@ -5,7 +5,7 @@ from dishka import Provider
 
 
 class ProviderRegistry:
-    _SRC_DIR = Path("src")
+    _SRC_DIR = Path(__file__).resolve().parents[3]
 
     def __init__(self) -> None:
         self._providers: dict[str, Provider] = {}
