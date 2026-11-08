@@ -2,7 +2,7 @@ import pytest
 
 from src.auth.account.domain.account import Account, AccountPrimitives
 from src.auth.account.infra.persistence.account_model import AccountModel
-from tests.auth.account.domain.mothers.account_mother import AccountPrimitivesMother
+from tests.auth.account.domain.mothers.account_primitives_mother import AccountPrimitivesMother
 
 
 @pytest.fixture

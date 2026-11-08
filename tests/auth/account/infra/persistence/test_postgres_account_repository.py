@@ -9,7 +9,7 @@ from src.auth.account.domain.accounts import Accounts
 from src.auth.account.infra.persistence.account_model import AccountModel
 from src.auth.account.infra.persistence.postgres_account_repository import PostgresAccountRepository
 from src.shared.domain.criteria.operator import Operator
-from tests.auth.account.domain.mothers.account_mother import AccountPrimitivesMother
+from tests.auth.account.domain.mothers.account_primitives_mother import AccountPrimitivesMother
 from tests.shared.domain.criteria.mothers.criteria_mother import CriteriaMother
 from tests.shared.expects.matchers import async_expect, raise_error
 

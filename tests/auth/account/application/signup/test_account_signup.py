@@ -7,7 +7,7 @@ from src.auth.account.application.signup.account_signup import (
 )
 from src.auth.account.domain.account import AccountPrimitives
 from src.auth.account.domain.account_signed_up import AccountSignedUp
-from tests.auth.account.domain.mothers.account_mother import AccountPrimitivesMother
+from tests.auth.account.domain.mothers.account_primitives_mother import AccountPrimitivesMother
 from tests.auth.account.domain.mothers.account_signed_up_mother import AccountSignedUpMother
 from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
 from tests.auth.shared.infra.fake_password_manager import FakePasswordManager
