@@ -28,7 +28,7 @@ class TestSignupAccountController:
         email=AccountEmailPrimitivesMother.dummy(),
         password=AccountPasswordHashPrimitivesMother.plain_password(),
     )
-    _ANY_ACCOUNT_ID = AccountIdPrimitivesMother.dummy()
+    _ANY_ACCOUNT_ID = AccountIdPrimitivesMother.any()
 
     def setup_method(self) -> None:
         self._use_case = AsyncMock(spec=AccountSignup)
