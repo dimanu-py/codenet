@@ -13,8 +13,8 @@ class AccountAuthCredentials:
     def account_id(self) -> str:
         return self._account_id
 
-    async def verify_password(self, password: str, password_manager: PasswordManager) -> bool:
-        return await password_manager.verify_credentials(password, self._password)
+    async def password_is_incorrect(self, password: str, password_manager: PasswordManager) -> bool:
+        return not await password_manager.verify_credentials(password, self._password)
 
     @override
     def __eq__(self, other: object) -> bool:

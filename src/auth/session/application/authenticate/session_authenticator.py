@@ -27,7 +27,7 @@ class SessionAuthenticator:
     async def _ensure_introduced_password_is_correct(
         self, password: str, account_auth_credentials: AccountAuthCredentials
     ) -> None:
-        if not await account_auth_credentials.verify_password(password, self._password_verifier):
+        if await account_auth_credentials.password_is_incorrect(password, self._password_verifier):
             raise InvalidCredentials()
 
     async def _issue_authentication_token_for(
