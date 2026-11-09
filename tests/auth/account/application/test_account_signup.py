@@ -37,7 +37,7 @@ class TestAccountSignup:
     async def test_should_signup_a_new_account(self) -> None:
         account_primitives = AccountPrimitivesMother.dummy()
         self._clock.should_generate(account_primitives["created_at"])
-        self._should_not_find_account_matching_criteria()
+        self._should_not_find_an_account_with_registered_email_or_username()
 
         await self._signup.execute(
             account_id=account_primitives["id"],
@@ -51,7 +51,7 @@ class TestAccountSignup:
     async def test_should_publish_event_when_a_new_account_is_signed_up(self) -> None:
         account_primitives = AccountPrimitivesMother.dummy()
         self._clock.should_generate(account_primitives["created_at"])
-        self._should_not_find_account_matching_criteria()
+        self._should_not_find_an_account_with_registered_email_or_username()
 
         await self._signup.execute(
             account_id=account_primitives["id"],
@@ -65,7 +65,7 @@ class TestAccountSignup:
     async def test_should_not_allow_to_signup_account_with_already_registered_email(self) -> None:
         existing_account_primitives = AccountPrimitivesMother.dummy()
         new_account_primitives = AccountPrimitivesMother.sharing_email_with(existing_account_primitives)
-        self._should_match_criteria_with(existing_account_primitives)
+        self._should_find_an_account_with_registered_username_or_email(existing_account_primitives)
 
         signup_information = {
             "account_id": new_account_primitives["id"],
@@ -83,7 +83,7 @@ class TestAccountSignup:
     async def test_should_not_allow_to_signup_account_with_already_registered_username(self) -> None:
         existing_account_primitives = AccountPrimitivesMother.dummy()
         new_account_primitives = AccountPrimitivesMother.sharing_username_with(existing_account_primitives)
-        self._should_match_criteria_with(existing_account_primitives)
+        self._should_find_an_account_with_registered_username_or_email(existing_account_primitives)
 
         signup_information = {
             "account_id": new_account_primitives["id"],
@@ -104,10 +104,10 @@ class TestAccountSignup:
     def _should_have_not_saved_account(self) -> None:
         self._repository.should_not_have_saved_account()
 
-    def _should_not_find_account_matching_criteria(self) -> None:
+    def _should_not_find_an_account_with_registered_email_or_username(self) -> None:
         self._repository.should_not_match_criteria()
 
-    def _should_match_criteria_with(self, *accounts: AccountPrimitives) -> None:
+    def _should_find_an_account_with_registered_username_or_email(self, *accounts: AccountPrimitives) -> None:
         self._repository.should_match_criteria_with_successive_calls(*accounts)
 
     def _should_have_published_event(self, event: AccountSignedUp) -> None:

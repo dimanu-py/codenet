@@ -26,7 +26,7 @@ class TestSignupAccountController:
     _ANY_REQUEST_BODY = SignupAccountRequest(
         username=AccountUsernamePrimitivesMother.dummy(),
         email=AccountEmailPrimitivesMother.dummy(),
-        password=AccountPasswordHashPrimitivesMother.plain_password(),
+        password=AccountPasswordHashPrimitivesMother.dummy(),
     )
     _ANY_ACCOUNT_ID = AccountIdPrimitivesMother.any()
 

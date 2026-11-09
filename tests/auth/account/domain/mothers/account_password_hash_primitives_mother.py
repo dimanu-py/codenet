@@ -1,27 +1,4 @@
-from argon2 import PasswordHasher
-from object_mother import ObjectMother
-
-
-class AccountPasswordHashPrimitivesMother(ObjectMother):
-    _HASHER = PasswordHasher(
-        time_cost=2,
-        memory_cost=65536,
-        parallelism=4,
-    )
-
-    @classmethod
-    def any(cls) -> str:
-        plain_password = cls._faker().password()
-        return cls._HASHER.hash(plain_password)
-
-    @classmethod
-    def from_plain_password(cls, plain_password: str) -> str:
-        return cls._HASHER.hash(plain_password)
-
+class AccountPasswordHashPrimitivesMother:
     @staticmethod
-    def plain_password() -> str:
+    def dummy() -> str:
         return "plain.super.secure.password"
-
-    @classmethod
-    def dummy(cls) -> str:
-        return cls._HASHER.hash("dummy.supersecure.password")

@@ -17,7 +17,7 @@ from tests.auth.account.domain.mothers.account_password_hash_primitives_mother i
 class TestSessionController:
     _response = None
     _ANY_EMAIL = AccountEmailPrimitivesMother.any()
-    _ANY_PASSWORD = AccountPasswordHashPrimitivesMother.any()
+    _ANY_PASSWORD = AccountPasswordHashPrimitivesMother.dummy()
 
     def setup_method(self) -> None:
         self._authenticator = AsyncMock(spect=SessionAuthenticator)
