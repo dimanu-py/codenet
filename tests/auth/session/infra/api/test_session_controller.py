@@ -7,8 +7,8 @@ from src.auth.session.application.session_authenticator import InvalidCredential
 from src.auth.session.infra.api.authenticate_session_controller import AuthenticateSessionController
 from src.auth.session.infra.authentication_token import AuthenticationToken
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
-from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import (
-    AccountPasswordHashPrimitivesMother,
+from tests.auth.account.domain.mothers.account_plain_password_primitives_mother import (
+    AccountPlainPasswordPrimitivesMother,
 )
 
 
@@ -17,7 +17,7 @@ from tests.auth.account.domain.mothers.account_password_hash_primitives_mother i
 class TestSessionController:
     _response = None
     _ANY_EMAIL = AccountEmailPrimitivesMother.any()
-    _ANY_PASSWORD = AccountPasswordHashPrimitivesMother.dummy()
+    _ANY_PASSWORD = AccountPlainPasswordPrimitivesMother.dummy()
 
     def setup_method(self) -> None:
         self._authenticator = AsyncMock(spect=SessionAuthenticator)

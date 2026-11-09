@@ -13,8 +13,8 @@ from src.auth.account.infra.api.signup_account_controller import SignupAccountCo
 from src.shared.domain.exceptions.base_error import BaseError
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
 from tests.auth.account.domain.mothers.account_id_primitives_mother import AccountIdPrimitivesMother
-from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import (
-    AccountPasswordHashPrimitivesMother,
+from tests.auth.account.domain.mothers.account_plain_password_primitives_mother import (
+    AccountPlainPasswordPrimitivesMother,
 )
 from tests.auth.account.domain.mothers.account_username_primitives_mother import AccountUsernamePrimitivesMother
 
@@ -26,7 +26,7 @@ class TestSignupAccountController:
     _ANY_REQUEST_BODY = SignupAccountRequest(
         username=AccountUsernamePrimitivesMother.dummy(),
         email=AccountEmailPrimitivesMother.dummy(),
-        password=AccountPasswordHashPrimitivesMother.dummy(),
+        password=AccountPlainPasswordPrimitivesMother.dummy(),
     )
     _ANY_ACCOUNT_ID = AccountIdPrimitivesMother.any()
 

@@ -5,8 +5,8 @@ from src.auth.session.application.session_authenticator import InvalidCredential
 from src.auth.session.domain.account_auth_credentials import AccountAuthCredentials
 from src.auth.session.infra.authentication_token import AuthenticationToken
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
-from tests.auth.account.domain.mothers.account_password_hash_primitives_mother import (
-    AccountPasswordHashPrimitivesMother,
+from tests.auth.account.domain.mothers.account_plain_password_primitives_mother import (
+    AccountPlainPasswordPrimitivesMother,
 )
 from tests.auth.account.domain.mothers.account_username_primitives_mother import AccountUsernamePrimitivesMother
 from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
@@ -25,6 +25,7 @@ class TestSessionAuthenticator:
     _EXISTING_PASSWORD = AccountPasswordHashPrimitivesMother.any()
     _SIGNED_UP_ACCOUNT_AUTH_CREDENTIALS = AccountAuthCredentialsMother.with_password(_EXISTING_PASSWORD)
     _ANY_PASSWORD = AccountPasswordHashPrimitivesMother.any()
+    _EXISTING_PASSWORD = AccountPlainPasswordPrimitivesMother.dummy()
     _ANY_TOKEN = {"access_token": "ee9c873b-3ec4-4ece-8fe7-4eb8734cacde", "token_type": "bearer", "expires_in": 3600}
 
     def setup_method(self) -> None:
