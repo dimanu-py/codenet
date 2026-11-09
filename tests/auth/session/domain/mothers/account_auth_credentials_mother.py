@@ -5,9 +5,8 @@ from src.auth.session.domain.account_auth_credentials import AccountAuthCredenti
 
 class AccountAuthCredentialsMother(ObjectMother):
     @classmethod
-    def with_password(cls, password: str) -> AccountAuthCredentials:
+    def verifiable_with(cls, plain_password: str) -> AccountAuthCredentials:
         return AccountAuthCredentials(
             account_id=cls._faker().uuid4(),
-            password=password,
-            status=cls._faker().word(),
+            password=plain_password,
         )

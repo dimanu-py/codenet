@@ -16,7 +16,7 @@ from tests.auth.account.domain.mothers.account_plain_password_primitives_mother 
 @pytest.mark.asyncio
 class TestSessionController:
     _response = None
-    _ANY_EMAIL = AccountEmailPrimitivesMother.any()
+    _ANY_EMAIL = AccountEmailPrimitivesMother.dummy()
     _ANY_PASSWORD = AccountPlainPasswordPrimitivesMother.dummy()
 
     def setup_method(self) -> None:

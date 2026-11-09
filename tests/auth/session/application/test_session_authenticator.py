@@ -9,7 +9,6 @@ from tests.auth.account.domain.mothers.account_plain_password_primitives_mother 
     AccountPlainPasswordPrimitivesMother,
 )
 from tests.auth.account.domain.mothers.account_username_primitives_mother import AccountUsernamePrimitivesMother
-from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
 from tests.auth.session.domain.mothers.account_auth_credentials_mother import AccountAuthCredentialsMother
 from tests.auth.session.infra.fake_token_issuer import FakeTokenIssuer
 from tests.auth.session.infra.service.mock_account_credentials_finder import MockAccountCredentialsFinder
@@ -20,16 +19,13 @@ from tests.shared.expects.matchers import async_expect, raise_error
 @pytest.mark.unit
 @pytest.mark.asyncio
 class TestSessionAuthenticator:
-    _EXISTING_EMAIL = AccountEmailPrimitivesMother.any()
-    _EXISTING_USERNAME = AccountUsernamePrimitivesMother.any()
-    _EXISTING_PASSWORD = AccountPasswordHashPrimitivesMother.any()
-    _SIGNED_UP_ACCOUNT_AUTH_CREDENTIALS = AccountAuthCredentialsMother.with_password(_EXISTING_PASSWORD)
-    _ANY_PASSWORD = AccountPasswordHashPrimitivesMother.any()
+    _EXISTING_EMAIL = AccountEmailPrimitivesMother.dummy()
+    _EXISTING_USERNAME = AccountUsernamePrimitivesMother.dummy()
     _EXISTING_PASSWORD = AccountPlainPasswordPrimitivesMother.dummy()
+    _SIGNED_UP_ACCOUNT_AUTH_CREDENTIALS = AccountAuthCredentialsMother.verifiable_with(_EXISTING_PASSWORD)
     _ANY_TOKEN = {"access_token": "ee9c873b-3ec4-4ece-8fe7-4eb8734cacde", "token_type": "bearer", "expires_in": 3600}
 
     def setup_method(self) -> None:
-        self._repository = MockAccountRepository()
         self._credentials_finder = MockAccountCredentialsFinder()
         self._password_manager = FakePasswordManager()
         self._token_issuer = FakeTokenIssuer(self._ANY_TOKEN)
@@ -39,11 +35,20 @@ class TestSessionAuthenticator:
             token_issuer=self._token_issuer,
         )
 
-    async def test_should_authenticate_successfully_an_account_with_valid_credentials(self) -> None:
+    @pytest.mark.parametrize(
+        "identification",
+        [
+            pytest.param(_EXISTING_EMAIL, id="identified_with_email"),
+            pytest.param(_EXISTING_USERNAME, id="identified_with_username"),
+        ],
+    )
+    async def test_should_authenticate_successfully_an_account_with_valid_credentials(
+        self, identification: str
+    ) -> None:
         self._should_find_signed_up_account_auth_credentials(self._SIGNED_UP_ACCOUNT_AUTH_CREDENTIALS)
 
         issued_token = await self._authenticator.execute(
-            identification=self._EXISTING_EMAIL, password=self._EXISTING_PASSWORD
+            identification=identification, password=self._EXISTING_PASSWORD
         )
 
         expect(issued_token).to(equal(AuthenticationToken(**self._ANY_TOKEN)))
@@ -57,9 +62,10 @@ class TestSessionAuthenticator:
 
     async def test_should_not_allow_to_authenticate_when_password_is_not_correct(self) -> None:
         self._should_find_signed_up_account_auth_credentials(self._SIGNED_UP_ACCOUNT_AUTH_CREDENTIALS)
+        wrong_password = "a-different-password"
 
         await async_expect(
-            lambda: self._authenticator.execute(identification=self._EXISTING_EMAIL, password=self._ANY_PASSWORD)
+            lambda: self._authenticator.execute(identification=self._EXISTING_EMAIL, password=wrong_password)
         ).to(raise_error(InvalidCredentials))
 
     async def test_should_not_allow_to_authenticate_when_account_with_given_email_is_not_signed_up(self) -> None:
@@ -68,15 +74,6 @@ class TestSessionAuthenticator:
         await async_expect(
             lambda: self._authenticator.execute(identification=self._EXISTING_EMAIL, password=self._EXISTING_PASSWORD)
         ).to(raise_error(InvalidCredentials))
-
-    async def test_should_authenticate_successfully_an_account_with_valid_username(self) -> None:
-        self._should_find_signed_up_account_auth_credentials(self._SIGNED_UP_ACCOUNT_AUTH_CREDENTIALS)
-
-        issued_token = await self._authenticator.execute(
-            identification=self._EXISTING_USERNAME, password=self._EXISTING_PASSWORD
-        )
-
-        expect(issued_token).to(equal(AuthenticationToken(**self._ANY_TOKEN)))
 
     def _should_not_find_account_auth_credentials(self) -> None:
         self._credentials_finder.should_search_and_not_find_account_auth_credentials()
