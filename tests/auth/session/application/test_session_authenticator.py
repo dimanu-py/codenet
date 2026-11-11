@@ -9,6 +9,7 @@ from tests.auth.account.domain.mothers.account_plain_password_primitives_mother 
     AccountPlainPasswordPrimitivesMother,
 )
 from tests.auth.account.domain.mothers.account_username_primitives_mother import AccountUsernamePrimitivesMother
+from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
 from tests.auth.session.domain.mothers.account_auth_credentials_mother import AccountAuthCredentialsMother
 from tests.auth.session.infra.fake_token_issuer import FakeTokenIssuer
 from tests.auth.session.infra.service.mock_account_credentials_finder import MockAccountCredentialsFinder
@@ -29,10 +30,12 @@ class TestSessionAuthenticator:
         self._credentials_finder = MockAccountCredentialsFinder()
         self._password_manager = FakePasswordManager()
         self._token_issuer = FakeTokenIssuer(self._ANY_TOKEN)
+        self._account_repository = MockAccountRepository()
         self._authenticator = SessionAuthenticator(
             credentials_finder=self._credentials_finder,
             password_verifier=self._password_manager,
             token_issuer=self._token_issuer,
+            account_repository=self._account_repository,
         )
 
     @pytest.mark.parametrize(

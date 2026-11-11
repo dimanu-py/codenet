@@ -1,6 +1,7 @@
 from dishka import Provider, Scope, provide
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.auth.account.domain.account_repository import AccountRepository
 from src.auth.session.application.session_authenticator import SessionAuthenticator
 from src.auth.session.infra.api.authenticate_session_controller import AuthenticateSessionController
 from src.auth.session.infra.jwt_token_issuer import JwtTokenIssuer
@@ -20,12 +21,16 @@ class SessionDependencyProvider(Provider):
 
     @provide
     def authenticate_controller(
-        self, account_credentials_finder: PostgresAccountCredentialsFinder, settings: Settings
+        self,
+        account_credentials_finder: PostgresAccountCredentialsFinder,
+        settings: Settings,
+        account_repository: AccountRepository,
     ) -> AuthenticateSessionController:
         return AuthenticateSessionController(
             use_case=SessionAuthenticator(
                 credentials_finder=account_credentials_finder,
                 password_verifier=ArgonPasswordManager(),
                 token_issuer=JwtTokenIssuer(settings=settings),
+                account_repository=account_repository,
             ),
         )

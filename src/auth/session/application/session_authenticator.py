@@ -1,3 +1,4 @@
+from src.auth.account.domain.account_repository import AccountRepository
 from src.auth.session.domain.account_auth_credentials import AccountAuthCredentials
 from src.auth.session.domain.account_credentials_finder import AccountCredentialsFinder
 from src.auth.session.domain.login_identifier import LoginIdentifier
@@ -13,10 +14,12 @@ class SessionAuthenticator:
         credentials_finder: AccountCredentialsFinder,
         password_verifier: PasswordManager,
         token_issuer: TokenIssuer,
+        account_repository: AccountRepository,
     ) -> None:
         self._credentials_finder = credentials_finder
         self._password_verifier = password_verifier
         self._token_issuer = token_issuer
+        self._account_repository = account_repository
 
     async def execute(self, identification: str, password: str) -> AuthenticationToken:
         account_auth_credentials = await self._ensure_account_exists_with_identification(identification)
