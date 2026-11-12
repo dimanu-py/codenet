@@ -6,7 +6,6 @@ from src.auth.session.infra.authentication_token import AuthenticationToken
 from tests.auth.account.domain.mothers.account_primitives_mother import AccountPrimitivesMother
 from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
 from tests.auth.session.infra.fake_token_issuer import FakeTokenIssuer
-from tests.auth.session.infra.service.mock_account_credentials_finder import MockAccountCredentialsFinder
 from tests.auth.shared.infra.fake_password_manager import FakePasswordManager
 from tests.shared.expects.matchers import async_expect, raise_error
 
@@ -18,12 +17,10 @@ class TestSessionAuthenticator:
     _ANY_TOKEN = {"access_token": "ee9c873b-3ec4-4ece-8fe7-4eb8734cacde", "token_type": "bearer", "expires_in": 3600}
 
     def setup_method(self) -> None:
-        self._credentials_finder = MockAccountCredentialsFinder()
         self._password_manager = FakePasswordManager()
         self._token_issuer = FakeTokenIssuer(self._ANY_TOKEN)
         self._account_repository = MockAccountRepository()
         self._authenticator = SessionAuthenticator(
-            credentials_finder=self._credentials_finder,
             password_verifier=self._password_manager,
             token_issuer=self._token_issuer,
             account_repository=self._account_repository,
