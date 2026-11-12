@@ -1,7 +1,7 @@
+from src.auth.account.domain.account import Account
 from src.auth.account.domain.account_repository import AccountRepository
-from src.auth.session.domain.account_auth_credentials import AccountAuthCredentials
+from src.auth.session.domain.account_by_login_identifier_criteria import AccountByLoginIdentifierCriteria
 from src.auth.session.domain.account_credentials_finder import AccountCredentialsFinder
-from src.auth.session.domain.login_identifier import LoginIdentifier
 from src.auth.session.domain.token_issuer import TokenIssuer
 from src.auth.session.infra.authentication_token import AuthenticationToken
 from src.auth.shared.domain.password_manager import PasswordManager
@@ -22,28 +22,25 @@ class SessionAuthenticator:
         self._account_repository = account_repository
 
     async def execute(self, identification: str, password: str) -> AuthenticationToken:
-        account_auth_credentials = await self._ensure_account_exists_with_identification(identification)
-        await self._ensure_introduced_password_is_correct(password, account_auth_credentials)
-        token = await self._issue_authentication_token_for(account_auth_credentials)
+        exiting_account = await self._ensure_account_exists_with_identification(identification)
+        await self._ensure_introduced_password_is_correct(password, exiting_account)
+        token = await self._issue_authentication_token_for(exiting_account)
         return token
 
-    async def _ensure_introduced_password_is_correct(
-        self, password: str, account_auth_credentials: AccountAuthCredentials
-    ) -> None:
-        if await account_auth_credentials.password_is_incorrect(password, self._password_verifier):
+    async def _ensure_introduced_password_is_correct(self, password: str, account: Account) -> None:
+        if await account.password_is_incorrect(password, self._password_verifier):
             raise InvalidCredentials()
 
-    async def _issue_authentication_token_for(
-        self, account_auth_credentials: AccountAuthCredentials
-    ) -> AuthenticationToken:
-        token = await self._token_issuer.generate_token(account_auth_credentials.account_id)
+    async def _issue_authentication_token_for(self, account: Account) -> AuthenticationToken:
+        token = await self._token_issuer.generate_token(account.id.value)
         return AuthenticationToken(**token)
 
-    async def _ensure_account_exists_with_identification(self, identification: str) -> AccountAuthCredentials:
-        account_auth_credentials = await self._credentials_finder.find_by_login_identifier(
-            login=LoginIdentifier(identification)
-        )
-        return account_auth_credentials.unwrap_or_raise(InvalidCredentials)
+    async def _ensure_account_exists_with_identification(self, identification: str) -> Account:
+        criteria = AccountByLoginIdentifierCriteria.for_login_identifier(login=identification)
+        candidate_accounts = await self._account_repository.matching(criteria)
+        if candidate_accounts.has_accounts():
+            return candidate_accounts.first()
+        raise InvalidCredentials()
 
 
 class InvalidCredentials(DomainError):

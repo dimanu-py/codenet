@@ -10,6 +10,7 @@ from src.auth.account.domain.account_password_hash import AccountPasswordHash
 from src.auth.account.domain.account_signed_up import AccountSignedUp, AccountSignedUpAttributes
 from src.auth.account.domain.account_status import AccountStatus
 from src.auth.account.domain.account_username import AccountUsername
+from src.auth.shared.domain.password_manager import PasswordManager
 from src.shared.domain.event_bus.domain_event import DomainEvent
 
 
@@ -56,6 +57,9 @@ class Account(AggregateRoot):
 
     def has_username(self, username: AccountUsername) -> bool:
         return self._username == username
+
+    async def password_is_incorrect(self, password: str, password_manager: PasswordManager) -> bool:
+        return not await password_manager.verify_credentials(password, self._password.value)
 
     @property
     def id(self) -> AccountId:
