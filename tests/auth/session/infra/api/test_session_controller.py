@@ -4,8 +4,8 @@ import pytest
 from expects import equal, expect
 
 from src.auth.session.application.session_authenticator import InvalidCredentials, SessionAuthenticator
+from src.auth.session.domain.session_token import SessionToken
 from src.auth.session.infra.api.authenticate_session_controller import AuthenticateSessionController
-from src.auth.session.infra.authentication_token import AuthenticationToken
 from tests.auth.account.domain.mothers.account_email_primitives_mother import AccountEmailPrimitivesMother
 from tests.auth.account.domain.mothers.account_plain_password_primitives_mother import (
     AccountPlainPasswordPrimitivesMother,
@@ -42,8 +42,8 @@ class TestSessionController:
 
         self._assert_contract_is_met_on_error(401)
 
-    def _should_authenticate_session(self) -> AuthenticationToken:
-        token = AuthenticationToken(
+    def _should_authenticate_session(self) -> SessionToken:
+        token = SessionToken(
             access_token="any",
             token_type="bearer",
             expires_in=3600,

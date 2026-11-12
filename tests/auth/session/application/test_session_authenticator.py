@@ -2,7 +2,7 @@ import pytest
 from expects import equal, expect
 
 from src.auth.session.application.session_authenticator import InvalidCredentials, SessionAuthenticator
-from src.auth.session.infra.authentication_token import AuthenticationToken
+from src.auth.session.domain.session_token import SessionToken
 from tests.auth.account.domain.mothers.account_primitives_mother import AccountPrimitivesMother
 from tests.auth.account.infra.persistence.mock_account_repository import MockAccountRepository
 from tests.auth.session.infra.fake_token_issuer import FakeTokenIssuer
@@ -42,7 +42,7 @@ class TestSessionAuthenticator:
             identification=identification, password=self._EXISTING_ACCOUNT["password"]
         )
 
-        expect(issued_token).to(equal(AuthenticationToken(**self._ANY_TOKEN)))
+        expect(issued_token).to(equal(SessionToken(**self._ANY_TOKEN)))
 
     async def test_should_issue_token_using_account_id_instead_of_login_identification(self) -> None:
         self._should_find_signed_up_account()
